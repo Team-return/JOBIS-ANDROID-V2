@@ -24,5 +24,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Check ktlint
-      run: ./gradlew ktlintCheck
+    - name: GitHub Action for ktlint
+      uses: yutailang0119/action-ktlint@v3.1.0
+            
+    # - name: Check ktlint
+    #   run: ./gradlew ktlintCheck
