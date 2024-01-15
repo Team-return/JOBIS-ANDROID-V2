@@ -10,6 +10,7 @@ kotlin = "1.9.0"
 compose-bom = "2023.08.00"
 design-system = "v1.0.0"
 navigation-compose = "2.7.6"
+gradle-ktlint = "12.1.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -33,3 +34,4 @@ team-return-design-system = { group = "com.github.Team-return", name = "JOBIS-DE
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
