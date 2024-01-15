@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "team.retum.jobisandroidv2"
-        minSdk = 26
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.team.`return`.design.system)
+    implementation(libs.androidx.navigation.compose)
 
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.ui.graphics)
