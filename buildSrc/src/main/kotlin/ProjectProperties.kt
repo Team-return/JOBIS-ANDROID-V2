@@ -5,5 +5,5 @@ object ProjectProperties {
     const val VERSION_CODE = 1
     const val VERSION_NAME = "1.0"
     const val COMPOSE_COMPILER_EXTENSION = "1.5.6"
-    const val JVM_TARGET = "17"
+    const val JVM_TARGET = "18"
 }
