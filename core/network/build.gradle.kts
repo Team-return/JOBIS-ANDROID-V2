@@ -4,7 +4,7 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId)
 }
 
-apply<AndroidLibraryPlugin>()
+apply<CommonGradlePlugin>()
 
 android {
     namespace = "team.retum.network"
