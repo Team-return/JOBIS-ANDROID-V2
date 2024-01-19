@@ -1,18 +1,18 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id(libs.plugins.android.application.get().pluginId)
+    id(libs.plugins.kotlin.android.get().pluginId)
 }
 
 android {
     namespace = "team.retum.jobisandroidv2"
-    compileSdk = 34
+    compileSdk = ProjectProperties.COMPILE_SDK
 
     defaultConfig {
         applicationId = "team.retum.jobisandroidv2"
-        minSdk = 28
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = ProjectProperties.MIN_SDK
+        targetSdk = ProjectProperties.TARGET_SDK
+        versionCode = ProjectProperties.VERSION_CODE
+        versionName = ProjectProperties.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -25,22 +25,22 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = ProjectProperties.JVM_TARGET
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = ProjectProperties.COMPOSE_COMPILER_EXTENSION
     }
     packaging {
         resources {
@@ -55,7 +55,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.team.`return`.design.system)
+    implementation(libs.jobis.design.system)
     implementation(libs.androidx.navigation.compose)
 
     api(libs.androidx.compose.ui)

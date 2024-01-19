@@ -16,6 +16,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "JobisAndroidV2"
 include(":app")
+include(":build-src")
 include(":feature")
 include(":core")
 include(":core:domain")
