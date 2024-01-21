@@ -26,7 +26,7 @@ class CommonGradlePlugin : Plugin<Project> {
         }
     }
 
-    private fun setDependencies(project: Project){
+    private fun setDependencies(project: Project) {
         val libs = project.libs
         project.dependencies {
             testImplementation(libs.findLibrary("junit").get())
