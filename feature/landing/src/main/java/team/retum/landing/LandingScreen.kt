@@ -1,10 +1,13 @@
 package team.retum.landing
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
@@ -79,7 +83,13 @@ private fun LandingScreen(
                 color = ButtonColor.Primary,
             )
             JobisText(
-                modifier = Modifier.padding(bottom = 24.dp),
+                modifier = Modifier
+                    .padding(bottom = 24.dp)
+                    .clickable(
+                        onClick = {},
+                        indication = rememberRipple(),
+                        interactionSource = MutableInteractionSource(),
+                    ),
                 text = "기존 계정으로 로그인하기",
                 style = JobisTypography.SubBody,
                 textDecoration = TextDecoration.Underline,
