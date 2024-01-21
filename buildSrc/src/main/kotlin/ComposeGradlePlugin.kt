@@ -23,6 +23,9 @@ class ComposeGradlePlugin : Plugin<Project> {
         val libs = project.libs
         project.dependencies {
             implementation(libs.findLibrary("androidx.activity.compose").get())
+            implementation(libs.findLibrary("androidx.compose.foundation").get())
+            implementation(libs.findLibrary("androidx.compose.material3").get())
+            implementation(libs.findLibrary("jobis.design.system").get())
             implementation(libs.findLibrary("androidx.navigation.compose").get())
             implementation(libs.findLibrary("androidx.core.ktx").get())
             implementation(libs.findLibrary("appcompat").get())
