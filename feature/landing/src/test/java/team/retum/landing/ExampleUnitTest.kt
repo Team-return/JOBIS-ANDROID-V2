@@ -1,4 +1,4 @@
-package team.retum.jobisandroidv2
+package team.retum.landing
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

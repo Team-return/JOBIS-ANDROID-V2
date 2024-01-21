@@ -1,4 +1,4 @@
-package team.retum.jobisandroidv2
+package team.retum.landing
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("team.retum.jobisandroidv2", appContext.packageName)
+        assertEquals("team.retum.landing.test", appContext.packageName)
     }
 }

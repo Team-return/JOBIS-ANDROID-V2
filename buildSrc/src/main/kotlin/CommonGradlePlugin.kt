@@ -1,11 +1,12 @@
-import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
 
 class CommonGradlePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         setProjectConfig(project)
+        setDependencies(project)
     }
 
     private fun setProjectConfig(project: Project) {
@@ -25,7 +26,12 @@ class CommonGradlePlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.android(): LibraryExtension {
-        return extensions.getByType(LibraryExtension::class.java)
+    private fun setDependencies(project: Project) {
+        val libs = project.libs
+        project.dependencies {
+            testImplementation(libs.findLibrary("junit").get())
+            androidTestImplementation(libs.findLibrary("androidx.junit").get())
+            androidTestImplementation(libs.findLibrary("androidx.espresso.core").get())
+        }
     }
 }

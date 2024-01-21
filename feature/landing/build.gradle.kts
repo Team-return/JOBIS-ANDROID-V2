@@ -5,7 +5,12 @@ plugins {
 }
 
 apply<CommonGradlePlugin>()
+apply<ComposeGradlePlugin>()
 
 android {
-    namespace = "team.retum.network"
+    namespace = "team.retum.landing"
+}
+
+dependencies {
+    implementation(libs.lottie.compose)
 }

@@ -9,10 +9,3 @@ apply<CommonGradlePlugin>()
 android {
     namespace = "team.retum.common"
 }
-
-dependencies {
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-}
