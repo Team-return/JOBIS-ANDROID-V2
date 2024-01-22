@@ -23,8 +23,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import team.returm.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
 import team.returm.jobisdesignsystemv2.button.JobisButton
@@ -33,16 +31,8 @@ import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
-const val NAVIGATION_SIGN_IN = "signIn"
-
-fun NavGraphBuilder.signIn() {
-    composable(route = NAVIGATION_SIGN_IN) {
-        SignIn()
-    }
-}
-
 @Composable
-private fun SignIn() {
+internal fun SignIn() {
     SignInScreen()
 }
 
