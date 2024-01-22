@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="sign_in">로그인</string>
+</resources>
