@@ -14,7 +14,7 @@ internal fun JobisApp() {
         navController = navController,
         startDestination = NAVIGATION_AUTH,
     ) {
-        authNavigation()
+        authNavigation(navController = navController)
         mainNavigation()
     }
 }

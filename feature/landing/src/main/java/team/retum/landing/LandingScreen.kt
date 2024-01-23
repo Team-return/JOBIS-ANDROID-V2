@@ -18,8 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -31,16 +29,10 @@ import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 import team.returm.jobisdesignsystemv2.text.JobisText
 
-const val NAVIGATION_LANDING = "landing"
-
-fun NavGraphBuilder.landing() {
-    composable(route = NAVIGATION_LANDING) {
-        Landing()
-    }
-}
-
 @Composable
-private fun Landing() {
+internal fun Landing(
+    onSignInClick: () -> Unit,
+) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
     var showButton by remember { mutableStateOf(false) }
 
@@ -52,6 +44,7 @@ private fun Landing() {
     LandingScreen(
         composition = composition,
         showButton = showButton,
+        onSignInClick = onSignInClick,
     )
 }
 
@@ -59,6 +52,7 @@ private fun Landing() {
 private fun LandingScreen(
     composition: LottieComposition?,
     showButton: Boolean,
+    onSignInClick: () -> Unit,
 ) {
     Box {
         LottieAnimation(
@@ -85,7 +79,7 @@ private fun LandingScreen(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .clickable(
-                        onClick = {},
+                        onClick = onSignInClick,
                         indication = rememberRipple(),
                         interactionSource = MutableInteractionSource(),
                     ),

@@ -1,7 +1,6 @@
 package team.retum.jobisandroidv2.navigation
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 
 const val NAVIGATION_MAIN = "main"
