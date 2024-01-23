@@ -32,12 +32,16 @@ import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
-internal fun SignIn() {
-    SignInScreen()
+internal fun SignIn(
+    onBackClick: () -> Unit,
+) {
+    SignInScreen(onBackClick = onBackClick)
 }
 
 @Composable
-private fun SignInScreen() {
+private fun SignInScreen(
+    onBackClick: () -> Unit,
+) {
     // TODO 뷰모델로 옮기기
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -48,7 +52,7 @@ private fun SignInScreen() {
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        JobisSmallTopAppBar(onBackPressed = {})
+        JobisSmallTopAppBar(onBackPressed = onBackClick)
         SignInScreenTitle()
         SignInInputs(
             email = { email },
@@ -75,7 +79,7 @@ private fun SignInInputs(
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
-        showEmail = true,
+        showEmailHint = true,
         hint = "example",
         value = email,
         onValueChange = onEmailChange,
@@ -85,6 +89,7 @@ private fun SignInInputs(
         hint = "비밀번호를 입력해주세요",
         value = password,
         onValueChange = onPasswordChange,
+        showVisibleIcon = true,
     )
 }
 

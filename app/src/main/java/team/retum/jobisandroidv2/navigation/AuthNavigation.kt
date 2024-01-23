@@ -16,6 +16,6 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         startDestination = NAVIGATION_LANDING,
     ) {
         landing(onSignInClick = navController::navigateToSignIn)
-        signIn()
+        signIn(onBackClick = navController::popBackStack)
     }
 }
