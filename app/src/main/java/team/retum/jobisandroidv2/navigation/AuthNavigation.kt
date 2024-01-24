@@ -7,6 +7,7 @@ import team.retum.landing.NAVIGATION_LANDING
 import team.retum.landing.landing
 import team.retum.signin.navigateToSignIn
 import team.retum.signin.signIn
+import team.retum.signup.signUp
 
 const val NAVIGATION_AUTH = "auth"
 
@@ -17,5 +18,6 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
     ) {
         landing(onSignInClick = navController::navigateToSignIn)
         signIn(onBackClick = navController::popBackStack)
+        signUp()
     }
 }
