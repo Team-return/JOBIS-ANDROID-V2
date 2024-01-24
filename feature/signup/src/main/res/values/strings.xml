@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="input_personal_information">개인정보를 입력해주세요</string>
+    <string name="name">이름</string>
+    <string name="hint_name">홍길동</string>
+    <string name="student_number">학번</string>
+    <string name="hint_student_number">학번 4자리를 입력해주세요</string>
+    <string name="next">다음</string>
+</resources>

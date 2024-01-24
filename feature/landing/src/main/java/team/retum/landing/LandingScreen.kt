@@ -32,6 +32,7 @@ import team.returm.jobisdesignsystemv2.text.JobisText
 @Composable
 internal fun Landing(
     onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit,
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
     var showButton by remember { mutableStateOf(false) }
@@ -45,6 +46,7 @@ internal fun Landing(
         composition = composition,
         showButton = showButton,
         onSignInClick = onSignInClick,
+        onSignUpClick = onSignUpClick,
     )
 }
 
@@ -53,6 +55,7 @@ private fun LandingScreen(
     composition: LottieComposition?,
     showButton: Boolean,
     onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit,
 ) {
     Box {
         LottieAnimation(
@@ -72,7 +75,7 @@ private fun LandingScreen(
                     end = 24.dp,
                 ),
                 text = "새 계정으로 시작하기",
-                onClick = {},
+                onClick = onSignUpClick,
                 color = ButtonColor.Primary,
             )
             JobisText(
