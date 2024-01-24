@@ -53,6 +53,7 @@ dependencies {
 
     implementation(project(":feature:landing"))
     implementation(project(":feature:signin"))
+    implementation(project(":feature:signup"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
