@@ -7,7 +7,6 @@ import team.retum.landing.NAVIGATION_LANDING
 import team.retum.landing.landing
 import team.retum.signin.navigateToSignIn
 import team.retum.signin.signIn
-import team.retum.signup.navigation.NAVIGATION_SIGN_UP
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.signUp
 

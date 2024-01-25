@@ -9,7 +9,7 @@ const val NAVIGATION_SIGN_UP = "signUp"
 fun NavGraphBuilder.signUp(onBackClick: () -> Unit) {
     navigation(
         route = NAVIGATION_SIGN_UP,
-        startDestination = NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFORMATION,
+        startDestination = NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO,
     ) {
         inputPersonalInformation(onBackClick = onBackClick)
     }

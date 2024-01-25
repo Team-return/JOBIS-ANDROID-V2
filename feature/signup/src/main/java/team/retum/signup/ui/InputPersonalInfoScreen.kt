@@ -21,9 +21,8 @@ import team.returm.jobisdesignsystemv2.button.JobisButton
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
-// TODO 더 나은 이름 생각나면 고쳐주세요 (너무 긴것 같아요..)
 @Composable
-fun InputPersonalInformationScreen(
+fun InputPersonalInfoScreen(
     onBackClick: () -> Unit,
 ) {
     var name by remember { mutableStateOf("") }
