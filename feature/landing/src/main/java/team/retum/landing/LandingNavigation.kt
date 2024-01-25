@@ -5,8 +5,14 @@ import androidx.navigation.compose.composable
 
 const val NAVIGATION_LANDING = "landing"
 
-fun NavGraphBuilder.landing(onSignInClick: () -> Unit) {
+fun NavGraphBuilder.landing(
+    onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit,
+) {
     composable(route = NAVIGATION_LANDING) {
-        Landing(onSignInClick = onSignInClick)
+        Landing(
+            onSignInClick = onSignInClick,
+            onSignUpClick = onSignUpClick,
+        )
     }
 }
