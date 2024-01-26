@@ -26,7 +26,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         signIn(onBackClick = navController::popBackStack)
         signUp(
             onBackClick = navController::popBackStack,
-            onEmailClick = navController::navigateToInputEmail,
+            onNextClick = navController::navigateToInputEmail,
         )
     }
 }

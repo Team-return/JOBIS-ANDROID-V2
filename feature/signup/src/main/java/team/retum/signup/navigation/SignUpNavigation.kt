@@ -8,7 +8,7 @@ const val NAVIGATION_SIGN_UP = "signUp"
 
 fun NavGraphBuilder.signUp(
     onBackClick: () -> Unit,
-    onEmailClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     navigation(
         route = NAVIGATION_SIGN_UP,
@@ -16,7 +16,7 @@ fun NavGraphBuilder.signUp(
     ) {
         inputPersonalInformation(
             onBackClick = onBackClick,
-            onEmailClick = onEmailClick,
+            onNextClick = onNextClick,
         )
         inputEmail(onBackClick = onBackClick)
     }

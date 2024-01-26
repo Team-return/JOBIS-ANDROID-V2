@@ -9,12 +9,12 @@ const val NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO = "signUp/inputPersonalInfo"
 
 fun NavGraphBuilder.inputPersonalInformation(
     onBackClick: () -> Unit,
-    onEmailClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     composable(route = NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO) {
         InputPersonalInfoScreen(
             onBackClick = onBackClick,
-            onEmailClick = onEmailClick,
+            onNextClick = onNextClick,
         )
     }
 }
