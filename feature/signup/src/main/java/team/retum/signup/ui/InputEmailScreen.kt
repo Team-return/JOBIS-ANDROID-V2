@@ -28,6 +28,7 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 internal fun InputEmailScreen(
     onBackClick: () -> Unit,
 ) {
+    // TODO: viewModel로 옮기기
     var email by remember { mutableStateOf("") }
     var authenticationCode by remember { mutableStateOf("") }
     Column(
