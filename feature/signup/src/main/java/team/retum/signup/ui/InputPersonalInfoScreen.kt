@@ -24,6 +24,7 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 @Composable
 fun InputPersonalInfoScreen(
     onBackClick: () -> Unit,
+    onEmailClick: () -> Unit,
 ) {
     var name by remember { mutableStateOf("") }
     var studentNumber by remember { mutableStateOf("") }
@@ -49,7 +50,7 @@ fun InputPersonalInfoScreen(
             modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
-            onClick = {},
+            onClick = onEmailClick,
         )
     }
 }
