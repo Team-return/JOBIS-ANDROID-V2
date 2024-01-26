@@ -11,5 +11,5 @@
     <string name="email">이메일</string>
     <string name="hint_email">example</string>
     <string name="authentication_code">인증코드</string>
-    <string name="hint_authentication_code">이메일로 온 코드 입력해주세요</string>
+    <string name="hint_authentication_code">이메일로 온 코드를 입력해주세요</string>
 </resources>
