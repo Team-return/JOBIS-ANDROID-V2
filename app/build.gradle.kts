@@ -1,6 +1,8 @@
 plugins {
     id(libs.plugins.android.application.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
+    id(libs.plugins.hilt.android.get().pluginId) apply false
+    id(libs.plugins.kotlin.kapt.get().pluginId)
 }
 
 android {
@@ -62,6 +64,9 @@ dependencies {
     implementation(libs.jobis.design.system)
     implementation(libs.androidx.navigation.compose)
 
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.ui.graphics)
     api(libs.androidx.compose.ui.tooling.preview)
@@ -76,4 +81,13 @@ dependencies {
 
     debugApi(libs.androidx.compose.ui.tooling)
     debugApi(libs.androidx.compose.ui.test.manifest)
+}
+
+kapt {
+    javacOptions {
+        // These options are normally set automatically via the Hilt Gradle plugin, but we
+        // set them manually to workaround a bug in the Kotlin 1.5.20
+        option("-Adagger.fastInit=ENABLED")
+        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+    }
 }
