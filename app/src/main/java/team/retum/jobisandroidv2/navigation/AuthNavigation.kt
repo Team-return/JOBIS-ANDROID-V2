@@ -7,6 +7,8 @@ import team.retum.landing.NAVIGATION_LANDING
 import team.retum.landing.landing
 import team.retum.signin.navigateToSignIn
 import team.retum.signin.signIn
+import team.retum.signup.navigation.navigateToInputEmail
+import team.retum.signup.navigation.navigateToInputPersonalInfo
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.signUp
 
@@ -22,6 +24,9 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
             onSignUpClick = navController::navigateToSignUp,
         )
         signIn(onBackClick = navController::popBackStack)
-        signUp(onBackClick = navController::popBackStack)
+        signUp(
+            onBackClick = navController::popBackStack,
+            onEmailClick = navController::navigateToInputEmail,
+        )
     }
 }
