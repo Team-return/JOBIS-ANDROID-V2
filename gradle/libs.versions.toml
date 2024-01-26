@@ -42,4 +42,4 @@ lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", versio
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-androidLibrary = { id = "com.android.library", version.ref = "gradle" }
+android-library = { id = "com.android.library", version.ref = "gradle" }
