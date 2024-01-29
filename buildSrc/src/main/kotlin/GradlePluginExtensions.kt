@@ -25,3 +25,7 @@ internal fun DependencyHandler.testImplementation(dependencyNotation: Provider<M
 internal fun DependencyHandler.androidTestImplementation(dependencyNotation: Provider<MinimalExternalModuleDependency>) {
     add("androidTestImplementation", dependencyNotation)
 }
+
+internal fun DependencyHandler.kapt(dependencyNotation: Provider<MinimalExternalModuleDependency>) {
+    add("kapt", dependencyNotation)
+}

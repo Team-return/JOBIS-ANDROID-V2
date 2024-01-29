@@ -16,6 +16,7 @@ material = "1.11.0"
 lottie-compose = "6.3.0"
 compose-foundation = "1.5.4"
 squareup-retrofit = "2.9.0"
+hilt-android-navigation = "1.1.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -41,8 +42,11 @@ material = { group = "com.google.android.material", name = "material", version.r
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
+
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android-gradle-plugin" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-android-gradle-plugin" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-android-navigation" }
+
 squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareup-retrofit" }
 squareup-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "squareup-retrofit" }
 

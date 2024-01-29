@@ -25,6 +25,7 @@ class ComposeGradlePlugin : Plugin<Project> {
             implementation(libs.findLibrary("androidx.activity.compose").get())
             implementation(libs.findLibrary("androidx.compose.foundation").get())
             implementation(libs.findLibrary("androidx.compose.material3").get())
+            implementation(libs.findLibrary("hilt.navigation").get())
             implementation(libs.findLibrary("jobis.design.system").get())
             implementation(libs.findLibrary("androidx.navigation.compose").get())
             implementation(libs.findLibrary("androidx.core.ktx").get())
