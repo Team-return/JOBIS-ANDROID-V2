@@ -12,6 +12,7 @@ import team.retum.signup.navigation.navigateToInputPersonalInfo
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.signUp
 
+
 const val NAVIGATION_AUTH = "auth"
 
 internal fun NavGraphBuilder.authNavigation(navController: NavController) {
@@ -25,6 +26,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         )
         signIn(onBackClick = navController::popBackStack)
         signUp(
+            navController = navController,
             onBackClick = navController::popBackStack,
             onNextClick = navController::navigateToInputEmail,
         )
