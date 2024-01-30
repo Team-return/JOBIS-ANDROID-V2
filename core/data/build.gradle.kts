@@ -10,3 +10,7 @@ apply<CommonGradlePlugin>()
 android {
     namespace = "team.retum.data"
 }
+
+dependencies {
+    implementation(project(":core:network"))
+}

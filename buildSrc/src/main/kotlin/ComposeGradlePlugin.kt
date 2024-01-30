@@ -29,7 +29,7 @@ class ComposeGradlePlugin : Plugin<Project> {
             implementation(libs.findLibrary("jobis.design.system").get())
             implementation(libs.findLibrary("androidx.navigation.compose").get())
             implementation(libs.findLibrary("androidx.core.ktx").get())
-            implementation(libs.findLibrary("appcompat").get())
+            implementation(libs.findLibrary("androidx.appcompat").get())
             implementation(libs.findLibrary("material").get())
         }
     }
