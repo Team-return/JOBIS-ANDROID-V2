@@ -30,6 +30,7 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 fun SettingPasswordScreen(
     onBackClick: () -> Unit,
 ) {
+    // TODO: viewModel로 옮기기
     var password by remember { mutableStateOf("") }
     var checkPassword by remember { mutableStateOf("") }
     Column(
