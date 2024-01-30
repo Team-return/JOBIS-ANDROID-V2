@@ -2,7 +2,7 @@ package team.retum.jobisandroidv2.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
@@ -31,7 +30,7 @@ private val bottomMenus = listOf(
 fun BottomNavigationBar(navController: NavController) {
     val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     BottomAppBar(
-        modifier = Modifier.height(72.dp),
+        modifier = Modifier.fillMaxHeight(0.08f),
         contentColor = JobisTheme.colors.background,
         containerColor = JobisTheme.colors.background,
     ) {
