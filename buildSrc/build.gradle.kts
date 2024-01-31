@@ -8,6 +8,7 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.squareup.javapoet)
     implementation(libs.kotlin.gradle.plugin)
-    implementation(libs.gradle)
+    implementation(libs.android.gradle)
 }

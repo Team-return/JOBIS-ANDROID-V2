@@ -1,7 +1,7 @@
 plugins {
     id(libs.plugins.android.application.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
-    id(libs.plugins.hilt.android.get().pluginId) apply false
+    id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
 }
 
@@ -57,9 +57,6 @@ dependencies {
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.jobis.design.system)
     implementation(libs.androidx.navigation.compose)
