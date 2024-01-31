@@ -28,8 +28,8 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
 internal fun InputEmailScreen(
-    navController: NavController,
     onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     // TODO: viewModel로 옮기기
     var email by remember { mutableStateOf("") }
@@ -56,9 +56,7 @@ internal fun InputEmailScreen(
             modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
-            onClick = {
-                      navController.navigate(route = NAVIGATION_SIGN_UP_SETTING_PASSWORD)
-            },
+            onClick = onNextClick,
         )
     }
 }
