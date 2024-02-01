@@ -6,12 +6,19 @@ import androidx.navigation.navigation
 
 const val NAVIGATION_SIGN_UP = "signUp"
 
-fun NavGraphBuilder.signUp(onBackClick: () -> Unit) {
+fun NavGraphBuilder.signUp(
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
+) {
     navigation(
         route = NAVIGATION_SIGN_UP,
         startDestination = NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO,
     ) {
-        inputPersonalInformation(onBackClick = onBackClick)
+        inputPersonalInformation(
+            onBackClick = onBackClick,
+            onNextClick = onNextClick,
+        )
+        inputEmail(onBackClick = onBackClick)
     }
 }
 

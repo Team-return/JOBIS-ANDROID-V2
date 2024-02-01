@@ -18,16 +18,19 @@ import team.retum.signup.R
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
 import team.returm.jobisdesignsystemv2.button.JobisButton
+import team.returm.jobisdesignsystemv2.button.JobisSmallButton
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
+import team.returm.jobisdesignsystemv2.foundation.JobisTypography
+import team.returm.jobisdesignsystemv2.text.JobisText
 import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
-fun InputPersonalInfoScreen(
+internal fun InputEmailScreen(
     onBackClick: () -> Unit,
-    onNextClick: () -> Unit,
 ) {
-    var name by remember { mutableStateOf("") }
-    var studentNumber by remember { mutableStateOf("") }
+    // TODO: viewModel로 옮기기
+    var email by remember { mutableStateOf("") }
+    var authenticationCode by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,42 +39,55 @@ fun InputPersonalInfoScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         JobisLargeTopAppBar(
-            title = stringResource(id = R.string.input_personal_information),
+            title = stringResource(id = R.string.input_email),
             onBackPressed = onBackClick,
         )
-        PersonalInformationInputs(
-            name = { name },
-            studentNumber = { studentNumber },
-            onNameChange = { name = it },
-            onStudentNumberChange = { studentNumber = it },
+        EmailInputs(
+            email = { email },
+            authenticationCode = { authenticationCode },
+            onEmailChange = { email = it },
+            onAuthenticationCodeChange = { authenticationCode = it },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
             modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
-            onClick = onNextClick,
+            onClick = {},
         )
     }
 }
 
 @Composable
-fun PersonalInformationInputs(
-    name: () -> String,
-    studentNumber: () -> String,
-    onNameChange: (String) -> Unit,
-    onStudentNumberChange: (String) -> Unit,
+private fun EmailInputs(
+    email: () -> String,
+    authenticationCode: () -> String,
+    onEmailChange: (String) -> Unit,
+    onAuthenticationCodeChange: (String) -> Unit,
 ) {
     JobisTextField(
-        title = stringResource(id = R.string.name),
-        value = name,
-        onValueChange = onNameChange,
-        hint = stringResource(id = R.string.hint_name),
-    )
+        title = stringResource(id = R.string.email),
+        value = email,
+        hint = stringResource(id = R.string.hint_email),
+        onValueChange = onEmailChange,
+        showEmailHint = true,
+    ) {
+        JobisSmallButton(
+            text = "인증 하기",
+            color = ButtonColor.Secondary,
+            onClick = {},
+        )
+    }
     JobisTextField(
-        title = stringResource(id = R.string.student_number),
-        value = studentNumber,
-        onValueChange = onStudentNumberChange,
-        hint = stringResource(id = R.string.hint_student_number),
-    )
+        title = stringResource(id = R.string.authentication_code),
+        value = authenticationCode,
+        hint = stringResource(id = R.string.hint_authentication_code),
+        onValueChange = onAuthenticationCodeChange,
+    ) {
+        JobisText(
+            text = "05:00",
+            style = JobisTypography.Body,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+    }
 }
