@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import team.retum.network.BuildConfig
-import team.retum.network.TokenInterceptor
+import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
 
 @Module
