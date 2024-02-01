@@ -1,4 +1,4 @@
-package team.retum.network.exception
+package team.retum.common.exception
 
 data object BadRequestException : RuntimeException()
 data object UnAuthorizedException : RuntimeException()

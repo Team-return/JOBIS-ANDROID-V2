@@ -10,3 +10,7 @@ apply<CommonGradlePlugin>()
 android {
     namespace = "team.retum.common"
 }
+
+dependencies {
+    implementation(libs.androidx.lifecycle.viewmodel)
+}
