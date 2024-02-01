@@ -3,4 +3,16 @@
     <string name="email">이메일</string>
     <string name="password">비밀번호</string>
     <string name="sign_in">로그인</string>
+
+    <string name="hint_email">example</string>
+    <string name="hint_password">비밀번호를 입력해주세요</string>
+
+    <string name="description_email_not_found">아이디를 찾지 못했어요</string>
+    <string name="description_password_invalid">비밀번호가 옳지 않아요</string>
+
+    <string name="jobis">JOBIS</string>
+    <string name="to_login_in_to">에 로그인하기</string>
+    <!-- TODO 더 나은 네이밍 추천좀-->
+    <string name="toast_error">값이 유효한지 확인해주세요</string>
+    <string name="toast_success">로그인 되었습니다</string>
 </resources>

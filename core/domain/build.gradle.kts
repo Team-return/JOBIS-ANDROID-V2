@@ -2,10 +2,17 @@
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.kapt.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
 
 android {
     namespace = "team.retum.domain"
+}
+
+dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:data"))
+    implementation(project(":core:network"))
 }

@@ -1,0 +1,10 @@
+package team.retum.network.model.request
+
+import com.google.gson.annotations.SerializedName
+import team.retum.common.PlatformType
+
+data class SignInRequest(
+    @SerializedName("account_id") val email: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("platform_type") val platformType: PlatformType = PlatformType.ANDROID,
+)

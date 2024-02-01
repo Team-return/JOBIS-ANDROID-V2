@@ -38,8 +38,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+
+    implementation(project(":core:common"))
 
     implementation(libs.squareup.retrofit)
     implementation(libs.squareup.retrofit.converter.gson)

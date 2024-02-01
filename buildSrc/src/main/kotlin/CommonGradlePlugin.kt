@@ -29,6 +29,8 @@ class CommonGradlePlugin : Plugin<Project> {
     private fun setDependencies(project: Project) {
         val libs = project.libs
         project.dependencies {
+            implementation(libs.findLibrary("hilt.android").get())
+            kapt(libs.findLibrary(("hilt.android.compiler")).get())
             testImplementation(libs.findLibrary("junit").get())
             androidTestImplementation(libs.findLibrary("androidx.junit").get())
             androidTestImplementation(libs.findLibrary("androidx.espresso.core").get())

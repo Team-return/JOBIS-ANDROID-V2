@@ -1,54 +1,55 @@
 [versions]
-activity-compose = "1.8.2"
 androidx-junit = "1.1.5"
-core-ktx = "1.12.0"
-espresso-core = "3.5.1"
+androidx-espresso-core = "3.5.1"
+androidx-compose-bom = "2024.01.00"
+androidx-navigation-compose = "2.7.6"
+androidx-compose-foundation = "1.6.0"
+androidx-lifecycle-viewmodel = "2.7.0"
+
 hilt-android-gradle-plugin = "2.50"
 junit = "4.13.2"
-lifecycle-runtime-ktx = "2.7.0"
-gradle = "8.2.1"
+android-gradle = "8.2.2"
 kotlin = "1.9.21"
-compose-bom = "2023.10.01"
 design-system = "v1.1.0"
-navigation-compose = "2.7.6"
-appcompat = "1.6.1"
-material = "1.11.0"
 lottie-compose = "6.3.0"
-compose-foundation = "1.5.4"
 squareup-retrofit = "2.9.0"
+squareup-javapoet = "1.13.0"
+hilt-android-navigation = "1.1.0"
 
 [libraries]
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
-androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose-foundation" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
-androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
+
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-viewmodel" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
-hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt-android-gradle-plugin" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
+
 junit = { module = "junit:junit", version.ref = "junit" }
 jobis-design-system = { group = "com.github.Team-return", name = "JOBIS-DESIGN-SYSTEM-ANDROID-V2", version.ref = "design-system" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
+
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android-gradle-plugin" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-android-gradle-plugin" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-android-navigation" }
+
 squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareup-retrofit" }
 squareup-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "squareup-retrofit" }
+squareup-javapoet = { group = "com.squareup", name = "javapoet", version.ref = "squareup-javapoet" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "gradle" }
+android-application = { id = "com.android.application", version.ref = "android-gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-android-library = { id = "com.android.library", version.ref = "gradle" }
+android-library = { id = "com.android.library", version.ref = "android-gradle" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android-gradle-plugin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }

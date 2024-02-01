@@ -84,7 +84,7 @@ private fun LandingScreen(
                     .clickable(
                         onClick = onSignInClick,
                         indication = rememberRipple(),
-                        interactionSource = MutableInteractionSource(),
+                        interactionSource = remember { MutableInteractionSource() },
                     ),
                 text = "기존 계정으로 로그인하기",
                 style = JobisTypography.SubBody,

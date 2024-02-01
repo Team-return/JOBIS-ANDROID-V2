@@ -11,40 +11,76 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import team.returm.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
 import team.returm.jobisdesignsystemv2.button.JobisButton
 import team.returm.jobisdesignsystemv2.foundation.JobisIcon
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
+import team.returm.jobisdesignsystemv2.textfield.DescriptionType
 import team.returm.jobisdesignsystemv2.textfield.JobisTextField
+import team.returm.jobisdesignsystemv2.toast.JobisToast
 
 @Composable
 internal fun SignIn(
     onBackClick: () -> Unit,
+    signInViewModel: SignInViewModel = hiltViewModel(),
 ) {
-    SignInScreen(onBackClick = onBackClick)
+    val state by signInViewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        signInViewModel.sideEffect.collect {
+            when (it) {
+                is SignInSideEffect.Success -> {
+                    // TODO 홈 화면 내비게이션 코드 작성
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_success),
+                    ).show()
+                }
+
+                is SignInSideEffect.BadRequest -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_error),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+            }
+        }
+    }
+
+    SignInScreen(
+        onBackClick = onBackClick,
+        state = state,
+        onEmailChange = signInViewModel::setEmail,
+        onPasswordChange = signInViewModel::setPassword,
+        onSignInClick = signInViewModel::signIn,
+    )
 }
 
 @Composable
 private fun SignInScreen(
     onBackClick: () -> Unit,
+    state: SignInState,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSignInClick: () -> Unit,
 ) {
-    // TODO 뷰모델로 옮기기
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,17 +91,20 @@ private fun SignInScreen(
         JobisSmallTopAppBar(onBackPressed = onBackClick)
         SignInScreenTitle()
         SignInInputs(
-            email = { email },
-            password = { password },
-            onEmailChange = { email = it },
-            onPasswordChange = { password = it },
+            email = { state.email },
+            password = { state.password },
+            onEmailChange = onEmailChange,
+            onPasswordChange = onPasswordChange,
+            notFoundEmail = { state.notFoundEmail },
+            invalidPassword = { state.invalidPassword },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
             modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.sign_in),
-            onClick = {},
+            onClick = onSignInClick,
             color = ButtonColor.Primary,
+            enabled = state.buttonEnabled,
         )
     }
 }
@@ -76,20 +115,28 @@ private fun SignInInputs(
     password: () -> String,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    notFoundEmail: () -> Boolean,
+    invalidPassword: () -> Boolean,
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
         showEmailHint = true,
-        hint = "example",
+        hint = stringResource(id = R.string.hint_email),
         value = email,
         onValueChange = onEmailChange,
+        errorDescription = stringResource(id = R.string.description_email_not_found),
+        descriptionType = DescriptionType.Error,
+        showDescription = notFoundEmail,
     )
     JobisTextField(
         title = stringResource(id = R.string.password),
-        hint = "비밀번호를 입력해주세요",
+        hint = stringResource(id = R.string.hint_password),
         value = password,
         onValueChange = onPasswordChange,
         showVisibleIcon = true,
+        errorDescription = stringResource(id = R.string.description_password_invalid),
+        showDescription = invalidPassword,
+        descriptionType = DescriptionType.Error,
     )
 }
 
@@ -104,10 +151,10 @@ private fun SignInScreenTitle() {
         Text(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                    append("JOBIS")
+                    append(stringResource(id = R.string.jobis))
                 }
                 withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
-                    append("에 로그인하기")
+                    append(stringResource(id = R.string.to_login_in_to))
                 }
             },
             style = JobisTypography.PageTitle,

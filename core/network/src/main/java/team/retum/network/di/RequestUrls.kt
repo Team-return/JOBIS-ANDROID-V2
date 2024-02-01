@@ -1,6 +1,6 @@
 package team.retum.network.di
 
-internal sealed class RequestUrls(protected val path: String) {
+internal object RequestUrls {
     data object PATH {
         const val recruitmentId = "recruitment-id"
         const val companyId = "company-id"
@@ -8,68 +8,90 @@ internal sealed class RequestUrls(protected val path: String) {
         const val reviewId = "review-id"
     }
 
-    data object Users : RequestUrls(path = "/users") {
-        val login = "$path/login"
+    data object Users {
+        private const val path = "/users"
+
+        const val login = "$path/login"
     }
 
-    data object Auth : RequestUrls(path = "/auth") {
-        val reissue = "$path/reissue"
-        val code = "$path/code"
+    data object Auth {
+        private const val path = "/auth"
+
+        const val reissue = "$path/reissue"
+        const val code = "$path/code"
     }
 
-    data object Recruitments : RequestUrls(path = "/recruitments") {
-        val student = "$path/student"
-        val count = "$path/student/count"
-        val details = "$path/{${PATH.recruitmentId}}"
+    data object Recruitments {
+        private const val path = "/recruitments"
+
+        const val student = "$path/student"
+        const val count = "$path/student/count"
+        const val details = "$path/{${PATH.recruitmentId}}"
     }
 
-    data object Companies : RequestUrls(path = "/companies") {
-        val student = "$path/student"
-        val count = "$path/student/count"
-        val review = "$path/review"
-        val details = "$path/{${PATH.companyId}}"
+    data object Companies {
+        private const val path = "/companies"
+
+        const val student = "$path/student"
+        const val count = "$path/student/count"
+        const val review = "$path/review"
+        const val details = "$path/{${PATH.companyId}}"
     }
 
-    data object Students : RequestUrls(path = "/students") {
-        val my = "$path/my"
-        val forgottenPassword = "$path/forgotten_password"
-        val signUp = path
-        val exists = "$path/exists"
-        val profile = "$path/profile"
-        val password = "$path/password"
-        val comparePassword = "$path/password"
+    data object Students {
+        private const val path = "/students"
+
+        const val my = "$path/my"
+        const val forgottenPassword = "$path/forgotten_password"
+        const val signUp = path
+        const val exists = "$path/exists"
+        const val profile = "$path/profile"
+        const val password = "$path/password"
+        const val comparePassword = "$path/password"
     }
 
-    data object Codes : RequestUrls(path = "/codes") {
-        val codes = path
+    data object Codes {
+        private const val path = "/codes"
+
+        const val codes = path
     }
 
-    data object Applications : RequestUrls(path = "/applications") {
-        val student = "$path/students"
-        val cancel = "$path/{${PATH.applicationId}}"
-        val apply = "$path/{${PATH.recruitmentId}}"
-        val rejection = "$path/rejection/{${PATH.applicationId}}"
-        val reApply = "$path/{${PATH.applicationId}}"
+    data object Applications {
+        private const val path = "/applications"
+
+        const val student = "$path/students"
+        const val cancel = "$path/{${PATH.applicationId}}"
+        const val apply = "$path/{${PATH.recruitmentId}}"
+        const val rejection = "$path/rejection/{${PATH.applicationId}}"
+        const val reApply = "$path/{${PATH.applicationId}}"
     }
 
-    data object Files : RequestUrls(path = "/files") {
-        val delete = path
-        val post = path
-        val presignedUrl = "$path/pre-signed"
+    data object Files {
+        private const val path = "/files"
+
+        const val delete = path
+        const val post = path
+        const val presignedUrl = "$path/pre-signed"
     }
 
-    data object Reviews : RequestUrls(path = "/reviews") {
-        val details = "$path/details/{${PATH.reviewId}}"
-        val reviews = "$path/{${PATH.companyId}}"
-        val post = path
+    data object Reviews {
+        private const val path = "/reviews"
+
+        const val details = "$path/details/{${PATH.reviewId}}"
+        const val reviews = "$path/{${PATH.companyId}}"
+        const val post = path
     }
 
-    data object Bookmarks : RequestUrls(path = "/bookmarks") {
-        val bookmarks = path
-        val bookmark = "$path/{${PATH.recruitmentId}}"
+    data object Bookmarks {
+        private const val path = "/bookmarks"
+
+        const val bookmarks = path
+        const val bookmark = "$path/{${PATH.recruitmentId}}"
     }
 
-    data object Bugs : RequestUrls(path = "/bugs") {
-        val post = path
+    data object Bugs {
+        private const val path = "/bugs"
+
+        const val post = path
     }
 }
