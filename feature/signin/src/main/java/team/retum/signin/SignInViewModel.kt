@@ -37,7 +37,7 @@ class SignInViewModel @Inject constructor(
     }
 
     internal fun signIn() {
-        freezeButton()
+        setState { state.value.copy(buttonEnabled = false) }
         viewModelScope.launch(Dispatchers.IO) {
             signInUseCase(
                 email = state.value.email + EMAIL,
@@ -47,7 +47,6 @@ class SignInViewModel @Inject constructor(
             }.onFailure {
                 when (it) {
                     is BadRequestException -> {
-                        setState { state.value.copy(buttonEnabled = false) }
                         postSideEffect(SignInSideEffect.BadRequest)
                     }
 
@@ -61,15 +60,6 @@ class SignInViewModel @Inject constructor(
                     }
                 }
             }
-        }
-    }
-
-    private fun freezeButton() = with(state.value) {
-        viewModelScope.launch(Dispatchers.IO) {
-            freezeState(
-                before = copy(buttonEnabled = false),
-                after = copy(buttonEnabled = true),
-            )
         }
     }
 }
