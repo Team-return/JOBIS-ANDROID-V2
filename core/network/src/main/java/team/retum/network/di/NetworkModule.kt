@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import team.retum.network.BuildConfig
+import team.retum.network.api.UserApi
 import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
 
@@ -46,5 +47,11 @@ object NetworkModule {
     @Singleton
     fun provideTokenInterceptor(): Interceptor {
         return TokenInterceptor()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserApi(retrofit: Retrofit): UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 }
