@@ -9,9 +9,13 @@ const val NAVIGATION_SIGN_UP_INPUT_EMAIL = "signUp/inputEmail"
 
 fun NavGraphBuilder.inputEmail(
     onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     composable(route = NAVIGATION_SIGN_UP_INPUT_EMAIL) {
-        InputEmailScreen(onBackClick = onBackClick)
+        InputEmailScreen(
+            onNextClick = onNextClick,
+            onBackClick = onBackClick,
+        )
     }
 }
 

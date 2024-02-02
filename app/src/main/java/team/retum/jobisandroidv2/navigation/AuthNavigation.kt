@@ -8,9 +8,10 @@ import team.retum.landing.landing
 import team.retum.signin.navigateToSignIn
 import team.retum.signin.signIn
 import team.retum.signup.navigation.navigateToInputEmail
-import team.retum.signup.navigation.navigateToInputPersonalInfo
+import team.retum.signup.navigation.navigateToSettingPassword
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.signUp
+
 
 const val NAVIGATION_AUTH = "auth"
 
@@ -26,7 +27,8 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         signIn(onBackClick = navController::popBackStack)
         signUp(
             onBackClick = navController::popBackStack,
-            onNextClick = navController::navigateToInputEmail,
+            onInputEmailClick = navController::navigateToInputEmail,
+            onInputPasswordClick = navController::navigateToSettingPassword,
         )
     }
 }
