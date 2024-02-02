@@ -7,12 +7,9 @@ import team.retum.landing.NAVIGATION_LANDING
 import team.retum.landing.landing
 import team.retum.signin.navigateToSignIn
 import team.retum.signin.signIn
-import team.retum.signup.navigation.inputEmail
 import team.retum.signup.navigation.navigateToInputEmail
-import team.retum.signup.navigation.navigateToInputPersonalInfo
 import team.retum.signup.navigation.navigateToSettingPassword
 import team.retum.signup.navigation.navigateToSignUp
-import team.retum.signup.navigation.settingPassword
 import team.retum.signup.navigation.signUp
 
 
