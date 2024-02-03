@@ -13,7 +13,6 @@ import team.retum.signup.navigation.navigateToSettingPassword
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.signUp
 
-
 const val NAVIGATION_AUTH = "auth"
 
 internal fun NavGraphBuilder.authNavigation(navController: NavController) {

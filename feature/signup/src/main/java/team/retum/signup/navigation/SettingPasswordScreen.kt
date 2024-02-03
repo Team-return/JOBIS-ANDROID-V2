@@ -17,6 +17,6 @@ fun NavGraphBuilder.settingPassword(
     }
 }
 
-fun NavController.navigateToSettingPassword(){
+fun NavController.navigateToSettingPassword() {
     navigate(NAVIGATION_SIGN_UP_SETTING_PASSWORD)
 }

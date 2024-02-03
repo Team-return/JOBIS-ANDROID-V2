@@ -68,9 +68,9 @@ fun PasswordInputs(
         value = password,
         onValueChange = onPasswordChange,
         hint = stringResource(id = R.string.hint_password),
-        showDescription = {true},
+        showDescription = { true },
         informationDescription = "8 ~ 16자, 영문자, 숫자, 특수문자 포함",
-        descriptionType = DescriptionType.Information
+        descriptionType = DescriptionType.Information,
     )
     JobisTextField(
         title = stringResource(id = R.string.check_password),
