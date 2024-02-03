@@ -6,9 +6,15 @@ import androidx.navigation.compose.composable
 
 const val NAVIGATION_SIGN_IN = "signIn"
 
-fun NavGraphBuilder.signIn(onBackClick: () -> Unit) {
+fun NavGraphBuilder.signIn(
+    onBackClick: () -> Unit,
+    onSignInSuccess: () -> Unit,
+) {
     composable(route = NAVIGATION_SIGN_IN) {
-        SignIn(onBackClick = onBackClick)
+        SignIn(
+            onBackClick = onBackClick,
+            onSignInSuccess = onSignInSuccess,
+        )
     }
 }
 
