@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import team.retum.jobisandroidv2.navigation.NAVIGATION_AUTH
 import team.retum.jobisandroidv2.navigation.NAVIGATION_MAIN
 import team.retum.jobisandroidv2.navigation.authNavigation
 import team.retum.jobisandroidv2.navigation.mainNavigation
@@ -19,7 +20,7 @@ internal fun JobisApp() {
             .navigationBarsPadding()
             .statusBarsPadding(),
         navController = navController,
-        startDestination = NAVIGATION_MAIN,
+        startDestination = NAVIGATION_AUTH,
     ) {
         authNavigation(navController = navController)
         mainNavigation()

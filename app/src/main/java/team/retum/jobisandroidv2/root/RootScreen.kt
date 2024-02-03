@@ -1,30 +1,33 @@
-package team.retum.jobisandroidv2.ui
+package team.retum.jobisandroidv2.root
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import team.retum.jobisandroidv2.navigation.NAVIGATION_HOME
+import team.retum.home.navigation.NAVIGATION_HOME
+import team.retum.home.navigation.home
+import team.retum.jobisandroidv2.ui.BottomNavigationBar
 
-const val NAVIGATION_ROOT = "root"
+@Composable
+fun Root() {
+    val navController = rememberNavController()
+
+    RootScreen(navController = navController)
+}
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RootScreen() {
-    val navController = rememberNavController()
-
+private fun RootScreen(navController: NavHostController) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) },
     ) {
         NavHost(
-            modifier = Modifier.padding(it),
             navController = navController,
             startDestination = NAVIGATION_HOME,
         ) {
-            // TODO 내비게이션 바 해당 메뉴 스크린 위치
+            home()
         }
     }
 }

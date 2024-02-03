@@ -6,12 +6,12 @@ import androidx.navigation.compose.composable
 
 const val NAVIGATION_ROOT = "root"
 
-fun NavGraphBuilder.root(){
-    composable(NAVIGATION_ROOT){
+fun NavGraphBuilder.root() {
+    composable(NAVIGATION_ROOT) {
         Root()
     }
 }
 
-fun NavController.navigateToRoot(){
+fun NavController.navigateToRoot() {
     navigate(NAVIGATION_ROOT)
 }
