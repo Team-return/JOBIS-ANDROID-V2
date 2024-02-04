@@ -385,7 +385,7 @@ private fun ApplyStatus(
         Row(
             modifier = Modifier
                 .align(Alignment.Start)
-                .padding(vertical = 10.dp),
+                .padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -416,13 +416,13 @@ private fun ApplyStatus(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(vertical = 4.dp)
                         .clip(RoundedCornerShape(12.dp))
                         .border(
                             width = 1.dp,
                             color = JobisTheme.colors.surfaceVariant,
                             shape = RoundedCornerShape(12.dp),
-                        )
-                        .padding(vertical = 4.dp),
+                        ),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
