@@ -159,7 +159,7 @@ private fun ColumnScope.Banner(pagerState: PagerState) {
         pageSpacing = 12.dp,
     ) {
         when (it % PAGE_COUNT) {
-            in 0..10000 -> {
+            0 -> {
                 EmploymentRate(rate = 76.4)
             }
 
@@ -190,11 +190,12 @@ private fun EmploymentRate(
         onClick = {},
         enabled = false,
     ) {
-        Row(modifier = Modifier.padding(24.dp)) {
-            Column {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.padding(24.dp)) {
                 Text(
                     text = stringResource(id = R.string.employment_rate, 6),
                     style = JobisTypography.HeadLine,
+                    color = JobisTheme.colors.onBackground,
                 )
                 Text(
                     text = "$rate%",
@@ -217,6 +218,10 @@ private fun EmploymentRate(
                     style = JobisTypography.Description,
                 )
             }
+            Image(
+                painter = painterResource(id = R.drawable.ic_file),
+                contentDescription = "file",
+            )
         }
     }
 }
@@ -290,6 +295,7 @@ private fun StudentInformation(
             Text(
                 text = "$number $name",
                 style = JobisTypography.SubHeadLine,
+                color = JobisTheme.colors.onBackground,
             )
             Text(
                 text = department,
@@ -350,6 +356,7 @@ private fun Menu(
             Text(
                 text = "$text ->",
                 style = JobisTypography.HeadLine,
+                color = JobisTheme.colors.onBackground,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Surface(
@@ -360,6 +367,7 @@ private fun Menu(
                     .align(Alignment.End),
             ) {
                 Image(
+                    modifier = Modifier.background(JobisTheme.colors.background),
                     painter = painterResource(id = icon),
                     contentDescription = "menu icon",
                 )
