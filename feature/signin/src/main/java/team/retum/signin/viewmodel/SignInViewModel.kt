@@ -1,4 +1,4 @@
-package team.retum.signin
+package team.retum.signin.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
