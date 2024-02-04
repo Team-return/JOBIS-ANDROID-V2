@@ -14,9 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import team.retum.signup.R
-import team.retum.signup.navigation.NAVIGATION_SIGN_UP_SETTING_PASSWORD
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
 import team.returm.jobisdesignsystemv2.button.JobisButton

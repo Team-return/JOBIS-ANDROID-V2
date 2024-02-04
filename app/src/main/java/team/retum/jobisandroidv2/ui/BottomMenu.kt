@@ -2,8 +2,8 @@ package team.retum.jobisandroidv2.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobisandroidv2.R
-import team.retum.jobisandroidv2.navigation.NAVIGATION_HOME
 
 sealed class BottomMenu(
     val route: String,

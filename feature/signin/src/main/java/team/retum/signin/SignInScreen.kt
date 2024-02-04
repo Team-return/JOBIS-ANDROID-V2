@@ -37,6 +37,7 @@ import team.returm.jobisdesignsystemv2.toast.JobisToast
 @Composable
 internal fun SignIn(
     onBackClick: () -> Unit,
+    onSignInSuccess: () -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel(),
 ) {
     val state by signInViewModel.state.collectAsState()
@@ -46,11 +47,11 @@ internal fun SignIn(
         signInViewModel.sideEffect.collect {
             when (it) {
                 is SignInSideEffect.Success -> {
-                    // TODO 홈 화면 내비게이션 코드 작성
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.toast_success),
                     ).show()
+                    onSignInSuccess()
                 }
 
                 is SignInSideEffect.BadRequest -> {

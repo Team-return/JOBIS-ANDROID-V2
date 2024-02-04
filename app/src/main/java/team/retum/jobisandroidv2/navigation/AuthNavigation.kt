@@ -3,6 +3,7 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.landing.NAVIGATION_LANDING
 import team.retum.landing.landing
 import team.retum.signin.navigateToSignIn
@@ -11,7 +12,6 @@ import team.retum.signup.navigation.navigateToInputEmail
 import team.retum.signup.navigation.navigateToSettingPassword
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.signUp
-
 
 const val NAVIGATION_AUTH = "auth"
 
@@ -24,7 +24,10 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
             onSignInClick = navController::navigateToSignIn,
             onSignUpClick = navController::navigateToSignUp,
         )
-        signIn(onBackClick = navController::popBackStack)
+        signIn(
+            onBackClick = navController::popBackStack,
+            onSignInSuccess = navController::navigateToRoot,
+        )
         signUp(
             onBackClick = navController::popBackStack,
             onInputEmailClick = navController::navigateToInputEmail,
