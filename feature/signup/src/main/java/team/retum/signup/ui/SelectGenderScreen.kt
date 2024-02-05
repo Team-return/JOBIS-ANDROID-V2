@@ -36,14 +36,22 @@ import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 
 @Composable
-fun SelectGender(onBackPressed: () -> Unit) {
-    SelectGenderScreen(onBackPressed = onBackPressed)
+fun SelectGender(
+    onBackPressed: () -> Unit,
+    onNextClick: () -> Unit,
+) {
+    SelectGenderScreen(
+        onBackPressed = onBackPressed,
+        onNextClick = onNextClick,
+    )
 }
 
 @Composable
 private fun SelectGenderScreen(
     onBackPressed: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
+    // TODO 뷰모델로 옮기기
     var gender: Gender? by remember { mutableStateOf(null) }
 
     Column(
@@ -68,7 +76,7 @@ private fun SelectGenderScreen(
         JobisButton(
             modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
-            onClick = {},
+            onClick = onNextClick,
             color = ButtonColor.Primary,
         )
     }

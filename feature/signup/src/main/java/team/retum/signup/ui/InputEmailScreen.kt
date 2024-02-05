@@ -26,7 +26,7 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
 internal fun InputEmailScreen(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
     // TODO: viewModel로 옮기기
@@ -41,7 +41,7 @@ internal fun InputEmailScreen(
     ) {
         JobisLargeTopAppBar(
             title = stringResource(id = R.string.input_email),
-            onBackPressed = onBackClick,
+            onBackPressed = onBackPressed,
         )
         EmailInputs(
             email = { email },

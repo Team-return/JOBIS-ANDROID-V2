@@ -8,13 +8,13 @@ import team.retum.signup.ui.InputEmailScreen
 const val NAVIGATION_SIGN_UP_INPUT_EMAIL = "signUp/inputEmail"
 
 fun NavGraphBuilder.inputEmail(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
-    composable(route = NAVIGATION_SIGN_UP_INPUT_EMAIL) {
+    composable(NAVIGATION_SIGN_UP_INPUT_EMAIL) {
         InputEmailScreen(
+            onBackPressed = onBackPressed,
             onNextClick = onNextClick,
-            onBackClick = onBackClick,
         )
     }
 }

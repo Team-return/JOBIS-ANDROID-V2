@@ -8,12 +8,12 @@ import team.retum.signup.ui.SettingPasswordScreen
 const val NAVIGATION_SIGN_UP_SETTING_PASSWORD = "signUp/settingPassword"
 
 fun NavGraphBuilder.settingPassword(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
-    composable(route = NAVIGATION_SIGN_UP_SETTING_PASSWORD) {
+    composable(NAVIGATION_SIGN_UP_SETTING_PASSWORD) {
         SettingPasswordScreen(
-            onBackClick = onBackClick,
+            onBackPressed = onBackPressed,
             onNextClick = onNextClick,
         )
     }

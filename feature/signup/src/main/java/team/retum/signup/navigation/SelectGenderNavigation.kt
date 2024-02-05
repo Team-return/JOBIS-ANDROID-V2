@@ -7,9 +7,15 @@ import team.retum.signup.ui.SelectGender
 
 const val NAVIGATION_SELECT_GENDER = "selectGender"
 
-fun NavGraphBuilder.selectGender(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.selectGender(
+    onBackPressed: () -> Unit,
+    onNextClick: () -> Unit,
+) {
     composable(NAVIGATION_SELECT_GENDER) {
-        SelectGender(onBackPressed = onBackPressed)
+        SelectGender(
+            onBackPressed = onBackPressed,
+            onNextClick = onNextClick,
+        )
     }
 }
 

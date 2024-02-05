@@ -24,7 +24,7 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
 fun SettingPasswordScreen(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
     // TODO: viewModel로 옮기기
@@ -39,7 +39,7 @@ fun SettingPasswordScreen(
     ) {
         JobisLargeTopAppBar(
             title = stringResource(id = R.string.setting_password),
-            onBackPressed = onBackClick,
+            onBackPressed = onBackPressed,
         )
         PasswordInputs(
             password = { password },
