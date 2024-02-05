@@ -23,7 +23,7 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
 fun InputPersonalInfoScreen(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
     var name by remember { mutableStateOf("") }
@@ -37,7 +37,7 @@ fun InputPersonalInfoScreen(
     ) {
         JobisLargeTopAppBar(
             title = stringResource(id = R.string.input_personal_information),
-            onBackPressed = onBackClick,
+            onBackPressed = onBackPressed,
         )
         PersonalInformationInputs(
             name = { name },

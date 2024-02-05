@@ -17,4 +17,8 @@
     <string name="hint_password">계정의 비밀번호를 설정해주세요.</string>
     <string name="check_password">비밀번호 확인</string>
     <string name="hint_check_password">위 비밀번호를 한 번 더 입력해주세요.</string>
+
+    <string name="select_gender">성별을 선택해주세요</string>
+    <string name="gender_man">남성</string>
+    <string name="gender_woman">여성</string>
 </resources>

@@ -5,20 +5,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import team.retum.signup.ui.InputPersonalInfoScreen
 
-const val NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO = "signUp/inputPersonalInfo"
+const val NAVIGATION_INPUT_PERSONAL_INFO = "inputPersonalInfo"
 
 fun NavGraphBuilder.inputPersonalInformation(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
-    composable(route = NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO) {
+    composable(NAVIGATION_INPUT_PERSONAL_INFO) {
         InputPersonalInfoScreen(
-            onBackClick = onBackClick,
+            onBackPressed = onBackPressed,
             onNextClick = onNextClick,
         )
     }
 }
 
 fun NavController.navigateToInputPersonalInfo() {
-    navigate(NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO)
+    navigate(NAVIGATION_INPUT_PERSONAL_INFO)
 }

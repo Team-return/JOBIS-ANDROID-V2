@@ -8,12 +8,12 @@ import team.retum.signin.ui.SignIn
 const val NAVIGATION_SIGN_IN = "signIn"
 
 fun NavGraphBuilder.signIn(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onSignInSuccess: () -> Unit,
 ) {
     composable(route = NAVIGATION_SIGN_IN) {
         SignIn(
-            onBackClick = onBackClick,
+            onBackClick = onBackPressed,
             onSignInSuccess = onSignInSuccess,
         )
     }

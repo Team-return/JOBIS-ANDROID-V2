@@ -7,24 +7,31 @@ import androidx.navigation.navigation
 const val NAVIGATION_SIGN_UP = "signUp"
 
 fun NavGraphBuilder.signUp(
-    onBackClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onInputEmailClick: () -> Unit,
     onInputPasswordClick: () -> Unit,
+    onSelectGenderClick: () -> Unit,
 ) {
     navigation(
         route = NAVIGATION_SIGN_UP,
-        startDestination = NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO,
+        startDestination = NAVIGATION_INPUT_PERSONAL_INFO,
     ) {
         inputPersonalInformation(
-            onBackClick = onBackClick,
+            onBackPressed = onBackPressed,
             onNextClick = onInputEmailClick,
         )
         inputEmail(
+            onBackPressed = onBackPressed,
             onNextClick = onInputPasswordClick,
-            onBackClick = onBackClick,
         )
         settingPassword(
-            onBackClick = onBackClick,
+            onBackPressed = onBackPressed,
+            onNextClick = onSelectGenderClick,
+        )
+        // TODO 다음 스크린 작업 시 onNextClick 추가
+        selectGender(
+            onBackPressed = onBackPressed,
+            onNextClick = {},
         )
     }
 }
