@@ -14,7 +14,7 @@ fun NavGraphBuilder.signUp(
 ) {
     navigation(
         route = NAVIGATION_SIGN_UP,
-        startDestination = NAVIGATION_SIGN_UP_INPUT_PERSONAL_INFO,
+        startDestination = NAVIGATION_INPUT_PERSONAL_INFO,
     ) {
         inputPersonalInformation(
             onBackPressed = onBackPressed,
