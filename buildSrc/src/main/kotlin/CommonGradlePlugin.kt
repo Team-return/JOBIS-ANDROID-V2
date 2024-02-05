@@ -15,7 +15,7 @@ class CommonGradlePlugin : Plugin<Project> {
 
             defaultConfig {
                 minSdk = ProjectProperties.MIN_SDK
-                testInstrumentationRunner = "androidx.test.runner.AndroidJunitRunner"
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 consumerProguardFiles("consumer-rules.pro")
             }
 
