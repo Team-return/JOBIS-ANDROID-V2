@@ -21,4 +21,7 @@
     <string name="select_gender">성별을 선택해주세요</string>
     <string name="gender_man">남성</string>
     <string name="gender_woman">여성</string>
+
+    <string name="set_profile">프로필 사진을 등록해주세요</string>
+    <string name="edit_image">이미지 수정하기</string>
 </resources>
