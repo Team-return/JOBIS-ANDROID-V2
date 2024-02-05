@@ -28,10 +28,12 @@ fun NavGraphBuilder.signUp(
             onBackPressed = onBackPressed,
             onNextClick = onSelectGenderClick,
         )
-        // TODO 다음 스크린 작업 시 onNextClick 추가
         selectGender(
             onBackPressed = onBackPressed,
             onNextClick = {},
+        )
+        setProfile(
+            onBackPressed = onBackPressed,
         )
     }
 }
