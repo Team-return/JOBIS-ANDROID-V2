@@ -9,10 +9,12 @@ const val NAVIGATION_SIGN_UP_SETTING_PASSWORD = "signUp/settingPassword"
 
 fun NavGraphBuilder.settingPassword(
     onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     composable(route = NAVIGATION_SIGN_UP_SETTING_PASSWORD) {
         SettingPasswordScreen(
             onBackClick = onBackClick,
+            onNextClick = onNextClick,
         )
     }
 }

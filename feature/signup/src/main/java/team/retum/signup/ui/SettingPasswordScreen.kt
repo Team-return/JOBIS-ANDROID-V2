@@ -25,6 +25,7 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 @Composable
 fun SettingPasswordScreen(
     onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     // TODO: viewModel로 옮기기
     var password by remember { mutableStateOf("") }
@@ -51,7 +52,7 @@ fun SettingPasswordScreen(
             modifier = Modifier.padding(vertical = 12.dp),
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
-            onClick = { },
+            onClick = onNextClick,
         )
     }
 }
