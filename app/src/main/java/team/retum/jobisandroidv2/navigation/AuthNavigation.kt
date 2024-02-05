@@ -4,10 +4,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import team.retum.jobisandroidv2.root.navigateToRoot
-import team.retum.landing.NAVIGATION_LANDING
-import team.retum.landing.landing
-import team.retum.signin.navigateToSignIn
-import team.retum.signin.signIn
+import team.retum.landing.navigation.NAVIGATION_LANDING
+import team.retum.landing.navigation.landing
+import team.retum.signin.navigation.navigateToSignIn
+import team.retum.signin.navigation.signIn
 import team.retum.signup.navigation.navigateToInputEmail
 import team.retum.signup.navigation.navigateToSettingPassword
 import team.retum.signup.navigation.navigateToSignUp

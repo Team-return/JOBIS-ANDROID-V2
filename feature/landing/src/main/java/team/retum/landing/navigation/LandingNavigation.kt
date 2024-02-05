@@ -1,7 +1,8 @@
-package team.retum.landing
+package team.retum.landing.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import team.retum.landing.ui.Landing
 
 const val NAVIGATION_LANDING = "landing"
 
