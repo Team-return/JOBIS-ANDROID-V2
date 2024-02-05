@@ -49,7 +49,7 @@ fun SettingPasswordScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            modifier = Modifier.padding(vertical = 12.dp),
+            modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
             onClick = onNextClick,
