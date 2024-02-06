@@ -112,9 +112,8 @@ private fun SetImage(
         Image(
             modifier = Modifier
                 .size(80.dp)
-                .clip(CircleShape)
-                .background(JobisTheme.colors.primary),
-            painter = painterResource(id = JobisIcon.Information),
+                .clip(CircleShape),
+            painter = painterResource(id = team.retum.common.R.drawable.ic_person),
             contentDescription = "user profile",
         )
         // TODO jobis medium button 구현하기
