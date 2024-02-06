@@ -15,7 +15,7 @@ class CommonGradlePlugin : Plugin<Project> {
 
             defaultConfig {
                 minSdk = ProjectProperties.MIN_SDK
-                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                testInstrumentationRunner = "team.retum.common.test.HiltTestRunner"
                 consumerProguardFiles("consumer-rules.pro")
             }
 
@@ -32,8 +32,10 @@ class CommonGradlePlugin : Plugin<Project> {
             implementation(libs.findLibrary("hilt.android").get())
             kapt(libs.findLibrary(("hilt.android.compiler")).get())
             testImplementation(libs.findLibrary("junit").get())
+            androidTestImplementation(libs.findLibrary("hilt.android.testing").get())
             androidTestImplementation(libs.findLibrary("androidx.junit").get())
             androidTestImplementation(libs.findLibrary("androidx.espresso.core").get())
+            kaptTest(libs.findLibrary("hilt.android.compiler").get())
         }
     }
 }
