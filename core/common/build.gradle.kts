@@ -13,4 +13,6 @@ android {
 
 dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.test.runner)
+    implementation(libs.hilt.android.testing)
 }
