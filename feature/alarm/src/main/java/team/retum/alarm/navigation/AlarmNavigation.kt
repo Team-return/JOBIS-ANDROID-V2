@@ -3,13 +3,13 @@ package team.retum.alarm.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.alarm.ui.AlarmScreen
+import team.retum.alarm.ui.Alarm
 
 const val NAVIGATION_ALARM = "alarm"
 
 fun NavGraphBuilder.alarm(onBackPressed: () -> Unit) {
-    composable(route = NAVIGATION_ALARM) {
-        AlarmScreen(onBackPressed = onBackPressed)
+    composable(NAVIGATION_ALARM) {
+        Alarm(onBackPressed = onBackPressed)
     }
 }
 

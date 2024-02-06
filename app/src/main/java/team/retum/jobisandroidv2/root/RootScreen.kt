@@ -13,7 +13,7 @@ import team.retum.home.navigation.home
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 
 @Composable
-fun Root(navHostController: NavController) {
+fun Root(navHostController: NavHostController) {
     val navController = rememberNavController()
 
     RootScreen(
