@@ -15,7 +15,7 @@ class CommonGradlePlugin : Plugin<Project> {
 
             defaultConfig {
                 minSdk = ProjectProperties.MIN_SDK
-                testInstrumentationRunner = "team.retum.common.test.HiltTestRunner"
+                testInstrumentationRunner = "team.retum.common.test.JobisTestRunner"
                 consumerProguardFiles("consumer-rules.pro")
             }
 

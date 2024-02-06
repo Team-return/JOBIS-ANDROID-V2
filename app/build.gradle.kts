@@ -16,7 +16,7 @@ android {
         versionCode = ProjectProperties.VERSION_CODE
         versionName = ProjectProperties.VERSION_NAME
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "team.retum.common.test.JobisTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
