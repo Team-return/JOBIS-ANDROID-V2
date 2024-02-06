@@ -27,8 +27,21 @@ private data class AlarmData(
 )
 
 @Composable
-fun AlarmScreen(onBackPressed: () -> Unit) {
-    val alarmList = listOf(AlarmData("","",""))
+internal fun Alarm(
+    onBackPressed: () -> Unit,
+) {
+    val alarmList = emptyList<AlarmData>()
+    AlarmScreen(
+        onBackPressed = onBackPressed,
+        alarmList = alarmList,
+    )
+}
+
+@Composable
+private fun AlarmScreen(
+    onBackPressed: () -> Unit,
+    alarmList: List<AlarmData>,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
