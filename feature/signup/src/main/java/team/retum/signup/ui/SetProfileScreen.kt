@@ -47,6 +47,7 @@ import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 @Composable
 fun SetProfile(
     onBackPressed: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     // TODO viewModel로 옮기기
     var uri: Uri? by remember { mutableStateOf(null) }
@@ -57,6 +58,7 @@ fun SetProfile(
 
     SetProfileScreen(
         onBackPressed = onBackPressed,
+        onNextClick = onNextClick,
         activityResultLauncher = activityResultLauncher,
         uri = uri,
     )
@@ -65,6 +67,7 @@ fun SetProfile(
 @Composable
 private fun SetProfileScreen(
     onBackPressed: () -> Unit,
+    onNextClick: () -> Unit,
     activityResultLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
     uri: Uri?,
 ) {
@@ -90,7 +93,7 @@ private fun SetProfileScreen(
         JobisButton(
             modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
-            onClick = { },
+            onClick = onNextClick,
             color = ButtonColor.Primary,
         )
     }

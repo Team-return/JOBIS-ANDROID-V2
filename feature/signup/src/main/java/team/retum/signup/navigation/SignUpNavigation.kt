@@ -12,6 +12,8 @@ fun NavGraphBuilder.signUp(
     onInputPasswordClick: () -> Unit,
     onSelectGenderClick: () -> Unit,
     onSetProfileClick: () -> Unit,
+    onTermsClick: () -> Unit,
+    onCompleteClick: () -> Unit,
 ) {
     navigation(
         route = NAVIGATION_SIGN_UP,
@@ -35,6 +37,11 @@ fun NavGraphBuilder.signUp(
         )
         setProfile(
             onBackPressed = onBackPressed,
+            onNextClick = onTermsClick,
+        )
+        terms(
+            onBackPressed = onBackPressed,
+            onCompleteClick = onCompleteClick,
         )
     }
 }
