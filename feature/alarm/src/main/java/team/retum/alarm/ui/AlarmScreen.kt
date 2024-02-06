@@ -87,6 +87,7 @@ fun AlarmContent(
         Text(
             text = content,
             style = JobisTypography.HeadLine,
+            color = JobisTheme.colors.onBackground,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
