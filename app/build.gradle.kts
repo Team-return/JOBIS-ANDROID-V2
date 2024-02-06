@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:alarm"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.jobis.design.system)

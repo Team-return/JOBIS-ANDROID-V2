@@ -75,7 +75,7 @@ private data class ApplyCompany(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Home() {
+fun Home(onAlarmClick: () -> Unit) {
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = listOf(
         MenuItem(
@@ -93,6 +93,7 @@ fun Home() {
     HomeScreen(
         pagerState = pagerState,
         menus = menus,
+        onAlarmClick = onAlarmClick,
     )
 }
 
@@ -101,6 +102,7 @@ fun Home() {
 private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
+    onAlarmClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -112,7 +114,7 @@ private fun HomeScreen(
             JobisIconButton(
                 painter = painterResource(JobisIcon.Bell),
                 contentDescription = "notification",
-                onClick = {},
+                onClick = onAlarmClick,
             )
         }
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {

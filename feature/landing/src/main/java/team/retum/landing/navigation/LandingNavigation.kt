@@ -10,7 +10,7 @@ fun NavGraphBuilder.landing(
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
 ) {
-    composable(route = NAVIGATION_LANDING) {
+    composable(NAVIGATION_LANDING) {
         Landing(
             onSignInClick = onSignInClick,
             onSignUpClick = onSignUpClick,

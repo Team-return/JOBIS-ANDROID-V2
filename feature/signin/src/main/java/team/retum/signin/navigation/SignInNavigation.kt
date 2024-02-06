@@ -11,7 +11,7 @@ fun NavGraphBuilder.signIn(
     onBackPressed: () -> Unit,
     onSignInSuccess: () -> Unit,
 ) {
-    composable(route = NAVIGATION_SIGN_IN) {
+    composable(NAVIGATION_SIGN_IN) {
         SignIn(
             onBackClick = onBackPressed,
             onSignInSuccess = onSignInSuccess,
