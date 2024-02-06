@@ -6,9 +6,9 @@ import androidx.navigation.compose.composable
 
 const val NAVIGATION_ROOT = "root"
 
-fun NavGraphBuilder.root() {
+fun NavGraphBuilder.root(navHostController: NavController) {
     composable(NAVIGATION_ROOT) {
-        Root()
+        Root(navHostController = navHostController)
     }
 }
 
