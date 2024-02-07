@@ -9,14 +9,16 @@ const val NAVIGATION_SET_PROFILE = "setProfile"
 
 fun NavGraphBuilder.setProfile(
     onBackPressed: () -> Unit,
-){
-    composable(NAVIGATION_SET_PROFILE){
+    onNextClick: () -> Unit,
+) {
+    composable(NAVIGATION_SET_PROFILE) {
         SetProfile(
             onBackPressed = onBackPressed,
+            onNextClick = onNextClick,
         )
     }
 }
 
-fun NavController.navigateToSetProfile(){
+fun NavController.navigateToSetProfile() {
     navigate(NAVIGATION_SET_PROFILE)
 }

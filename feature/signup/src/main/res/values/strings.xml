@@ -24,4 +24,7 @@
 
     <string name="set_profile">프로필 사진을 등록해주세요</string>
     <string name="edit_image">이미지 수정하기</string>
+
+    <string name="terms">아래의 사항을 읽고 동의해주세요</string>
+    <string name="agree">동의할게요</string>
 </resources>

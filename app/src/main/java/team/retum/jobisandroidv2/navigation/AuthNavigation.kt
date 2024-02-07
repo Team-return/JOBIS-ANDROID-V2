@@ -13,6 +13,7 @@ import team.retum.signup.navigation.navigateToSelectGender
 import team.retum.signup.navigation.navigateToSetProfile
 import team.retum.signup.navigation.navigateToSettingPassword
 import team.retum.signup.navigation.navigateToSignUp
+import team.retum.signup.navigation.navigateToTerms
 import team.retum.signup.navigation.signUp
 
 const val NAVIGATION_AUTH = "auth"
@@ -36,6 +37,8 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
             onInputPasswordClick = navController::navigateToSettingPassword,
             onSelectGenderClick = navController::navigateToSelectGender,
             onSetProfileClick = navController::navigateToSetProfile,
+            onTermsClick = navController::navigateToTerms,
+            onCompleteClick = navController::navigateToRoot,
         )
     }
 }
