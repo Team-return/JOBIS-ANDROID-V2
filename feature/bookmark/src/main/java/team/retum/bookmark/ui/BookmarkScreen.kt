@@ -32,14 +32,14 @@ import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 
 // TODO 서버 연동 시 제거
-data class BookmarkData(
+private data class BookmarkData(
     val profileImageUrl: String,
     val companyName: String,
     val date: String,
 )
 
 @Composable
-fun Bookmark() {
+internal fun Bookmark() {
     val bookmarkList = emptyList<BookmarkData>()
     BookmarkScreen(bookmarkList = bookmarkList)
 }

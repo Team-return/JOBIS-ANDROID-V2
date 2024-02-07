@@ -1,13 +1,10 @@
 package team.retum.jobisandroidv2.root
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -35,12 +32,7 @@ private fun RootScreen(
     navHostController: NavController,
 ) {
     Scaffold(
-        bottomBar = {
-            Column {
-                Divider(thickness = 0.3.dp)
-                BottomNavigationBar(navController = navController)
-            }
-        },
+        bottomBar = { BottomNavigationBar(navController = navController) },
     ) {
         NavHost(
             navController = navController,

@@ -69,7 +69,7 @@ private fun AlarmScreen(
 }
 
 @Composable
-fun AlarmContent(
+private fun AlarmContent(
     companyName: String,
     content: String,
     date: String,
