@@ -1,7 +1,6 @@
 package team.retum.signup.ui
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.background
@@ -38,7 +37,6 @@ fun Terms(
         onCompleteClick = onCompleteClick,
         buttonEnabled = { buttonEnabled },
         onReachTheEnded = {
-            Log.d("TEST", it.toString())
             buttonEnabled = it
         },
     )
