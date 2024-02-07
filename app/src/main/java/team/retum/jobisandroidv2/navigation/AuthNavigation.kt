@@ -8,7 +8,6 @@ import team.retum.landing.navigation.NAVIGATION_LANDING
 import team.retum.landing.navigation.landing
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signin.navigation.signIn
-import team.retum.signup.navigation.NAVIGATION_SIGN_UP
 import team.retum.signup.navigation.navigateToInputEmail
 import team.retum.signup.navigation.navigateToSelectGender
 import team.retum.signup.navigation.navigateToSetProfile
