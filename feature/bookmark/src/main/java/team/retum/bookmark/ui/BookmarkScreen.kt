@@ -59,15 +59,11 @@ fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
         if (bookmarkList.isEmpty()) {
             EmptyBookmarkContent()
         } else {
-            Column(
-                modifier = Modifier
-                    .background(JobisTheme.colors.background)
-                    .verticalScroll(rememberScrollState()),
-            ) {
-                bookmarkList.forEach {
+            LazyColumn(modifier = Modifier.background(JobisTheme.colors.background)) {
+                items(bookmarkList) {
                     BookmarkItem(
                         companyName = it.companyName,
-                        profileImageUrl = "",
+                        profileImageUrl = it.profileImageUrl,
                         date = it.date,
                     )
                 }
