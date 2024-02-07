@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,7 +45,7 @@ fun Bookmark() {
 }
 
 @Composable
-fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
+private fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +73,7 @@ fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
 }
 
 @Composable
-fun EmptyBookmarkContent() {
+private fun EmptyBookmarkContent() {
     Column(
         modifier = Modifier
             .background(JobisTheme.colors.background)
@@ -109,7 +109,7 @@ fun EmptyBookmarkContent() {
 }
 
 @Composable
-fun BookmarkItem(
+private fun BookmarkItem(
     modifier: Modifier = Modifier,
     profileImageUrl: String,
     companyName: String,
