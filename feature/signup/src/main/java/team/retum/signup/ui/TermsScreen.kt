@@ -43,10 +43,10 @@ private fun TermsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
     ) {
         JobisLargeTopAppBar(
+            modifier = Modifier.padding(horizontal = 24.dp),
             title = stringResource(id = R.string.terms),
             onBackPressed = onBackPressed,
         )
@@ -66,7 +66,11 @@ private fun TermsScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            modifier = Modifier.padding(bottom = 24.dp),
+            modifier = Modifier.padding(
+                start = 24.dp,
+                end = 24.dp,
+                bottom = 24.dp,
+            ),
             text = stringResource(id = R.string.agree),
             onClick = onCompleteClick,
             color = ButtonColor.Primary,
