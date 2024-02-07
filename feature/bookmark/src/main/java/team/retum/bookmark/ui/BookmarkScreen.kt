@@ -40,28 +40,7 @@ data class BookmarkData(
 
 @Composable
 fun Bookmark() {
-    val bookmarkList = listOf<BookmarkData>(
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-        BookmarkData("ㅁㄴㅇ", "ㅁㄴㅇ", "ㅁㄴ"),
-    )
+    val bookmarkList = emptyList<BookmarkData>()
     BookmarkScreen(bookmarkList = bookmarkList)
 }
 
