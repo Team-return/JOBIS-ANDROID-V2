@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import team.retum.signup.R
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
@@ -23,7 +21,18 @@ import team.returm.jobisdesignsystemv2.textfield.DescriptionType
 import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
-fun SettingPasswordScreen(
+internal fun SetPassword(
+    onBackPressed: () -> Unit,
+    onNextClick: () -> Unit,
+) {
+    SetPasswordScreen(
+        onBackPressed = onBackPressed,
+        onNextClick = onNextClick,
+    )
+}
+
+@Composable
+private fun SetPasswordScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
@@ -33,8 +42,7 @@ fun SettingPasswordScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         JobisLargeTopAppBar(
@@ -49,7 +57,6 @@ fun SettingPasswordScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
             onClick = onNextClick,
@@ -58,7 +65,7 @@ fun SettingPasswordScreen(
 }
 
 @Composable
-fun PasswordInputs(
+private fun PasswordInputs(
     password: () -> String,
     checkPassword: () -> String,
     onPasswordChange: (String) -> Unit,

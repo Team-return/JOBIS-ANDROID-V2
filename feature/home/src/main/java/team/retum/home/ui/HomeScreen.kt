@@ -52,6 +52,7 @@ import team.returm.jobisdesignsystemv2.card.JobisCard
 import team.returm.jobisdesignsystemv2.foundation.JobisIcon
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
+import team.returm.jobisdesignsystemv2.text.JobisText
 
 private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40
@@ -110,7 +111,7 @@ private fun HomeScreen(
             .background(JobisTheme.colors.background),
         verticalArrangement = Arrangement.Top,
     ) {
-        JobisSmallTopAppBar(modifier = Modifier.padding(horizontal = 24.dp)) {
+        JobisSmallTopAppBar(showLogo = true) {
             JobisIconButton(
                 painter = painterResource(JobisIcon.Bell),
                 contentDescription = "notification",
@@ -194,15 +195,14 @@ private fun EmploymentRate(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.padding(24.dp)) {
-                Text(
+                JobisText(
                     text = stringResource(id = R.string.employment_rate, 6),
                     style = JobisTypography.HeadLine,
-                    color = JobisTheme.colors.onBackground,
                 )
-                Text(
+                JobisText(
                     text = "$rate%",
-                    color = JobisTheme.colors.onPrimary,
                     style = JobisTypography.PageTitle,
+                    color = JobisTheme.colors.onPrimary,
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
@@ -294,12 +294,11 @@ private fun StudentInformation(
             contentDescription = "user profile image",
         )
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(
+            JobisText(
                 text = "$number $name",
                 style = JobisTypography.SubHeadLine,
-                color = JobisTheme.colors.onBackground,
             )
-            Text(
+            JobisText(
                 text = department,
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.inverseOnSurface,
@@ -314,7 +313,7 @@ private fun Menus(
     menus: List<MenuItem>,
 ) {
     Column(modifier = modifier) {
-        Text(
+        JobisText(
             modifier = Modifier
                 .padding(vertical = 8.dp)
                 .align(Alignment.Start),
@@ -355,10 +354,9 @@ private fun Menu(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(
+            JobisText(
                 text = "$text ->",
                 style = JobisTypography.HeadLine,
-                color = JobisTheme.colors.onBackground,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Surface(
@@ -391,7 +389,7 @@ private fun ApplyStatus(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            JobisText(
                 text = stringResource(id = R.string.apply_status),
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onSurfaceVariant,
@@ -400,7 +398,7 @@ private fun ApplyStatus(
                 modifier = Modifier.weight(1f),
                 color = JobisTheme.colors.surfaceTint,
             )
-            Text(
+            JobisText(
                 text = stringResource(id = R.string.description_apply_status),
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onSurfaceVariant,
@@ -427,7 +425,7 @@ private fun ApplyStatus(
                         ),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(
+                    JobisText(
                         modifier = Modifier.padding(vertical = 22.dp),
                         text = stringResource(id = R.string.empty_apply_companies),
                         style = JobisTypography.Body,
@@ -458,12 +456,12 @@ private fun ApplyCompanyItem(
                 contentDescription = "company profile url",
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(
+            JobisText(
                 modifier = Modifier.weight(1f),
                 text = applyCompany.name,
                 style = JobisTypography.Body,
             )
-            Text(
+            JobisText(
                 text = applyCompany.status,
                 style = JobisTypography.SubBody,
             )

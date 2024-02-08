@@ -89,8 +89,7 @@ private fun SignInScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         JobisSmallTopAppBar(onBackPressed = onBackClick)
@@ -105,7 +104,6 @@ private fun SignInScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.sign_in),
             onClick = onSignInClick,
             color = ButtonColor.Primary,
@@ -150,7 +148,10 @@ private fun SignInScreenTitle() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 20.dp),
+            .padding(
+                horizontal = 24.dp,
+                vertical = 20.dp,
+            ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(

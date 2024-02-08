@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,9 +33,10 @@ import team.returm.jobisdesignsystemv2.button.ButtonColor
 import team.returm.jobisdesignsystemv2.button.JobisButton
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
+import team.returm.jobisdesignsystemv2.text.JobisText
 
 @Composable
-fun SelectGender(
+internal fun SelectGender(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
@@ -57,8 +57,7 @@ private fun SelectGenderScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         JobisLargeTopAppBar(
@@ -68,13 +67,15 @@ private fun SelectGenderScreen(
         Genders(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(
+                    horizontal = 24.dp,
+                    vertical = 16.dp,
+                ),
             gender = gender,
             onClick = { gender = it },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             onClick = onNextClick,
             color = ButtonColor.Primary,
@@ -115,18 +116,27 @@ private fun RowScope.GenderCard(
     onClick: () -> Unit,
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (selected) JobisTheme.colors.onPrimary
-        else JobisTheme.colors.inverseSurface,
+        targetValue = if (selected) {
+            JobisTheme.colors.onPrimary
+        } else {
+            JobisTheme.colors.inverseSurface
+        },
         label = "",
     )
     val textColor by animateColorAsState(
-        targetValue = if (selected) JobisTheme.colors.background
-        else JobisTheme.colors.onBackground,
+        targetValue = if (selected) {
+            JobisTheme.colors.background
+        } else {
+            JobisTheme.colors.onBackground
+        },
         label = "",
     )
     val tint by animateColorAsState(
-        targetValue = if (selected) JobisTheme.colors.background
-        else JobisTheme.colors.onSurfaceVariant,
+        targetValue = if (selected) {
+            JobisTheme.colors.background
+        } else {
+            JobisTheme.colors.onSurfaceVariant
+        },
         label = "",
     )
 
@@ -149,7 +159,7 @@ private fun RowScope.GenderCard(
             contentDescription = "gender",
             tint = tint,
         )
-        Text(
+        JobisText(
             text = text,
             color = textColor,
             style = JobisTypography.HeadLine,

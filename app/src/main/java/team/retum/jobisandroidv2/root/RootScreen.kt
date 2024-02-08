@@ -1,24 +1,27 @@
 package team.retum.jobisandroidv2.root
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import team.retum.alarm.navigation.navigateToAlarm
+import team.retum.bookmark.navigation.bookmark
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 
 @Composable
-fun Root(navHostController: NavHostController) {
+internal fun Root(
+    onAlarmClick: () -> Unit,
+) {
     val navController = rememberNavController()
 
     RootScreen(
         navController = navController,
-        navHostController = navHostController,
+        onAlarmClick = onAlarmClick,
     )
 }
 
@@ -26,7 +29,7 @@ fun Root(navHostController: NavHostController) {
 @Composable
 private fun RootScreen(
     navController: NavHostController,
-    navHostController: NavController,
+    onAlarmClick: () -> Unit,
 ) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) },
@@ -34,8 +37,10 @@ private fun RootScreen(
         NavHost(
             navController = navController,
             startDestination = NAVIGATION_HOME,
+            modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
         ) {
-            home(onAlarmClick = navHostController::navigateToAlarm)
+            home(onAlarmClick = onAlarmClick)
+            bookmark()
         }
     }
 }

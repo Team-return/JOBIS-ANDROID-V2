@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
@@ -29,44 +31,47 @@ private val bottomMenus = listOf(
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-    BottomAppBar(
-        modifier = Modifier.fillMaxHeight(0.08f),
-        contentColor = JobisTheme.colors.background,
-        containerColor = JobisTheme.colors.background,
-    ) {
-        bottomMenus.forEach {
-            val selected = isCurrentRoute(
-                currentDestination = selectedRoute,
-                route = it.route,
-            )
-            val color by animateColorAsState(
-                targetValue = if (selected) {
-                    JobisTheme.colors.onBackground
-                } else {
-                    JobisTheme.colors.surfaceTint
-                },
-                label = "",
-            )
+    Column {
+        Divider(thickness = 0.3.dp)
+        BottomAppBar(
+            modifier = Modifier.fillMaxHeight(0.08f),
+            contentColor = JobisTheme.colors.background,
+            containerColor = JobisTheme.colors.background,
+        ) {
+            bottomMenus.forEach {
+                val selected = isCurrentRoute(
+                    currentDestination = selectedRoute,
+                    route = it.route,
+                )
+                val color by animateColorAsState(
+                    targetValue = if (selected) {
+                        JobisTheme.colors.onBackground
+                    } else {
+                        JobisTheme.colors.surfaceTint
+                    },
+                    label = "",
+                )
 
-            NavigationBarItem(
-                selected = selected,
-                onClick = { navController.navigate(it.route) },
-                icon = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = painterResource(id = it.icon),
-                            contentDescription = it.route,
-                            tint = color,
-                        )
-                        Text(
-                            text = stringResource(id = it.title),
-                            style = JobisTypography.Caption,
-                            color = color,
-                        )
-                    }
-                },
-                colors = NavigationBarItemDefaults.colors(indicatorColor = JobisTheme.colors.background),
-            )
+                NavigationBarItem(
+                    selected = selected,
+                    onClick = { navController.navigate(it.route) },
+                    icon = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(id = it.icon),
+                                contentDescription = it.route,
+                                tint = color,
+                            )
+                            Text(
+                                text = stringResource(id = it.title),
+                                style = JobisTypography.Caption,
+                                color = color,
+                            )
+                        }
+                    },
+                    colors = NavigationBarItemDefaults.colors(indicatorColor = JobisTheme.colors.background),
+                )
+            }
         }
     }
 }

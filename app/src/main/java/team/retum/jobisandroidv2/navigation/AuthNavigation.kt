@@ -10,8 +10,8 @@ import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signin.navigation.signIn
 import team.retum.signup.navigation.navigateToInputEmail
 import team.retum.signup.navigation.navigateToSelectGender
+import team.retum.signup.navigation.navigateToSetPassword
 import team.retum.signup.navigation.navigateToSetProfile
-import team.retum.signup.navigation.navigateToSettingPassword
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.navigateToTerms
 import team.retum.signup.navigation.signUp
@@ -34,7 +34,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         signUp(
             onBackPressed = navController::popBackStack,
             onInputEmailClick = navController::navigateToInputEmail,
-            onInputPasswordClick = navController::navigateToSettingPassword,
+            onSetPasswordClick = navController::navigateToSetPassword,
             onSelectGenderClick = navController::navigateToSelectGender,
             onSetProfileClick = navController::navigateToSetProfile,
             onTermsClick = navController::navigateToTerms,
