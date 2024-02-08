@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import team.retum.signup.R
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
@@ -25,7 +23,18 @@ import team.returm.jobisdesignsystemv2.text.JobisText
 import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
-internal fun InputEmailScreen(
+internal fun InputEmail(
+    onBackPressed: () -> Unit,
+    onNextClick: () -> Unit,
+) {
+    InputEmailScreen(
+        onBackPressed = onBackPressed,
+        onNextClick = onNextClick,
+    )
+}
+
+@Composable
+private fun InputEmailScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
@@ -35,8 +44,7 @@ internal fun InputEmailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         JobisLargeTopAppBar(
@@ -51,7 +59,6 @@ internal fun InputEmailScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
             onClick = onNextClick,
@@ -77,6 +84,7 @@ private fun EmailInputs(
             text = "인증 하기",
             color = ButtonColor.Secondary,
             onClick = {},
+            keyboardInteractionEnabled = false,
         )
     }
     JobisTextField(

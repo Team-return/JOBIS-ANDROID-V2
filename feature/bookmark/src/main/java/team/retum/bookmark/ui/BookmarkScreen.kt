@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +29,7 @@ import team.returm.jobisdesignsystemv2.button.JobisButton
 import team.returm.jobisdesignsystemv2.foundation.JobisIcon
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
+import team.returm.jobisdesignsystemv2.text.JobisText
 
 // TODO 서버 연동 시 제거
 private data class BookmarkData(
@@ -49,12 +49,11 @@ private fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
     ) {
         JobisLargeTopAppBar(
             title = stringResource(id = R.string.bookmark),
-            onBackPressed = null
+            onBackPressed = null,
         )
         if (bookmarkList.isEmpty()) {
             EmptyBookmarkContent()
@@ -79,7 +78,7 @@ private fun EmptyBookmarkContent() {
             .background(JobisTheme.colors.background)
             .fillMaxWidth()
             .padding(vertical = 80.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             modifier = Modifier.size(128.dp),
@@ -87,13 +86,12 @@ private fun EmptyBookmarkContent() {
             contentDescription = "empty bookmark",
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
+        JobisText(
             text = stringResource(id = R.string.empty_bookmark),
             style = JobisTypography.HeadLine,
-            color = JobisTheme.colors.onBackground,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
+        JobisText(
             text = stringResource(id = R.string.empty_bookmark_description),
             style = JobisTypography.Body,
             color = JobisTheme.colors.onSurfaceVariant,
@@ -129,12 +127,11 @@ private fun BookmarkItem(
             contentDescription = "company image",
         )
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(
+            JobisText(
                 text = companyName,
                 style = JobisTypography.SubHeadLine,
-                color = JobisTheme.colors.onBackground,
             )
-            Text(
+            JobisText(
                 text = date,
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.inverseOnSurface,
@@ -144,7 +141,7 @@ private fun BookmarkItem(
             painter = painterResource(id = R.drawable.ic_delete),
             contentDescription = "delete",
             modifier = Modifier.fillMaxWidth(),
-            alignment = Alignment.CenterEnd
+            alignment = Alignment.CenterEnd,
         )
     }
 }

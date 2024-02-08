@@ -5,10 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +31,79 @@ private data class AlarmData(
 internal fun Alarm(
     onBackPressed: () -> Unit,
 ) {
-    val alarmList = emptyList<AlarmData>()
+    // val alarmList = emptyList<AlarmData>()
+    val alarmList = listOf(
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+        AlarmData(
+            "companyName",
+            "contet",
+            "date",
+        ),
+    )
     AlarmScreen(
         onBackPressed = onBackPressed,
         alarmList = alarmList,
@@ -45,19 +118,18 @@ private fun AlarmScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
     ) {
         JobisSmallTopAppBar(
             title = stringResource(id = R.string.alarm),
             onBackPressed = onBackPressed,
         )
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
         ) {
-            alarmList.forEach {
+            items(alarmList) {
                 AlarmContent(
                     companyName = it.companyName,
                     content = it.content,

@@ -70,11 +70,6 @@ private fun LandingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             JobisButton(
-                modifier = Modifier.padding(
-                    bottom = 16.dp,
-                    start = 24.dp,
-                    end = 24.dp,
-                ),
                 text = "새 계정으로 시작하기",
                 onClick = onSignUpClick,
                 color = ButtonColor.Primary,

@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,12 +39,12 @@ import team.retum.signup.R
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
 import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
+import team.returm.jobisdesignsystemv2.text.JobisText
 
 @Composable
-fun SetProfile(
+internal fun SetProfile(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
@@ -74,8 +73,7 @@ private fun SetProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .padding(horizontal = 24.dp),
+            .background(JobisTheme.colors.background),
     ) {
         JobisLargeTopAppBar(
             title = stringResource(id = R.string.set_profile),
@@ -91,7 +89,6 @@ private fun SetProfileScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            modifier = Modifier.padding(bottom = 24.dp),
             text = stringResource(id = R.string.next),
             onClick = onNextClick,
             color = ButtonColor.Primary,
@@ -135,8 +132,11 @@ private fun SetImageButton(
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
-        targetValue = if (pressed) 0.98f
-        else 1f,
+        targetValue = if (pressed) {
+            0.98f
+        } else {
+            1f
+        },
         label = "",
     )
 
@@ -165,7 +165,7 @@ private fun SetImageButton(
             contentDescription = "pencil",
             tint = JobisTheme.colors.onPrimary,
         )
-        Text(
+        JobisText(
             text = text,
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.onPrimary,

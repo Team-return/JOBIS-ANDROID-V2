@@ -3,22 +3,22 @@ package team.retum.signup.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.signup.ui.SettingPasswordScreen
+import team.retum.signup.ui.SetPassword
 
-const val NAVIGATION_SETTING_PASSWORD = "settingPassword"
+const val NAVIGATION_SET_PASSWORD = "setPassword"
 
-fun NavGraphBuilder.settingPassword(
+fun NavGraphBuilder.setPassword(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
-    composable(NAVIGATION_SETTING_PASSWORD) {
-        SettingPasswordScreen(
+    composable(NAVIGATION_SET_PASSWORD) {
+        SetPassword(
             onBackPressed = onBackPressed,
             onNextClick = onNextClick,
         )
     }
 }
 
-fun NavController.navigateToSettingPassword() {
-    navigate(NAVIGATION_SETTING_PASSWORD)
+fun NavController.navigateToSetPassword() {
+    navigate(NAVIGATION_SET_PASSWORD)
 }

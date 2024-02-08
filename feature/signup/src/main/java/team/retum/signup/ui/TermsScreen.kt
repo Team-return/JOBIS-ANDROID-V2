@@ -6,7 +6,6 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import team.retum.signup.R
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
@@ -26,7 +24,7 @@ private const val TERMS_URL = "https://jobis-webview.team-return.com/sign-up-pol
 private const val WEB_VIEW_SCROLL_BOTTOM = 1
 
 @Composable
-fun Terms(
+internal fun Terms(
     onBackPressed: () -> Unit,
     onCompleteClick: () -> Unit,
 ) {
@@ -56,7 +54,6 @@ private fun TermsScreen(
             .background(JobisTheme.colors.background),
     ) {
         JobisLargeTopAppBar(
-            modifier = Modifier.padding(horizontal = 24.dp),
             title = stringResource(id = R.string.terms),
             onBackPressed = onBackPressed,
         )
@@ -77,11 +74,6 @@ private fun TermsScreen(
             },
         )
         JobisButton(
-            modifier = Modifier.padding(
-                start = 24.dp,
-                end = 24.dp,
-                bottom = 24.dp,
-            ),
             text = stringResource(id = R.string.agree),
             onClick = onCompleteClick,
             color = ButtonColor.Primary,

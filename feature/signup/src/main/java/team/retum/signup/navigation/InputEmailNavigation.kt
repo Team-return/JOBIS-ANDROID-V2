@@ -3,7 +3,7 @@ package team.retum.signup.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.signup.ui.InputEmailScreen
+import team.retum.signup.ui.InputEmail
 
 const val NAVIGATION_INPUT_EMAIL = "inputEmail"
 
@@ -12,7 +12,7 @@ fun NavGraphBuilder.inputEmail(
     onNextClick: () -> Unit,
 ) {
     composable(NAVIGATION_INPUT_EMAIL) {
-        InputEmailScreen(
+        InputEmail(
             onBackPressed = onBackPressed,
             onNextClick = onNextClick,
         )
