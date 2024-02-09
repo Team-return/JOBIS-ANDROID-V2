@@ -7,9 +7,10 @@ import javax.inject.Inject
 internal const val MAX_LENGTH_NUMBER = 4
 
 @HiltViewModel
-internal class InputPersonalInfoViewModel @Inject constructor() : BaseViewModel<InputPersonalInfoState, InputPersonalInfoSideEffect>(
-    initialState = InputPersonalInfoState.getDefaultState(),
-) {
+internal class InputPersonalInfoViewModel @Inject constructor() :
+    BaseViewModel<InputPersonalInfoState, InputPersonalInfoSideEffect>(
+        initialState = InputPersonalInfoState.getDefaultState(),
+    ) {
     internal fun setName(name: String) {
         setState {
             state.value.copy(
@@ -39,6 +40,11 @@ internal class InputPersonalInfoViewModel @Inject constructor() : BaseViewModel<
         val hasNoBlank = name.isNotBlank() && number.isNotBlank()
         hasNoError && hasNoBlank
     }
+
+    internal fun onNextClick() {
+        setState { state.value.copy(buttonEnabled = false) }
+        postSideEffect(sideEffect = InputPersonalInfoSideEffect.MoveToNext)
+    }
 }
 
 internal data class InputPersonalInfoState(
@@ -59,4 +65,6 @@ internal data class InputPersonalInfoState(
     }
 }
 
-internal sealed interface InputPersonalInfoSideEffect
+internal sealed interface InputPersonalInfoSideEffect {
+    data object MoveToNext: InputPersonalInfoSideEffect
+}
