@@ -8,7 +8,7 @@ const val NAVIGATION_SIGN_UP = "signUp"
 
 fun NavGraphBuilder.signUp(
     onBackPressed: () -> Unit,
-    onInputEmailClick: () -> Unit,
+    navigateToInputEmail: () -> Unit,
     onSetPasswordClick: () -> Unit,
     onSelectGenderClick: () -> Unit,
     onSetProfileClick: () -> Unit,
@@ -21,7 +21,7 @@ fun NavGraphBuilder.signUp(
     ) {
         inputPersonalInfo(
             onBackPressed = onBackPressed,
-            onNextClick = onInputEmailClick,
+            navigateToInputEmail = navigateToInputEmail,
         )
         inputEmail(
             onBackPressed = onBackPressed,

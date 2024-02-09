@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,17 +27,23 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 @Composable
 internal fun InputPersonalInfo(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToInputEmail: () -> Unit,
     inputPersonalInfoViewModel: InputPersonalInfoViewModel = hiltViewModel(),
 ) {
     val state by inputPersonalInfoViewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        inputPersonalInfoViewModel.sideEffect.collect {
+            navigateToInputEmail()
+        }
+    }
+
     InputPersonalInfoScreen(
         onBackPressed = onBackPressed,
-        onNextClick = onNextClick,
         state = state,
         onNameChange = inputPersonalInfoViewModel::setName,
         onNumberChange = inputPersonalInfoViewModel::setNumber,
+        onNextClick = inputPersonalInfoViewModel::onNextClick,
     )
 }
 
