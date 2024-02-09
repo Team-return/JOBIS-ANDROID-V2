@@ -60,7 +60,11 @@ dependencies {
     implementation(project(":feature:alarm"))
     implementation(project(":feature:recruitment"))
     implementation(project(":feature:bookmark"))
+<<<<<<< refs/remotes/origin/develop
     implementation(project(":feature:bug"))
+=======
+    implementation(project(":feature:mypage"))
+>>>>>>> feat :: mypage 모듈 추가
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.jobis.design.system)
