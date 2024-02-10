@@ -27,14 +27,14 @@ import team.returm.jobisdesignsystemv2.textfield.JobisTextField
 @Composable
 internal fun InputPersonalInfo(
     onBackPressed: () -> Unit,
-    navigateToInputEmail: () -> Unit,
+    navigateToInputEmail: (name: String, number: Long) -> Unit,
     inputPersonalInfoViewModel: InputPersonalInfoViewModel = hiltViewModel(),
 ) {
     val state by inputPersonalInfoViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         inputPersonalInfoViewModel.sideEffect.collect {
-            navigateToInputEmail()
+            navigateToInputEmail(state.name.trim(), state.number.trim().toLong())
         }
     }
 

@@ -2,7 +2,11 @@ package team.retum.signup.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import team.retum.common.util.Keys
+import team.retum.signup.model.SignUpData
 import team.retum.signup.ui.InputEmail
 
 const val NAVIGATION_INPUT_EMAIL = "inputEmail"
@@ -11,14 +15,25 @@ fun NavGraphBuilder.inputEmail(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
-    composable(NAVIGATION_INPUT_EMAIL) {
+    composable(
+        route = "$NAVIGATION_INPUT_EMAIL/{${Keys.SIGN_UP}}",
+        arguments = listOf(navArgument(Keys.SIGN_UP) { NavType.SerializableType(SignUpData::class.java) }),
+    ) {
         InputEmail(
             onBackPressed = onBackPressed,
             onNextClick = onNextClick,
+            signUpData = it::getSignUpData,
         )
     }
 }
 
-fun NavController.navigateToInputEmail() {
-    navigate(NAVIGATION_INPUT_EMAIL)
+fun NavController.navigateToInputEmail(
+    name: String,
+    number: Long,
+) {
+    val signUpData = SignUpData(
+        name = name,
+        number = number,
+    )
+    navigate("$NAVIGATION_INPUT_EMAIL/$signUpData")
 }

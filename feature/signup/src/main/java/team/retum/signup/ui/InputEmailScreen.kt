@@ -26,6 +26,7 @@ import team.retum.signup.R
 internal fun InputEmail(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
+    signUpData: () -> Serializable,
 ) {
     InputEmailScreen(
         onBackPressed = onBackPressed,

@@ -66,5 +66,5 @@ internal data class InputPersonalInfoState(
 }
 
 internal sealed interface InputPersonalInfoSideEffect {
-    data object MoveToNext: InputPersonalInfoSideEffect
+    data object MoveToNext : InputPersonalInfoSideEffect
 }
