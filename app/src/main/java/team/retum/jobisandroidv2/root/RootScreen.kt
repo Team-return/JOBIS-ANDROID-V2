@@ -12,8 +12,12 @@ import team.retum.bookmark.navigation.bookmarks
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
+<<<<<<< refs/remotes/origin/develop
 import team.retum.recruitment.NAVIGATION_RECRUITMENTS
 import team.retum.recruitment.recruitments
+=======
+import team.returm.mypage.navigation.mypage
+>>>>>>> feat :: 바텀네비게이션 연결
 
 @Composable
 internal fun Root(
@@ -42,8 +46,13 @@ private fun RootScreen(
             modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
         ) {
             home(onAlarmClick = onAlarmClick)
+<<<<<<< refs/remotes/origin/develop
             recruitments()
             bookmarks(onRecruitmentsClick = { navController.navigate(NAVIGATION_RECRUITMENTS) })
+=======
+            bookmark()
+            mypage()
+>>>>>>> feat :: 바텀네비게이션 연결
         }
     }
 }
