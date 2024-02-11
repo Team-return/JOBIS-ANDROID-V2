@@ -42,9 +42,9 @@ private data class Recruitment(
     val isBookmarked: Boolean,
 )
 
-
 @Composable
 internal fun Recruitments() {
+    // TODO 서버 연동 시 제거
     val recruitments = listOf(
         Recruitment(
             recruitId = 0L,
@@ -54,150 +54,6 @@ internal fun Recruitments() {
             trainPay = 0L,
             company = "company",
             isBookmarked = true,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
         ),
         Recruitment(
             recruitId = 0L,
@@ -258,7 +114,7 @@ private fun RecruitmentContent(
     val middleText = StringBuilder().apply {
         append(stringResource(R.string.military))
         append(if (recruitment.military) " O " else " X ")
-        append(" | ")
+        append(" · ")
         append(stringResource(R.string.recruitment))
         append(" ")
         append(DecimalFormat().format(recruitment.trainPay))
