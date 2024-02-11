@@ -23,7 +23,7 @@ import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 
 private val bottomMenus = listOf(
     BottomMenu.Home,
-    BottomMenu.Recruitment,
+    BottomMenu.Recruitments,
     BottomMenu.Bookmark,
     BottomMenu.MyPage,
 )

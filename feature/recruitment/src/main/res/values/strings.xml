@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recruitment">모집의뢰서</string>
+
+    <string name="military">병역특례</string>
+    <string name="train_pay">실습 수당</string>
+</resources>

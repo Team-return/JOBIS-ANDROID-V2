@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobisandroidv2.R
+import team.retum.recruitment.NAVIGATION_RECRUITMENTS
 
 sealed class BottomMenu(
     val route: String,
@@ -16,8 +17,8 @@ sealed class BottomMenu(
         title = R.string.home,
     )
 
-    data object Recruitment : BottomMenu(
-        route = "recruitment",
+    data object Recruitments : BottomMenu(
+        route = NAVIGATION_RECRUITMENTS,
         icon = R.drawable.ic_recruitment,
         title = R.string.recruitment,
     )

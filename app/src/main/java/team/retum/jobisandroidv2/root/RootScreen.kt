@@ -12,6 +12,7 @@ import team.retum.bookmark.navigation.bookmark
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
+import team.retum.recruitment.recruitments
 
 @Composable
 internal fun Root(
@@ -40,6 +41,7 @@ private fun RootScreen(
             modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
         ) {
             home(onAlarmClick = onAlarmClick)
+            recruitments()
             bookmark()
         }
     }
