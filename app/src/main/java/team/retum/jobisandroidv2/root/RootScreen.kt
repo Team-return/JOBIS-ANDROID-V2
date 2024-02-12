@@ -8,10 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import team.retum.bookmark.navigation.bookmark
+import team.retum.bookmark.navigation.bookmarks
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
+import team.retum.recruitment.NAVIGATION_RECRUITMENTS
 import team.retum.recruitment.recruitments
 
 @Composable
@@ -42,7 +43,7 @@ private fun RootScreen(
         ) {
             home(onAlarmClick = onAlarmClick)
             recruitments()
-            bookmark()
+            bookmarks(onRecruitmentsClick = { navController.navigate(NAVIGATION_RECRUITMENTS) })
         }
     }
 }
