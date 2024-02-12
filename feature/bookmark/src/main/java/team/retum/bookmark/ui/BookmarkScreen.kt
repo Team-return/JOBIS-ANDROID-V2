@@ -109,21 +109,22 @@ private fun EmptyBookmarkContent() {
 @Composable
 private fun BookmarkItem(
     modifier: Modifier = Modifier,
-    profileImageUrl: String,
+    companyImageUrl: String,
     companyName: String,
+    recruitmentId: Long,
     date: String,
+    onDeleteClick: (Long) -> Unit,
 ) {
     Row(
         modifier = modifier.padding(vertical = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // TODO AsyncImage 사용
-        Image(
+        AsyncImage(
+            model = companyImageUrl,
             modifier = Modifier
                 .size(56.dp)
                 .clip(CircleShape),
-            painter = painterResource(id = JobisIcon.Information),
             contentDescription = "company image",
         )
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {

@@ -3,6 +3,7 @@ androidx-junit = "1.1.5"
 androidx-espresso-core = "3.5.1"
 androidx-compose-bom = "2024.01.00"
 androidx-navigation-compose = "2.7.6"
+coilCompose = "2.5.0"
 androidx-compose-foundation = "1.6.0"
 androidx-lifecycle-viewmodel = "2.7.0"
 
@@ -28,6 +29,7 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-viewmodel" }
