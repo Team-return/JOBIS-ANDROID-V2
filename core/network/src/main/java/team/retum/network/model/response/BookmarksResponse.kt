@@ -3,7 +3,7 @@ package team.retum.network.model.response
 import com.google.gson.annotations.SerializedName
 
 data class BookmarksResponse(
-    @SerializedName("bookmarks") val bookmarks: List<BookmarkResponse>
+    @SerializedName("bookmarks") val bookmarks: List<BookmarkResponse>,
 ) {
     data class BookmarkResponse(
         @SerializedName("company_logo_url") val companyLogoUrl: String,

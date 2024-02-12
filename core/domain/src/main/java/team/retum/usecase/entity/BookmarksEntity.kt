@@ -3,7 +3,7 @@ package team.retum.usecase.entity
 import team.retum.network.model.response.BookmarksResponse
 
 data class BookmarksEntity(
-    val bookmarks: List<BookmarkEntity>
+    val bookmarks: List<BookmarkEntity>,
 ) {
     data class BookmarkEntity(
         val companyLogoUrl: String,
@@ -18,7 +18,7 @@ fun BookmarksResponse.toBookmarkEntity() = BookmarksEntity(
 )
 
 private fun BookmarksResponse.BookmarkResponse.toEntity() = BookmarksEntity.BookmarkEntity(
-    companyLogoUrl = companyLogoUrl,
+    companyLogoUrl = this.companyLogoUrl,
     companyName = this.companyName,
     recruitmentId = this.recruitmentId,
     createdAt = this.createdAt,

@@ -8,6 +8,6 @@ class BookmarkUseCase @Inject constructor(
     private val bookmarkRepository: BookmarkRepository,
 ) {
     suspend operator fun invoke() = runCatching {
-        bookmarkRepository.bookmarks().toBookmarkEntity()
+        bookmarkRepository.fetchBookmarks().toBookmarkEntity()
     }
 }

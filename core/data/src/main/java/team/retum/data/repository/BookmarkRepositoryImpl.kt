@@ -7,9 +7,9 @@ import javax.inject.Inject
 class BookmarkRepositoryImpl @Inject constructor(
     private val bookmarkDataSource: BookmarkDataSource,
 ) : BookmarkRepository {
-    override suspend fun bookmarks(): BookmarksResponse =
-        bookmarkDataSource.bookmarks()
+    override suspend fun fetchBookmarks(): BookmarksResponse =
+        bookmarkDataSource.fetchBookmark()
 
-    override suspend fun recruitmentBookmark(recruitmentId: Long) =
+    override suspend fun bookmarkRecruitment(recruitmentId: Long) =
         bookmarkDataSource.recruitmentBookmark(recruitmentId)
 }

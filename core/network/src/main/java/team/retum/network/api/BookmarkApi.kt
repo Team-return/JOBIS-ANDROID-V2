@@ -8,10 +8,10 @@ import team.retum.network.model.response.BookmarksResponse
 
 interface BookmarkApi {
     @GET(RequestUrls.Bookmarks.bookmarks)
-    suspend fun bookmarks(): BookmarksResponse
+    suspend fun fetchBookmarks(): BookmarksResponse
 
     @PATCH(RequestUrls.Bookmarks.bookmark)
-    suspend fun recruitmentBookmark(
+    suspend fun bookmarkRecruitment(
         @Path("recruitment-id") recruitmentId: Long,
     )
 }
