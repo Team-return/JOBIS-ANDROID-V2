@@ -6,9 +6,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import team.retum.network.BuildConfig
+import team.retum.network.api.BookmarkApi
 import team.retum.network.api.UserApi
 import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
@@ -40,6 +42,7 @@ object NetworkModule {
     fun provideOkHttpClient(tokenInterceptor: Interceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(tokenInterceptor)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
     }
 

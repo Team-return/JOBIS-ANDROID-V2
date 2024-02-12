@@ -20,13 +20,13 @@ class TokenInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val path = request.url().encodedPath()
+        val path = request.url.encodedPath
 
         return chain.proceed(
             when (ignorePaths.contains(path)) {
                 true -> request
                 // TODO 토큰 캐싱 로직 구현
-                false -> chain.request().newBuilder().addHeader("Authorization", "token").build()
+                false -> chain.request().newBuilder().addHeader("Authorization", "Bearer ").build()
             },
         )
     }
