@@ -408,7 +408,7 @@ private fun Screenshot(
                     color = JobisTheme.colors.surfaceVariant,
                     shape = RoundedCornerShape(12.dp),
                 ),
-            painter = painterResource(id = R.drawable.ic_test),
+            painter = painterResource(id = JobisIcon.Information),
             contentDescription = "bug image",
         )
         DeleteButton(
