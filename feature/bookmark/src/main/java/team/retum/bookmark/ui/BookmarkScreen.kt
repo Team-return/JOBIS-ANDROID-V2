@@ -2,6 +2,7 @@ package team.retum.bookmark.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,30 +23,38 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import team.retum.bookmark.R
+import team.retum.bookmark.viewmodel.BookmarkViewModel
+import team.retum.usecase.entity.BookmarksEntity
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.returm.jobisdesignsystemv2.button.ButtonColor
 import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 import team.returm.jobisdesignsystemv2.text.JobisText
 
-// TODO 서버 연동 시 제거
-private data class BookmarkData(
-    val profileImageUrl: String,
-    val companyName: String,
-    val date: String,
-)
+private const val URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
 
 @Composable
-internal fun Bookmark() {
-    val bookmarkList = emptyList<BookmarkData>()
-    BookmarkScreen(bookmarkList = bookmarkList)
+internal fun Bookmarks(
+    bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
+    onRecruitmentsClick: () -> Unit
+) {
+    BookmarkScreen(
+        bookmarkList = bookmarkViewModel.bookmarks.value,
+        onDeleteClick = bookmarkViewModel::recruitmentBookmark,
+        onRecruitmentsClick = onRecruitmentsClick,
+    )
 }
 
 @Composable
-private fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
+private fun BookmarkScreen(
+    bookmarkList: BookmarksEntity,
+    onDeleteClick: (Long) -> Unit,
+    onRecruitmentsClick: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,15 +64,21 @@ private fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
             title = stringResource(id = R.string.bookmark),
             onBackPressed = null,
         )
-        if (bookmarkList.isEmpty()) {
-            EmptyBookmarkContent()
+        if (bookmarkList.bookmarks.isEmpty()) {
+            EmptyBookmarkContent(onRecruitmentsClick = onRecruitmentsClick)
         } else {
-            LazyColumn(modifier = Modifier.background(JobisTheme.colors.background)) {
-                items(bookmarkList) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .background(JobisTheme.colors.background)
+            ) {
+                items(bookmarkList.bookmarks) {
                     BookmarkItem(
                         companyName = it.companyName,
-                        profileImageUrl = it.profileImageUrl,
-                        date = it.date,
+                        companyImageUrl = URL + it.companyLogoUrl,
+                        date = it.createdAt.substring(0..9),
+                        recruitmentId = it.recruitmentId,
+                        onDeleteClick = onDeleteClick,
                     )
                 }
             }
@@ -72,7 +87,7 @@ private fun BookmarkScreen(bookmarkList: List<BookmarkData>) {
 }
 
 @Composable
-private fun EmptyBookmarkContent() {
+private fun EmptyBookmarkContent(onRecruitmentsClick: () -> Unit) {
     Column(
         modifier = Modifier
             .background(JobisTheme.colors.background)
@@ -100,7 +115,7 @@ private fun EmptyBookmarkContent() {
         Spacer(modifier = Modifier.height(24.dp))
         JobisButton(
             text = stringResource(id = R.string.watch_recruit),
-            onClick = { },
+            onClick = onRecruitmentsClick,
             color = ButtonColor.Default,
         )
     }
@@ -138,11 +153,11 @@ private fun BookmarkItem(
                 color = JobisTheme.colors.inverseOnSurface,
             )
         }
+        Spacer(modifier = Modifier.weight(1f))
         Image(
             painter = painterResource(id = R.drawable.ic_delete),
             contentDescription = "delete",
-            modifier = Modifier.fillMaxWidth(),
-            alignment = Alignment.CenterEnd,
+            modifier = Modifier.clickable { onDeleteClick(recruitmentId) },
         )
     }
 }
