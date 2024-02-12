@@ -15,10 +15,12 @@ lottie-compose = "6.3.0"
 squareup-retrofit = "2.9.0"
 squareup-javapoet = "1.13.0"
 hilt-android-navigation = "1.1.0"
+androidx-compose-material = "1.6.1"
 
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
+androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidx-compose-material"}
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
