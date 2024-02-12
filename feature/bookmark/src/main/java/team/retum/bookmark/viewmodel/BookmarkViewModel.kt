@@ -10,13 +10,13 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.BookmarksEntity
 import team.retum.usecase.usecase.bookmark.BookmarkUseCase
-import team.retum.usecase.usecase.bookmark.RecruitmentBookmarkUseCase
+import team.retum.usecase.usecase.bookmark.BookmarkRecruitmentUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class BookmarkViewModel @Inject constructor(
+internal class BookmarkViewModel @Inject constructor(
     private val bookmarkUseCase: BookmarkUseCase,
-    private val recruitmentBookmarkUseCase: RecruitmentBookmarkUseCase,
+    private val recruitmentBookmarkUseCase: BookmarkRecruitmentUseCase,
 ) : BaseViewModel<Unit, BookmarkSideEffect>(Unit) {
 
     init {
@@ -41,7 +41,7 @@ class BookmarkViewModel @Inject constructor(
         }
     }
 
-    fun recruitmentBookmark(recruitmentId: Long) {
+    fun bookmarkRecruitment(recruitmentId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             recruitmentBookmarkUseCase(recruitmentId).onFailure {
                 when (it) {
@@ -55,6 +55,6 @@ class BookmarkViewModel @Inject constructor(
     }
 }
 
-sealed interface BookmarkSideEffect {
+internal sealed interface BookmarkSideEffect {
     data object BadRequest : BookmarkSideEffect
 }
