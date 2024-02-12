@@ -43,15 +43,15 @@ internal fun Bookmarks(
     onRecruitmentsClick: () -> Unit
 ) {
     BookmarkScreen(
-        bookmarkList = bookmarkViewModel.bookmarks.value,
-        onDeleteClick = bookmarkViewModel::recruitmentBookmark,
+        bookmarks = bookmarkViewModel.bookmarks.value.bookmarks,
+        onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
     )
 }
 
 @Composable
 private fun BookmarkScreen(
-    bookmarkList: BookmarksEntity,
+    bookmarks: List<BookmarksEntity.BookmarkEntity>,
     onDeleteClick: (Long) -> Unit,
     onRecruitmentsClick: () -> Unit,
 ) {
@@ -64,7 +64,7 @@ private fun BookmarkScreen(
             title = stringResource(id = R.string.bookmark),
             onBackPressed = null,
         )
-        if (bookmarkList.bookmarks.isEmpty()) {
+        if (bookmarks.isEmpty()) {
             EmptyBookmarkContent(onRecruitmentsClick = onRecruitmentsClick)
         } else {
             LazyColumn(
@@ -72,7 +72,7 @@ private fun BookmarkScreen(
                     .padding(horizontal = 24.dp)
                     .background(JobisTheme.colors.background)
             ) {
-                items(bookmarkList.bookmarks) {
+                items(bookmarks) {
                     BookmarkItem(
                         companyName = it.companyName,
                         companyImageUrl = URL + it.companyLogoUrl,
