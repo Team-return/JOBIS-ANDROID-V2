@@ -1,7 +1,8 @@
-package team.retum.recruitment
+package team.retum.recruitment.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import team.retum.recruitment.ui.Recruitments
 
 const val NAVIGATION_RECRUITMENTS = "recruitments"
 

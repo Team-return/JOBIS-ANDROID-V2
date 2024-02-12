@@ -1,4 +1,4 @@
-package team.retum.recruitment
+package team.retum.recruitment.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import team.retum.recruitment.R
 import team.returm.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
 import team.returm.jobisdesignsystemv2.button.JobisIconButton
 import team.returm.jobisdesignsystemv2.foundation.JobisIcon
