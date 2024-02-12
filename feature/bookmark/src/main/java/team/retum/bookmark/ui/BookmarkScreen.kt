@@ -40,7 +40,7 @@ private const val URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
 @Composable
 internal fun Bookmarks(
     bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
-    onRecruitmentsClick: () -> Unit
+    onRecruitmentsClick: () -> Unit,
 ) {
     BookmarkScreen(
         bookmarks = bookmarkViewModel.bookmarks.value.bookmarks,

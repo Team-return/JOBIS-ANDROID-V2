@@ -18,6 +18,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    private fun getLoggingInterceptor() =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
     @Provides
     @Singleton
     fun provideRetrofit(
@@ -42,7 +46,7 @@ object NetworkModule {
     fun provideOkHttpClient(tokenInterceptor: Interceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(tokenInterceptor)
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(getLoggingInterceptor())
             .build()
     }
 
