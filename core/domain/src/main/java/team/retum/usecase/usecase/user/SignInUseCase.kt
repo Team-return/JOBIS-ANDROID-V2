@@ -1,4 +1,4 @@
-package team.retum.usecase
+package team.retum.usecase.usecase.user
 
 import team.retum.data.repository.UserRepository
 import team.retum.network.model.request.SignInRequest
