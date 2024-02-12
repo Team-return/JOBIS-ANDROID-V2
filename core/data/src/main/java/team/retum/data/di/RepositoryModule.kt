@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import team.retum.data.repository.BookmarkRepository
+import team.retum.data.repository.BookmarkRepositoryImpl
 import team.retum.data.repository.UserRepository
 import team.retum.data.repository.UserRepositoryImpl
 import javax.inject.Singleton
@@ -14,4 +16,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsBookmarkRepository(bookmarkRepositoryImpl: BookmarkRepositoryImpl): BookmarkRepository
 }

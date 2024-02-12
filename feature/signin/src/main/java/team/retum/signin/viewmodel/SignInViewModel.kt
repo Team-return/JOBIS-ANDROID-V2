@@ -8,7 +8,7 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.UnAuthorizedException
-import team.retum.usecase.SignInUseCase
+import team.retum.usecase.usecase.user.SignInUseCase
 import javax.inject.Inject
 
 private const val EMAIL = "@dsm.hs.kr"

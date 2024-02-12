@@ -43,4 +43,5 @@ dependencies {
 
     implementation(libs.squareup.retrofit)
     implementation(libs.squareup.retrofit.converter.gson)
+    implementation(libs.logging.interceptor)
 }
