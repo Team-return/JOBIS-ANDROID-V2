@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="report_bug">버그 제보하기</string>
+    <string name="field">버그 제보 분야</string>
+    <string name="title">버그 제목</string>
+    <string name="content">버그 내용</string>
+    <string name="hint_title">제목을 입력해주세요</string>
+    <string name="hint_content">내용을 입력해주세요</string>
+    <string name="screenshots">첨부 사진 (최대 5장)</string>
+    <string name="attachment_screenshots">클릭하여 이미지를 첨부해주세요</string>
+    <string name="add_image">이미지 추가</string>
+    <string name="remove">삭제</string>
+    <string name="screenshot_over_flow">이미지는 5장까지만 첨부할 수 있습니다</string>
+    <string name="select_field">분야 선택</string>
+</resources>
