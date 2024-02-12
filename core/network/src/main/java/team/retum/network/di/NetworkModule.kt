@@ -57,4 +57,10 @@ object NetworkModule {
     fun provideUserApi(retrofit: Retrofit): UserApi {
         return retrofit.create(UserApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideBookmarkApi(retrofit: Retrofit): BookmarkApi {
+        return retrofit.create(BookmarkApi::class.java)
+    }
 }
