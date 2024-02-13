@@ -13,14 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import team.retum.signup.R
-import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.button.JobisSmallButton
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.text.JobisText
-import team.returm.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.button.JobisSmallButton
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
 internal fun InputEmail(

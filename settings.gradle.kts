@@ -18,6 +18,7 @@ rootProject.name = "JobisAndroidV2"
 include(":app")
 include(":feature")
 include(":core")
+include(":core:design-system")
 include(":core:domain")
 include(":core:data")
 include(":core:network")

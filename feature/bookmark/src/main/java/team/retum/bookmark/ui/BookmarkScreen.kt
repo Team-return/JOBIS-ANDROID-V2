@@ -28,12 +28,12 @@ import coil.compose.AsyncImage
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkViewModel
 import team.retum.usecase.entity.BookmarksEntity
-import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
 
 private const val URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
 

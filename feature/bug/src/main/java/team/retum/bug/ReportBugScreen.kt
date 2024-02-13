@@ -50,17 +50,17 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import team.retum.common.enums.DevelopmentArea
-import team.returm.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.card.JobisCard
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.text.JobisText
-import team.returm.jobisdesignsystemv2.textfield.JobisTextField
-import team.returm.jobisdesignsystemv2.toast.JobisToast
-import team.returm.jobisdesignsystemv2.utils.clickable
+import team.retum.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
+import team.retum.jobisdesignsystemv2.utils.clickable
 
 private val developmentAreas = listOf(
     DevelopmentArea.ANDROID,
