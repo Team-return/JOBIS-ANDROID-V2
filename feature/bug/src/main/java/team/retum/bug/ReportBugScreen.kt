@@ -126,6 +126,7 @@ private fun ReportBugScreen(
     sheetState: ModalBottomSheetState,
     coroutineScope: CoroutineScope,
 ) {
+    // TODO 뷰모델로 옮기기
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
 
@@ -202,7 +203,7 @@ private fun FieldBottomSheet(
             style = JobisTypography.SubBody,
             color = JobisTheme.colors.onSurfaceVariant,
         )
-        developmentAreas.forEach {
+        developmentAreas.forEach { developmentArea ->
             var pressed by remember { mutableStateOf(false) }
             val backgroundColor by animateColorAsState(
                 targetValue = if (pressed) JobisTheme.colors.inverseSurface
@@ -216,14 +217,14 @@ private fun FieldBottomSheet(
                     .clickable(
                         enabled = true,
                         onPressed = { pressed = it },
-                        onClick = { onFieldSelect(it) },
+                        onClick = { onFieldSelect(developmentArea) },
                     )
                     .background(backgroundColor)
                     .padding(
                         horizontal = 24.dp,
                         vertical = 12.dp,
                     ),
-                text = it.value,
+                text = developmentArea.value,
                 style = JobisTypography.Body,
                 color = JobisTheme.colors.onSurface,
             )
@@ -372,7 +373,7 @@ private fun AddImage(
             .border(
                 width = 1.dp,
                 color = JobisTheme.colors.surfaceVariant,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
             )
             .padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
