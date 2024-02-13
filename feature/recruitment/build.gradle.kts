@@ -12,8 +12,3 @@ apply<ComposeGradlePlugin>()
 android {
     namespace = "team.retum.recruitment"
 }
-
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:domain"))
-}

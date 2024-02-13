@@ -12,9 +12,3 @@ apply<ComposeGradlePlugin>()
 android {
     namespace = "team.retum.home"
 }
-
-dependencies {
-
-    implementation(project(":core:common"))
-    implementation(project(":core:domain"))
-}
