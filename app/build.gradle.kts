@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":feature:alarm"))
     implementation(project(":feature:recruitment"))
     implementation(project(":feature:bookmark"))
+    implementation(project(":feature:bug"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.jobis.design.system)
