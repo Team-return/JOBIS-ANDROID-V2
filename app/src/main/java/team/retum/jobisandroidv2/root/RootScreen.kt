@@ -17,12 +17,14 @@ import team.retum.recruitment.navigation.recruitments
 @Composable
 internal fun Root(
     onAlarmClick: () -> Unit,
+    onRecruitmentDetailClick: () -> Unit,
 ) {
     val navController = rememberNavController()
 
     RootScreen(
         navController = navController,
         onAlarmClick = onAlarmClick,
+        onRecruitmentDetailClick = onRecruitmentDetailClick,
     )
 }
 
@@ -31,6 +33,7 @@ internal fun Root(
 private fun RootScreen(
     navController: NavHostController,
     onAlarmClick: () -> Unit,
+    onRecruitmentDetailClick: () -> Unit,
 ) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) },
@@ -41,7 +44,7 @@ private fun RootScreen(
             modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
         ) {
             home(onAlarmClick = onAlarmClick)
-            recruitments()
+            recruitments(onRecruitmentDetailClick = onRecruitmentDetailClick)
             bookmark()
         }
     }

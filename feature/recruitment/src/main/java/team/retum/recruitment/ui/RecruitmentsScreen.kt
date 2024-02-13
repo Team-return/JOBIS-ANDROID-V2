@@ -44,7 +44,9 @@ private data class Recruitment(
 )
 
 @Composable
-internal fun Recruitments() {
+internal fun Recruitments(
+    onRecruitmentDetailClick: () -> Unit,
+) {
     // TODO 서버 연동 시 제거
     val recruitments = listOf(
         Recruitment(
@@ -66,12 +68,16 @@ internal fun Recruitments() {
             isBookmarked = false,
         ),
     )
-    RecruitmentsScreen(recruitments = recruitments.toMutableStateList())
+    RecruitmentsScreen(
+        recruitments = recruitments.toMutableStateList(),
+        navigateToRecruitmentDetails = onRecruitmentDetailClick
+    )
 }
 
 @Composable
 private fun RecruitmentsScreen(
     recruitments: SnapshotStateList<Recruitment>,
+    navigateToRecruitmentDetails: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -100,7 +106,7 @@ private fun RecruitmentsScreen(
             recruitments.forEach {
                 RecruitmentContent(
                     recruitment = it,
-                    onClick = { },
+                    onClick = { navigateToRecruitmentDetails() },
                 )
             }
         }
