@@ -150,8 +150,7 @@ private fun CategoryTab(
                 targetValue = if (selected) JobisTheme.colors.onBackground
                 else JobisTheme.colors.onSurfaceVariant,
                 label = "",
-
-                )
+            )
             val backgroundColor by animateColorAsState(
                 targetValue = if (selected) JobisTheme.colors.background
                 else JobisTheme.colors.inverseSurface,
@@ -218,7 +217,7 @@ private fun SkillContent(
             .clickable(
                 enabled = true,
                 onPressed = {},
-                onClick = { onClick(!checked) }
+                onClick = { onClick(!checked) },
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -232,7 +231,6 @@ private fun SkillContent(
             style = JobisTypography.Body,
             color = JobisTheme.colors.inverseOnSurface,
         )
-
     }
 }
 
@@ -271,7 +269,7 @@ fun CheckBox(
             ),
             painter = painterResource(id = R.drawable.ic_check),
             contentDescription = "check",
-            tint = tint
+            tint = tint,
         )
     }
 }
