@@ -53,6 +53,7 @@ android {
 
 dependencies {
 
+    implementation(project(":core:design-system"))
     implementation(project(":feature:landing"))
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
@@ -64,7 +65,6 @@ dependencies {
     implementation(project(":feature:interests"))
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.jobis.design.system)
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.hilt.android)

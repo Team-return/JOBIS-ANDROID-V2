@@ -28,15 +28,15 @@ import team.retum.signin.R
 import team.retum.signin.viewmodel.SignInSideEffect
 import team.retum.signin.viewmodel.SignInState
 import team.retum.signin.viewmodel.SignInViewModel
-import team.returm.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.textfield.DescriptionType
-import team.returm.jobisdesignsystemv2.textfield.JobisTextField
-import team.returm.jobisdesignsystemv2.toast.JobisToast
+import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.textfield.DescriptionType
+import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 
 @Composable
 internal fun SignIn(

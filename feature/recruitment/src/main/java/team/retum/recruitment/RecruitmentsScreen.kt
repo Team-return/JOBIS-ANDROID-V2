@@ -22,13 +22,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import team.returm.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
-import team.returm.jobisdesignsystemv2.button.JobisIconButton
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.text.JobisText
-import team.returm.jobisdesignsystemv2.utils.clickable
+import team.retum.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
+import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 import java.text.DecimalFormat
 
 // TODO 서버 연동 시 제거

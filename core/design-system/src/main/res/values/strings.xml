@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_arrow">화살표</string>
+    <string name="content_description_bell">종</string>
+    <string name="content_description_bookmark_off">비활성화 된 북마크</string>
+    <string name="content_description_bookmark_on">활성화 된 북마크</string>
+    <string name="content_description_box">상자</string>
+    <string name="content_description_check_circle">확인</string>
+    <string name="content_description_close">닫기</string>
+    <string name="content_description_code">코드</string>
+    <string name="content_description_delete">삭제</string>
+    <string name="content_description_error">에러</string>
+    <string name="content_description_eye_off">가리기</string>
+    <string name="content_description_eye_on">보이기</string>
+    <string name="content_description_filter">필터</string>
+    <string name="content_description_locK_reset">잠금 초기화</string>
+    <string name="content_description_log_out">로그아웃</string>
+    <string name="content_description_long_arrow">긴 화살표</string>
+    <string name="content_description_meeting_room">나가기</string>
+    <string name="content_description_person_remove">인원 제거</string>
+    <string name="content_description_plus">추가하기</string>
+    <string name="content_description_report">신고하기</string>
+    <string name="content_description_search">검색하기</string>
+    <string name="content_description_jobis">앱 바 로고</string>
+    <string name="content_description_information">정보</string>
+</resources>
