@@ -28,9 +28,6 @@ include(":feature:signup")
 include(":feature:home")
 include(":feature:alarm")
 include(":feature:bookmark")
-<<<<<<< refs/remotes/origin/develop
 include(":feature:recruitment")
 include(":feature:bug")
-=======
 include(":feature:mypage")
->>>>>>> feat :: mypage 모듈 추가
