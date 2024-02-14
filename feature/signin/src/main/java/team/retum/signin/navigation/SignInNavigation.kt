@@ -10,11 +10,13 @@ const val NAVIGATION_SIGN_IN = "signIn"
 fun NavGraphBuilder.signIn(
     onBackPressed: () -> Unit,
     onSignInSuccess: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
 ) {
     composable(NAVIGATION_SIGN_IN) {
         SignIn(
             onBackClick = onBackPressed,
             onSignInSuccess = onSignInSuccess,
+            onForgotPasswordClick = onForgotPasswordClick,
         )
     }
 }

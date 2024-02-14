@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_change_password">비밀번호 변경을 위해\n이메일을 인증해주세요</string>
+    <string name="email">이메일</string>
+    <string name="authorize">인증 하기</string>
+    <string name="authentication_code">인증 코드</string>
+    <string name="hint_email">example</string>
+    <string name="hint_authentication_code">이메일로 온 코드를 입력해주세요</string>
+    <string name="next">다음</string>
+</resources>
