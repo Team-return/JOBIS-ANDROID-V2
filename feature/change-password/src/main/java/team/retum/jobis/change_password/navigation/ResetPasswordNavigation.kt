@@ -11,7 +11,7 @@ fun NavGraphBuilder.resetPassword(
     onBackPressed: () -> Unit,
     onCompleteClick: () -> Unit,
 ) {
-    composable(NAVIGATION_RESET_PASSWORD){
+    composable(NAVIGATION_RESET_PASSWORD) {
         ResetPassword(
             onBackPressed = onBackPressed,
             onCompleteClick = onCompleteClick,
