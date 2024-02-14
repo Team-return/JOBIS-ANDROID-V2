@@ -3,6 +3,10 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import team.retum.jobis.change_password.navigation.navigateToResetPassword
+import team.retum.jobis.verify_email.navigation.navigateToVerifyEmail
+import team.retum.jobis.change_password.navigation.resetPassword
+import team.retum.jobis.verify_email.navigation.verifyEmail
 import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.landing.navigation.NAVIGATION_LANDING
 import team.retum.landing.navigation.landing
@@ -30,6 +34,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         signIn(
             onBackPressed = navController::popBackStack,
             onSignInSuccess = navController::navigateToRoot,
+            onForgotPasswordClick = navController::navigateToVerifyEmail,
         )
         signUp(
             onBackPressed = navController::popBackStack,
@@ -39,6 +44,14 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
             onSetProfileClick = navController::navigateToSetProfile,
             onTermsClick = navController::navigateToTerms,
             onCompleteClick = navController::navigateToRoot,
+        )
+        verifyEmail(
+            onBackPressed = navController::popBackStack,
+            onNextClick = navController::navigateToResetPassword,
+        )
+        resetPassword(
+            onBackPressed = navController::popBackStack,
+            onCompleteClick = {},
         )
     }
 }
