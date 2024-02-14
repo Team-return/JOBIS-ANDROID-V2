@@ -51,6 +51,7 @@ private fun InterestsScreen() {
     // TODO 뷰모델로 옮기기
     var content by remember { mutableStateOf("") }
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
+    val checkedSkills = remember { mutableStateListOf<String>() }
     val categories = remember {
         mutableStateListOf(
             "Android",
@@ -74,6 +75,7 @@ private fun InterestsScreen() {
             categories = categories,
             selectedCategoryIndex = selectedCategoryIndex,
             onSelectCategory = { selectedCategoryIndex = it },
+            checkedSkills = checkedSkills,
         )
         Spacer(modifier = Modifier.height(16.dp))
     }
@@ -86,12 +88,9 @@ private fun InterestsInput(
     selectedCategoryIndex: Int,
     categories: SnapshotStateList<String>,
     onSelectCategory: (Int) -> Unit,
+    checkedSkills: MutableList<String>,
 ) {
-    Column(
-        modifier = Modifier.padding(
-            vertical = 16.dp,
-        ),
-    ) {
+    Column(modifier = Modifier.padding(vertical = 16.dp)) {
         JobisTextField(
             // TODO 디자인 시스템에서 title 옵셔널 처리하기
             title = "",
@@ -110,7 +109,16 @@ private fun InterestsInput(
                 "Kotlin",
                 "Java",
             ).toMutableStateList(),
-            checkedSkills = mutableListOf(),
+            checkedSkills = checkedSkills,
+            onCheckedChange = { index, checked ->
+                // TODO 뷰모델로 함수 옮기기
+                checkedSkills.run {
+                    when (checked) {
+                        true -> add(index)
+                        false -> remove(index)
+                    }
+                }
+            }
         )
     }
 }
@@ -179,19 +187,16 @@ private fun CategoryTab(
 @Composable
 private fun Skills(
     skills: SnapshotStateList<String>,
-    checkedSkills: MutableList<Int>
+    checkedSkills: List<String>,
+    onCheckedChange: (String, Boolean) -> Unit
 ) {
     LazyColumn {
         itemsIndexed(skills) { index, skill ->
-            var checked by remember { mutableStateOf(false) }
-
+            val checked = checkedSkills.contains(skill)
             SkillContent(
                 skill = skill,
                 checked = checked,
-                onClick = {
-                    checkedSkills.add(index)
-                    checked = !checked
-                },
+                onClick = { onCheckedChange(skill, it) },
             )
         }
     }
