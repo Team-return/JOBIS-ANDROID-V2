@@ -45,7 +45,7 @@ private data class Recruitment(
 
 @Composable
 internal fun Recruitments(
-    onRecruitmentDetailClick: () -> Unit,
+    onRecruitmentDetailsClick: () -> Unit,
 ) {
     // TODO 서버 연동 시 제거
     val recruitments = listOf(
@@ -70,7 +70,7 @@ internal fun Recruitments(
     )
     RecruitmentsScreen(
         recruitments = recruitments.toMutableStateList(),
-        navigateToRecruitmentDetails = onRecruitmentDetailClick
+        navigateToRecruitmentDetails = onRecruitmentDetailsClick
     )
 }
 

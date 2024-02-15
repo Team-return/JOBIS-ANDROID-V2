@@ -12,19 +12,20 @@ import team.retum.bookmark.navigation.bookmarks
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
-import team.retum.recruitment.recruitments
+import team.retum.recruitment.navigation.NAVIGATION_RECRUITMENTS
+import team.retum.recruitment.navigation.recruitments
 
 @Composable
 internal fun Root(
     onAlarmClick: () -> Unit,
-    onRecruitmentDetailClick: () -> Unit,
+    onRecruitmentDetailsClick: () -> Unit,
 ) {
     val navController = rememberNavController()
 
     RootScreen(
         navController = navController,
         onAlarmClick = onAlarmClick,
-        onRecruitmentDetailClick = onRecruitmentDetailClick,
+        onRecruitmentDetailsClick = onRecruitmentDetailsClick,
     )
 }
 
@@ -33,7 +34,7 @@ internal fun Root(
 private fun RootScreen(
     navController: NavHostController,
     onAlarmClick: () -> Unit,
-    onRecruitmentDetailClick: () -> Unit,
+    onRecruitmentDetailsClick: () -> Unit,
 ) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) },
@@ -44,7 +45,7 @@ private fun RootScreen(
             modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
         ) {
             home(onAlarmClick = onAlarmClick)
-            recruitments(onRecruitmentDetailClick = onRecruitmentDetailClick)
+            recruitments(onRecruitmentDetailsClick = onRecruitmentDetailsClick)
             bookmarks(onRecruitmentsClick = { navController.navigate(NAVIGATION_RECRUITMENTS) })
         }
     }

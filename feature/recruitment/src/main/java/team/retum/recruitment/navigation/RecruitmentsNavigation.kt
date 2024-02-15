@@ -6,8 +6,8 @@ import team.retum.recruitment.ui.Recruitments
 
 const val NAVIGATION_RECRUITMENTS = "recruitments"
 
-fun NavGraphBuilder.recruitments(onRecruitmentDetailClick: () -> Unit) {
+fun NavGraphBuilder.recruitments(onRecruitmentDetailsClick: () -> Unit) {
     composable(NAVIGATION_RECRUITMENTS) {
-        Recruitments(onRecruitmentDetailClick = onRecruitmentDetailClick)
+        Recruitments(onRecruitmentDetailsClick = onRecruitmentDetailsClick)
     }
 }
