@@ -1,19 +1,19 @@
 package team.returm.mypage.ui
 
-import Team.retum.mypage.R
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -27,8 +27,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import team.retum.jobis.mypage.R
 import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.returm.jobisdesignsystemv2.card.JobisCard
+import team.returm.jobisdesignsystemv2.foundation.JobisIcon
 import team.returm.jobisdesignsystemv2.foundation.JobisTheme
 import team.returm.jobisdesignsystemv2.foundation.JobisTypography
 import team.returm.jobisdesignsystemv2.text.JobisText
@@ -40,6 +42,7 @@ internal fun MyPage() {
 
 @Composable
 private fun MyPageScreen() {
+    val scrollState = rememberScrollState()
     val (showLogoutModal, setShowLogoutModal) = remember { mutableStateOf(false) }
     val (showWithdrawalModal, setShowWithdrawalModal) = remember { mutableStateOf(false) }
 
@@ -61,100 +64,98 @@ private fun MyPageScreen() {
         setShowWithdrawalModal(false)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(JobisTheme.colors.background)
-    ) {
+    Column {
         JobisLargeTopAppBar(
             title = stringResource(id = R.string.mypage),
             onBackPressed = null,
-        ) {}
-        LazyColumn(modifier = Modifier.background(JobisTheme.colors.background)) {
-            item {
-                StudentInfo(
-                    modifier = Modifier.padding(
-                        horizontal = 24.dp,
-                        vertical = 12.dp,
-                    ),
-                    profileImageUrl = "",
-                    number = "3125",
-                    name = "박시원",
-                    department = "소프트웨어개발과",
-                )
-            }
-            item {
-                WriteInterviewReview(
-                    companyName = "㈜마이다스아이티주ㅇㅁㅇㄴㅁㅁ",
-                    onClick = { /*TODO 면접 후기 작 페이지로 이동 */ })
-            }
-            item {
-                ContentListItem(
-                    ContentItemInfo(
-                        title = stringResource(id = R.string.help),
-                        items = listOf(
-                            ListItemInfo(
-                                imageResource = painterResource(id = R.drawable.ic_loud_speaker),
-                                description = "notice icon",
-                                contentTitle = stringResource(id = R.string.notice),
-                                onClick = { /*TODO 공지사항 페이지로 이동 */ }
-                            )
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(JobisTheme.colors.background)
+                .padding(horizontal = 24.dp)
+                .verticalScroll(state = scrollState),
+        ) {
+            StudentInfo(
+                modifier = Modifier.padding(vertical = 12.dp),
+                profileImageUrl = "",
+                number = "3125",
+                name = "박시원",
+                department = "소프트웨어개발과",
+                onClick = { /*TODO 회원정보 수정 페이지로 이동 */ },
+            )
+            WriteInterviewReview(
+                companyName = "㈜마이다스아이티주ㅇㅁㅇㄴㅁㅁ",
+                onClick = { /*TODO 면접 후기 작 페이지로 이동 */ })
+            ContentListItem(
+                contentListTitle = stringResource(id = R.string.help),
+                contentItemInfo = ContentItemInfo(
+                    items = listOf(
+                        ListItemInfo(
+                            imageResource = painterResource(id = R.drawable.ic_loud_speaker),
+                            description = "notice icon",
+                            contentTitle = stringResource(id = R.string.notice),
+                            onClick = { /*TODO 공지사항 페이지로 이동 */ },
+                            iconColor = null,
                         )
                     )
                 )
-                ContentListItem(
-                    ContentItemInfo(
-                        title = stringResource(id = R.string.account),
-                        items = listOf(
-                            ListItemInfo(
-                                imageResource = painterResource(id = R.drawable.ic_code),
-                                description = "interest field icon",
-                                contentTitle = stringResource(id = R.string.interest_field),
-                                onClick = { /*TODO 관심 분야 선택 페이지로 이동 */ }
-                            ),
-                            ListItemInfo(
-                                imageResource = painterResource(id = R.drawable.ic_lock_reset),
-                                description = "password change icon",
-                                contentTitle = stringResource(id = R.string.password_change),
-                                onClick = { /*TODO 비밀번호 변경 페이지로 이동 */ }
-                            ),
-                            ListItemInfo(
-                                imageResource = painterResource(id = R.drawable.ic_logout),
-                                description = "logout icon",
-                                contentTitle = stringResource(id = R.string.logout),
-                                onClick = {
-                                    onLogoutButtonClick()
-                                }
-                            ),
-                            ListItemInfo(
-                                imageResource = painterResource(id = R.drawable.ic_person_remove),
-                                description = "membership withdrawal icon",
-                                contentTitle = stringResource(id = R.string.membership_withdrawal),
-                                onClick = {
-                                    onWithdrawalButtonClick()
-                                }
-                            ),
-                        )
+            )
+            ContentListItem(
+                contentListTitle = stringResource(id = R.string.account),
+                contentItemInfo = ContentItemInfo(
+                    items = listOf(
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.Code),
+                            description = "interest field icon",
+                            contentTitle = stringResource(id = R.string.interest_field),
+                            onClick = { /*TODO 관심 분야 선택 페이지로 이동 */ },
+                            iconColor = JobisTheme.colors.onPrimary,
+                        ),
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.LockReset),
+                            description = "password change icon",
+                            contentTitle = stringResource(id = R.string.password_change),
+                            onClick = { /*TODO 비밀번호 변경 페이지로 이동 */ },
+                            iconColor = JobisTheme.colors.onPrimary,
+                        ),
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.LogOut),
+                            description = "logout icon",
+                            contentTitle = stringResource(id = R.string.logout),
+                            onClick = onLogoutButtonClick,
+                            iconColor = JobisTheme.colors.error,
+                        ),
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.PersonRemove),
+                            description = "membership withdrawal icon",
+                            contentTitle = stringResource(id = R.string.membership_withdrawal),
+                            onClick = onWithdrawalButtonClick,
+                            iconColor = JobisTheme.colors.error,
+                        ),
                     )
                 )
-                ContentListItem(
-                    ContentItemInfo(
-                        title = stringResource(id = R.string.bug_report),
-                        items = listOf(
-                            ListItemInfo(
-                                imageResource = painterResource(id = R.drawable.ic_bug_report),
-                                description = "bug report icon",
-                                contentTitle = stringResource(id = R.string.to_bug_report),
-                                onClick = { /*TODO 버그 제보하기 페이지로 이동 */ }
-                            ),
-                            ListItemInfo(
-                                imageResource = painterResource(id = R.drawable.ic_bug_box),
-                                description = "bug report box icon",
-                                contentTitle = stringResource(id = R.string.bug_report_box),
-                                onClick = { /*TODO 버그 제보함 페이지로 이동 */ }
-                            ),
-                        )
+            )
+            ContentListItem(
+                contentListTitle = stringResource(id = R.string.bug_report),
+                contentItemInfo = ContentItemInfo(
+                    items = listOf(
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.Report),
+                            description = "bug report icon",
+                            contentTitle = stringResource(id = R.string.to_bug_report),
+                            onClick = { /*TODO 버그 제보하기 페이지로 이동 */ },
+                            iconColor = JobisTheme.colors.onPrimary,
+                        ),
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.Box),
+                            description = "bug report box icon",
+                            contentTitle = stringResource(id = R.string.bug_report_box),
+                            onClick = { /*TODO 버그 제보함 페이지로 이동 */ },
+                            iconColor = JobisTheme.colors.onPrimary,
+                        ),
                     )
+                )
                 )
             }
         }
