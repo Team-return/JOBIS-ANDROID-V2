@@ -64,6 +64,34 @@ private fun MyPageScreen() {
         setShowWithdrawalModal(false)
     }
 
+    if (showLogoutModal) {
+        ShowModal(
+            title = stringResource(id = R.string.logout_modal_title),
+            description = stringResource(id = R.string.modal_if_logout),
+            confirmText = stringResource(id = R.string.modal_button_logout),
+            cancelText = stringResource(id = R.string.modal_button_cancel),
+            onConfirm = {
+                onConfirmLogout()
+            },
+            onCancel = {
+                setShowLogoutModal(false)
+            }
+        )
+    } else if (showWithdrawalModal) {
+        ShowModal(
+            title = stringResource(id = R.string.withdrawal_modal_title),
+            description = stringResource(id = R.string.modal_if_withdrawal),
+            confirmText = stringResource(id = R.string.modal_button_withdrawal),
+            cancelText = stringResource(id = R.string.modal_button_cancel),
+            onConfirm = {
+                onConfirmWithdrawal()
+            },
+            onCancel = {
+                setShowWithdrawalModal(false)
+            }
+        )
+    }
+
     Column {
         JobisLargeTopAppBar(
             title = stringResource(id = R.string.mypage),
@@ -156,34 +184,6 @@ private fun MyPageScreen() {
                         ),
                     )
                 )
-                )
-            }
-        }
-        if (showLogoutModal) {
-            ShowModal(
-                title = stringResource(id = R.string.logout_modal_title),
-                description = stringResource(id = R.string.modal_if_logout),
-                confirmText = stringResource(id = R.string.modal_button_logout),
-                cancelText = stringResource(id = R.string.modal_button_cancel),
-                onConfirm = {
-                    onConfirmLogout()
-                },
-                onCancel = {
-                    setShowLogoutModal(false)
-                }
-            )
-        } else if (showWithdrawalModal) {
-            ShowModal(
-                title = stringResource(id = R.string.withdrawal_modal_title),
-                description = stringResource(id = R.string.modal_if_withdrawal),
-                confirmText = stringResource(id = R.string.modal_button_withdrawal),
-                cancelText = stringResource(id = R.string.modal_button_cancel),
-                onConfirm = {
-                    onConfirmWithdrawal()
-                },
-                onCancel = {
-                    setShowLogoutModal(false)
-                }
             )
         }
     }
@@ -199,9 +199,7 @@ private fun ShowModal(
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
 ) {
-    Dialog(
-        onDismissRequest = onCancel
-    ) {
+    Dialog(onDismissRequest = onCancel) {
         Surface() {
             Column() {}
         }
