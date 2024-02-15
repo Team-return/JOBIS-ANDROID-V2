@@ -12,7 +12,9 @@
 
     <string name="jobis">JOBIS</string>
     <string name="to_login_in_to">에 로그인하기</string>
-    <!-- TODO 더 나은 네이밍 추천좀-->
+
     <string name="toast_error">값이 유효한지 확인해주세요</string>
     <string name="toast_success">로그인 되었습니다</string>
+
+    <string name="forgot_password">비밀번호를 잊으셨나요?</string>
 </resources>

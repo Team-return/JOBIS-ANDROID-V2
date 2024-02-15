@@ -63,6 +63,8 @@ dependencies {
     implementation(project(":feature:bookmark"))
     implementation(project(":feature:bug"))
     implementation(project(":feature:interests"))
+    implementation(project(":feature:change-password"))
+    implementation(project(":feature:verify-email"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)

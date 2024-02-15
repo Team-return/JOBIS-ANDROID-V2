@@ -21,7 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,10 +41,10 @@ import team.retum.jobisdesignsystemv2.utils.keyboardAsState
 
 private val largeButtonShape = RoundedCornerShape(12.dp)
 private val smallButtonShape = RoundedCornerShape(8.dp)
+private val mediumButtonShape = RoundedCornerShape(32.dp)
 
 private enum class ButtonType {
-    LARGE,
-    SMALL,
+    LARGE, SMALL,
 }
 
 @Composable
@@ -58,8 +60,7 @@ private fun BasicButton(
     content: @Composable () -> Unit,
 ) {
     val keyboardShow by keyboardAsState()
-    val isKeyboardHideButton =
-        keyboardShow && keyboardInteractionEnabled
+    val isKeyboardHideButton = keyboardShow && keyboardInteractionEnabled
     val padding = if (isKeyboardHideButton || buttonType == ButtonType.SMALL) {
         PaddingValues(
             vertical = 0.dp,
@@ -195,13 +196,12 @@ private fun LargeButton(
         onClick = onClick,
     ) { contentColor ->
         Row(
-            modifier = Modifier
-                .padding(
-                    start = 28.dp,
-                    end = 16.dp,
-                    top = 16.dp,
-                    bottom = 16.dp,
-                ),
+            modifier = Modifier.padding(
+                start = 28.dp,
+                end = 16.dp,
+                top = 16.dp,
+                bottom = 16.dp,
+            ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
@@ -243,15 +243,58 @@ private fun SmallButton(
         onClick = onClick,
     ) { contentColor ->
         JobisText(
-            modifier = Modifier
-                .padding(
-                    horizontal = 8.dp,
-                    vertical = 4.dp,
-                ),
+            modifier = Modifier.padding(
+                horizontal = 8.dp,
+                vertical = 4.dp,
+            ),
             text = text,
             style = JobisTypography.SubBody,
             color = contentColor,
         )
+    }
+}
+
+@Composable
+private fun MediumButton(
+    modifier: Modifier,
+    text: String,
+    color: ButtonColor,
+    painter: Painter,
+    enabled: Boolean,
+    keyboardInteractionEnabled: Boolean,
+    onClick: () -> Unit,
+) {
+    var pressed by remember { mutableStateOf(false) }
+
+    ColoredButton(
+        modifier = modifier,
+        color = color,
+        shape = mediumButtonShape,
+        enabled = enabled,
+        buttonType = ButtonType.SMALL,
+        keyboardInteractionEnabled = keyboardInteractionEnabled,
+        pressed = { pressed },
+        onPressed = { pressed = it },
+        onClick = onClick,
+    ) { contentColor ->
+        Row(
+            modifier = Modifier.padding(
+                horizontal = 16.dp,
+                vertical = 12.dp,
+            ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Icon(
+                painter = painter,
+                contentDescription = "drawable",
+            )
+            JobisText(
+                text = text,
+                style = JobisTypography.Body,
+                color = contentColor,
+            )
+        }
     }
 }
 
@@ -297,6 +340,27 @@ fun JobisSmallButton(
         modifier = modifier,
         text = text,
         color = color,
+        enabled = enabled,
+        keyboardInteractionEnabled = keyboardInteractionEnabled,
+        onClick = onClick,
+    )
+}
+
+@Composable
+fun JobisMediumButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: ButtonColor = ButtonColor.Default,
+    drawable: Painter,
+    enabled: Boolean = true,
+    keyboardInteractionEnabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    MediumButton(
+        modifier = modifier,
+        text = text,
+        color = color,
+        painter = drawable,
         enabled = enabled,
         keyboardInteractionEnabled = keyboardInteractionEnabled,
         onClick = onClick,
