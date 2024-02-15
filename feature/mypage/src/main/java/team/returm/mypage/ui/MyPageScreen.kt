@@ -206,7 +206,6 @@ private fun ShowModal(
     }
 }
 
-
 @Composable
 private fun StudentInfo(
     modifier: Modifier = Modifier,
@@ -214,6 +213,7 @@ private fun StudentInfo(
     number: String,
     name: String,
     department: String,
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = modifier,
@@ -245,6 +245,7 @@ private fun StudentInfo(
             text = stringResource(id = R.string.modify),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.onPrimary,
+            modifier = Modifier.clickable { onClick() },
         )
     }
 }
