@@ -11,13 +11,14 @@ hilt-android-gradle-plugin = "2.50"
 junit = "4.13.2"
 android-gradle = "8.2.2"
 kotlin = "1.9.21"
-design-system = "1.1.2"
 lottie-compose = "6.3.0"
 squareup-retrofit = "2.9.0"
 squareup-logging-interceptor = "4.12.0"
 squareup-javapoet = "1.13.0"
 hilt-android-navigation = "1.1.0"
 androidx-compose-material = "1.6.1"
+
+com-google-android-material = "1.11.0"
 
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
@@ -33,13 +34,14 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 
+com-google-android-material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material"}
+
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-viewmodel" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
-jobis-design-system = { group = "com.github.Team-return", name = "JOBIS-DESIGN-SYSTEM-ANDROID-V2", version.ref = "design-system" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }

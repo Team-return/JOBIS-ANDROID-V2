@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -24,24 +25,26 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.button.JobisMediumButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.textfield.DescriptionType
+import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.signin.R
 import team.retum.signin.viewmodel.SignInSideEffect
 import team.retum.signin.viewmodel.SignInState
 import team.retum.signin.viewmodel.SignInViewModel
-import team.returm.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.textfield.DescriptionType
-import team.returm.jobisdesignsystemv2.textfield.JobisTextField
-import team.returm.jobisdesignsystemv2.toast.JobisToast
 
 @Composable
 internal fun SignIn(
     onBackClick: () -> Unit,
     onSignInSuccess: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel(),
 ) {
     val state by signInViewModel.state.collectAsState()
@@ -75,6 +78,7 @@ internal fun SignIn(
         onEmailChange = signInViewModel::setEmail,
         onPasswordChange = signInViewModel::setPassword,
         onSignInClick = signInViewModel::signIn,
+        onForgotPasswordClick = onForgotPasswordClick,
     )
 }
 
@@ -85,6 +89,7 @@ private fun SignInScreen(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSignInClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -101,6 +106,13 @@ private fun SignInScreen(
             onPasswordChange = onPasswordChange,
             notFoundEmail = { state.notFoundEmail },
             invalidPassword = { state.invalidPassword },
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        JobisMediumButton(
+            text = stringResource(id = R.string.forgot_password),
+            drawable = painterResource(id = JobisIcon.LockReset),
+            onClick = onForgotPasswordClick,
+            keyboardInteractionEnabled = false,
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(

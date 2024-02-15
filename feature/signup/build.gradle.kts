@@ -11,7 +11,3 @@ apply<ComposeGradlePlugin>()
 android {
     namespace = "team.retum.signup"
 }
-
-dependencies {
-    implementation(project(":core:common"))
-}
