@@ -376,14 +376,13 @@ private fun ListItem(
     }
 }
 
-data class ListItemInfo(
+private data class ListItemInfo(
     val imageResource: Painter,
     val description: String,
     val contentTitle: String,
     val onClick: () -> Unit,
 )
 
-data class ContentItemInfo(
-    val title: String,
+private data class ContentItemInfo(
     val items: List<ListItemInfo>,
 )
