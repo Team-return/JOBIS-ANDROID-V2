@@ -273,10 +273,11 @@ private fun WriteInterviewReview(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Image(
+            Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(id = R.drawable.ic_meeting_room),
-                contentDescription = "meeting room icon"
+                painter = painterResource(id = JobisIcon.MeetingRoom),
+                contentDescription = "meeting room icon",
+                tint = JobisTheme.colors.onPrimary,
             )
             Column(
                 modifier = Modifier.weight(1f),
@@ -349,12 +350,11 @@ private fun ListItem(
             .clickable { onItemClick() },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(
-            modifier = Modifier
-                .padding(end = 8.dp)
-                .size(28.dp),
+        Icon(
+            modifier = Modifier.size(28.dp),
             painter = item.imageResource,
             contentDescription = item.description,
+            tint = item.iconColor ?: Color.Unspecified,
         )
         JobisText(
             text = item.contentTitle,
@@ -368,6 +368,7 @@ private data class ListItemInfo(
     val description: String,
     val contentTitle: String,
     val onClick: () -> Unit,
+    val iconColor: Color? = null,
 )
 
 private data class ContentItemInfo(
