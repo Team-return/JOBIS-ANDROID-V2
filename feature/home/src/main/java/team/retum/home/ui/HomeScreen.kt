@@ -167,7 +167,6 @@ private fun HomeScreen(
     }
 }
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ColumnScope.Banner(pagerState: PagerState) {
@@ -471,8 +470,11 @@ private fun ApplyCompanyItem(
     }
 
     JobisCard(
-        onClick = if (applyCompany.status == ApplyStatus.REJECTED) onClick
-        else null,
+        onClick = if (applyCompany.status == ApplyStatus.REJECTED) {
+            onClick
+        } else {
+            null
+        },
     ) {
         Row(
             modifier = Modifier.padding(

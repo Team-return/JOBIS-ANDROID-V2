@@ -47,11 +47,15 @@ fun JobisCard(
         modifier = modifier
             .fillMaxWidth()
             .then(
-                if (onClick != null) Modifier.clickable(
-                    onClick = onClick,
-                    enabled = enabled,
-                    onPressed = { pressed = it },
-                ) else Modifier
+                if (onClick != null) {
+                    Modifier.clickable(
+                        onClick = onClick,
+                        enabled = enabled,
+                        onPressed = { pressed = it },
+                    )
+                } else {
+                    Modifier
+                },
             ),
         shape = shape,
         color = backgroundColor,

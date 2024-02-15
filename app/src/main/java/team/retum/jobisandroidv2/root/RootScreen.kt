@@ -77,7 +77,7 @@ private fun RootScreen(
         sheetShape = RoundedCornerShape(
             topStart = 24.dp,
             topEnd = 24.dp,
-        )
+        ),
     ) {
         Scaffold(
             bottomBar = { BottomNavigationBar(navController = navController) },
@@ -89,7 +89,7 @@ private fun RootScreen(
             ) {
                 home(
                     onAlarmClick = onAlarmClick,
-                    onRejectionReasonClick = onRejectionReasonClick
+                    onRejectionReasonClick = onRejectionReasonClick,
                 )
                 recruitments()
                 bookmarks(onRecruitmentsClick = { navController.navigate(NAVIGATION_RECRUITMENTS) })
