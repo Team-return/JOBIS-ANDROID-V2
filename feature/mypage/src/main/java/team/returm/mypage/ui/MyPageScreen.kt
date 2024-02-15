@@ -256,10 +256,11 @@ private fun WriteInterviewReview(
     companyName: String,
     onClick: () -> Unit,
 ) {
-    Box(
+    JobisCard(
         modifier = modifier
-            .padding(vertical = 12.dp, horizontal = 24.dp)
-            .background(color = JobisTheme.colors.background)
+            .padding(vertical = 12.dp),
+        background = JobisTheme.colors.inverseSurface,
+        onClick = onClick,
     ) {
         Row(
             modifier = Modifier
@@ -305,8 +306,7 @@ private fun WriteInterviewReview(
                     style = JobisTypography.SubHeadLine,
                     textAlign = TextAlign.Center,
                     color = JobisTheme.colors.onPrimary,
-
-                    )
+                )
             }
         }
     }
