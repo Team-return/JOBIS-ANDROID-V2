@@ -1,7 +1,7 @@
 package team.retum.network.model.request
 
 import com.google.gson.annotations.SerializedName
-import team.retum.common.PlatformType
+import team.retum.common.enums.PlatformType
 
 data class SignInRequest(
     @SerializedName("account_id") val email: String,

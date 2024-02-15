@@ -1,4 +1,4 @@
-package team.retum.common
+package team.retum.common.enums
 
 enum class PlatformType {
     WEB,
