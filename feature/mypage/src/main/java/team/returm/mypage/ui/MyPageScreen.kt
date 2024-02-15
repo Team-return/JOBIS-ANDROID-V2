@@ -315,38 +315,25 @@ private fun WriteInterviewReview(
 @Composable
 private fun ContentListItem(
     contentItemInfo: ContentItemInfo,
+    contentListTitle: String,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp),
     ) {
-        ContentListTitle(contentListTitle = contentItemInfo.title)
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = contentListTitle,
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
         contentItemInfo.items.forEach { item ->
             ListItem(
                 item = item,
                 onItemClick = item.onClick,
             )
         }
-        JobisCard(onClick = { /*TODO*/ }) {
-
-        }
-    }
-}
-
-@Composable
-private fun ContentListTitle(contentListTitle: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        JobisText(
-            text = contentListTitle,
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
-        )
     }
 }
 
