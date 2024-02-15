@@ -257,21 +257,17 @@ private fun WriteInterviewReview(
     onClick: () -> Unit,
 ) {
     JobisCard(
-        modifier = modifier
-            .padding(vertical = 12.dp),
+        modifier = modifier.padding(vertical = 12.dp),
         background = JobisTheme.colors.inverseSurface,
         onClick = onClick,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    color = JobisTheme.colors.inverseSurface,
-                    shape = RoundedCornerShape(12.dp)
-                )
+                .background(color = JobisTheme.colors.inverseSurface)
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
@@ -281,7 +277,7 @@ private fun WriteInterviewReview(
             )
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -341,14 +337,15 @@ private fun ContentListItem(
 @Composable
 private fun ListItem(
     item: ListItemInfo,
-    onItemClick: () -> Unit
+    onItemClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 12.dp)
+            .padding(vertical = 12.dp)
             .clickable { onItemClick() },
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Icon(
             modifier = Modifier.size(28.dp),
