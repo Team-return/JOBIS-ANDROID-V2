@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import team.retum.recruitment.ui.RecruitmentDetails
 
-const val NAVIGATION_RECRUITMENTS_DETAIL = "recruitmentDetail"
+const val NAVIGATION_RECRUITMENT_DETAILS = "recruitmentDetails"
 
 fun NavGraphBuilder.recruitmentDetail(
     onBackPressed: () -> Unit,
