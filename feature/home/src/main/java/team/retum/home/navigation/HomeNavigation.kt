@@ -6,8 +6,14 @@ import team.retum.home.ui.Home
 
 const val NAVIGATION_HOME = "home"
 
-fun NavGraphBuilder.home(onAlarmClick: () -> Unit) {
+fun NavGraphBuilder.home(
+    onAlarmClick: () -> Unit,
+    onRejectionReasonClick: () -> Unit,
+) {
     composable(NAVIGATION_HOME) {
-        Home(onAlarmClick = onAlarmClick)
+        Home(
+            onAlarmClick = onAlarmClick,
+            onRejectionReasonClick = onRejectionReasonClick,
+        )
     }
 }
