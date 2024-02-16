@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mypage">마이페이지</string>
+    <string name="modify">수정</string>
+    <string name="notice">공지사항</string>
+    <string name="help">도움말</string>
+    <string name="account">계정</string>
+    <string name="interest_field">관심 분야 선택</string>
+    <string name="password_change">비밀번호 변경</string>
+    <string name="logout">로그아웃</string>
+    <string name="membership_withdrawal">회원 탈퇴</string>
+    <string name="bug_report">버그 제보</string>
+    <string name="to_bug_report">버그 제보하기</string>
+    <string name="bug_report_box">버그 제보함</string>
+    <string name="write_interview_review">면접 후기를 적어주세요!</string>
+    <string name="go_write">작성하러 가기 →</string>
+    <string name="logout_modal_title">JOBIS에서 로그아웃 하시겠어요?</string>
+    <string name="modal_if_logout">JOBIS에서 로그아웃 하면,\n로그인 할 때 까지 사용하지 못해요</string>
+    <string name="modal_button_cancel">취소</string>
+    <string name="modal_button_logout">로그아웃</string>
+    <string name="withdrawal_modal_title">JOBIS에서 탈퇴 하시겠어요?</string>
+    <string name="modal_if_withdrawal">JOBIS에서 탈퇴하면,\n다시 가입 할 때 까지 사용하지 못해요</string>
+    <string name="modal_button_withdrawal">회원탈퇴</string>
+</resources>

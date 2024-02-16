@@ -14,6 +14,7 @@ import team.retum.home.navigation.home
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 import team.retum.recruitment.NAVIGATION_RECRUITMENTS
 import team.retum.recruitment.recruitments
+import team.returm.mypage.navigation.mypage
 
 @Composable
 internal fun Root(
@@ -44,6 +45,7 @@ private fun RootScreen(
             home(onAlarmClick = onAlarmClick)
             recruitments()
             bookmarks(onRecruitmentsClick = { navController.navigate(NAVIGATION_RECRUITMENTS) })
+            mypage()
         }
     }
 }
