@@ -82,7 +82,7 @@ private fun SearchCompaniesScreen(
         JobisTextField(
             title = "",
             value = { name ?: "" },
-            hint = "검색어를 입력해주세요",
+            hint = stringResource(id = R.string.search_hint),
             onValueChange = onNameChange,
         )
         if (companies.isNotEmpty() || name.isNullOrEmpty()) {
