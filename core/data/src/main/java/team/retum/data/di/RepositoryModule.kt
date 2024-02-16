@@ -8,6 +8,8 @@ import team.retum.data.repository.BookmarkRepository
 import team.retum.data.repository.BookmarkRepositoryImpl
 import team.retum.data.repository.UserRepository
 import team.retum.data.repository.UserRepositoryImpl
+import team.retum.data.repository.company.CompanyRepository
+import team.retum.data.repository.company.CompanyRepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -20,4 +22,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsBookmarkRepository(bookmarkRepositoryImpl: BookmarkRepositoryImpl): BookmarkRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCompanyRepository(companyRepositoryImpl: CompanyRepositoryImpl): CompanyRepository
 }

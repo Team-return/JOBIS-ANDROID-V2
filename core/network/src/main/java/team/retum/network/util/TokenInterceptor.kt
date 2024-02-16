@@ -26,7 +26,7 @@ class TokenInterceptor : Interceptor {
             when (ignorePaths.contains(path)) {
                 true -> request
                 // TODO 토큰 캐싱 로직 구현
-                false -> chain.request().newBuilder().addHeader("Authorization", "Bearer ").build()
+                false -> chain.request().newBuilder().addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA4MDY2NDY3LCJleHAiOjE3MDgwNzAwNjcsInR5cGUiOiJBQ0NFU1MiLCJhdXRob3JpdHkiOiJTVFVERU5UIn0.9kkuR-m86r8iZ72CrSca-uPMY14bIVbPb6C6XmpQdKU").build()
             },
         )
     }
