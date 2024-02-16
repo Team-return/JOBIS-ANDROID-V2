@@ -75,7 +75,7 @@ private fun MyPageScreen() {
             },
             onCancel = {
                 setShowLogoutModal(false)
-            }
+            },
         )
     } else if (showWithdrawalModal) {
         ShowModal(
@@ -88,7 +88,7 @@ private fun MyPageScreen() {
             },
             onCancel = {
                 setShowWithdrawalModal(false)
-            }
+            },
         )
     }
 
@@ -114,7 +114,8 @@ private fun MyPageScreen() {
             )
             WriteInterviewReview(
                 companyName = "㈜마이다스아이티주ㅇㅁㅇㄴㅁㅁ",
-                onClick = { /*TODO 면접 후기 작 페이지로 이동 */ })
+                onClick = { /*TODO 면접 후기 작 페이지로 이동 */ },
+            )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.help),
                 contentItemInfo = ContentItemInfo(
@@ -161,8 +162,8 @@ private fun MyPageScreen() {
                             onClick = onWithdrawalButtonClick,
                             iconColor = JobisTheme.colors.error,
                         ),
-                    )
-                )
+                    ),
+                ),
             )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.bug_report),
@@ -182,8 +183,8 @@ private fun MyPageScreen() {
                             onClick = { /*TODO 버그 제보함 페이지로 이동 */ },
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
-                    )
-                )
+                    ),
+                ),
             )
         }
     }
@@ -229,8 +230,7 @@ private fun StudentInfo(
         Column(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(4.dp),
-
-            ) {
+        ) {
             JobisText(
                 text = "$number $name",
                 style = JobisTypography.SubHeadLine,
@@ -345,7 +345,7 @@ private fun ListItem(
             .padding(vertical = 12.dp)
             .clickable { onItemClick() },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Icon(
             modifier = Modifier.size(28.dp),
