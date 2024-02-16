@@ -40,6 +40,7 @@ import team.returm.mypage.navigation.mypage
 internal fun Root(
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onCompaniesClick: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -58,6 +59,7 @@ internal fun Root(
             }
         },
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        onCompaniesClick = onCompaniesClick,
     )
 }
 
@@ -70,6 +72,7 @@ private fun RootScreen(
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRejectionReasonClick: () -> Unit,
+    onCompaniesClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -95,6 +98,7 @@ private fun RootScreen(
                 home(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
+                onCompaniesClick = onCompaniesClick,
                 )
                 recruitments(onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails)
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)

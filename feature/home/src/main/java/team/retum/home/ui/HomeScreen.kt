@@ -81,12 +81,13 @@ private data class ApplyCompany(
 internal fun Home(
     onAlarmClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
+    onCompaniesClick: () -> Unit,
 ) {
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = listOf(
         MenuItem(
             title = stringResource(id = R.string.search_other_companies),
-            onClick = {},
+            onClick = onCompaniesClick,
             icon = R.drawable.ic_building,
         ),
         MenuItem(
