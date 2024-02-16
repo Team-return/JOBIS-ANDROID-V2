@@ -12,9 +12,3 @@ apply<ComposeGradlePlugin>()
 android {
     namespace = "team.retum.alarm"
 }
-
-dependencies {
-
-    implementation(project(":core:common"))
-    implementation(project(":core:domain"))
-}

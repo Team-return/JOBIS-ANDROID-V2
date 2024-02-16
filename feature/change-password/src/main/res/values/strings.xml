@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--ResetPasswordScreen-->
+    <string name="title_reset_password">새로 사용할\n비밀번호를 입력해주세요</string>
+    <string name="password">비밀번호</string>
+    <string name="hint_password">계정의 비밀번호를 설정해주세요</string>
+    <string name="information_password">8 ~ 16자, 영문자, 숫자, 특수문자 포함</string>
+    <string name="check_password">비밀번호 확인</string>
+    <string name="hint_check_password">위 비밀번호를 한 번 더 입력해주세요</string>
+    <string name="complete">완료</string>
+
+    <!--ConfirmPasswordScreen-->
+    <string name="title_confirm_password">비밀번호 변경을 위해\n현재 비밀번호를 입력해주세요</string>
+    <string name="hint_password_confirm">계정의 비밀번호를 입력해주세요</string>
+    <string name="next">다음</string>
+</resources>

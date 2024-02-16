@@ -46,13 +46,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import team.retum.home.R
-import team.returm.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.returm.jobisdesignsystemv2.button.JobisIconButton
-import team.returm.jobisdesignsystemv2.card.JobisCard
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
 
 private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40

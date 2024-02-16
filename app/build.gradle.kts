@@ -53,6 +53,7 @@ android {
 
 dependencies {
 
+    implementation(project(":core:design-system"))
     implementation(project(":feature:landing"))
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
@@ -62,9 +63,11 @@ dependencies {
     implementation(project(":feature:bookmark"))
     implementation(project(":feature:bug"))
     implementation(project(":feature:mypage"))
+    implementation(project(":feature:interests"))
+    implementation(project(":feature:change-password"))
+    implementation(project(":feature:verify-email"))
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.jobis.design.system)
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.hilt.android)

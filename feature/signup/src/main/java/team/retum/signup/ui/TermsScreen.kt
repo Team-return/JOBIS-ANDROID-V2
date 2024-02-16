@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import team.retum.signup.R
-import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 
 private const val TERMS_URL = "https://jobis-webview.team-return.com/sign-up-policy"
 private const val WEB_VIEW_SCROLL_BOTTOM = 1
