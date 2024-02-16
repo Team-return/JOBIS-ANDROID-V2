@@ -4,9 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -143,28 +143,20 @@ private fun RecruitmentDetailScreen(
             .fillMaxSize()
             .background(JobisTheme.colors.background),
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            JobisSmallTopAppBar(
-                onBackPressed = onBackPressed,
-            )
-        }
+        JobisSmallTopAppBar(onBackPressed = onBackPressed)
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
                 .verticalScroll(scrollState),
         ) {
-            CompanyInformation(
-                recruitmentDetail = recruitmentDetail,
-            )
+            CompanyInformation(recruitmentDetail = recruitmentDetail)
             Divider(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = JobisTheme.colors.inverseSurface,
                 thickness = 1.dp,
             )
-            RecruitmentDetailInfo(
-                recruitmentDetail = recruitmentDetail,
-            )
+            RecruitmentDetailInfo(recruitmentDetail = recruitmentDetail)
         }
         Row(
             modifier = Modifier
@@ -179,7 +171,6 @@ private fun RecruitmentDetailScreen(
                 color = ButtonColor.Primary,
                 onClick = { },
             )
-            TODO("버튼 default padding 때문에 커스텀 했는데도 안되요")
             Icon(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -217,6 +208,7 @@ private fun CompanyInformation(
             vertical = 12.dp,
         ),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Image(
             modifier = Modifier
@@ -231,7 +223,6 @@ private fun CompanyInformation(
             contentScale = ContentScale.FillBounds,
         )
         JobisText(
-            modifier = Modifier.padding(start = 12.dp),
             text = recruitmentDetail.companyName,
             style = JobisTypography.HeadLine,
         )
@@ -259,10 +250,7 @@ private fun RecruitmentDetailInfo(
             Position(areas = recruitmentDetail.areas)
             Detail(
                 title = stringResource(id = R.string.certificate),
-                content = requiredLicenses?.toString()
-                    ?.replace("[", "")
-                    ?.replace("]", "")
-                    ?.trim(),
+                content = exceptBracket(requiredLicenses.toString()),
             )
             Detail(
                 title = stringResource(id = R.string.recruitment_procedure),
@@ -312,46 +300,41 @@ internal fun Detail(
     title: String,
     content: String?,
 ) {
-    Spacer(modifier = Modifier.height(12.dp))
-    JobisText(
-        modifier = Modifier.padding(vertical = 8.dp),
-        text = title,
-        style = JobisTypography.Description,
-        color = JobisTheme.colors.onSurfaceVariant,
-    )
-    JobisText(
-        modifier = Modifier.padding(vertical = 4.dp),
-        text = if (content.isNullOrEmpty()) "-" else content,
-        style = JobisTypography.Body,
-    )
-    Spacer(modifier = Modifier.height(12.dp))
+    Column(modifier = Modifier.padding(vertical = 12.dp)) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = title,
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+        JobisText(
+            modifier = Modifier.padding(vertical = 4.dp),
+            text = if (content.isNullOrEmpty()) "-" else content,
+            style = JobisTypography.Body,
+        )
+    }
 }
 
 @Composable
 private fun Position(
     areas: List<Area>,
 ) {
-    Spacer(modifier = Modifier.height(12.dp))
-    JobisText(
-        modifier = Modifier.padding(vertical = 8.dp),
-        text = stringResource(id = R.string.job_position),
-        style = JobisTypography.Description,
-        color = JobisTheme.colors.onSurfaceVariant,
-    )
-    if (areas.isNotEmpty()) {
-        areas.forEach {
-            PositionCard(
-                job = it.job.toString()
-                    .replace("[", "")
-                    .replace("]", "")
-                    .replace(",", "/")
-                    .trim(),
-                majorTask = it.majorTask,
-                tech = it.tech.toString()
-                    .replace("[", "")
-                    .replace("]", "")
-                    .trim(),
-            )
+    Column(modifier = Modifier.padding(vertical = 12.dp)) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = stringResource(id = R.string.job_position),
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+        if (areas.isNotEmpty()) {
+            areas.forEach {
+                PositionCard(
+                    job = exceptBracket(it.job.toString())                        .replace(",", "/")
+                        .replace(",", "/"),
+                    majorTask = it.majorTask,
+                    tech = exceptBracket(it.tech.toString()),
+                )
+            }
         }
     }
 }
@@ -374,12 +357,12 @@ private fun PositionCard(
         Row(
             modifier = Modifier.padding(all = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             JobisText(
                 text = job,
                 style = JobisTypography.SubHeadLine,
             )
-            Spacer(modifier = Modifier.weight(1f))
             JobisIconButton(
                 defaultBackgroundColor = JobisTheme.colors.inverseSurface,
                 painter = if (showDetails) painterResource(id = R.drawable.ic_arrow_up)
@@ -427,4 +410,11 @@ internal fun PositionDetail(
             style = JobisTypography.Body,
         )
     }
+}
+
+internal fun exceptBracket(text: String) : String {
+    return text
+        .replace("[", "")
+        .replace("]", "")
+        .trim()
 }
