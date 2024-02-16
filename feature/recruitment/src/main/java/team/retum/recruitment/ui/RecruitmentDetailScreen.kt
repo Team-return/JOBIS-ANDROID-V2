@@ -365,8 +365,10 @@ private fun PositionCard(
             )
             JobisIconButton(
                 defaultBackgroundColor = JobisTheme.colors.inverseSurface,
-                painter = if (showDetails) painterResource(id = R.drawable.ic_arrow_up)
-                else painterResource(id = R.drawable.ic_arrow_down),
+                painter = painterResource(
+                    id = if (showDetails) R.drawable.ic_arrow_up
+                    else R.drawable.ic_arrow_down
+                ),
                 onClick = { showDetails = !showDetails },
                 contentDescription = "detail",
             )
