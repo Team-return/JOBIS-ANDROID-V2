@@ -2,7 +2,7 @@ package team.retum.network.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class CompaniesResponse(
+data class FetchCompaniesResponse(
     @SerializedName("companies") val companies: List<CompanyResponse>,
 ) {
     data class CompanyResponse(

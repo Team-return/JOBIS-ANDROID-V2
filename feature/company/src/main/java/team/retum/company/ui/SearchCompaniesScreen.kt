@@ -25,8 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import team.retum.company.R
+import team.retum.company.viewmodel.CompanyState
 import team.retum.company.viewmodel.CompanyViewModel
+import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -53,24 +54,20 @@ internal fun SearchCompanies(
     }
     SearchCompaniesScreen(
         onBackPressed = onBackPressed,
-        name = state.name,
-        onNameChange = { companyViewModel.setName(it) },
+        onNameChange = companyViewModel::setName,
         companies = companyViewModel.companies.value.companies,
-        checkCompanies = { companyViewModel.setCheckCompany(it) },
-        pageCount = state.page,
-        totalPageCount = state.totalPage,
+        checkCompanies = companyViewModel::setCheckCompany,
+        state = state,
     )
 }
 
 @Composable
 private fun SearchCompaniesScreen(
     onBackPressed: () -> Unit,
-    name: String?,
     onNameChange: (String) -> Unit,
     companies: List<CompaniesEntity.CompanyEntity>,
     checkCompanies: (Boolean) -> Unit,
-    pageCount: Int,
-    totalPageCount: Long,
+    state: CompanyState,
 ) {
     checkCompanies(false)
     Column(
@@ -81,11 +78,11 @@ private fun SearchCompaniesScreen(
         JobisSmallTopAppBar(onBackPressed = onBackPressed)
         JobisTextField(
             title = "",
-            value = { name ?: "" },
+            value = { state.name ?: "" },
             hint = stringResource(id = R.string.search_hint),
             onValueChange = onNameChange,
         )
-        if (companies.isNotEmpty() || name.isNullOrEmpty()) {
+        if (companies.isNotEmpty() || state.name.isNullOrEmpty()) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -99,7 +96,7 @@ private fun SearchCompaniesScreen(
                         id = it.id,
                         hasRecruitment = it.hasRecruitment,
                     )
-                    if (it == companies.last() && pageCount.toLong() != totalPageCount) {
+                    if (it == companies.last() && state.page.toLong() != state.totalPage) {
                         checkCompanies(true)
                     }
                 }

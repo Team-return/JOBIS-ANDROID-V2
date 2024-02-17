@@ -1,11 +1,11 @@
 package team.retum.usecase.entity
 
-import team.retum.network.model.response.CompanyCountResponse
+import team.retum.network.model.response.FetchCompanyPageCountResponse
 
 data class CompanyCountEntity(
     val totalPageCount: Long,
 )
 
-fun CompanyCountResponse.toCompanyCountEntity() = CompanyCountEntity(
+fun FetchCompanyPageCountResponse.toCompanyCountEntity() = CompanyCountEntity(
     totalPageCount = this.totalPageCount,
 )

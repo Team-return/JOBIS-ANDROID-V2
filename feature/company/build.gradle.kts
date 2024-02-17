@@ -10,7 +10,7 @@ apply<CommonGradlePlugin>()
 apply<ComposeGradlePlugin>()
 
 android {
-    namespace = "team.retum.company"
+    namespace = "team.retum.jobis.company"
 }
 
 dependencies {

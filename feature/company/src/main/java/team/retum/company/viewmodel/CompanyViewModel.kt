@@ -58,7 +58,7 @@ internal class CompanyViewModel @Inject constructor(
     }
 }
 
-data class CompanyState(
+internal data class CompanyState(
     val name: String?,
     val totalPage: Long,
     val checkCompany: Boolean,

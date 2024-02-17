@@ -1,6 +1,6 @@
 package team.retum.usecase.entity
 
-import team.retum.network.model.response.CompaniesResponse
+import team.retum.network.model.response.FetchCompaniesResponse
 
 data class CompaniesEntity(
     val companies: List<CompanyEntity>,
@@ -14,14 +14,14 @@ data class CompaniesEntity(
     )
 }
 
-fun CompaniesResponse.toCompaniesEntity() = CompaniesEntity(
+internal fun FetchCompaniesResponse.toCompaniesEntity() = CompaniesEntity(
     companies = this.companies.map { it.toEntity() }
 )
 
-private fun CompaniesResponse.CompanyResponse.toEntity() = CompaniesEntity.CompanyEntity(
-    id = id,
-    name = name,
-    logoUrl = logoUrl,
-    take = take,
-    hasRecruitment = hasRecruitment,
+private fun FetchCompaniesResponse.CompanyResponse.toEntity() = CompaniesEntity.CompanyEntity(
+    id = this.id,
+    name = this.name,
+    logoUrl = this.logoUrl,
+    take = this.take,
+    hasRecruitment = this.hasRecruitment,
 )
