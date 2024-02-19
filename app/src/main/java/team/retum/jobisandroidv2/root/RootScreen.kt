@@ -33,6 +33,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.recruitment.NAVIGATION_RECRUITMENTS
 import team.retum.recruitment.navigateToRecruitments
 import team.retum.recruitment.recruitments
+import team.returm.mypage.navigation.mypage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -92,8 +93,8 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
                 )
-                recruitments()
-                bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
+                bookmarks(onRecruitmentsClick = { navController.navigate(NAVIGATION_RECRUITMENTS) })
+                mypage()
             }
         }
     }

@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":feature:recruitment"))
     implementation(project(":feature:bookmark"))
     implementation(project(":feature:bug"))
+    implementation(project(":feature:mypage"))
     implementation(project(":feature:interests"))
     implementation(project(":feature:change-password"))
     implementation(project(":feature:verify-email"))
