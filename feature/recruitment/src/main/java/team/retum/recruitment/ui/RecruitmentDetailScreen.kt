@@ -32,16 +32,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import team.retum.common.enums.HiringProgress
+import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.recruitment.R
-import team.returm.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.button.JobisIconButton
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.text.JobisText
-import team.returm.jobisdesignsystemv2.utils.clickable
 
 // TODO: 서버 연동 시 제거
 private data class RecruitmentDetail(
@@ -76,7 +76,7 @@ private data class Area(
 
 @Composable
 internal fun RecruitmentDetails(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
 ) {
     // TODO: 서버 연동 시 제거
     val recruitmentDetail = RecruitmentDetail(
@@ -92,7 +92,7 @@ internal fun RecruitmentDetails(
                     "SpringSecurity",
                     "SpringBatch",
                     "SpringDataJpa",
-                    "Docker"
+                    "Docker",
                 ),
                 hiring = 1,
                 majorTask = "토스 서버를 개발해요",
@@ -104,7 +104,7 @@ internal fun RecruitmentDetails(
                 tech = listOf("Swift", "Java"),
                 hiring = 2,
                 majorTask = "토스 앱을 개발해요",
-                preferentialTreatment = "안드에 대한 지식이 깊으신분"
+                preferentialTreatment = "안드에 대한 지식이 깊으신분",
             ),
         ),
         requiredGrade = "",
@@ -329,7 +329,7 @@ private fun Position(
         if (areas.isNotEmpty()) {
             areas.forEach {
                 PositionCard(
-                    job = exceptBracket(it.job.toString())                        .replace(",", "/")
+                    job = exceptBracket(it.job.toString()).replace(",", "/")
                         .replace(",", "/"),
                     majorTask = it.majorTask,
                     tech = exceptBracket(it.tech.toString()),
@@ -366,8 +366,11 @@ private fun PositionCard(
             JobisIconButton(
                 defaultBackgroundColor = JobisTheme.colors.inverseSurface,
                 painter = painterResource(
-                    id = if (showDetails) R.drawable.ic_arrow_up
-                    else R.drawable.ic_arrow_down
+                    id = if (showDetails) {
+                        R.drawable.ic_arrow_up
+                    } else {
+                        R.drawable.ic_arrow_down
+                    },
                 ),
                 onClick = { showDetails = !showDetails },
                 contentDescription = "detail",
@@ -414,7 +417,7 @@ internal fun PositionDetail(
     }
 }
 
-internal fun exceptBracket(text: String) : String {
+internal fun exceptBracket(text: String): String {
     return text
         .replace("[", "")
         .replace("]", "")

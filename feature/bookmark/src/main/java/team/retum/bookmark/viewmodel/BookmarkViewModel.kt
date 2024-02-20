@@ -9,8 +9,8 @@ import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.BookmarksEntity
-import team.retum.usecase.usecase.bookmark.BookmarkUseCase
 import team.retum.usecase.usecase.bookmark.BookmarkRecruitmentUseCase
+import team.retum.usecase.usecase.bookmark.BookmarkUseCase
 import javax.inject.Inject
 
 @HiltViewModel

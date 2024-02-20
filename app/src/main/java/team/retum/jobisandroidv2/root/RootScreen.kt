@@ -30,16 +30,16 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
-import team.retum.recruitment.NAVIGATION_RECRUITMENTS
-import team.retum.recruitment.navigateToRecruitments
-import team.retum.recruitment.recruitments
+import team.retum.recruitment.navigation.navigateToRecruitmentDetails
+import team.retum.recruitment.navigation.navigateToRecruitments
+import team.retum.recruitment.navigation.recruitments
 import team.returm.mypage.navigation.mypage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun Root(
     onAlarmClick: () -> Unit,
-    onRecruitmentDetailsClick: () -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -68,7 +68,7 @@ private fun RootScreen(
     navController: NavHostController,
     sheetState: ModalBottomSheetState,
     onAlarmClick: () -> Unit,
-    onRecruitmentDetailsClick: () -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
     onRejectionReasonClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
@@ -96,7 +96,8 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
                 )
-                bookmarks(onRecruitmentsClick = { navController.navigate(NAVIGATION_RECRUITMENTS) })
+                recruitments(onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails)
+                bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
                 mypage()
             }
         }

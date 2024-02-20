@@ -8,7 +8,7 @@ const val NAVIGATION_ROOT = "root"
 
 fun NavGraphBuilder.root(
     onAlarmClick: () -> Unit,
-    onRecruitmentDetailsClick: () -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
 ) {
     composable(NAVIGATION_ROOT) {
         Root(

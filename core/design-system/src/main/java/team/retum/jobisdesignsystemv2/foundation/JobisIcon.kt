@@ -2,7 +2,6 @@ package team.retum.jobisdesignsystemv2.foundation
 
 import team.retum.design_system.R
 
-
 object JobisIcon {
     val Arrow = R.drawable.ic_arrow
     val Bell = R.drawable.ic_bell

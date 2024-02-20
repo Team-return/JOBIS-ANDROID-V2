@@ -27,13 +27,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkViewModel
-import team.retum.usecase.entity.BookmarksEntity
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.usecase.entity.BookmarksEntity
 
 private const val URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
 
@@ -70,7 +70,7 @@ private fun BookmarkScreen(
             LazyColumn(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
-                    .background(JobisTheme.colors.background)
+                    .background(JobisTheme.colors.background),
             ) {
                 items(bookmarks) {
                     BookmarkItem(

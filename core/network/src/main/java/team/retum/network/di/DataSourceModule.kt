@@ -4,10 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import team.retum.network.datasource.UserDataSource
-import team.retum.network.datasource.UserDataSourceImpl
 import team.retum.network.datasource.BookmarkDataSource
 import team.retum.network.datasource.BookmarkDataSourceImpl
+import team.retum.network.datasource.UserDataSource
+import team.retum.network.datasource.UserDataSourceImpl
 import javax.inject.Singleton
 
 @Module

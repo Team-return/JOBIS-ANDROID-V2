@@ -29,6 +29,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.recruitment.R
 import java.text.DecimalFormat
 
 // TODO 서버 연동 시 제거
@@ -44,7 +45,7 @@ private data class Recruitment(
 
 @Composable
 internal fun Recruitments(
-    onRecruitmentDetailsClick: () -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
 ) {
     // TODO 서버 연동 시 제거
     val recruitments = listOf(
@@ -69,14 +70,14 @@ internal fun Recruitments(
     )
     RecruitmentsScreen(
         recruitments = recruitments.toMutableStateList(),
-        navigateToRecruitmentDetails = onRecruitmentDetailsClick
+        navigateToRecruitmentDetails = onRecruitmentDetailsClick,
     )
 }
 
 @Composable
 private fun RecruitmentsScreen(
     recruitments: SnapshotStateList<Recruitment>,
-    navigateToRecruitmentDetails: () -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -102,10 +103,10 @@ private fun RecruitmentsScreen(
             )
         }
         Column(modifier = Modifier.verticalScroll(scrollState)) {
-            recruitments.forEach {
+            recruitments.forEach { recruitment ->
                 RecruitmentContent(
-                    recruitment = it,
-                    onClick = { navigateToRecruitmentDetails() },
+                    recruitment = recruitment,
+                    onClick = { navigateToRecruitmentDetails(recruitment.recruitId) },
                 )
             }
         }
@@ -179,7 +180,7 @@ private fun RecruitmentContent(
                     JobisIcon.BookmarkOn
                 } else {
                     JobisIcon.BookmarkOff
-                }
+                },
             ),
             contentDescription = "bookmark",
             onClick = { },

@@ -13,4 +13,3 @@ enum class HiringProgress(
     AI("AI 면접"),
     CODING_TEST("코딩테스트"),
 }
-

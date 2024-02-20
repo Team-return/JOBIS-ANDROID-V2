@@ -14,7 +14,7 @@ data class BookmarksEntity(
 }
 
 fun BookmarksResponse.toBookmarkEntity() = BookmarksEntity(
-    bookmarks = this.bookmarks.map { it.toEntity() }
+    bookmarks = this.bookmarks.map { it.toEntity() },
 )
 
 private fun BookmarksResponse.BookmarkResponse.toEntity() = BookmarksEntity.BookmarkEntity(

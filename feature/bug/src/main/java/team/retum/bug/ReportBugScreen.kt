@@ -206,8 +206,11 @@ private fun FieldBottomSheet(
         developmentAreas.forEach { developmentArea ->
             var pressed by remember { mutableStateOf(false) }
             val backgroundColor by animateColorAsState(
-                targetValue = if (pressed) JobisTheme.colors.inverseSurface
-                else JobisTheme.colors.background,
+                targetValue = if (pressed) {
+                    JobisTheme.colors.inverseSurface
+                } else {
+                    JobisTheme.colors.background
+                },
                 label = "",
             )
 

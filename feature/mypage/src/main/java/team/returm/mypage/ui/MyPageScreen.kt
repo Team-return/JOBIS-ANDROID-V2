@@ -1,6 +1,5 @@
 package team.returm.mypage.ui
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -126,9 +126,9 @@ private fun MyPageScreen() {
                             contentTitle = stringResource(id = R.string.notice),
                             onClick = { /*TODO 공지사항 페이지로 이동 */ },
                             iconColor = null,
-                        )
-                    )
-                )
+                        ),
+                    ),
+                ),
             )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.account),
