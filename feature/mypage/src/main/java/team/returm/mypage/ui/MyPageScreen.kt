@@ -28,12 +28,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import team.retum.jobis.mypage.R
-import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
-import team.returm.jobisdesignsystemv2.card.JobisCard
-import team.returm.jobisdesignsystemv2.foundation.JobisIcon
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.foundation.JobisTypography
-import team.returm.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
+import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
 internal fun MyPage() {
@@ -201,8 +201,8 @@ private fun ShowModal(
     onCancel: () -> Unit,
 ) {
     Dialog(onDismissRequest = onCancel) {
-        Surface() {
-            Column() {}
+        Surface {
+            Column {}
         }
     }
 }
@@ -285,7 +285,7 @@ private fun WriteInterviewReview(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     JobisText(
-                        text = "$companyName".take(7) + "...",
+                        text = companyName.take(7) + "...",
                         style = JobisTypography.Description,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
