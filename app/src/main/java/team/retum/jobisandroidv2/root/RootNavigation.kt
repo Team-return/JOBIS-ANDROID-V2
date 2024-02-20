@@ -6,9 +6,15 @@ import androidx.navigation.compose.composable
 
 const val NAVIGATION_ROOT = "root"
 
-fun NavGraphBuilder.root(onAlarmClick: () -> Unit) {
+fun NavGraphBuilder.root(
+    onAlarmClick: () -> Unit,
+    onRecruitmentDetailsClick: () -> Unit,
+) {
     composable(NAVIGATION_ROOT) {
-        Root(onAlarmClick = onAlarmClick)
+        Root(
+            onAlarmClick = onAlarmClick,
+            onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        )
     }
 }
 

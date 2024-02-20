@@ -9,6 +9,8 @@ import team.retum.bug.reportBug
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
+import team.retum.recruitment.navigation.navigateToRecruitmentDetail
+import team.retum.recruitment.navigation.recruitmentDetail
 
 const val NAVIGATION_MAIN = "main"
 
@@ -17,8 +19,12 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         route = NAVIGATION_MAIN,
         startDestination = NAVIGATION_ROOT,
     ) {
-        root(onAlarmClick = navController::navigateToAlarm)
+        root(
+            onAlarmClick = navController::navigateToAlarm,
+            onRecruitmentDetailsClick = navController::navigateToRecruitmentDetail,
+        )
         alarm(onBackPressed = navController::popBackStack)
+        recruitmentDetail(onBackPressed = navController::navigateUp)
         reportBug()
         interests()
     }

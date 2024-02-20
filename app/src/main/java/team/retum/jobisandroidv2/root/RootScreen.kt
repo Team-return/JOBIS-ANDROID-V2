@@ -39,6 +39,7 @@ import team.returm.mypage.navigation.mypage
 @Composable
 internal fun Root(
     onAlarmClick: () -> Unit,
+    onRecruitmentDetailsClick: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -56,6 +57,7 @@ internal fun Root(
                 sheetState.show()
             }
         },
+        onRecruitmentDetailsClick = onRecruitmentDetailsClick,
     )
 }
 
@@ -66,6 +68,7 @@ private fun RootScreen(
     navController: NavHostController,
     sheetState: ModalBottomSheetState,
     onAlarmClick: () -> Unit,
+    onRecruitmentDetailsClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(

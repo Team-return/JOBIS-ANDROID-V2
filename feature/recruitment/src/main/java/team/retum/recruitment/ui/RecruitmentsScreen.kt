@@ -1,4 +1,4 @@
-package team.retum.recruitment
+package team.retum.recruitment.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,7 +43,9 @@ private data class Recruitment(
 )
 
 @Composable
-internal fun Recruitments() {
+internal fun Recruitments(
+    onRecruitmentDetailsClick: () -> Unit,
+) {
     // TODO 서버 연동 시 제거
     val recruitments = listOf(
         Recruitment(
@@ -65,12 +67,16 @@ internal fun Recruitments() {
             isBookmarked = false,
         ),
     )
-    RecruitmentsScreen(recruitments = recruitments.toMutableStateList())
+    RecruitmentsScreen(
+        recruitments = recruitments.toMutableStateList(),
+        navigateToRecruitmentDetails = onRecruitmentDetailsClick
+    )
 }
 
 @Composable
 private fun RecruitmentsScreen(
     recruitments: SnapshotStateList<Recruitment>,
+    navigateToRecruitmentDetails: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -99,7 +105,7 @@ private fun RecruitmentsScreen(
             recruitments.forEach {
                 RecruitmentContent(
                     recruitment = it,
-                    onClick = { },
+                    onClick = { navigateToRecruitmentDetails() },
                 )
             }
         }
