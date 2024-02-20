@@ -43,8 +43,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import team.retum.common.enums.ApplyStatus
 import team.retum.home.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -71,12 +73,15 @@ private data class ApplyCompany(
     val companyId: Long,
     val companyProfileUrl: String,
     val name: String,
-    val status: String,
+    val status: ApplyStatus,
 )
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Home(onAlarmClick: () -> Unit) {
+internal fun Home(
+    onAlarmClick: () -> Unit,
+    onRejectionReasonClick: () -> Unit,
+) {
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = listOf(
         MenuItem(
@@ -90,11 +95,21 @@ fun Home(onAlarmClick: () -> Unit) {
             icon = R.drawable.ic_snowman,
         ),
     )
+    val applyCompanies = listOf(
+        ApplyCompany(
+            companyId = 0L,
+            companyProfileUrl = "",
+            name = "",
+            status = ApplyStatus.REJECTED,
+        ),
+    )
 
     HomeScreen(
         pagerState = pagerState,
         menus = menus,
         onAlarmClick = onAlarmClick,
+        applyCompanies = applyCompanies,
+        onRejectionReasonClick = onRejectionReasonClick,
     )
 }
 
@@ -104,6 +119,8 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
+    applyCompanies: List<ApplyCompany>,
+    onRejectionReasonClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -142,7 +159,8 @@ private fun HomeScreen(
                     vertical = 12.dp,
                     horizontal = 24.dp,
                 ),
-                applyCompanies = emptyList(),
+                applyCompanies = applyCompanies,
+                onClick = onRejectionReasonClick,
             )
         }
     }
@@ -380,6 +398,7 @@ private fun Menu(
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
     applyCompanies: List<ApplyCompany>,
+    onClick: () -> Unit,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -409,7 +428,7 @@ private fun ApplyStatus(
                 applyCompanies.forEach {
                     ApplyCompanyItem(
                         applyCompany = it,
-                        onClick = { },
+                        onClick = onClick,
                     )
                 }
             } else {
@@ -439,12 +458,28 @@ private fun ApplyStatus(
 
 @Composable
 private fun ApplyCompanyItem(
-    onClick: (companyId: Long) -> Unit,
+    onClick: () -> Unit,
     applyCompany: ApplyCompany,
 ) {
-    JobisCard(onClick = { onClick(applyCompany.companyId) }) {
+    val color = when (applyCompany.status) {
+        ApplyStatus.FAILED, ApplyStatus.REJECTED -> JobisTheme.colors.error
+        ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
+        ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
+        else -> JobisTheme.colors.onPrimary
+    }
+
+    JobisCard(
+        onClick = if (applyCompany.status == ApplyStatus.REJECTED) {
+            onClick
+        } else {
+            null
+        },
+    ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(
+                vertical = 12.dp,
+                horizontal = 16.dp,
+            ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // TODO AsyncImage 사용
@@ -462,9 +497,19 @@ private fun ApplyCompanyItem(
                 style = JobisTypography.Body,
             )
             JobisText(
-                text = applyCompany.status,
+                text = applyCompany.status.value,
                 style = JobisTypography.SubBody,
+                color = color,
             )
+            if (applyCompany.status == ApplyStatus.REJECTED) {
+                JobisText(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = stringResource(id = R.string.reason),
+                    style = JobisTypography.SubBody,
+                    color = color,
+                    textDecoration = TextDecoration.Underline,
+                )
+            }
         }
     }
 }

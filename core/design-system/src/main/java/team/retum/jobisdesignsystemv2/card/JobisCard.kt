@@ -30,7 +30,7 @@ fun JobisCard(
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     background: Color = JobisTheme.colors.inverseSurface,
     enabled: Boolean = true,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     var pressed by remember { mutableStateOf(false) }
@@ -46,10 +46,16 @@ fun JobisCard(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                onClick = onClick,
-                enabled = enabled,
-                onPressed = { pressed = it },
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(
+                        onClick = onClick,
+                        enabled = enabled,
+                        onPressed = { pressed = it },
+                    )
+                } else {
+                    Modifier
+                },
             ),
         shape = shape,
         color = backgroundColor,

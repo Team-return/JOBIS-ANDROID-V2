@@ -11,4 +11,8 @@
     <string name="apply_status">지원 현황</string>
     <string name="description_apply_status">승인요청 및 반려 상태엔 재지원 가능</string>
     <string name="empty_apply_companies">현재 지원한 기업이 없어요</string>
+
+    <string name="reason">사유 보기</string>
+    <string name="reason_rejection">반려 사유</string>
+    <string name="re_apply">재지원 하기</string>
 </resources>

@@ -12,6 +12,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -19,6 +23,7 @@ import team.retum.alarm.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.tab.TabBar
 
 // TODO 서버 연동 시 제거
 private data class AlarmData(
@@ -31,7 +36,12 @@ private data class AlarmData(
 internal fun Alarm(
     onBackPressed: () -> Unit,
 ) {
-    // val alarmList = emptyList<AlarmData>()
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val tabs = listOf(
+        stringResource(id = R.string.all),
+        stringResource(id = R.string.read),
+        stringResource(id = R.string.not_read),
+    )
     val alarmList = listOf(
         AlarmData(
             "companyName",
@@ -107,6 +117,9 @@ internal fun Alarm(
     AlarmScreen(
         onBackPressed = onBackPressed,
         alarmList = alarmList,
+        selectedTabIndex = selectedTabIndex,
+        tabs = tabs,
+        onSelectTab = { selectedTabIndex = it },
     )
 }
 
@@ -114,6 +127,9 @@ internal fun Alarm(
 private fun AlarmScreen(
     onBackPressed: () -> Unit,
     alarmList: List<AlarmData>,
+    selectedTabIndex: Int,
+    tabs: List<String>,
+    onSelectTab: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -123,6 +139,11 @@ private fun AlarmScreen(
         JobisSmallTopAppBar(
             title = stringResource(id = R.string.alarm),
             onBackPressed = onBackPressed,
+        )
+        TabBar(
+            selectedTabIndex = selectedTabIndex,
+            tabs = tabs,
+            onSelectTab = onSelectTab,
         )
         LazyColumn(
             modifier = Modifier

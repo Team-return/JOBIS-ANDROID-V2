@@ -1,8 +1,6 @@
 package team.retum.jobis.interests.ui
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,8 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -37,6 +34,7 @@ import team.retum.jobis.interests.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
@@ -98,10 +96,10 @@ private fun InterestsInput(
             value = content,
             onValueChange = onContentChange,
         )
-        CategoryTab(
-            selectedCategoryIndex = selectedCategoryIndex,
-            categories = categories,
-            onSelectCategory = onSelectCategory,
+        TabBar(
+            selectedTabIndex = selectedCategoryIndex,
+            tabs = categories,
+            onSelectTab = onSelectCategory,
         )
         // TODO 더미 데이터 제거
         Skills(
@@ -118,68 +116,8 @@ private fun InterestsInput(
                         false -> remove(index)
                     }
                 }
-            }
+            },
         )
-    }
-}
-
-@Composable
-private fun CategoryTab(
-    selectedCategoryIndex: Int,
-    categories: SnapshotStateList<String>,
-    onSelectCategory: (Int) -> Unit,
-) {
-    LazyRow(
-        modifier = Modifier
-            .padding(
-                start = 24.dp,
-                top = 8.dp,
-                bottom = 8.dp,
-            )
-            .clip(
-                RoundedCornerShape(
-                    topStart = 12.dp,
-                    bottomStart = 12.dp,
-                ),
-            )
-            .background(JobisTheme.colors.inverseSurface),
-    ) {
-        itemsIndexed(categories) { index, category ->
-            val selected = index == selectedCategoryIndex
-            val textColor by animateColorAsState(
-                targetValue = if (selected) JobisTheme.colors.onBackground
-                else JobisTheme.colors.onSurfaceVariant,
-                label = "",
-            )
-            val backgroundColor by animateColorAsState(
-                targetValue = if (selected) JobisTheme.colors.background
-                else JobisTheme.colors.inverseSurface,
-                label = "",
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioHighBouncy,
-                    stiffness = Spring.StiffnessVeryLow,
-                )
-            )
-
-            JobisText(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable(
-                        enabled = true,
-                        onPressed = {},
-                        onClick = { onSelectCategory(index) },
-                    )
-                    .background(backgroundColor)
-                    .padding(
-                        vertical = 8.dp,
-                        horizontal = 10.dp,
-                    ),
-                text = category,
-                style = JobisTypography.Body,
-                color = textColor,
-            )
-        }
     }
 }
 
@@ -187,10 +125,10 @@ private fun CategoryTab(
 private fun Skills(
     skills: SnapshotStateList<String>,
     checkedSkills: List<String>,
-    onCheckedChange: (String, Boolean) -> Unit
+    onCheckedChange: (String, Boolean) -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(skills) { index, skill ->
+        items(skills) { skill ->
             val checked = checkedSkills.contains(skill)
             SkillContent(
                 skill = skill,
@@ -240,13 +178,19 @@ fun CheckBox(
     onClick: (Boolean) -> Unit,
 ) {
     val tint by animateColorAsState(
-        targetValue = if (checked) JobisTheme.colors.background
-        else JobisTheme.colors.surfaceTint,
+        targetValue = if (checked) {
+            JobisTheme.colors.background
+        } else {
+            JobisTheme.colors.surfaceTint
+        },
         label = "",
     )
     val background by animateColorAsState(
-        targetValue = if (checked) JobisTheme.colors.onPrimary
-        else JobisTheme.colors.inverseSurface,
+        targetValue = if (checked) {
+            JobisTheme.colors.onPrimary
+        } else {
+            JobisTheme.colors.inverseSurface
+        },
         label = "",
     )
 
