@@ -9,12 +9,12 @@ const val NAVIGATION_SEARCH_RECRUITMENT = "searchRecruitment"
 
 fun NavGraphBuilder.searchRecruitment(
     onBackPressed: () -> Unit,
-    onRecruitmentClick: (Long) -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
 ) {
     composable(NAVIGATION_SEARCH_RECRUITMENT) {
         SearchRecruitment(
             onBackPressed = onBackPressed,
-            onRecruitmentClick = onRecruitmentClick,
+            onRecruitmentDetailsClick = onRecruitmentDetailsClick,
         )
     }
 }

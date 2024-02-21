@@ -24,7 +24,6 @@ import team.retum.bookmark.navigation.bookmarks
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
-import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitments
 import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
@@ -40,6 +39,8 @@ import team.returm.mypage.navigation.mypage
 internal fun Root(
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onRecruitmentFilterClick: () -> Unit,
+    onSearchRecruitmentClick: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -58,6 +59,8 @@ internal fun Root(
             }
         },
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        onRecruitmentFilterClick = onRecruitmentFilterClick,
+        onSearchRecruitmentClick = onSearchRecruitmentClick,
     )
 }
 
@@ -69,6 +72,8 @@ private fun RootScreen(
     sheetState: ModalBottomSheetState,
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onRecruitmentFilterClick: () -> Unit,
+    onSearchRecruitmentClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
@@ -96,7 +101,11 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
                 )
-                recruitments(onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails)
+                recruitments(
+                    onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+                    onRecruitmentFilterClick = onRecruitmentFilterClick,
+                    onSearchRecruitmentClick = onSearchRecruitmentClick,
+                )
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
                 mypage()
             }

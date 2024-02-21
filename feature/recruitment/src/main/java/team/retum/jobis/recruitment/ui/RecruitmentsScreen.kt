@@ -32,6 +32,8 @@ data class Recruitment(
 @Composable
 internal fun Recruitments(
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onRecruitmentFilterClick: () -> Unit,
+    onSearchRecruitmentClick: () -> Unit,
 ) {
     // TODO 서버 연동 시 제거
     val recruitments = listOf(
@@ -56,14 +58,18 @@ internal fun Recruitments(
     )
     RecruitmentsScreen(
         recruitments = recruitments.toMutableStateList(),
-        navigateToRecruitmentDetails = onRecruitmentDetailsClick,
+        onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        onRecruitmentFilterClick = onRecruitmentFilterClick,
+        onSearchRecruitmentClick = onSearchRecruitmentClick,
     )
 }
 
 @Composable
 private fun RecruitmentsScreen(
     recruitments: SnapshotStateList<Recruitment>,
-    navigateToRecruitmentDetails: (Long) -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
+    onRecruitmentFilterClick: () -> Unit,
+    onSearchRecruitmentClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -79,20 +85,20 @@ private fun RecruitmentsScreen(
             JobisIconButton(
                 painter = painterResource(JobisIcon.Filter),
                 contentDescription = "filter",
-                onClick = {},
+                onClick = onRecruitmentFilterClick,
                 tint = JobisTheme.colors.onPrimary,
             )
             JobisIconButton(
                 painter = painterResource(JobisIcon.Search),
                 contentDescription = "search",
-                onClick = {},
+                onClick = onSearchRecruitmentClick,
             )
         }
         Column(modifier = Modifier.verticalScroll(scrollState)) {
             recruitments.forEach { recruitment ->
                 RecruitmentContent(
                     recruitment = recruitment,
-                    onClick = { navigateToRecruitmentDetails(recruitment.recruitId) },
+                    onClick = { onRecruitmentDetailsClick(recruitment.recruitId) },
                 )
             }
         }

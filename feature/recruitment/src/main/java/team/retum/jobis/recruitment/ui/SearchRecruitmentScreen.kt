@@ -33,18 +33,18 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 @Composable
 fun SearchRecruitment(
     onBackPressed: () -> Unit,
-    onRecruitmentClick: (Long) -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
 ) {
     SearchRecruitmentScreen(
         onBackPressed = onBackPressed,
-        onRecruitmentClick = onRecruitmentClick,
+        onRecruitmentDetailsClick = onRecruitmentDetailsClick,
     )
 }
 
 @Composable
 private fun SearchRecruitmentScreen(
     onBackPressed: () -> Unit,
-    onRecruitmentClick: (Long) -> Unit,
+    onRecruitmentDetailsClick: (Long) -> Unit,
 ) {
     // TODO 뷰모델로 옮기기
     var keyword by remember { mutableStateOf("") }
@@ -64,7 +64,7 @@ private fun SearchRecruitmentScreen(
         )
         Recruitments(
             recruitments = recruitments,
-            onRecruitmentClick = onRecruitmentClick,
+            onRecruitmentClick = onRecruitmentDetailsClick,
         )
     }
 }
