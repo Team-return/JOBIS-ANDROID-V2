@@ -18,10 +18,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import team.retum.common.component.Skills
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -40,6 +42,7 @@ private fun RecruitmentFilterScreen(onBackPressed: () -> Unit) {
     var keyword by remember { mutableStateOf("") }
     val majors = remember { mutableStateListOf<String>() }
     val selectedMajors = remember { mutableStateListOf<String>() }
+    val checkedSkills = remember { mutableStateListOf<String>() }
     majors.run {
         add("iOS")
         add("Android")
@@ -65,6 +68,7 @@ private fun RecruitmentFilterScreen(onBackPressed: () -> Unit) {
             selectedMajors = selectedMajors,
             onMajorSelected = { selectedMajors.add(it) },
             onMajorUnselected = { selectedMajors.remove(it) },
+            checkedSkills = checkedSkills,
         )
     }
 }
@@ -78,6 +82,7 @@ private fun FilterInputs(
     selectedMajors: SnapshotStateList<String>,
     onMajorSelected: (String) -> Unit,
     onMajorUnselected: (String) -> Unit,
+    checkedSkills: MutableList<String>,
 ) {
     JobisTextField(
         title = "title",
@@ -109,6 +114,23 @@ private fun FilterInputs(
             )
         }
     }
+    // TODO 더미 데이터 제거
+    Skills(
+        skills = listOf(
+            "Kotlin",
+            "Java",
+        ).toMutableStateList(),
+        checkedSkills = checkedSkills,
+        onCheckedChange = { index, checked ->
+            // TODO 뷰모델로 함수 옮기기
+            checkedSkills.run {
+                when (checked) {
+                    true -> add(index)
+                    false -> remove(index)
+                }
+            }
+        },
+    )
 }
 
 @Composable
