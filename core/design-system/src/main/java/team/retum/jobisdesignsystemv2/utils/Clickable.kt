@@ -34,9 +34,9 @@ internal const val DEFAULT_DISABLED_MILLIS = 300L
 @SuppressLint("ComposableNaming")
 @Composable
 fun Modifier.clickable(
-    enabled: Boolean,
+    enabled: Boolean = true,
     pressDepth: Float = DEFAULT_PRESS_DEPTH,
-    onPressed: (pressed: Boolean) -> Unit,
+    onPressed: ((pressed: Boolean) -> Unit)? = null,
     onClick: () -> Unit,
     disabledMillis: Long = DEFAULT_DISABLED_MILLIS,
 ): Modifier {
@@ -62,11 +62,12 @@ fun Modifier.clickable(
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         pressed = true
-                        onPressed(true)
+                        onPressed?.invoke(true)
                     }
+
                     MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                         pressed = false
-                        onPressed(false)
+                        onPressed?.invoke(false)
                         if (event.action == MotionEvent.ACTION_UP && System.currentTimeMillis() - lastClick >= disabledMillis) {
                             lastClick = System.currentTimeMillis()
                             onClick()
