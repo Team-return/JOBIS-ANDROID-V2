@@ -57,10 +57,10 @@ private fun SearchRecruitmentScreen(
     ) {
         JobisSmallTopAppBar(onBackPressed = onBackPressed)
         JobisTextField(
-            title = "title",
             value = { keyword },
             hint = "검색어를 입력해주세요",
             onValueChange = { keyword = it },
+            leadingIcon = painterResource(id = JobisIcon.Search),
         )
         Recruitments(
             recruitments = recruitments,

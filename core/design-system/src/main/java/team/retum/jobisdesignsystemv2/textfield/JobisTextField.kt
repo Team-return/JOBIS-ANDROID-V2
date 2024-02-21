@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -111,6 +112,7 @@ private fun TextField(
     maxLength: Int,
     showEmailHint: Boolean,
     showVisibleIcon: Boolean,
+    leadingIcon: Painter?,
     content: @Composable () -> Unit,
 ) {
     val hintAlpha by animateFloatAsState(
@@ -153,14 +155,23 @@ private fun TextField(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    innerTextField()
-                    JobisText(
-                        modifier = Modifier.alpha(hintAlpha),
-                        text = hint,
-                        style = style,
-                        color = JobisTheme.colors.onSurfaceVariant,
+                leadingIcon?.run {
+                    Icon(
+                        painter = leadingIcon,
+                        contentDescription = "leading icon",
+                        tint = JobisTheme.colors.onSurfaceVariant,
                     )
+                }
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                    innerTextField()
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        JobisText(
+                            modifier = Modifier.alpha(hintAlpha),
+                            text = hint,
+                            style = style,
+                            color = JobisTheme.colors.onSurfaceVariant,
+                        )
+                    }
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (showEmailHint) {
@@ -254,7 +265,7 @@ private fun Description(
 @Composable
 fun JobisTextField(
     modifier: Modifier = Modifier,
-    title: String,
+    title: String? = null,
     value: () -> String,
     hint: String,
     onValueChange: (String) -> Unit,
@@ -272,6 +283,7 @@ fun JobisTextField(
     maxLength: Int = Int.MAX_VALUE,
     showEmailHint: Boolean = false,
     showVisibleIcon: Boolean = false,
+    leadingIcon: Painter? = null,
     content: @Composable () -> Unit = { },
 ) {
     Column(
@@ -284,11 +296,13 @@ fun JobisTextField(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center,
     ) {
-        TextFieldTitle(
-            title = title,
-            style = titleStyle,
-            color = titleColor,
-        )
+        title?.run {
+            TextFieldTitle(
+                title = this,
+                style = titleStyle,
+                color = titleColor,
+            )
+        }
         TextField(
             modifier = modifier
                 .fillMaxWidth()
@@ -303,6 +317,7 @@ fun JobisTextField(
             maxLength = maxLength,
             showEmailHint = showEmailHint,
             showVisibleIcon = showVisibleIcon,
+            leadingIcon = leadingIcon,
             content = content,
         )
         AnimatedVisibility(

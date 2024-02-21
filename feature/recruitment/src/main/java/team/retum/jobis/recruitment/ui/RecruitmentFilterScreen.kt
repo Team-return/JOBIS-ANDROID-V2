@@ -22,9 +22,11 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import team.retum.common.component.Skills
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -85,10 +87,10 @@ private fun FilterInputs(
     checkedSkills: MutableList<String>,
 ) {
     JobisTextField(
-        title = "title",
         value = keyword,
         hint = "검색어를 입력해주세요",
         onValueChange = onKeywordChange,
+        leadingIcon = painterResource(id = JobisIcon.Search),
     )
     FlowRow(
         modifier = Modifier
