@@ -7,10 +7,10 @@ import team.retum.alarm.navigation.alarm
 import team.retum.alarm.navigation.navigateToAlarm
 import team.retum.bug.reportBug
 import team.retum.jobis.interests.navigation.interests
+import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
+import team.retum.jobis.recruitment.navigation.recruitmentDetails
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
-import team.retum.recruitment.navigation.navigateToRecruitmentDetails
-import team.retum.recruitment.navigation.recruitmentDetails
 
 const val NAVIGATION_MAIN = "main"
 
