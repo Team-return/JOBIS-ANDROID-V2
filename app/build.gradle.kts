@@ -66,6 +66,7 @@ dependencies {
     implementation(project(":feature:interests"))
     implementation(project(":feature:change-password"))
     implementation(project(":feature:verify-email"))
+    implementation(project(":feature:notification"))
     implementation(project(":feature:company"))
 
     implementation(platform(libs.androidx.compose.bom))

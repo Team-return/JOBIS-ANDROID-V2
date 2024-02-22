@@ -11,6 +11,7 @@ import team.retum.company.navigation.navigateToCompanies
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.interests.navigation.interests
+import team.retum.jobis.notification.navigation.notificationDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -38,6 +39,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         recruitmentDetails(onBackPressed = navController::navigateUp)
         reportBug()
         interests()
+        notificationDetails(onBackPressed = navController::navigateUp)
         companies(
             onBackPressed = navController::popBackStack,
             onSearchClick = navController::navigateToSearchCompanies,
