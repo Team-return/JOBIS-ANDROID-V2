@@ -10,9 +10,13 @@ const val RECRUITMENT_ID = "{recruitment-id}"
 
 fun NavGraphBuilder.recruitmentDetails(
     onBackPressed: () -> Unit,
+    onApplyClick: () -> Unit,
 ) {
     composable(NAVIGATION_RECRUITMENT_DETAILS + RECRUITMENT_ID) {
-        RecruitmentDetails(onBackPressed = onBackPressed)
+        RecruitmentDetails(
+            onBackPressed = onBackPressed,
+            onApplyClick = onApplyClick,
+        )
     }
 }
 

@@ -77,6 +77,7 @@ private data class Area(
 @Composable
 internal fun RecruitmentDetails(
     onBackPressed: () -> Unit,
+    onApplyClick: () -> Unit,
 ) {
     // TODO: 서버 연동 시 제거
     val recruitmentDetail = RecruitmentDetail(
@@ -127,6 +128,7 @@ internal fun RecruitmentDetails(
     )
     RecruitmentDetailScreen(
         onBackPressed = onBackPressed,
+        onApplyClick = onApplyClick,
         recruitmentDetail = recruitmentDetail,
     )
 }
@@ -134,6 +136,7 @@ internal fun RecruitmentDetails(
 @Composable
 private fun RecruitmentDetailScreen(
     onBackPressed: () -> Unit,
+    onApplyClick: () -> Unit,
     recruitmentDetail: RecruitmentDetail,
 ) {
     val scrollState = rememberScrollState()
@@ -169,7 +172,7 @@ private fun RecruitmentDetailScreen(
                 modifier = Modifier.weight(1f),
                 text = stringResource(id = R.string.apply),
                 color = ButtonColor.Primary,
-                onClick = { },
+                onClick = onApplyClick,
             )
             Icon(
                 modifier = Modifier
