@@ -1,5 +1,6 @@
 package team.retum.jobis.notification.ui
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,18 +27,17 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 internal fun NotificationDetails(
     onBackPressed: () -> Unit,
 ) {
-
     NotificationDetailsScreen(
         onBackPressed = onBackPressed,
+        scrollState = rememberScrollState(),
     )
 }
 
 @Composable
 private fun NotificationDetailsScreen(
     onBackPressed: () -> Unit,
+    scrollState: ScrollState,
 ) {
-    val scrollState = rememberScrollState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,9 +60,7 @@ private fun NotificationDetailsScreen(
 
 @Composable
 fun Notice() {
-    Column(
-        modifier = Modifier.padding(vertical = 24.dp),
-    ) {
+    Column(modifier = Modifier.padding(vertical = 24.dp)) {
         JobisText(
             text = "[중요] 신입생 오레인테이션 안내",
             style = JobisTypography.HeadLine,
@@ -75,7 +73,7 @@ fun Notice() {
             color = JobisTheme.colors.onSurfaceVariant,
         )
         JobisText(
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(top = 16.dp),
             text = "신입생 오리엔테이션 책자에 있는 입학전 과제의 양식입니다.\n" +
                     "첨부파일을 다운받아 사용하시고, \n" +
                     "영어와 전공은 특별한 양식이 없으니 내용에 맞게 작성하여 학교 홈페이지\n" +
