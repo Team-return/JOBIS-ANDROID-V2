@@ -14,6 +14,7 @@ enum class ButtonColor {
     Primary,
     Secondary,
     Default,
+    Error,
 }
 
 internal object ButtonColors {
@@ -38,6 +39,13 @@ internal object ButtonColors {
             pressed = JobisColor.Light.gray400,
             text = JobisColor.Light.gray900,
         )
+
+        @Composable
+        fun error() = ButtonColorSet(
+            background = JobisColor.Light.red200,
+            pressed = JobisColor.Light.red200,
+            text = JobisColor.Light.gray100,
+        )
     }
 
     object Dark {
@@ -60,6 +68,13 @@ internal object ButtonColors {
             background = JobisColor.Light.gray300,
             pressed = JobisColor.Light.gray300,
             text = JobisColor.Dark.green100,
+        )
+
+        @Composable
+        fun error() = ButtonColorSet(
+            background = JobisColor.Light.red200,
+            pressed = JobisColor.Light.red200,
+            text = JobisColor.Light.gray100,
         )
     }
 }
