@@ -1,29 +1,26 @@
-package team.retum.jobisandroidv2.root
+package team.retum.jobis.recruitment.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import team.retum.jobis.recruitment.ui.Recruitments
 
-const val NAVIGATION_ROOT = "root"
+const val NAVIGATION_RECRUITMENTS = "recruitments"
 
-fun NavGraphBuilder.root(
-    onAlarmClick: () -> Unit,
+fun NavGraphBuilder.recruitments(
     onRecruitmentDetailsClick: (Long) -> Unit,
-    onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
 ) {
-    composable(NAVIGATION_ROOT) {
-        Root(
-            onAlarmClick = onAlarmClick,
+    composable(NAVIGATION_RECRUITMENTS) {
+        Recruitments(
             onRecruitmentDetailsClick = onRecruitmentDetailsClick,
-            onCompaniesClick = onCompaniesClick,
             onRecruitmentFilterClick = onRecruitmentFilterClick,
             onSearchRecruitmentClick = onSearchRecruitmentClick,
         )
     }
 }
 
-fun NavController.navigateToRoot() {
-    navigate(NAVIGATION_ROOT)
+fun NavHostController.navigateToRecruitments() {
+    navigate(NAVIGATION_RECRUITMENTS)
 }

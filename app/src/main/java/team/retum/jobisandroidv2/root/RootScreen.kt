@@ -24,15 +24,14 @@ import team.retum.bookmark.navigation.bookmarks
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
+import team.retum.jobis.recruitment.navigation.navigateToRecruitments
+import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
-import team.retum.recruitment.navigation.navigateToRecruitmentDetails
-import team.retum.recruitment.navigation.navigateToRecruitments
-import team.retum.recruitment.navigation.recruitments
 import team.returm.mypage.navigation.mypage
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -40,6 +39,9 @@ import team.returm.mypage.navigation.mypage
 internal fun Root(
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onCompaniesClick: () -> Unit,
+    onRecruitmentFilterClick: () -> Unit,
+    onSearchRecruitmentClick: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -58,6 +60,9 @@ internal fun Root(
             }
         },
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        onCompaniesClick = onCompaniesClick,
+        onRecruitmentFilterClick = onRecruitmentFilterClick,
+        onSearchRecruitmentClick = onSearchRecruitmentClick,
     )
 }
 
@@ -69,7 +74,10 @@ private fun RootScreen(
     sheetState: ModalBottomSheetState,
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onRecruitmentFilterClick: () -> Unit,
+    onSearchRecruitmentClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
+    onCompaniesClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -95,8 +103,13 @@ private fun RootScreen(
                 home(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
+                onCompaniesClick = onCompaniesClick,
                 )
-                recruitments(onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails)
+                recruitments(
+                    onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+                    onRecruitmentFilterClick = onRecruitmentFilterClick,
+                    onSearchRecruitmentClick = onSearchRecruitmentClick,
+                )
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
                 mypage()
             }

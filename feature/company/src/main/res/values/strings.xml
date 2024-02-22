@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="company">기업 탐색</string>
+    <string name="has_recruitment">모집의뢰서 O</string>
+    <string name="has_not_recruitment">모집의뢰서 X</string>
+    <string name="not_found_company">검색어와 관련 된 회사를 못찾았어요</string>
+    <string name="double_check">제대로 입력했는지 다시 한번 확인해주세요</string>
+    <string name="search_hint">검색어를 입력해주세요</string>
+</resources>
