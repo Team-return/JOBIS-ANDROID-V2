@@ -50,7 +50,6 @@ internal fun Application(
         urls = urls,
         onUrlChange = { index, url -> urls[index] = url },
         onAddUrlClick = { urls.add("") },
-
     )
 }
 
