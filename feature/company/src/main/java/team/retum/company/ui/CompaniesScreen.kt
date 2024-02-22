@@ -40,15 +40,20 @@ internal fun Companies(
     companyViewModel: CompanyViewModel = hiltViewModel(),
 ) {
     val state by companyViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        companyViewModel.fetchTotalCompanyCount(name = state.name)
+    }
+
     LaunchedEffect(state.checkCompany) {
         if (state.checkCompany) {
-            companyViewModel.fetchTotalCompanyCount(name = state.name)
             companyViewModel.fetchCompanies(
                 page = state.page,
                 name = state.name,
             )
         }
     }
+
     CompaniesScreen(
         onBackPressed = onBackPressed,
         onSearchClick = onSearchClick,
