@@ -2,7 +2,6 @@ package team.returm.mypage.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,69 +24,58 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import team.retum.jobis.mypage.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.dialog.JobisDialog
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
-internal fun MyPage() {
-    MyPageScreen()
+internal fun MyPage(
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
+) {
+    MyPageScreen(
+        onSelectInterestClick = onSelectInterestClick,
+        onChangePasswordClick = onChangePasswordClick,
+        onReportBugClick = onReportBugClick,
+    )
 }
 
 @Composable
-private fun MyPageScreen() {
+private fun MyPageScreen(
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
+) {
     val scrollState = rememberScrollState()
-    val (showLogoutModal, setShowLogoutModal) = remember { mutableStateOf(false) }
+    val (showSignOutModal, setShowSignOutModal) = remember { mutableStateOf(false) }
     val (showWithdrawalModal, setShowWithdrawalModal) = remember { mutableStateOf(false) }
 
-    val onLogoutButtonClick: () -> Unit = {
-        setShowLogoutModal(true)
-    }
-
-    val onConfirmLogout: () -> Unit = {
-        // TODO 로그아웃 처리 로직 작성
-        setShowLogoutModal(false)
-    }
-
-    val onWithdrawalButtonClick: () -> Unit = {
-        setShowWithdrawalModal(true)
-    }
-
-    val onConfirmWithdrawal: () -> Unit = {
-        // TODO 회원 탈퇴 처리 로직 작성
-        setShowWithdrawalModal(false)
-    }
-
-    if (showLogoutModal) {
-        ShowModal(
-            title = stringResource(id = R.string.logout_modal_title),
-            description = stringResource(id = R.string.modal_if_logout),
-            confirmText = stringResource(id = R.string.modal_button_logout),
-            cancelText = stringResource(id = R.string.modal_button_cancel),
-            onConfirm = {
-                onConfirmLogout()
-            },
-            onCancel = {
-                setShowLogoutModal(false)
-            },
+    if (showSignOutModal) {
+        JobisDialog(
+            onDismissRequest = { setShowSignOutModal(false) },
+            title = stringResource(id = R.string.sign_out_modal_title),
+            description = stringResource(id = R.string.modal_if_sign_out),
+            subButtonText = stringResource(id = R.string.modal_button_cancel),
+            mainButtonText = stringResource(id = R.string.modal_button_logout),
+            onSubButtonClick = { setShowSignOutModal(false) },
+            onMainButtonClick = { /* TODO 뷰모델 로그아웃 함수 작성 */ },
         )
     } else if (showWithdrawalModal) {
-        ShowModal(
+        JobisDialog(
+            onDismissRequest = { setShowWithdrawalModal(false) },
             title = stringResource(id = R.string.withdrawal_modal_title),
             description = stringResource(id = R.string.modal_if_withdrawal),
-            confirmText = stringResource(id = R.string.modal_button_withdrawal),
-            cancelText = stringResource(id = R.string.modal_button_cancel),
-            onConfirm = {
-                onConfirmWithdrawal()
-            },
-            onCancel = {
-                setShowWithdrawalModal(false)
-            },
+            subButtonText = stringResource(id = R.string.modal_button_cancel),
+            mainButtonText = stringResource(id = R.string.modal_button_withdrawal),
+            onSubButtonClick = { setShowSignOutModal(false) },
+            onMainButtonClick = { /* TODO 뷰모델 회원가입 함수 작성 */ },
         )
     }
 
@@ -138,28 +125,28 @@ private fun MyPageScreen() {
                             imageResource = painterResource(id = JobisIcon.Code),
                             description = "interest field icon",
                             contentTitle = stringResource(id = R.string.interest_field),
-                            onClick = { /*TODO 관심 분야 선택 페이지로 이동 */ },
+                            onClick = onSelectInterestClick,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
                             imageResource = painterResource(id = JobisIcon.LockReset),
                             description = "password change icon",
                             contentTitle = stringResource(id = R.string.password_change),
-                            onClick = { /*TODO 비밀번호 변경 페이지로 이동 */ },
+                            onClick = onChangePasswordClick,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
                             imageResource = painterResource(id = JobisIcon.LogOut),
                             description = "logout icon",
                             contentTitle = stringResource(id = R.string.logout),
-                            onClick = onLogoutButtonClick,
+                            onClick = { setShowSignOutModal(true) },
                             iconColor = JobisTheme.colors.error,
                         ),
                         ListItemInfo(
                             imageResource = painterResource(id = JobisIcon.PersonRemove),
                             description = "membership withdrawal icon",
                             contentTitle = stringResource(id = R.string.membership_withdrawal),
-                            onClick = onWithdrawalButtonClick,
+                            onClick = { setShowWithdrawalModal(true) },
                             iconColor = JobisTheme.colors.error,
                         ),
                     ),
@@ -173,7 +160,7 @@ private fun MyPageScreen() {
                             imageResource = painterResource(id = JobisIcon.Report),
                             description = "bug report icon",
                             contentTitle = stringResource(id = R.string.to_bug_report),
-                            onClick = { /*TODO 버그 제보하기 페이지로 이동 */ },
+                            onClick = onReportBugClick,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
@@ -186,23 +173,6 @@ private fun MyPageScreen() {
                     ),
                 ),
             )
-        }
-    }
-}
-
-// TODO 모달 구현
-@Composable
-private fun ShowModal(
-    title: String,
-    description: String,
-    confirmText: String,
-    cancelText: String,
-    onConfirm: () -> Unit,
-    onCancel: () -> Unit,
-) {
-    Dialog(onDismissRequest = onCancel) {
-        Surface {
-            Column {}
         }
     }
 }
@@ -222,8 +192,7 @@ private fun StudentInfo(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
-            modifier = Modifier
-                .size(48.dp),
+            modifier = Modifier.size(48.dp),
             painter = painterResource(id = R.drawable.ic_user_profile),
             contentDescription = "user profile image",
         )
@@ -245,7 +214,7 @@ private fun StudentInfo(
             text = stringResource(id = R.string.modify),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.onPrimary,
-            modifier = Modifier.clickable { onClick() },
+            modifier = Modifier.clickable(onClick = onClick),
         )
     }
 }
@@ -298,7 +267,7 @@ private fun WriteInterviewReview(
                     )
                 }
                 JobisText(
-                    modifier = Modifier.clickable { onClick() },
+                    modifier = Modifier.clickable(onClick = onClick),
                     text = stringResource(id = R.string.go_write),
                     style = JobisTypography.SubHeadLine,
                     textAlign = TextAlign.Center,
@@ -343,7 +312,7 @@ private fun ListItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)
-            .clickable { onItemClick() },
+            .clickable(onClick = onItemClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
