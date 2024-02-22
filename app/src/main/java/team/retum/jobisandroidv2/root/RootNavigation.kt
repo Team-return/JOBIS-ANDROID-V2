@@ -9,6 +9,7 @@ const val NAVIGATION_ROOT = "root"
 fun NavGraphBuilder.root(
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
 ) {
@@ -16,6 +17,7 @@ fun NavGraphBuilder.root(
         Root(
             onAlarmClick = onAlarmClick,
             onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+            onCompaniesClick = onCompaniesClick,
             onRecruitmentFilterClick = onRecruitmentFilterClick,
             onSearchRecruitmentClick = onSearchRecruitmentClick,
         )

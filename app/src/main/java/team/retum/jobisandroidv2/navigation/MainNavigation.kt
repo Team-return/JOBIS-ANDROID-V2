@@ -6,6 +6,10 @@ import androidx.navigation.navigation
 import team.retum.alarm.navigation.alarm
 import team.retum.alarm.navigation.navigateToAlarm
 import team.retum.bug.reportBug
+import team.retum.company.navigation.companies
+import team.retum.company.navigation.navigateToCompanies
+import team.retum.company.navigation.navigateToSearchCompanies
+import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
@@ -26,6 +30,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         root(
             onAlarmClick = navController::navigateToAlarm,
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
+            onCompaniesClick = navController::navigateToCompanies,
             onRecruitmentFilterClick = navController::navigateToRecruitmentFilter,
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
         )
@@ -33,6 +38,11 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         recruitmentDetails(onBackPressed = navController::navigateUp)
         reportBug()
         interests()
+        companies(
+            onBackPressed = navController::popBackStack,
+            onSearchClick = navController::navigateToSearchCompanies,
+        )
+        searchCompanies(onBackPressed = navController::popBackStack)
         recruitmentFilter(onBackPressed = navController::popBackStack)
         searchRecruitment(
             onBackPressed = navController::popBackStack,

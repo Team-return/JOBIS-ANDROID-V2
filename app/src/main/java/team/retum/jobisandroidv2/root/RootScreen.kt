@@ -39,6 +39,7 @@ import team.returm.mypage.navigation.mypage
 internal fun Root(
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
 ) {
@@ -59,6 +60,7 @@ internal fun Root(
             }
         },
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        onCompaniesClick = onCompaniesClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
     )
@@ -75,6 +77,7 @@ private fun RootScreen(
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
+    onCompaniesClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -100,6 +103,7 @@ private fun RootScreen(
                 home(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
+                onCompaniesClick = onCompaniesClick,
                 )
                 recruitments(
                     onRecruitmentDetailsClick = onRecruitmentDetailsClick,

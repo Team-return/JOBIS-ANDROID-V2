@@ -30,12 +30,13 @@ import team.retum.bookmark.viewmodel.BookmarkViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.BookmarksEntity
 
-private const val URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
+private const val IMAGE_URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
 
 @Composable
 internal fun Bookmarks(
@@ -75,7 +76,7 @@ private fun BookmarkScreen(
                 items(bookmarks) {
                     BookmarkItem(
                         companyName = it.companyName,
-                        companyImageUrl = URL + it.companyLogoUrl,
+                        companyImageUrl = IMAGE_URL + it.companyLogoUrl,
                         date = it.createdAt.substring(0..9),
                         recruitmentId = it.recruitmentId,
                         onDeleteClick = onDeleteClick,
@@ -155,7 +156,7 @@ private fun BookmarkItem(
         }
         Spacer(modifier = Modifier.weight(1f))
         Image(
-            painter = painterResource(id = R.drawable.ic_delete),
+            painter = painterResource(id = JobisIcon.Delete),
             contentDescription = "delete",
             modifier = Modifier.clickable { onDeleteClick(recruitmentId) },
         )

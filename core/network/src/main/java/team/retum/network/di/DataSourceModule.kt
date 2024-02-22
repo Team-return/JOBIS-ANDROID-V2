@@ -8,6 +8,8 @@ import team.retum.network.datasource.BookmarkDataSource
 import team.retum.network.datasource.BookmarkDataSourceImpl
 import team.retum.network.datasource.UserDataSource
 import team.retum.network.datasource.UserDataSourceImpl
+import team.retum.network.datasource.company.CompanyDataSource
+import team.retum.network.datasource.company.CompanyDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -20,4 +22,8 @@ abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun bindBookmarkDataSource(bookmarkDataSourceImpl: BookmarkDataSourceImpl): BookmarkDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindCompanyDataSource(companyDataSourceImpl: CompanyDataSourceImpl): CompanyDataSource
 }
