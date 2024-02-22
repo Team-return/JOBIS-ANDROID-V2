@@ -3,8 +3,8 @@ package team.retum.jobisandroidv2.ui
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import team.retum.home.navigation.NAVIGATION_HOME
+import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobisandroidv2.R
-import team.retum.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.returm.mypage.navigation.NAVIGATION_MYPAGE
 
 sealed class BottomMenu(

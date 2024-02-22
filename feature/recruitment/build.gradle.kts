@@ -10,5 +10,5 @@ apply<CommonGradlePlugin>()
 apply<ComposeGradlePlugin>()
 
 android {
-    namespace = "team.retum.recruitment"
+    namespace = "team.retum.jobis.recruitment"
 }

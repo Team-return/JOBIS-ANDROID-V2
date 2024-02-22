@@ -1,9 +1,9 @@
-package team.retum.recruitment.navigation
+package team.retum.jobis.recruitment.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.recruitment.ui.RecruitmentDetails
+import team.retum.jobis.recruitment.ui.RecruitmentDetails
 
 const val NAVIGATION_RECRUITMENT_DETAILS = "recruitmentDetails/"
 const val RECRUITMENT_ID = "{recruitment-id}"

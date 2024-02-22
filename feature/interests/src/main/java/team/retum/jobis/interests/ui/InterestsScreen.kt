@@ -1,20 +1,11 @@
 package team.retum.jobis.interests.ui
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -24,20 +15,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import team.retum.common.component.Skills
 import team.retum.jobis.interests.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
-import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
-import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
-import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
 internal fun Interests() {
@@ -121,99 +107,6 @@ private fun InterestsInput(
     }
 }
 
-@Composable
-private fun Skills(
-    skills: SnapshotStateList<String>,
-    checkedSkills: List<String>,
-    onCheckedChange: (String, Boolean) -> Unit,
-) {
-    LazyColumn {
-        items(skills) { skill ->
-            val checked = checkedSkills.contains(skill)
-            SkillContent(
-                skill = skill,
-                checked = checked,
-                onClick = { onCheckedChange(skill, it) },
-            )
-        }
-    }
-}
 
-@Composable
-private fun SkillContent(
-    skill: String,
-    checked: Boolean,
-    onClick: (Boolean) -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 24.dp,
-                vertical = 12.dp,
-            )
-            .clickable(
-                enabled = true,
-                onPressed = {},
-                onClick = { onClick(!checked) },
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        CheckBox(
-            checked = checked,
-            onClick = onClick,
-        )
-        JobisText(
-            text = skill,
-            style = JobisTypography.Body,
-            color = JobisTheme.colors.inverseOnSurface,
-        )
-    }
-}
 
-@Composable
-fun CheckBox(
-    checked: Boolean,
-    onClick: (Boolean) -> Unit,
-) {
-    val tint by animateColorAsState(
-        targetValue = if (checked) {
-            JobisTheme.colors.background
-        } else {
-            JobisTheme.colors.surfaceTint
-        },
-        label = "",
-    )
-    val background by animateColorAsState(
-        targetValue = if (checked) {
-            JobisTheme.colors.onPrimary
-        } else {
-            JobisTheme.colors.inverseSurface
-        },
-        label = "",
-    )
 
-    Box(
-        modifier = Modifier
-            .clickable(
-                enabled = true,
-                onPressed = {},
-                onClick = { onClick(!checked) },
-                pressDepth = 0.95f,
-            )
-            .clip(RoundedCornerShape(6.dp))
-            .background(color = background),
-        contentAlignment = Alignment.Center,
-    ) {
-        Icon(
-            modifier = Modifier.padding(
-                horizontal = 6.dp,
-                vertical = 8.dp,
-            ),
-            painter = painterResource(id = R.drawable.ic_check),
-            contentDescription = "check",
-            tint = tint,
-        )
-    }
-}

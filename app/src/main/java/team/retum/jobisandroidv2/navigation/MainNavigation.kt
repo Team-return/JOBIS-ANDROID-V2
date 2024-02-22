@@ -11,10 +11,14 @@ import team.retum.company.navigation.navigateToCompanies
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.interests.navigation.interests
+import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
+import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
+import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
+import team.retum.jobis.recruitment.navigation.recruitmentDetails
+import team.retum.jobis.recruitment.navigation.recruitmentFilter
+import team.retum.jobis.recruitment.navigation.searchRecruitment
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
-import team.retum.recruitment.navigation.navigateToRecruitmentDetails
-import team.retum.recruitment.navigation.recruitmentDetails
 
 const val NAVIGATION_MAIN = "main"
 
@@ -27,6 +31,8 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onAlarmClick = navController::navigateToAlarm,
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
             onCompaniesClick = navController::navigateToCompanies,
+            onRecruitmentFilterClick = navController::navigateToRecruitmentFilter,
+            onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
         )
         alarm(onBackPressed = navController::popBackStack)
         recruitmentDetails(onBackPressed = navController::navigateUp)
@@ -37,5 +43,10 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onSearchClick = navController::navigateToSearchCompanies,
         )
         searchCompanies(onBackPressed = navController::popBackStack)
+        recruitmentFilter(onBackPressed = navController::popBackStack)
+        searchRecruitment(
+            onBackPressed = navController::popBackStack,
+            onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
+        )
     }
 }
