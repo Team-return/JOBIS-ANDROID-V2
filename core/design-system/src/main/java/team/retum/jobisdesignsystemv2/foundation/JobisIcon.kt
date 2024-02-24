@@ -4,6 +4,7 @@ import team.retum.design_system.R
 
 object JobisIcon {
     val Arrow = R.drawable.ic_arrow
+    val ArrowRight = R.drawable.ic_arrow_right
     val Bell = R.drawable.ic_bell
     val BookmarkOff = R.drawable.ic_bookmark_off
     val BookmarkOn = R.drawable.ic_bookmark_on
