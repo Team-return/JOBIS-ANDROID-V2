@@ -11,7 +11,9 @@ import team.retum.company.navigation.navigateToCompanies
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.interests.navigation.interests
+import team.retum.jobis.notification.navigation.navigateToNotificationList
 import team.retum.jobis.notification.navigation.notificationDetails
+import team.retum.jobis.notification.navigation.notificationList
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -22,6 +24,7 @@ import team.retum.jobisandroidv2.application
 import team.retum.jobisandroidv2.navigateToApplication
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
+import team.returm.mypage.navigation.mypage
 
 const val NAVIGATION_MAIN = "main"
 
@@ -56,5 +59,6 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
         )
         application(onBackPressed = navController::popBackStack)
+        notificationList {}
     }
 }
