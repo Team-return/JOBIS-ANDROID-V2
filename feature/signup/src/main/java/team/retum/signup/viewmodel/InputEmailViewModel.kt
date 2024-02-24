@@ -3,11 +3,12 @@ package team.retum.signup.viewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import team.retum.common.base.BaseViewModel
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
+import team.retum.usecase.usecase.auth.SendAuthenticationCodeUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class InputEmailViewModel @Inject constructor(
-
+    private val sendAuthenticationCodeUseCase: SendAuthenticationCodeUseCase,
 ) : BaseViewModel<InputEmailState, InputEmailSideEffect>(InputEmailState.getDefaultState()) {
 
     internal fun onNextClick() {
