@@ -25,6 +25,7 @@ internal class InputEmailViewModel @Inject constructor(
     private val timerUtil: TimerUtil = TimerUtil()
 
     internal fun onNextClick() {
+        setState { state.value.copy(buttonEnabled = false) }
         viewModelScope.launch(Dispatchers.IO) {
             authorizeAuthenticationCodeUseCase(
                 email = state.value.email + EMAIL_ADDRESS,
@@ -49,6 +50,10 @@ internal class InputEmailViewModel @Inject constructor(
                                 buttonEnabled = false,
                             )
                         }
+                    }
+
+                    is KotlinNullPointerException -> {
+                        postSideEffect(InputEmailSideEffect.MoveToInputPassword)
                     }
                 }
             }

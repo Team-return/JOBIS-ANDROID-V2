@@ -1,7 +1,6 @@
 package team.retum.network.datasource.auth
 
 import team.retum.network.api.AuthApi
-import team.retum.network.model.request.auth.AuthorizeAuthenticationCodeRequest
 import team.retum.network.model.request.auth.SendAuthenticationCodeRequest
 import team.retum.network.util.RequestHandler
 import javax.inject.Inject
@@ -15,9 +14,15 @@ class RemoteAuthDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun authorizeAuthenticationCode(authorizeAuthenticationCodeRequest: AuthorizeAuthenticationCodeRequest) {
+    override suspend fun authorizeAuthenticationCode(
+        email: String,
+        authCode: String,
+    ) {
         RequestHandler<Unit>().request {
-            authApi.authorizeAuthenticationCode(authorizeAuthenticationCodeRequest = authorizeAuthenticationCodeRequest)
+            authApi.authorizeAuthenticationCode(
+                email = email,
+                authCode = authCode,
+            )
         }
     }
 }
