@@ -2,6 +2,7 @@ package team.retum.data.repository.auth
 
 import team.retum.common.enums.AuthCodeType
 import team.retum.network.datasource.auth.RemoteAuthDataSource
+import team.retum.network.model.request.auth.AuthorizeAuthenticationCodeRequest
 import team.retum.network.model.request.auth.SendAuthenticationCodeRequest
 import javax.inject.Inject
 
@@ -16,6 +17,18 @@ class AuthRepositoryImpl @Inject constructor(
             sendAuthenticationCodeRequest = SendAuthenticationCodeRequest(
                 email = email,
                 authCodeType = authCodeType,
+            )
+        )
+    }
+
+    override suspend fun authorizeAuthenticationCode(
+        email: String,
+        authCode: String,
+    ) {
+        remoteAuthDataSource.authorizeAuthenticationCode(
+            authorizeAuthenticationCodeRequest = AuthorizeAuthenticationCodeRequest(
+                email = email,
+                authCode = authCode,
             )
         )
     }

@@ -35,7 +35,7 @@ class TimerUtil {
                 val remainTime = MAX_TIMER_SECONDS - it - 1
                 val minute = remainTime / 60
                 val second = remainTime - minute * 60
-                _remainTime.emit("0$minute:$second")
+                _remainTime.emit("0$minute:${if (second < 10) 0 else ""}$second")
                 delay(1000L)
             }
         }

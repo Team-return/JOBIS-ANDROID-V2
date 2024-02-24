@@ -6,27 +6,63 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.AuthCodeType
+import team.retum.common.exception.BadRequestException
+import team.retum.common.exception.ConflictException
+import team.retum.common.utils.TimerUtil
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
+import team.retum.usecase.usecase.auth.AuthorizeAuthenticationCodeUseCase
 import team.retum.usecase.usecase.auth.SendAuthenticationCodeUseCase
 import javax.inject.Inject
 
-private const val EmailAddress = "@dsm.hs.kr"
+private const val EMAIL_ADDRESS = "@dsm.hs.kr"
 
 @HiltViewModel
 internal class InputEmailViewModel @Inject constructor(
     private val sendAuthenticationCodeUseCase: SendAuthenticationCodeUseCase,
+    private val authorizeAuthenticationCodeUseCase: AuthorizeAuthenticationCodeUseCase,
 ) : BaseViewModel<InputEmailState, InputEmailSideEffect>(InputEmailState.getDefaultState()) {
 
-    internal fun onNextClick() {
+    private val timerUtil: TimerUtil = TimerUtil()
 
+    internal fun onNextClick() {
+        viewModelScope.launch(Dispatchers.IO) {
+            authorizeAuthenticationCodeUseCase(
+                email = state.value.email + EMAIL_ADDRESS,
+                authCode = state.value.authenticationCode,
+            ).onSuccess {
+                postSideEffect(InputEmailSideEffect.MoveToInputPassword)
+            }.onFailure {
+                when (it) {
+                    is BadRequestException -> {
+                        setState {
+                            state.value.copy(
+                                showAuthenticationCodeDescription = true,
+                                buttonEnabled = false,
+                            )
+                        }
+                    }
+
+                    is ConflictException -> {
+                        setState {
+                            state.value.copy(
+                                showEmailDescription = true,
+                                buttonEnabled = false,
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     internal fun onAuthenticationClick() {
         viewModelScope.launch(Dispatchers.IO) {
             sendAuthenticationCodeUseCase(
-                email = state.value.email + EmailAddress,
+                email = state.value.email + EMAIL_ADDRESS,
                 authCodeType = AuthCodeType.SIGN_UP,
             ).onSuccess {
+                stopAuthenticationTimer()
+                startAuthenticationTimer()
                 setState {
                     state.value.copy(
                         sendAuthenticationCode = true,
@@ -38,7 +74,6 @@ internal class InputEmailViewModel @Inject constructor(
 
             }
         }
-
     }
 
 
@@ -47,7 +82,24 @@ internal class InputEmailViewModel @Inject constructor(
     }
 
     internal fun onAuthenticationCodeChange(authenticationCode: String) = setState {
-        state.value.copy(authenticationCode = authenticationCode)
+        state.value.copy(
+            authenticationCode = authenticationCode,
+            buttonEnabled = authenticationCode.isNotBlank(),
+        )
+    }
+
+    private fun startAuthenticationTimer() {
+        timerUtil.setTimer()
+        timerUtil.startTimer()
+        viewModelScope.launch {
+            timerUtil.remainTime.collect {
+                setState { state.value.copy(remainTime = it) }
+            }
+        }
+    }
+
+    private fun stopAuthenticationTimer() {
+        timerUtil.stopTimer()
     }
 }
 
@@ -59,6 +111,7 @@ internal data class InputEmailState(
     val emailDescriptionType: DescriptionType,
     val buttonEnabled: Boolean,
     val sendAuthenticationCode: Boolean,
+    val remainTime: String,
 ) {
     companion object {
         fun getDefaultState() = InputEmailState(
@@ -69,10 +122,11 @@ internal data class InputEmailState(
             emailDescriptionType = DescriptionType.Error,
             buttonEnabled = false,
             sendAuthenticationCode = false,
+            remainTime = "5:00",
         )
     }
 }
 
 internal sealed interface InputEmailSideEffect {
-
+    data object MoveToInputPassword : InputEmailSideEffect
 }

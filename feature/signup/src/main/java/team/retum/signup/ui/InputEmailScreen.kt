@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.signup.R
+import team.retum.signup.viewmodel.InputEmailSideEffect
 import team.retum.signup.viewmodel.InputEmailState
 import team.retum.signup.viewmodel.InputEmailViewModel
 import java.io.Serializable
@@ -34,9 +36,17 @@ internal fun InputEmail(
 ) {
     val state by inputEmailViewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        inputEmailViewModel.sideEffect.collect {
+            when(it){
+                is InputEmailSideEffect.MoveToInputPassword -> onNextClick()
+            }
+        }
+    }
+
     InputEmailScreen(
         onBackPressed = onBackPressed,
-        onNextClick = onNextClick,
+        onNextClick = inputEmailViewModel::onNextClick,
         state = state,
         onEmailChange = inputEmailViewModel::onEmailChange,
         onAuthenticationCodeChange = inputEmailViewModel::onAuthenticationCodeChange,
@@ -73,6 +83,7 @@ private fun InputEmailScreen(
             showEmailDescription = { state.showEmailDescription },
             showAuthenticationCodeDescription = { state.showAuthenticationCodeDescription },
             sendAuthenticationCode = { state.sendAuthenticationCode },
+            remainTime = state.remainTime,
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
@@ -95,6 +106,7 @@ private fun EmailInputs(
     showEmailDescription: () -> Boolean,
     showAuthenticationCodeDescription: () -> Boolean,
     sendAuthenticationCode: () -> Boolean,
+    remainTime: String,
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
@@ -124,9 +136,10 @@ private fun EmailInputs(
         onValueChange = onAuthenticationCodeChange,
         errorDescription = stringResource(id = R.string.description_invalid_authentication_code),
         showDescription = showAuthenticationCodeDescription,
+        descriptionType = DescriptionType.Error,
     ) {
         JobisText(
-            text = "05:00",
+            text = remainTime,
             style = JobisTypography.Body,
             color = JobisTheme.colors.onSurfaceVariant,
         )
