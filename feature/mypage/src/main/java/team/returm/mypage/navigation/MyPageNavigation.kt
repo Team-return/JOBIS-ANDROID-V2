@@ -7,9 +7,9 @@ import team.returm.mypage.ui.MyPage
 
 const val NAVIGATION_MYPAGE = "mypage"
 
-fun NavGraphBuilder.mypage() {
+fun NavGraphBuilder.mypage(onNoticeClick: () -> Unit) {
     composable(NAVIGATION_MYPAGE) {
-        MyPage()
+        MyPage(onNoticeClick = onNoticeClick)
     }
 }
 

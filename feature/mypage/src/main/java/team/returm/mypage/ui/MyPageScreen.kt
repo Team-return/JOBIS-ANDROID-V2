@@ -36,12 +36,16 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
-internal fun MyPage() {
-    MyPageScreen()
+internal fun MyPage(onNoticeClick: () -> Unit) {
+    MyPageScreen(
+        onNoticeClick = onNoticeClick
+    )
 }
 
 @Composable
-private fun MyPageScreen() {
+private fun MyPageScreen(
+    onNoticeClick: () -> Unit
+) {
     val scrollState = rememberScrollState()
     val (showLogoutModal, setShowLogoutModal) = remember { mutableStateOf(false) }
     val (showWithdrawalModal, setShowWithdrawalModal) = remember { mutableStateOf(false) }
@@ -124,7 +128,7 @@ private fun MyPageScreen() {
                             imageResource = painterResource(id = R.drawable.ic_loud_speaker),
                             description = "notice icon",
                             contentTitle = stringResource(id = R.string.notice),
-                            onClick = { /*TODO 공지사항 페이지로 이동 */ },
+                            onClick = onNoticeClick,
                             iconColor = null,
                         ),
                     ),
