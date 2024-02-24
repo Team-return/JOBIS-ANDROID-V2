@@ -72,6 +72,7 @@ private fun InputEmailScreen(
             emailDescriptionType = state.emailDescriptionType,
             showEmailDescription = { state.showEmailDescription },
             showAuthenticationCodeDescription = { state.showAuthenticationCodeDescription },
+            sendAuthenticationCode = { state.sendAuthenticationCode },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
@@ -93,6 +94,7 @@ private fun EmailInputs(
     emailDescriptionType: DescriptionType,
     showEmailDescription: () -> Boolean,
     showAuthenticationCodeDescription: () -> Boolean,
+    sendAuthenticationCode: () -> Boolean,
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
@@ -103,9 +105,13 @@ private fun EmailInputs(
         checkDescription = stringResource(id = R.string.description_email_sent),
         errorDescription = stringResource(id = R.string.description_conflict_email),
         showDescription = showEmailDescription,
+        descriptionType = emailDescriptionType,
     ) {
         JobisSmallButton(
-            text = "인증 하기",
+            text = stringResource(
+                id = if (sendAuthenticationCode()) R.string.re_send_authentication_code
+                else R.string.authentication,
+            ),
             color = ButtonColor.Secondary,
             onClick = onAuthenticationClick,
             keyboardInteractionEnabled = false,
