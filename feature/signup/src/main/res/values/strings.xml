@@ -10,15 +10,25 @@
     <string name="description_invalid_name">올바른 이름을 입력해주세요</string>
     <string name="description_invalid_number">올바른 학번을 입력해주세요</string>
 
+    <!--Input Email Screen-->
     <string name="input_email">이메일을 입력해주세요</string>
+
+    <string name="email">이메일</string>
+    <string name="authentication_code">인증코드</string>
+
+    <string name="hint_email">example</string>
+    <string name="hint_authentication_code">이메일로 온 코드를 입력해주세요</string>
+
+    <string name="description_email_sent">인증 메일이 발송되었어요</string>
+    <string name="description_conflict_email">이미 가입 된 이메일이에요</string>
+
+    <string name="description_invalid_authentication_code">인증코드가 잘못되었어요</string>
+
     <string name="setting_password">비밀번호를 설정해주세요</string>
     <string name="name">이름</string>
     <string name="student_number">학번</string>
     <string name="next">다음</string>
-    <string name="email">이메일</string>
-    <string name="hint_email">example</string>
-    <string name="authentication_code">인증코드</string>
-    <string name="hint_authentication_code">이메일로 온 코드를 입력해주세요</string>
+
     <string name="password">비밀번호</string>
     <string name="hint_password">계정의 비밀번호를 설정해주세요.</string>
     <string name="check_password">비밀번호 확인</string>

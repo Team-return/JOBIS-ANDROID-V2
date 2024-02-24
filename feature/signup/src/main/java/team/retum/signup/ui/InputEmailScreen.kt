@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -19,8 +18,11 @@ import team.retum.jobisdesignsystemv2.button.JobisSmallButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.signup.R
+import team.retum.signup.viewmodel.InputEmailState
+import team.retum.signup.viewmodel.InputEmailViewModel
 import java.io.Serializable
 
 @Composable
@@ -28,10 +30,17 @@ internal fun InputEmail(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
     signUpData: () -> Serializable,
+    inputEmailViewModel: InputEmailViewModel = hiltViewModel(),
 ) {
+    val state by inputEmailViewModel.state.collectAsStateWithLifecycle()
+
     InputEmailScreen(
         onBackPressed = onBackPressed,
         onNextClick = onNextClick,
+        state = state,
+        onEmailChange = inputEmailViewModel::onEmailChange,
+        onAuthenticationCodeChange = inputEmailViewModel::onAuthenticationCodeChange,
+        onAuthenticationClick = inputEmailViewModel::onAuthenticationClick,
     )
 }
 
@@ -39,10 +48,11 @@ internal fun InputEmail(
 private fun InputEmailScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
+    state: InputEmailState,
+    onEmailChange: (String) -> Unit,
+    onAuthenticationCodeChange: (String) -> Unit,
+    onAuthenticationClick: () -> Unit,
 ) {
-    // TODO: viewModel로 옮기기
-    var email by remember { mutableStateOf("") }
-    var authenticationCode by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,16 +64,21 @@ private fun InputEmailScreen(
             onBackPressed = onBackPressed,
         )
         EmailInputs(
-            email = { email },
-            authenticationCode = { authenticationCode },
-            onEmailChange = { email = it },
-            onAuthenticationCodeChange = { authenticationCode = it },
+            email = { state.email },
+            onEmailChange = onEmailChange,
+            authenticationCode = { state.authenticationCode },
+            onAuthenticationCodeChange = onAuthenticationCodeChange,
+            onAuthenticationClick = onAuthenticationClick,
+            emailDescriptionType = state.emailDescriptionType,
+            showEmailDescription = { state.showEmailDescription },
+            showAuthenticationCodeDescription = { state.showAuthenticationCodeDescription },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
             text = stringResource(id = R.string.next),
             color = ButtonColor.Primary,
             onClick = onNextClick,
+            enabled = state.buttonEnabled,
         )
     }
 }
@@ -74,6 +89,10 @@ private fun EmailInputs(
     authenticationCode: () -> String,
     onEmailChange: (String) -> Unit,
     onAuthenticationCodeChange: (String) -> Unit,
+    onAuthenticationClick: () -> Unit,
+    emailDescriptionType: DescriptionType,
+    showEmailDescription: () -> Boolean,
+    showAuthenticationCodeDescription: () -> Boolean,
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
@@ -81,11 +100,14 @@ private fun EmailInputs(
         hint = stringResource(id = R.string.hint_email),
         onValueChange = onEmailChange,
         showEmailHint = true,
+        checkDescription = stringResource(id = R.string.description_email_sent),
+        errorDescription = stringResource(id = R.string.description_conflict_email),
+        showDescription = showEmailDescription,
     ) {
         JobisSmallButton(
             text = "인증 하기",
             color = ButtonColor.Secondary,
-            onClick = {},
+            onClick = onAuthenticationClick,
             keyboardInteractionEnabled = false,
         )
     }
@@ -94,6 +116,8 @@ private fun EmailInputs(
         value = authenticationCode,
         hint = stringResource(id = R.string.hint_authentication_code),
         onValueChange = onAuthenticationCodeChange,
+        errorDescription = stringResource(id = R.string.description_invalid_authentication_code),
+        showDescription = showAuthenticationCodeDescription,
     ) {
         JobisText(
             text = "05:00",
