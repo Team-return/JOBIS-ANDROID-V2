@@ -5,13 +5,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import team.retum.common.utils.ResourceKeys
+import team.retum.signup.model.SignUpData
 import java.io.Serializable
 
 const val NAVIGATION_SIGN_UP = "signUp"
 
 fun NavGraphBuilder.signUp(
     onBackPressed: () -> Unit,
-    navigateToInputEmail: (String, Long) -> Unit,
+    navigateToInputEmail: (SignUpData) -> Unit,
     onSetPasswordClick: () -> Unit,
     onSelectGenderClick: () -> Unit,
     onSetProfileClick: () -> Unit,

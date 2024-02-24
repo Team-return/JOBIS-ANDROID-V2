@@ -8,7 +8,7 @@ data class SignUpData(
     val grade: String = "",
     val name: String = "",
     val gender: String = "",
-    val classRoom: Long = 0L,
-    val number: Long = 0L,
+    val classRoom: String = "",
+    val number: String = "",
     val platformType: String = "",
 ) : Serializable

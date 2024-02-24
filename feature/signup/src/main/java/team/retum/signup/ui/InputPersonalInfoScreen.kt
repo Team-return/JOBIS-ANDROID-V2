@@ -21,6 +21,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.signup.R
+import team.retum.signup.model.SignUpData
 import team.retum.signup.viewmodel.InputPersonalInfoSideEffect
 import team.retum.signup.viewmodel.InputPersonalInfoState
 import team.retum.signup.viewmodel.InputPersonalInfoViewModel
@@ -28,7 +29,7 @@ import team.retum.signup.viewmodel.InputPersonalInfoViewModel
 @Composable
 internal fun InputPersonalInfo(
     onBackPressed: () -> Unit,
-    navigateToInputEmail: (name: String, number: Long) -> Unit,
+    navigateToInputEmail: (SignUpData) -> Unit,
     inputPersonalInfoViewModel: InputPersonalInfoViewModel = hiltViewModel(),
 ) {
     val state by inputPersonalInfoViewModel.state.collectAsStateWithLifecycle()
@@ -37,7 +38,14 @@ internal fun InputPersonalInfo(
         inputPersonalInfoViewModel.sideEffect.collect {
             when (it) {
                 is InputPersonalInfoSideEffect.MoveToNext -> {
-                    navigateToInputEmail(it.name, it.number)
+                    navigateToInputEmail(
+                        SignUpData(
+                            name = it.name,
+                            grade = it.grade,
+                            classRoom = it.classRoom,
+                            number = it.number,
+                        )
+                    )
                 }
             }
         }

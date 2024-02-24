@@ -27,13 +27,6 @@ fun NavGraphBuilder.inputEmail(
     }
 }
 
-fun NavController.navigateToInputEmail(
-    name: String,
-    number: Long,
-) {
-    val signUpData = SignUpData(
-        name = name,
-        number = number,
-    )
+fun NavController.navigateToInputEmail(signUpData: SignUpData) {
     navigate("$NAVIGATION_INPUT_EMAIL/$signUpData")
 }
