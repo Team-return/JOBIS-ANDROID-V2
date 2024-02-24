@@ -6,9 +6,9 @@ import androidx.navigation.compose.composable
 
 const val NAVIGATION_REPORT_BUG = "reportBug"
 
-fun NavGraphBuilder.reportBug() {
+fun NavGraphBuilder.reportBug(onBackPressed: () -> Unit) {
     composable(NAVIGATION_REPORT_BUG) {
-        ReportBug()
+        ReportBug(onBackPressed = onBackPressed)
     }
 }
 

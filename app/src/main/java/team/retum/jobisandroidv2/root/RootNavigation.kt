@@ -12,6 +12,9 @@ fun NavGraphBuilder.root(
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
 ) {
     composable(NAVIGATION_ROOT) {
         Root(
@@ -20,6 +23,9 @@ fun NavGraphBuilder.root(
             onCompaniesClick = onCompaniesClick,
             onRecruitmentFilterClick = onRecruitmentFilterClick,
             onSearchRecruitmentClick = onSearchRecruitmentClick,
+            onSelectInterestClick = onSelectInterestClick,
+            onChangePasswordClick = onChangePasswordClick,
+            onReportBugClick = onReportBugClick,
         )
     }
 }

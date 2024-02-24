@@ -43,7 +43,9 @@ private val smallButtonShape = RoundedCornerShape(8.dp)
 private val mediumButtonShape = RoundedCornerShape(32.dp)
 
 private enum class ButtonType {
-    LARGE, SMALL,
+    LARGE,
+    SMALL,
+    DIALOG,
 }
 
 @Composable
@@ -60,7 +62,7 @@ private fun BasicButton(
 ) {
     val keyboardShow by keyboardAsState()
     val isKeyboardHideButton = keyboardShow && keyboardInteractionEnabled
-    val padding = if (isKeyboardHideButton || buttonType == ButtonType.SMALL) {
+    val padding = if (isKeyboardHideButton || buttonType == ButtonType.SMALL || buttonType == ButtonType.DIALOG) {
         PaddingValues(
             vertical = 0.dp,
             horizontal = 0.dp,
@@ -158,6 +160,11 @@ private fun getThemeColor(color: ButtonColor) = when (color) {
         lightColor = ButtonColors.Light.default(),
         darkColor = ButtonColors.Dark.default(),
     )
+
+    ButtonColor.Error -> checkDarkTheme(
+        lightColor = ButtonColors.Light.error(),
+        darkColor = ButtonColors.Dark.error(),
+    )
 }
 
 @Composable
@@ -178,6 +185,7 @@ private fun LargeButton(
     text: String,
     color: ButtonColor,
     enabled: Boolean,
+    buttonType: ButtonType,
     keyboardInteractionEnabled: Boolean,
     onClick: () -> Unit,
 ) {
@@ -188,7 +196,7 @@ private fun LargeButton(
         color = color,
         shape = largeButtonShape,
         enabled = enabled,
-        buttonType = ButtonType.LARGE,
+        buttonType = buttonType,
         keyboardInteractionEnabled = keyboardInteractionEnabled,
         pressed = { pressed },
         onPressed = { pressed = it },
@@ -321,6 +329,7 @@ fun JobisButton(
         text = text,
         color = color,
         enabled = enabled,
+        buttonType = ButtonType.LARGE,
         keyboardInteractionEnabled = keyboardInteractionEnabled,
         onClick = onClick,
     )
@@ -361,6 +370,26 @@ fun JobisMediumButton(
         color = color,
         painter = drawable,
         enabled = enabled,
+        keyboardInteractionEnabled = keyboardInteractionEnabled,
+        onClick = onClick,
+    )
+}
+
+@Composable
+fun JobisDialogButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: ButtonColor = ButtonColor.Default,
+    enabled: Boolean = true,
+    keyboardInteractionEnabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    LargeButton(
+        modifier = modifier,
+        text = text,
+        color = color,
+        enabled = enabled,
+        buttonType = ButtonType.DIALOG,
         keyboardInteractionEnabled = keyboardInteractionEnabled,
         onClick = onClick,
     )

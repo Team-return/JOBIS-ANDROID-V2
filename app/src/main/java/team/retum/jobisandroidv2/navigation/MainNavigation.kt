@@ -5,12 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import team.retum.alarm.navigation.alarm
 import team.retum.alarm.navigation.navigateToAlarm
+import team.retum.bug.navigateToReportBug
 import team.retum.bug.reportBug
 import team.retum.company.navigation.companies
 import team.retum.company.navigation.navigateToCompanies
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
+import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
 import team.retum.jobis.interests.navigation.interests
+import team.retum.jobis.interests.navigation.navigateToInterests
 import team.retum.jobis.notification.navigation.notificationDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
@@ -36,6 +39,9 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onCompaniesClick = navController::navigateToCompanies,
             onRecruitmentFilterClick = navController::navigateToRecruitmentFilter,
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
+            onSelectInterestClick = navController::navigateToInterests,
+            onChangePasswordClick = navController::navigateToConfirmPassword,
+            onReportBugClick = navController::navigateToReportBug,
         )
         alarm(onBackPressed = navController::popBackStack)
         recruitmentDetails(

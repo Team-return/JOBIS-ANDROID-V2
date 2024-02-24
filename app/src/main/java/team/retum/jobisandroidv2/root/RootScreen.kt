@@ -32,7 +32,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
-import team.returm.mypage.navigation.mypage
+import team.returm.mypage.navigation.myPage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -42,6 +42,9 @@ internal fun Root(
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -63,6 +66,9 @@ internal fun Root(
         onCompaniesClick = onCompaniesClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
+        onSelectInterestClick = onSelectInterestClick,
+        onChangePasswordClick = onChangePasswordClick,
+        onReportBugClick = onReportBugClick,
     )
 }
 
@@ -78,6 +84,9 @@ private fun RootScreen(
     onSearchRecruitmentClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
     onCompaniesClick: () -> Unit,
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -103,7 +112,7 @@ private fun RootScreen(
                 home(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
-                onCompaniesClick = onCompaniesClick,
+                    onCompaniesClick = onCompaniesClick,
                 )
                 recruitments(
                     onRecruitmentDetailsClick = onRecruitmentDetailsClick,
@@ -111,7 +120,11 @@ private fun RootScreen(
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
-                mypage()
+                myPage(
+                    onSelectInterestClick = onSelectInterestClick,
+                    onChangePasswordClick = onChangePasswordClick,
+                    onReportBugClick = onReportBugClick,
+                )
             }
         }
     }
