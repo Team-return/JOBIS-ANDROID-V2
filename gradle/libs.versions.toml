@@ -24,7 +24,7 @@ com-google-android-material = "1.11.0"
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
-androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidx-compose-material"}
+androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidx-compose-material" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -33,16 +33,15 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose"}
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 
-com-google-android-material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material"}
+com-google-android-material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material" }
 
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-viewmodel" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
-androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle-runtime-compose" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }

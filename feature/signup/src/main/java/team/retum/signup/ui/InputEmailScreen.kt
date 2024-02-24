@@ -21,6 +21,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.signup.R
+import java.io.Serializable
 
 @Composable
 internal fun InputEmail(

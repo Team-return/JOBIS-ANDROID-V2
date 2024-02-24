@@ -17,12 +17,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.signup.R
 import team.retum.signup.viewmodel.InputPersonalInfoState
 import team.retum.signup.viewmodel.InputPersonalInfoViewModel
-import team.returm.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
-import team.returm.jobisdesignsystemv2.button.ButtonColor
-import team.returm.jobisdesignsystemv2.button.JobisButton
-import team.returm.jobisdesignsystemv2.foundation.JobisTheme
-import team.returm.jobisdesignsystemv2.textfield.DescriptionType
-import team.returm.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.textfield.DescriptionType
+import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
 internal fun InputPersonalInfo(
