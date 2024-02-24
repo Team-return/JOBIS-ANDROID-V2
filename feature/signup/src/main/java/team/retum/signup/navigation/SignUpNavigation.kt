@@ -4,7 +4,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import team.retum.common.util.Keys
+import team.retum.common.utils.ResourceKeys
 import java.io.Serializable
 
 const val NAVIGATION_SIGN_UP = "signUp"
@@ -55,5 +55,5 @@ fun NavController.navigateToSignUp() {
 
 @Suppress("Deprecation")
 internal fun NavBackStackEntry.getSignUpData(): Serializable {
-    return arguments?.getSerializable(Keys.SIGN_UP) ?: throw NullPointerException()
+    return arguments?.getSerializable(ResourceKeys.SIGN_UP) ?: throw NullPointerException()
 }
