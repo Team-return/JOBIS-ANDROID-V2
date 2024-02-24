@@ -43,7 +43,12 @@ internal class InputPersonalInfoViewModel @Inject constructor() :
 
     internal fun onNextClick() {
         setState { state.value.copy(buttonEnabled = false) }
-        postSideEffect(sideEffect = InputPersonalInfoSideEffect.MoveToNext)
+        postSideEffect(
+            sideEffect = InputPersonalInfoSideEffect.MoveToNext(
+                name = state.value.name.trim(),
+                number = state.value.number.trim().toLong(),
+            )
+        )
     }
 }
 
@@ -66,5 +71,8 @@ internal data class InputPersonalInfoState(
 }
 
 internal sealed interface InputPersonalInfoSideEffect {
-    data object MoveToNext : InputPersonalInfoSideEffect
+    data class MoveToNext(
+        val name: String,
+        val number: Long,
+    ) : InputPersonalInfoSideEffect
 }

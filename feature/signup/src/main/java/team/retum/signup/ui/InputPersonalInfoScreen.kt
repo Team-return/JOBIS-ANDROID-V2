@@ -14,15 +14,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import team.retum.signup.R
-import team.retum.signup.viewmodel.InputPersonalInfoState
-import team.retum.signup.viewmodel.InputPersonalInfoViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.signup.R
+import team.retum.signup.viewmodel.InputPersonalInfoSideEffect
+import team.retum.signup.viewmodel.InputPersonalInfoState
+import team.retum.signup.viewmodel.InputPersonalInfoViewModel
 
 @Composable
 internal fun InputPersonalInfo(
@@ -34,7 +35,11 @@ internal fun InputPersonalInfo(
 
     LaunchedEffect(Unit) {
         inputPersonalInfoViewModel.sideEffect.collect {
-            navigateToInputEmail(state.name.trim(), state.number.trim().toLong())
+            when (it) {
+                is InputPersonalInfoSideEffect.MoveToNext -> {
+                    navigateToInputEmail(it.name, it.number)
+                }
+            }
         }
     }
 
