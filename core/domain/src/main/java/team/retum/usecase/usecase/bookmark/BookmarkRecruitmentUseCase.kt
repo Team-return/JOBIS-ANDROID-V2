@@ -1,6 +1,6 @@
 package team.retum.usecase.usecase.bookmark
 
-import team.retum.data.repository.BookmarkRepository
+import team.retum.data.repository.bookmark.BookmarkRepository
 import javax.inject.Inject
 
 class BookmarkRecruitmentUseCase @Inject constructor(

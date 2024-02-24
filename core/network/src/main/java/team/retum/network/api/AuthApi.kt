@@ -8,6 +8,6 @@ import team.retum.network.model.request.auth.SendAuthenticationCodeRequest
 interface AuthApi {
     @POST(RequestUrls.Auth.code)
     suspend fun sendAuthenticationCode(
-        @Body authenticationCodeRequest: SendAuthenticationCodeRequest,
+        @Body sendAuthenticationCodeRequest: SendAuthenticationCodeRequest,
     )
 }

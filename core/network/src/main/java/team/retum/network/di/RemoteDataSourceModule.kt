@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import team.retum.network.datasource.BookmarkDataSource
-import team.retum.network.datasource.BookmarkDataSourceImpl
+import team.retum.network.datasource.bookmark.BookmarkDataSource
+import team.retum.network.datasource.bookmark.BookmarkDataSourceImpl
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
 import team.retum.network.datasource.user.RemoteUserDataSource

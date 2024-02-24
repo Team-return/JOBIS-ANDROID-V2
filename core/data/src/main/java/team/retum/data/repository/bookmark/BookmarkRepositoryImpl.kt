@@ -1,6 +1,6 @@
-package team.retum.data.repository
+package team.retum.data.repository.bookmark
 
-import team.retum.network.datasource.BookmarkDataSource
+import team.retum.network.datasource.bookmark.BookmarkDataSource
 import team.retum.network.model.response.BookmarksResponse
 import javax.inject.Inject
 
