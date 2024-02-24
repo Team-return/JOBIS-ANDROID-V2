@@ -25,6 +25,7 @@ import team.retum.jobisandroidv2.navigateToApplication
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.returm.mypage.navigation.mypage
+import team.returm.mypage.navigation.navigateToMyPage
 
 const val NAVIGATION_MAIN = "main"
 
@@ -59,6 +60,6 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
         )
         application(onBackPressed = navController::popBackStack)
-        notificationList {}
+        notificationList(onBackPressed = navController::popBackStack)
     }
 }
