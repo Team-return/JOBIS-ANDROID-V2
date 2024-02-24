@@ -2,9 +2,15 @@ package team.retum.network.util
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import team.retum.common.utils.ResourceKeys
+import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.di.RequestUrls
+import javax.inject.Inject
 
-class TokenInterceptor : Interceptor {
+class TokenInterceptor @Inject constructor(
+    private val localUserDataSource: LocalUserDataSource,
+) : Interceptor {
+
     private val ignorePaths by lazy {
         listOf(
             RequestUrls.Users.login,
@@ -22,11 +28,13 @@ class TokenInterceptor : Interceptor {
         val request = chain.request()
         val path = request.url.encodedPath
 
+        val accessToken = localUserDataSource.getAccessToken()
+
         return chain.proceed(
             when (ignorePaths.contains(path)) {
                 true -> request
-                // TODO 토큰 캐싱 로직 구현
-                false -> chain.request().newBuilder().addHeader("Authorization", "Bearer ").build()
+                false -> request.newBuilder()
+                    .addHeader("Authorization", "${ResourceKeys.BEARER} $accessToken").build()
             },
         )
     }

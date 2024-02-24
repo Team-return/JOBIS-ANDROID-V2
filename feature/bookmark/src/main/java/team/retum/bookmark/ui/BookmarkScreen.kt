@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkViewModel
+import team.retum.common.utils.ResourceKeys.IMAGE_URL
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -35,8 +36,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.BookmarksEntity
-
-private const val IMAGE_URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
 
 @Composable
 internal fun Bookmarks(

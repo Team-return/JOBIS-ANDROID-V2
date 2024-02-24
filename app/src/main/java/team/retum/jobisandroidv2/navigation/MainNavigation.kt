@@ -14,12 +14,15 @@ import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.navigateToInterests
+import team.retum.jobis.notification.navigation.notificationDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
 import team.retum.jobis.recruitment.navigation.recruitmentDetails
 import team.retum.jobis.recruitment.navigation.recruitmentFilter
 import team.retum.jobis.recruitment.navigation.searchRecruitment
+import team.retum.jobisandroidv2.application
+import team.retum.jobisandroidv2.navigateToApplication
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 
@@ -41,9 +44,13 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onReportBugClick = navController::navigateToReportBug,
         )
         alarm(onBackPressed = navController::popBackStack)
-        recruitmentDetails(onBackPressed = navController::navigateUp)
-        reportBug(onBackPressed = navController::popBackStack)
-        interests(onBackPressed = navController::popBackStack)
+        recruitmentDetails(
+            onBackPressed = navController::navigateUp,
+            onApplyClick = navController::navigateToApplication,
+        )
+        reportBug()
+        interests()
+        notificationDetails(onBackPressed = navController::navigateUp)
         companies(
             onBackPressed = navController::popBackStack,
             onSearchClick = navController::navigateToSearchCompanies,
@@ -54,5 +61,6 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onBackPressed = navController::popBackStack,
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
         )
+        application(onBackPressed = navController::popBackStack)
     }
 }

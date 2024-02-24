@@ -40,6 +40,7 @@ android {
 dependencies {
 
     implementation(project(":core:common"))
+    implementation(project(":core:local"))
 
     implementation(libs.squareup.retrofit)
     implementation(libs.squareup.retrofit.converter.gson)

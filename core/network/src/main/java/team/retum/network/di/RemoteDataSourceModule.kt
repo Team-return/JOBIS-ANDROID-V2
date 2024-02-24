@@ -6,18 +6,18 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import team.retum.network.datasource.BookmarkDataSource
 import team.retum.network.datasource.BookmarkDataSourceImpl
-import team.retum.network.datasource.UserDataSource
-import team.retum.network.datasource.UserDataSourceImpl
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
+import team.retum.network.datasource.user.RemoteUserDataSource
+import team.retum.network.datasource.user.RemoteUserDataSourceImpl
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataSourceModule {
+abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
-    abstract fun bindUserDataSource(userDataSourceImpl: UserDataSourceImpl): UserDataSource
+    abstract fun bindRemoteUserDataSource(remoteUserDataSourceImpl: RemoteUserDataSourceImpl): RemoteUserDataSource
 
     @Binds
     @Singleton
