@@ -25,7 +25,6 @@ import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobis.notification.navigation.navigateToNotificationList
-import team.retum.jobis.notification.navigation.notificationList
 import team.retum.jobis.recruitment.navigation.navigateToRecruitments
 import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
@@ -44,6 +43,7 @@ internal fun Root(
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    onNoticeClick: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -65,6 +65,7 @@ internal fun Root(
         onCompaniesClick = onCompaniesClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
+        onNoticeClick = onNoticeClick,
     )
 }
 
@@ -80,6 +81,7 @@ private fun RootScreen(
     onSearchRecruitmentClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
     onCompaniesClick: () -> Unit,
+    onNoticeClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
