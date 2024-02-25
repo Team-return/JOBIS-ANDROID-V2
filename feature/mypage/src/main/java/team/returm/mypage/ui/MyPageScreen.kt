@@ -36,16 +36,14 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
-internal fun MyPage(onNoticeClick: () -> Unit) {
-    MyPageScreen(
-        onNoticeClick = onNoticeClick
-    )
+internal fun MyPage(
+    onNoticeClick: () -> Unit,
+) {
+    MyPageScreen(onNoticeClick = onNoticeClick)
 }
 
 @Composable
-private fun MyPageScreen(
-    onNoticeClick: () -> Unit
-) {
+private fun MyPageScreen(onNoticeClick: () -> Unit) {
     val scrollState = rememberScrollState()
     val (showLogoutModal, setShowLogoutModal) = remember { mutableStateOf(false) }
     val (showWithdrawalModal, setShowWithdrawalModal) = remember { mutableStateOf(false) }
