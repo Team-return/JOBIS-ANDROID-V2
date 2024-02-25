@@ -115,7 +115,7 @@ private fun RootScreen(
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
-                mypage(onNoticeClick = navController::navigateToNotificationList)
+                mypage(onNoticeClick = onNoticeClick)
             }
         }
     }
