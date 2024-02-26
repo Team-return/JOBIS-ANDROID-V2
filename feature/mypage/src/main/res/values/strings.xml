@@ -14,8 +14,8 @@
     <string name="bug_report_box">버그 제보함</string>
     <string name="write_interview_review">면접 후기를 적어주세요!</string>
     <string name="go_write">작성하러 가기 →</string>
-    <string name="logout_modal_title">JOBIS에서 로그아웃 하시겠어요?</string>
-    <string name="modal_if_logout">JOBIS에서 로그아웃 하면,\n로그인 할 때 까지 사용하지 못해요</string>
+    <string name="sign_out_modal_title">JOBIS에서 로그아웃 하시겠어요?</string>
+    <string name="modal_if_sign_out">JOBIS에서 로그아웃 하면,\n로그인 할 때 까지 사용하지 못해요</string>
     <string name="modal_button_cancel">취소</string>
     <string name="modal_button_logout">로그아웃</string>
     <string name="withdrawal_modal_title">JOBIS에서 탈퇴 하시겠어요?</string>

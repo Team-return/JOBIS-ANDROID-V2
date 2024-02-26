@@ -5,14 +5,24 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import team.returm.mypage.ui.MyPage
 
-const val NAVIGATION_MYPAGE = "mypage"
+const val NAVIGATION_MY_PAGE = "myPage"
 
-fun NavGraphBuilder.mypage(onNoticeClick: () -> Unit) {
-    composable(NAVIGATION_MYPAGE) {
-        MyPage(onNoticeClick = onNoticeClick)
+fun NavGraphBuilder.myPage(
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
+    onNoticeClick: () -> Unit,
+) {
+    composable(NAVIGATION_MY_PAGE) {
+        MyPage(
+            onSelectInterestClick = onSelectInterestClick,
+            onChangePasswordClick = onChangePasswordClick,
+            onReportBugClick = onReportBugClick,
+            onNoticeClick = onNoticeClick,
+        )
     }
 }
 
 fun NavController.navigateToMyPage() {
-    navigate(NAVIGATION_MYPAGE)
+    navigate(NAVIGATION_MY_PAGE)
 }

@@ -6,9 +6,9 @@ import androidx.navigation.compose.composable
 import team.retum.jobis.interests.ui.Interests
 
 const val NAVIGATION_INTERESTS = "interests"
-fun NavGraphBuilder.interests() {
+fun NavGraphBuilder.interests(onBackPressed: () -> Unit) {
     composable(NAVIGATION_INTERESTS) {
-        Interests()
+        Interests(onBackPressed = onBackPressed)
     }
 }
 

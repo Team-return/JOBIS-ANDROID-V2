@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobisandroidv2.R
-import team.returm.mypage.navigation.NAVIGATION_MYPAGE
+import team.returm.mypage.navigation.NAVIGATION_MY_PAGE
 
 sealed class BottomMenu(
     val route: String,
@@ -31,7 +31,7 @@ sealed class BottomMenu(
     )
 
     data object MyPage : BottomMenu(
-        route = NAVIGATION_MYPAGE,
+        route = NAVIGATION_MY_PAGE,
         icon = R.drawable.ic_my_page,
         title = R.string.my_page,
     )

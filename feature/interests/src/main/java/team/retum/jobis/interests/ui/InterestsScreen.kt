@@ -26,12 +26,12 @@ import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
-internal fun Interests() {
-    InterestsScreen()
+internal fun Interests(onBackPressed: () -> Unit) {
+    InterestsScreen(onBackPressed = onBackPressed)
 }
 
 @Composable
-private fun InterestsScreen() {
+private fun InterestsScreen(onBackPressed: () -> Unit) {
     // TODO 뷰모델로 옮기기
     var content by remember { mutableStateOf("") }
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
@@ -51,7 +51,7 @@ private fun InterestsScreen() {
     ) {
         JobisSmallTopAppBar(
             title = stringResource(id = R.string.set_interests),
-            onBackPressed = {},
+            onBackPressed = onBackPressed,
         )
         InterestsInput(
             content = { content },
@@ -76,8 +76,6 @@ private fun InterestsInput(
 ) {
     Column(modifier = Modifier.padding(vertical = 16.dp)) {
         JobisTextField(
-            // TODO 디자인 시스템에서 title 옵셔널 처리하기
-            title = "",
             hint = stringResource(id = R.string.hint_keyword),
             value = content,
             onValueChange = onContentChange,

@@ -72,7 +72,7 @@ private val developmentAreas = listOf(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun ReportBug() {
+internal fun ReportBug(onBackPressed: () -> Unit) {
     val context = LocalContext.current
     val screenshots = remember { mutableStateListOf<Uri>() }
     var selectedField by remember { mutableStateOf(DevelopmentArea.ANDROID) }

@@ -32,7 +32,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
-import team.returm.mypage.navigation.mypage
+import team.returm.mypage.navigation.myPage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -43,6 +43,9 @@ internal fun Root(
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -65,6 +68,9 @@ internal fun Root(
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
         onNoticeClick = onNoticeClick,
+        onSelectInterestClick = onSelectInterestClick,
+        onChangePasswordClick = onChangePasswordClick,
+        onReportBugClick = onReportBugClick,
     )
 }
 
@@ -81,6 +87,9 @@ private fun RootScreen(
     onRejectionReasonClick: () -> Unit,
     onCompaniesClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    onSelectInterestClick: () -> Unit,
+    onChangePasswordClick: () -> Unit,
+    onReportBugClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -106,7 +115,7 @@ private fun RootScreen(
                 home(
                     onAlarmClick = onAlarmClick,
                     onRejectionReasonClick = onRejectionReasonClick,
-                onCompaniesClick = onCompaniesClick,
+                    onCompaniesClick = onCompaniesClick,
                 )
                 recruitments(
                     onRecruitmentDetailsClick = onRecruitmentDetailsClick,
@@ -115,6 +124,11 @@ private fun RootScreen(
                 )
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
                 mypage(onNoticeClick = onNoticeClick)
+                myPage(
+                    onSelectInterestClick = onSelectInterestClick,
+                    onChangePasswordClick = onChangePasswordClick,
+                    onReportBugClick = onReportBugClick,
+                )
             }
         }
     }

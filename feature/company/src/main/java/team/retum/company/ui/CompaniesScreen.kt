@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import team.retum.common.utils.ResourceKeys.IMAGE_URL
 import team.retum.company.viewmodel.CompanyViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -30,8 +31,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.CompaniesEntity
-
-private const val IMAGE_URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
 
 @Composable
 internal fun Companies(
