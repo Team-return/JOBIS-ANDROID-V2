@@ -11,12 +11,14 @@ fun NavGraphBuilder.myPage(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
+    onNoticeClick: () -> Unit,
 ) {
     composable(NAVIGATION_MY_PAGE) {
         MyPage(
             onSelectInterestClick = onSelectInterestClick,
             onChangePasswordClick = onChangePasswordClick,
             onReportBugClick = onReportBugClick,
+            onNoticeClick = onNoticeClick,
         )
     }
 }

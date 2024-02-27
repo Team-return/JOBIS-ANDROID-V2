@@ -39,11 +39,13 @@ internal fun MyPage(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
+    onNoticeClick: () -> Unit,
 ) {
     MyPageScreen(
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
+        onNoticeClick = onNoticeClick,
     )
 }
 
@@ -52,6 +54,7 @@ private fun MyPageScreen(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
+    onNoticeClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val (showSignOutModal, setShowSignOutModal) = remember { mutableStateOf(false) }
@@ -111,7 +114,7 @@ private fun MyPageScreen(
                             imageResource = painterResource(id = R.drawable.ic_loud_speaker),
                             description = "notice icon",
                             contentTitle = stringResource(id = R.string.notice),
-                            onClick = { /*TODO 공지사항 페이지로 이동 */ },
+                            onClick = onNoticeClick,
                             iconColor = null,
                         ),
                     ),

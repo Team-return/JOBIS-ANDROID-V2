@@ -42,6 +42,7 @@ internal fun Root(
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
@@ -66,6 +67,7 @@ internal fun Root(
         onCompaniesClick = onCompaniesClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
+        onNoticeClick = onNoticeClick,
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
@@ -84,6 +86,7 @@ private fun RootScreen(
     onSearchRecruitmentClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
     onCompaniesClick: () -> Unit,
+    onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
@@ -120,6 +123,7 @@ private fun RootScreen(
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
+                mypage(onNoticeClick = onNoticeClick)
                 myPage(
                     onSelectInterestClick = onSelectInterestClick,
                     onChangePasswordClick = onChangePasswordClick,
