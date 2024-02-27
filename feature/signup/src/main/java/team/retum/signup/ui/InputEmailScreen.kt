@@ -1,6 +1,5 @@
 package team.retum.signup.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,17 +31,18 @@ import team.retum.signup.viewmodel.InputEmailViewModel
 @Composable
 internal fun InputEmail(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToSetPassword: (SignUpData) -> Unit,
     signUpData: SignUpData,
     inputEmailViewModel: InputEmailViewModel = hiltViewModel(),
 ) {
     val state by inputEmailViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        Log.d("TEST", signUpData.toString())
         inputEmailViewModel.sideEffect.collect {
             when (it) {
-                is InputEmailSideEffect.MoveToInputPassword -> onNextClick()
+                is InputEmailSideEffect.MoveToInputPassword -> {
+                    navigateToSetPassword(signUpData.copy(email = it.email))
+                }
             }
         }
     }

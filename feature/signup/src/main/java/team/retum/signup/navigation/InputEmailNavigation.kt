@@ -14,7 +14,7 @@ const val NAVIGATION_INPUT_EMAIL = "inputEmail"
 
 fun NavGraphBuilder.inputEmail(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToSetPassword: (SignUpData) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_INPUT_EMAIL/{${ResourceKeys.SIGN_UP}}",
@@ -22,12 +22,12 @@ fun NavGraphBuilder.inputEmail(
     ) {
         InputEmail(
             onBackPressed = onBackPressed,
-            onNextClick = onNextClick,
+            navigateToSetPassword = navigateToSetPassword,
             signUpData = it.getSignUpData(),
         )
     }
 }
 
-internal fun NavController.navigateToInputEmail(signUpData: SignUpData) {
+fun NavController.navigateToInputEmail(signUpData: SignUpData) {
     navigate("$NAVIGATION_INPUT_EMAIL/${signUpData.toJsonString()}")
 }

@@ -40,7 +40,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         signUp(
             onBackPressed = navController::popBackStack,
             navigateToInputEmail = navController::navigateToInputEmail,
-            onSetPasswordClick = navController::navigateToSetPassword,
+            navigateToSetPassword = navController::navigateToSetPassword,
             onSelectGenderClick = navController::navigateToSelectGender,
             onSetProfileClick = navController::navigateToSetProfile,
             onTermsClick = navController::navigateToTerms,
