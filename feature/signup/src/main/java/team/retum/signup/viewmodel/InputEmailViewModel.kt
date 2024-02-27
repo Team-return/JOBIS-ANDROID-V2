@@ -27,11 +27,12 @@ internal class InputEmailViewModel @Inject constructor(
     internal fun onNextClick() {
         setState { state.value.copy(buttonEnabled = false) }
         viewModelScope.launch(Dispatchers.IO) {
+            val email = state.value.email + EMAIL_ADDRESS
             authorizeAuthenticationCodeUseCase(
-                email = state.value.email + EMAIL_ADDRESS,
+                email = email,
                 authCode = state.value.authenticationCode,
             ).onSuccess {
-                postSideEffect(InputEmailSideEffect.MoveToInputPassword)
+                postSideEffect(InputEmailSideEffect.MoveToInputPassword(email = email))
             }.onFailure {
                 when (it) {
                     is BadRequestException -> {
@@ -53,7 +54,7 @@ internal class InputEmailViewModel @Inject constructor(
                     }
 
                     is KotlinNullPointerException -> {
-                        postSideEffect(InputEmailSideEffect.MoveToInputPassword)
+                        postSideEffect(InputEmailSideEffect.MoveToInputPassword(email = email))
                     }
                 }
             }
@@ -133,5 +134,5 @@ internal data class InputEmailState(
 }
 
 internal sealed interface InputEmailSideEffect {
-    data object MoveToInputPassword : InputEmailSideEffect
+    data class MoveToInputPassword(val email: String) : InputEmailSideEffect
 }
