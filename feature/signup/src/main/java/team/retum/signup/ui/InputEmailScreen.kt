@@ -1,5 +1,6 @@
 package team.retum.signup.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,23 +24,24 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.signup.R
+import team.retum.signup.model.SignUpData
 import team.retum.signup.viewmodel.InputEmailSideEffect
 import team.retum.signup.viewmodel.InputEmailState
 import team.retum.signup.viewmodel.InputEmailViewModel
-import java.io.Serializable
 
 @Composable
 internal fun InputEmail(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
-    signUpData: () -> Serializable,
+    signUpData: SignUpData,
     inputEmailViewModel: InputEmailViewModel = hiltViewModel(),
 ) {
     val state by inputEmailViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        Log.d("TEST", signUpData.toString())
         inputEmailViewModel.sideEffect.collect {
-            when(it){
+            when (it) {
                 is InputEmailSideEffect.MoveToInputPassword -> onNextClick()
             }
         }
