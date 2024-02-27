@@ -8,6 +8,7 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.AuthCodeType
 import team.retum.common.exception.BadRequestException
 import team.retum.common.exception.ConflictException
+import team.retum.common.exception.UnAuthorizedException
 import team.retum.common.utils.TimerUtil
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.usecase.usecase.auth.AuthorizeAuthenticationCodeUseCase
@@ -35,7 +36,7 @@ internal class InputEmailViewModel @Inject constructor(
                 postSideEffect(InputEmailSideEffect.MoveToInputPassword(email = email))
             }.onFailure {
                 when (it) {
-                    is BadRequestException -> {
+                    is UnAuthorizedException -> {
                         setState {
                             state.value.copy(
                                 showAuthenticationCodeDescription = true,
@@ -77,7 +78,15 @@ internal class InputEmailViewModel @Inject constructor(
                     )
                 }
             }.onFailure {
+                when (it) {
+                    is BadRequestException -> {
+                        postSideEffect(InputEmailSideEffect.CheckEmailValidation)
+                    }
 
+                    is ConflictException -> {
+                        setState { state.value.copy(showEmailDescription = true) }
+                    }
+                }
             }
         }
     }
@@ -135,4 +144,5 @@ internal data class InputEmailState(
 
 internal sealed interface InputEmailSideEffect {
     data class MoveToInputPassword(val email: String) : InputEmailSideEffect
+    data object CheckEmailValidation: InputEmailSideEffect
 }

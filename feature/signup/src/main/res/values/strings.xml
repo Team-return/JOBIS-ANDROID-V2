@@ -9,7 +9,7 @@
 
     <string name="description_invalid_name">올바른 이름을 입력해주세요</string>
     <string name="description_invalid_number">이미 가입 된 학번이에요</string>
-    <string name="description_not_found_number">존재하지 않는 학번이에요</string>
+    <string name="toast_not_found_number">존재하지 않는 학생이에요</string>
 
     <!--Input Email Screen-->
     <string name="input_email">이메일을 입력해주세요</string>
@@ -25,6 +25,7 @@
 
     <string name="description_email_sent">인증 메일이 발송되었어요</string>
     <string name="description_conflict_email">이미 가입 된 이메일이에요</string>
+    <string name="toast_check_email_validation">이메일 형식을 확인해주세요</string>
 
     <string name="description_invalid_authentication_code">인증코드가 잘못되었어요</string>
 

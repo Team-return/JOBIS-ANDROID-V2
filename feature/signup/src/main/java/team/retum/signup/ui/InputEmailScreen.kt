@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,6 +23,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.signup.R
 import team.retum.signup.model.SignUpData
 import team.retum.signup.viewmodel.InputEmailSideEffect
@@ -36,12 +38,20 @@ internal fun InputEmail(
     inputEmailViewModel: InputEmailViewModel = hiltViewModel(),
 ) {
     val state by inputEmailViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         inputEmailViewModel.sideEffect.collect {
             when (it) {
                 is InputEmailSideEffect.MoveToInputPassword -> {
                     navigateToSetPassword(signUpData.copy(email = it.email))
+                }
+
+                is InputEmailSideEffect.CheckEmailValidation -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_check_email_validation),
+                    ).show()
                 }
             }
         }

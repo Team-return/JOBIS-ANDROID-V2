@@ -56,7 +56,7 @@ internal fun InputPersonalInfo(
                 is InputPersonalInfoSideEffect.NotFoundStudent -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.description_not_found_number),
+                        message = context.getString(R.string.toast_not_found_number),
                     ).show()
                 }
 
