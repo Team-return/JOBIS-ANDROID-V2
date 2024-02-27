@@ -1,4 +1,4 @@
-package team.retum.network.datasource
+package team.retum.network.datasource.bookmark
 
 import team.retum.network.model.response.BookmarksResponse
 

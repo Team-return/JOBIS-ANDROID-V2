@@ -1,15 +1,19 @@
 package team.retum.signup.navigation
 
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import team.retum.common.utils.ResourceKeys
+import team.retum.signup.model.SignUpData
+import team.retum.signup.model.toSignUpData
 
 const val NAVIGATION_SIGN_UP = "signUp"
 
 fun NavGraphBuilder.signUp(
     onBackPressed: () -> Unit,
-    onInputEmailClick: () -> Unit,
-    onSetPasswordClick: () -> Unit,
+    navigateToInputEmail: (SignUpData) -> Unit,
+    navigateToSetPassword: (SignUpData) -> Unit,
     onSelectGenderClick: () -> Unit,
     onSetProfileClick: () -> Unit,
     onTermsClick: () -> Unit,
@@ -21,11 +25,11 @@ fun NavGraphBuilder.signUp(
     ) {
         inputPersonalInfo(
             onBackPressed = onBackPressed,
-            onNextClick = onInputEmailClick,
+            navigateToInputEmail = navigateToInputEmail,
         )
         inputEmail(
             onBackPressed = onBackPressed,
-            onNextClick = onSetPasswordClick,
+            navigateToSetPassword = navigateToSetPassword,
         )
         setPassword(
             onBackPressed = onBackPressed,
@@ -48,4 +52,9 @@ fun NavGraphBuilder.signUp(
 
 fun NavController.navigateToSignUp() {
     navigate(NAVIGATION_SIGN_UP)
+}
+
+internal fun NavBackStackEntry.getSignUpData(): SignUpData {
+    val signUpData = arguments?.getString(ResourceKeys.SIGN_UP) ?: throw NullPointerException()
+    return signUpData.toSignUpData()
 }

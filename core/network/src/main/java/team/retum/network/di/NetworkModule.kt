@@ -11,8 +11,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
+import team.retum.network.api.AuthApi
 import team.retum.network.api.BookmarkApi
 import team.retum.network.api.CompanyApi
+import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
 import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
@@ -74,5 +76,17 @@ object NetworkModule {
     @Singleton
     fun provideCompanyApi(retrofit: Retrofit): CompanyApi {
         return retrofit.create(CompanyApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStudentApi(retrofit: Retrofit): StudentApi {
+        return retrofit.create(StudentApi::class.java)
     }
 }

@@ -19,11 +19,13 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.signup.R
+import team.retum.signup.model.SignUpData
 
 @Composable
 internal fun SetPassword(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
+    signUpData: SignUpData,
 ) {
     SetPasswordScreen(
         onBackPressed = onBackPressed,

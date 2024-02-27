@@ -4,10 +4,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import team.retum.network.datasource.BookmarkDataSource
-import team.retum.network.datasource.BookmarkDataSourceImpl
+import team.retum.network.datasource.auth.RemoteAuthDataSource
+import team.retum.network.datasource.auth.RemoteAuthDataSourceImpl
+import team.retum.network.datasource.bookmark.BookmarkDataSource
+import team.retum.network.datasource.bookmark.BookmarkDataSourceImpl
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
+import team.retum.network.datasource.student.RemoteStudentDataSource
+import team.retum.network.datasource.student.RemoteStudentDataSourceImpl
 import team.retum.network.datasource.user.RemoteUserDataSource
 import team.retum.network.datasource.user.RemoteUserDataSourceImpl
 import javax.inject.Singleton
@@ -26,4 +30,12 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindCompanyDataSource(companyDataSourceImpl: CompanyDataSourceImpl): CompanyDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthDataSource(remoteAuthDataSourceImpl: RemoteAuthDataSourceImpl): RemoteAuthDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteStudentDataSource(remoteStudentDataSourceImpl: RemoteStudentDataSourceImpl): RemoteStudentDataSource
 }
