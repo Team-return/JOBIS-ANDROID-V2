@@ -13,6 +13,7 @@ import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
 import team.retum.jobis.interests.navigation.interests
+import team.retum.jobis.interests.navigation.navigateToInterests
 import team.retum.jobis.notification.navigation.navigateToNotificationsList
 import team.retum.jobis.notification.navigation.notificationDetails
 import team.retum.jobis.notification.navigation.notificationList
@@ -39,12 +40,9 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
             onCompaniesClick = navController::navigateToCompanies,
             onRecruitmentFilterClick = navController::navigateToRecruitmentFilter,
-<<<<<<< Updated upstream
-            onNoticeClick = navController::navigateToNotificationList,
             onSelectInterestClick = navController::navigateToInterests,
             onChangePasswordClick = navController::navigateToConfirmPassword,
             onReportBugClick = navController::navigateToReportBug,
-=======
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
             onNoticeClick = navController::navigateToNotificationsList,
         )
