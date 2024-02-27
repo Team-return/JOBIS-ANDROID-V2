@@ -27,17 +27,17 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
-internal fun NotificationList(
+internal fun NotificationsList(
     onBackPressed: () -> Unit,
 ) {
-    NotificationListScreen(
+    NotificationsListScreen(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
     )
 }
 
 @Composable
-private fun NotificationListScreen(
+private fun NotificationsListScreen(
     onBackPressed: () -> Unit,
     scrollState: ScrollState,
 ) {
@@ -55,47 +55,47 @@ private fun NotificationListScreen(
                 .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState),
         ) {
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
             )
-            NotificationListItem(
+            NotificationsListItem(
                 notificationTitle = "[중요] 오리엔테이션날 일정 안내",
                 notificationDate = "2024.01.17",
                 onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
@@ -105,7 +105,7 @@ private fun NotificationListScreen(
 }
 
 @Composable
-private fun NotificationListItem(
+private fun NotificationsListItem(
     notificationTitle: String,
     notificationDate: String,
     onClick: () -> Unit,
