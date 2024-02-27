@@ -10,6 +10,8 @@ import team.retum.data.repository.bookmark.BookmarkRepository
 import team.retum.data.repository.bookmark.BookmarkRepositoryImpl
 import team.retum.data.repository.company.CompanyRepository
 import team.retum.data.repository.company.CompanyRepositoryImpl
+import team.retum.data.repository.student.StudentRepository
+import team.retum.data.repository.student.StudentRepositoryImpl
 import team.retum.data.repository.user.UserRepository
 import team.retum.data.repository.user.UserRepositoryImpl
 import javax.inject.Singleton
@@ -32,4 +34,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindStudentRepository(studentRepositoryImpl: StudentRepositoryImpl): StudentRepository
 }

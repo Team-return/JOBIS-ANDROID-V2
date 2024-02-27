@@ -8,7 +8,7 @@
     <string name="hint_student_number">학번 4자리를 입력해주세요</string>
 
     <string name="description_invalid_name">올바른 이름을 입력해주세요</string>
-    <string name="description_invalid_number">올바른 학번을 입력해주세요</string>
+    <string name="description_invalid_number">이미 가입 된 학번이에요</string>
 
     <!--Input Email Screen-->
     <string name="input_email">이메일을 입력해주세요</string>
