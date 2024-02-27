@@ -9,6 +9,7 @@
 
     <string name="description_invalid_name">올바른 이름을 입력해주세요</string>
     <string name="description_invalid_number">이미 가입 된 학번이에요</string>
+    <string name="description_not_found_number">존재하지 않는 학번이에요</string>
 
     <!--Input Email Screen-->
     <string name="input_email">이메일을 입력해주세요</string>

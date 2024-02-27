@@ -5,6 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.exception.ConflictException
+import team.retum.common.exception.NotFoundException
 import team.retum.usecase.usecase.student.CheckStudentExistsUseCase
 import javax.inject.Inject
 
@@ -47,6 +49,7 @@ internal class InputPersonalInfoViewModel @Inject constructor(
     }
 
     internal fun onNextClick() {
+        postSideEffect(InputPersonalInfoSideEffect.HideKeyboard)
         with(state.value) {
             setState { copy(buttonEnabled = false) }
             viewModelScope.launch(Dispatchers.IO) {
@@ -66,11 +69,17 @@ internal class InputPersonalInfoViewModel @Inject constructor(
                         )
                     )
                 }.onFailure {
-                    setState {
-                        copy(
-                            showNumberDescription = true,
-                            buttonEnabled = false,
-                        )
+                    when (it) {
+                        is NotFoundException -> {
+                            postSideEffect(InputPersonalInfoSideEffect.NotFoundStudent)
+                        }
+
+                        is ConflictException -> setState {
+                            copy(
+                                showNumberDescription = true,
+                                buttonEnabled = false,
+                            )
+                        }
                     }
                 }
             }
@@ -103,4 +112,7 @@ internal sealed interface InputPersonalInfoSideEffect {
         val classRoom: String,
         val number: String,
     ) : InputPersonalInfoSideEffect
+
+    data object NotFoundStudent : InputPersonalInfoSideEffect
+    data object HideKeyboard: InputPersonalInfoSideEffect
 }

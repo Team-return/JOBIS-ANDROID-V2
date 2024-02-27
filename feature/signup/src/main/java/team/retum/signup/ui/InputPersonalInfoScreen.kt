@@ -9,6 +9,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,6 +22,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.signup.R
 import team.retum.signup.model.SignUpData
 import team.retum.signup.viewmodel.InputPersonalInfoSideEffect
@@ -33,6 +36,8 @@ internal fun InputPersonalInfo(
     inputPersonalInfoViewModel: InputPersonalInfoViewModel = hiltViewModel(),
 ) {
     val state by inputPersonalInfoViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         inputPersonalInfoViewModel.sideEffect.collect {
@@ -46,6 +51,17 @@ internal fun InputPersonalInfo(
                             number = it.number,
                         )
                     )
+                }
+
+                is InputPersonalInfoSideEffect.NotFoundStudent -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.description_not_found_number),
+                    ).show()
+                }
+
+                is InputPersonalInfoSideEffect.HideKeyboard -> {
+                    focusManager.clearFocus()
                 }
             }
         }
