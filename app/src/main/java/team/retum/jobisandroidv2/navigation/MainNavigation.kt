@@ -13,12 +13,7 @@ import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
 import team.retum.jobis.interests.navigation.interests
-<<<<<<< Updated upstream
-import team.retum.jobis.notification.navigation.navigateToNotificationList
-import team.retum.jobis.interests.navigation.navigateToInterests
-=======
 import team.retum.jobis.notification.navigation.navigateToNotificationsList
->>>>>>> Stashed changes
 import team.retum.jobis.notification.navigation.notificationDetails
 import team.retum.jobis.notification.navigation.notificationList
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
@@ -52,7 +47,6 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
 =======
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
             onNoticeClick = navController::navigateToNotificationsList,
->>>>>>> Stashed changes
         )
         alarm(onBackPressed = navController::popBackStack)
         recruitmentDetails(
