@@ -123,11 +123,11 @@ private fun RootScreen(
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
                 bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
-                mypage(onNoticeClick = onNoticeClick)
                 myPage(
                     onSelectInterestClick = onSelectInterestClick,
                     onChangePasswordClick = onChangePasswordClick,
                     onReportBugClick = onReportBugClick,
+                    onNoticeClick = onNoticeClick,
                 )
             }
         }

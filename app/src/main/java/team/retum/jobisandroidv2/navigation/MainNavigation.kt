@@ -51,8 +51,8 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onBackPressed = navController::navigateUp,
             onApplyClick = navController::navigateToApplication,
         )
-        reportBug()
-        interests()
+        reportBug(onBackPressed = navController::popBackStack)
+        interests(onBackPressed = navController::popBackStack)
         notificationDetails(onBackPressed = navController::navigateUp)
         companies(
             onBackPressed = navController::popBackStack,
