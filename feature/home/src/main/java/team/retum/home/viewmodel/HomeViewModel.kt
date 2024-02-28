@@ -12,6 +12,7 @@ import team.retum.common.utils.ResourceKeys
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import team.retum.usecase.usecase.application.FetchAppliedCompaniesUseCase
+import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import javax.inject.Inject
 
@@ -19,6 +20,7 @@ import javax.inject.Inject
 internal class HomeViewModel @Inject constructor(
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val fetchAppliedCompaniesUseCase: FetchAppliedCompaniesUseCase,
+    private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
     internal var appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity> =
@@ -28,6 +30,7 @@ internal class HomeViewModel @Inject constructor(
     init {
         fetchStudentInformation()
         fetchAppliedCompanies()
+        fetchEmploymentCount()
     }
 
     private fun fetchStudentInformation() {
@@ -50,10 +53,32 @@ internal class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    private fun fetchEmploymentCount() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchEmploymentCountUseCase().onSuccess {
+                setState {
+                    val rate = if (it.passCount == 0L || it.totalStudentCount == 0L) {
+                        0f
+                    } else {
+                        it.passCount / it.totalStudentCount * 100f
+                    }
+                    state.value.copy(
+                        rate = rate,
+                        totalStudentCount = it.totalStudentCount,
+                        passCount = it.passCount,
+                    )
+                }
+            }
+        }
+    }
 }
 
 internal data class HomeState(
     val studentInformation: StudentInformationEntity,
+    val rate: Float,
+    val totalStudentCount: Long,
+    val passCount: Long,
 ) {
     companion object {
         fun getDefaultState() = HomeState(
@@ -63,6 +88,9 @@ internal data class HomeState(
                 department = Department.SOFTWARE_DEVELOP,
                 profileImageUrl = "",
             ),
+            rate = 0f,
+            totalStudentCount = 0,
+            passCount = 0,
         )
     }
 }

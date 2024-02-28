@@ -52,6 +52,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.enums.ApplyStatus
 import team.retum.home.R
+import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -103,6 +104,7 @@ internal fun Home(
         menus = menus,
         onAlarmClick = onAlarmClick,
         onRejectionReasonClick = onRejectionReasonClick,
+        state = state,
         studentInformation = state.studentInformation,
         appliedCompanies = homeViewModel.appliedCompanies,
     )
@@ -115,6 +117,7 @@ private fun HomeScreen(
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
+    state: HomeState,
     studentInformation: StudentInformationEntity,
     appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity>,
 ) {
@@ -132,7 +135,12 @@ private fun HomeScreen(
             )
         }
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Banner(pagerState = pagerState)
+            Banner(
+                pagerState = pagerState,
+                rate = state.rate,
+                passCount = state.passCount,
+                totalStudentCount = state.totalStudentCount,
+            )
             StudentInformation(
                 modifier = Modifier.padding(
                     horizontal = 24.dp,
@@ -164,7 +172,12 @@ private fun HomeScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ColumnScope.Banner(pagerState: PagerState) {
+private fun ColumnScope.Banner(
+    pagerState: PagerState,
+    rate: Float,
+    passCount: Long,
+    totalStudentCount: Long,
+) {
     HorizontalPager(
         state = pagerState,
         contentPadding = PaddingValues(
@@ -177,7 +190,11 @@ private fun ColumnScope.Banner(pagerState: PagerState) {
     ) {
         when (it % PAGE_COUNT) {
             0 -> {
-                EmploymentRate(rate = 76.4)
+                EmploymentRate(
+                    rate = rate,
+                    passCount = passCount,
+                    totalStudentCount = totalStudentCount,
+                )
             }
 
             else -> {
@@ -201,7 +218,9 @@ private fun ColumnScope.Banner(pagerState: PagerState) {
 
 @Composable
 private fun EmploymentRate(
-    rate: Double,
+    rate: Float,
+    passCount: Long,
+    totalStudentCount: Long,
 ) {
     JobisCard(
         onClick = {},
@@ -225,7 +244,7 @@ private fun EmploymentRate(
                             append("현재")
                         }
                         withStyle(SpanStyle(JobisTheme.colors.inverseOnSurface)) {
-                            append(" 14/64 ")
+                            append(" $passCount/$totalStudentCount ")
                         }
                         withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
                             append("명이 취업했어요")

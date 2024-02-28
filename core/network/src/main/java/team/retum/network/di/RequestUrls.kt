@@ -64,6 +64,7 @@ internal object RequestUrls {
         const val apply = "$path/{${PATH.recruitmentId}}"
         const val rejection = "$path/rejection/{${PATH.applicationId}}"
         const val reApply = "$path/{${PATH.applicationId}}"
+        const val employmentCount = "$path/employment/count"
     }
 
     data object Files {
