@@ -47,6 +47,13 @@ internal fun InputEmail(
                     navigateToSetPassword(signUpData.copy(email = it.email))
                 }
 
+                is InputEmailSideEffect.AuthenticationCodeExpiration -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.description_authentication_code_expired),
+                    ).show()
+                }
+
                 is InputEmailSideEffect.CheckEmailValidation -> {
                     JobisToast.create(
                         context = context,
@@ -61,7 +68,7 @@ internal fun InputEmail(
         onBackPressed = onBackPressed,
         onNextClick = inputEmailViewModel::onNextClick,
         state = state,
-        onEmailChange = inputEmailViewModel::onEmailChange,
+        onEmailChange = inputEmailViewModel::setEmail,
         onAuthenticationCodeChange = inputEmailViewModel::onAuthenticationCodeChange,
         onAuthenticationClick = inputEmailViewModel::onAuthenticationClick,
     )
