@@ -1,6 +1,7 @@
 package team.retum.data.repository.student
 
 import team.retum.network.datasource.student.RemoteStudentDataSource
+import team.retum.network.model.response.FetchStudentInformationResponse
 import javax.inject.Inject
 
 class StudentRepositoryImpl @Inject constructor(
@@ -14,5 +15,9 @@ class StudentRepositoryImpl @Inject constructor(
             gcn = gcn,
             name = name,
         )
+    }
+
+    override suspend fun fetchStudentInformation(): FetchStudentInformationResponse {
+        return remoteStudentDataSource.fetchStudentInformation()
     }
 }
