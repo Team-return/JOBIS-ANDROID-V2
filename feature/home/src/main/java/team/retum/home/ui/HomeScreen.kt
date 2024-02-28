@@ -35,6 +35,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,6 +60,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 
 private const val PAGE_COUNT = 4
@@ -71,14 +73,6 @@ private data class MenuItem(
     val title: String,
     val onClick: () -> Unit,
     @DrawableRes val icon: Int,
-)
-
-// TODO 서버 연동 시 제거
-private data class ApplyCompany(
-    val companyId: Long,
-    val companyProfileUrl: String,
-    val name: String,
-    val status: ApplyStatus,
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -103,22 +97,14 @@ internal fun Home(
             icon = R.drawable.ic_snowman,
         ),
     )
-    val applyCompanies = listOf(
-        ApplyCompany(
-            companyId = 0L,
-            companyProfileUrl = "",
-            name = "",
-            status = ApplyStatus.REJECTED,
-        ),
-    )
 
     HomeScreen(
         pagerState = pagerState,
         menus = menus,
         onAlarmClick = onAlarmClick,
-        applyCompanies = applyCompanies,
         onRejectionReasonClick = onRejectionReasonClick,
         studentInformation = state.studentInformation,
+        appliedCompanies = homeViewModel.appliedCompanies,
     )
 }
 
@@ -128,9 +114,9 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    applyCompanies: List<ApplyCompany>,
     onRejectionReasonClick: () -> Unit,
     studentInformation: StudentInformationEntity,
+    appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity>,
 ) {
     Column(
         modifier = Modifier
@@ -169,7 +155,7 @@ private fun HomeScreen(
                     vertical = 12.dp,
                     horizontal = 24.dp,
                 ),
-                applyCompanies = applyCompanies,
+                appliedCompanies = appliedCompanies,
                 onClick = onRejectionReasonClick,
             )
         }
@@ -407,7 +393,7 @@ private fun Menu(
 @Composable
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
-    applyCompanies: List<ApplyCompany>,
+    appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity>,
     onClick: () -> Unit,
 ) {
     Column(modifier = modifier) {
@@ -434,11 +420,11 @@ private fun ApplyStatus(
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (applyCompanies.isNotEmpty()) {
-                applyCompanies.forEach {
+            if (appliedCompanies.isNotEmpty()) {
+                appliedCompanies.forEach {
                     ApplyCompanyItem(
-                        applyCompany = it,
                         onClick = onClick,
+                        appliedCompany = it,
                     )
                 }
             } else {
@@ -469,17 +455,17 @@ private fun ApplyStatus(
 @Composable
 private fun ApplyCompanyItem(
     onClick: () -> Unit,
-    applyCompany: ApplyCompany,
+    appliedCompany: AppliedCompaniesEntity.ApplicationEntity,
 ) {
-    val color = when (applyCompany.status) {
+    val applicationStatus = appliedCompany.applicationStatus
+    val color = when (applicationStatus) {
         ApplyStatus.FAILED, ApplyStatus.REJECTED -> JobisTheme.colors.error
         ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
         ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
         else -> JobisTheme.colors.onPrimary
     }
-
     JobisCard(
-        onClick = if (applyCompany.status == ApplyStatus.REJECTED) {
+        onClick = if (applicationStatus == ApplyStatus.REJECTED) {
             onClick
         } else {
             null
@@ -503,15 +489,15 @@ private fun ApplyCompanyItem(
             Spacer(modifier = Modifier.width(8.dp))
             JobisText(
                 modifier = Modifier.weight(1f),
-                text = applyCompany.name,
+                text = appliedCompany.company,
                 style = JobisTypography.Body,
             )
             JobisText(
-                text = applyCompany.status.value,
+                text = applicationStatus.value,
                 style = JobisTypography.SubBody,
                 color = color,
             )
-            if (applyCompany.status == ApplyStatus.REJECTED) {
+            if (applicationStatus == ApplyStatus.REJECTED) {
                 JobisText(
                     modifier = Modifier.padding(start = 8.dp),
                     text = stringResource(id = R.string.reason),
