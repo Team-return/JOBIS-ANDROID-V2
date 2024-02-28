@@ -46,8 +46,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import team.retum.common.enums.ApplyStatus
 import team.retum.home.R
+import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
@@ -55,6 +59,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.usecase.entity.student.StudentInformationEntity
 
 private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40
@@ -82,7 +87,9 @@ internal fun Home(
     onAlarmClick: () -> Unit,
     onRejectionReasonClick: () -> Unit,
     onCompaniesClick: () -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val state by homeViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = listOf(
         MenuItem(
@@ -111,6 +118,7 @@ internal fun Home(
         onAlarmClick = onAlarmClick,
         applyCompanies = applyCompanies,
         onRejectionReasonClick = onRejectionReasonClick,
+        studentInformation = state.studentInformation,
     )
 }
 
@@ -122,6 +130,7 @@ private fun HomeScreen(
     onAlarmClick: () -> Unit,
     applyCompanies: List<ApplyCompany>,
     onRejectionReasonClick: () -> Unit,
+    studentInformation: StudentInformationEntity,
 ) {
     Column(
         modifier = Modifier
@@ -143,10 +152,10 @@ private fun HomeScreen(
                     horizontal = 24.dp,
                     vertical = 12.dp,
                 ),
-                profileImageUrl = "",
-                number = "3125",
-                name = "박시원",
-                department = "소프트웨어개발과",
+                profileImageUrl = studentInformation.profileImageUrl,
+                number = studentInformation.studentGcn,
+                name = studentInformation.studentName,
+                department = studentInformation.department.value,
             )
             Menus(
                 modifier = Modifier.padding(
@@ -304,13 +313,13 @@ private fun StudentInformation(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // TODO AsyncImage 사용
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(56.dp)
                 .clip(CircleShape),
-            painter = painterResource(id = JobisIcon.Information),
+            model = profileImageUrl,
             contentDescription = "user profile image",
+            contentScale = ContentScale.Crop,
         )
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             JobisText(
