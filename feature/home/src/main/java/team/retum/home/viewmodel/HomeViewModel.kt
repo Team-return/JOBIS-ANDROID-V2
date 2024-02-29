@@ -6,31 +6,41 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.Department
 import team.retum.common.utils.ResourceKeys
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
+import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import team.retum.usecase.usecase.application.FetchAppliedCompaniesUseCase
 import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
+import team.retum.usecase.usecase.banner.FetchBannersUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import javax.inject.Inject
+
+internal const val INITIAL_BANNER_SIZE = 1
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val fetchAppliedCompaniesUseCase: FetchAppliedCompaniesUseCase,
     private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
+    private val fetchBannersUseCase: FetchBannersUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
     internal var appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity> =
         mutableStateListOf()
         private set
 
+    internal var banners: SnapshotStateList<BannersEntity.BannerEntity> = mutableStateListOf()
+        private set
+
     init {
         fetchStudentInformation()
         fetchAppliedCompanies()
         fetchEmploymentCount()
+        fetchBanners()
     }
 
     private fun fetchStudentInformation() {
@@ -70,6 +80,12 @@ internal class HomeViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun fetchBanners() = runBlocking {
+        fetchBannersUseCase().onSuccess {
+            banners.addAll(it.banners)
         }
     }
 }
