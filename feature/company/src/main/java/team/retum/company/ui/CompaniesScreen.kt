@@ -30,12 +30,14 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CompaniesEntity
 
 @Composable
 internal fun Companies(
     onBackPressed: () -> Unit,
     onSearchClick: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     companyViewModel: CompanyViewModel = hiltViewModel(),
 ) {
     val state by companyViewModel.state.collectAsStateWithLifecycle()
@@ -56,6 +58,7 @@ internal fun Companies(
     CompaniesScreen(
         onBackPressed = onBackPressed,
         onSearchClick = onSearchClick,
+        onCompanyContentClick = onCompanyContentClick,
         companies = companyViewModel.companies.value.companies,
         checkCompanies = companyViewModel::setCheckCompany,
         pageCount = state.page,
@@ -67,6 +70,7 @@ internal fun Companies(
 private fun CompaniesScreen(
     onBackPressed: () -> Unit,
     onSearchClick: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     companies: List<CompaniesEntity.CompanyEntity>,
     checkCompanies: (Boolean) -> Unit,
     pageCount: Int,
@@ -96,6 +100,7 @@ private fun CompaniesScreen(
             ) {
                 items(companies) {
                     CompanyItem(
+                        onCompanyContentClick = onCompanyContentClick,
                         companyImageUrl = IMAGE_URL + it.logoUrl,
                         companyName = it.name,
                         id = it.id,
@@ -115,6 +120,7 @@ private fun CompaniesScreen(
 @Composable
 private fun CompanyItem(
     modifier: Modifier = Modifier,
+    onCompanyContentClick: (Long) -> Unit,
     companyImageUrl: String,
     companyName: String,
     id: Long,
@@ -126,7 +132,10 @@ private fun CompanyItem(
     val hasRecruitmentColor =
         if (hasRecruitment) JobisTheme.colors.primaryContainer else JobisTheme.colors.onSurface
     Row(
-        modifier = modifier.padding(vertical = 16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+            .clickable(onClick = { onCompanyContentClick(id) }),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Top,
     ) {
