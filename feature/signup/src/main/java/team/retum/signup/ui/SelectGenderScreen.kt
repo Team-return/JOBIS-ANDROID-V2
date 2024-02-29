@@ -16,16 +16,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.common.enums.Gender
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -34,15 +35,35 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.signup.R
+import team.retum.signup.model.SignUpData
+import team.retum.signup.viewmodel.SelectGenderSideEffect
+import team.retum.signup.viewmodel.SelectGenderState
+import team.retum.signup.viewmodel.SelectGenderViewModel
 
 @Composable
 internal fun SelectGender(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    signUpData: SignUpData,
+    navigateToSetProfile: (SignUpData) -> Unit,
+    selectGenderViewModel: SelectGenderViewModel = hiltViewModel(),
 ) {
+    val state by selectGenderViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        selectGenderViewModel.sideEffect.collect {
+            when (it) {
+                is SelectGenderSideEffect.MoveToNext -> {
+                    navigateToSetProfile(signUpData.copy(gender = it.gender))
+                }
+            }
+        }
+    }
+
     SelectGenderScreen(
         onBackPressed = onBackPressed,
-        onNextClick = onNextClick,
+        onNextClick = selectGenderViewModel::onNextClick,
+        state = state,
+        setGender = selectGenderViewModel::setGender,
     )
 }
 
@@ -50,10 +71,9 @@ internal fun SelectGender(
 private fun SelectGenderScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
+    state: SelectGenderState,
+    setGender: (Gender) -> Unit,
 ) {
-    // TODO 뷰모델로 옮기기
-    var gender: Gender? by remember { mutableStateOf(null) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,14 +91,15 @@ private fun SelectGenderScreen(
                     horizontal = 24.dp,
                     vertical = 16.dp,
                 ),
-            gender = gender,
-            onClick = { gender = it },
+            gender = state.gender,
+            onClick = setGender,
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
             text = stringResource(id = R.string.next),
             onClick = onNextClick,
             color = ButtonColor.Primary,
+            enabled = state.buttonEnabled,
         )
     }
 }

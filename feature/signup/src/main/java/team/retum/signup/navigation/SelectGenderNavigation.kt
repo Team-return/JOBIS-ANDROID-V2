@@ -14,7 +14,7 @@ const val NAVIGATION_SELECT_GENDER = "selectGender"
 
 fun NavGraphBuilder.selectGender(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToSetProfile: (SignUpData) -> Unit,
 ) {
     composable(
         route = "${NAVIGATION_SELECT_GENDER}/{${ResourceKeys.SIGN_UP}}",
@@ -22,7 +22,8 @@ fun NavGraphBuilder.selectGender(
     ) {
         SelectGender(
             onBackPressed = onBackPressed,
-            onNextClick = onNextClick,
+            navigateToSetProfile = navigateToSetProfile,
+            signUpData = it.getSignUpData(),
         )
     }
 }
