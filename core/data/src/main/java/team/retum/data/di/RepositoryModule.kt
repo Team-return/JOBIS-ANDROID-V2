@@ -8,8 +8,12 @@ import team.retum.data.repository.auth.AuthRepository
 import team.retum.data.repository.auth.AuthRepositoryImpl
 import team.retum.data.repository.bookmark.BookmarkRepository
 import team.retum.data.repository.bookmark.BookmarkRepositoryImpl
+import team.retum.data.repository.code.CodeRepository
+import team.retum.data.repository.code.CodeRepositoryImpl
 import team.retum.data.repository.company.CompanyRepository
 import team.retum.data.repository.company.CompanyRepositoryImpl
+import team.retum.data.repository.recruitment.RecruitmentRepository
+import team.retum.data.repository.recruitment.RecruitmentRepositoryImpl
 import team.retum.data.repository.student.StudentRepository
 import team.retum.data.repository.student.StudentRepositoryImpl
 import team.retum.data.repository.user.UserRepository
@@ -38,4 +42,12 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindStudentRepository(studentRepositoryImpl: StudentRepositoryImpl): StudentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindRecruitmentRepository(recruitmentRepositoryImpl: RecruitmentRepositoryImpl): RecruitmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCodeRepository(codeRepositoryImpl: CodeRepositoryImpl): CodeRepository
 }
