@@ -12,32 +12,57 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentContent
+import team.retum.jobis.recruitment.viewmodel.RecruitmentState
+import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.usecase.entity.RecruitmentsEntity
 
 @Composable
-fun SearchRecruitment(
+internal fun SearchRecruitment(
     onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
+    val state by recruitmentViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.name) {
+        if (state.checkRecruitment && state.name?.isNotBlank() ?: "".isNotBlank()) {
+            recruitmentViewModel.fetchRecruitments(
+                page = state.page,
+                name = state.name,
+                jobCode = null,
+                techCode = null,
+            )
+            recruitmentViewModel.fetchTotalRecruitmentCount(
+                name = state.name,
+                techCode = null,
+                jobCode = null,
+            )
+        }
+    }
     SearchRecruitmentScreen(
         onBackPressed = onBackPressed,
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        recruitments = recruitmentViewModel.recruitments.value.recruitments,
+        checkRecruitments = recruitmentViewModel::setCheckRecruitment,
+        state = state,
+        onNameChange = recruitmentViewModel::setName,
+        onBookmarked = recruitmentViewModel::bookmarkRecruitment,
     )
 }
 
@@ -45,11 +70,12 @@ fun SearchRecruitment(
 private fun SearchRecruitmentScreen(
     onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
+    checkRecruitments: (Boolean) -> Unit,
+    state: RecruitmentState,
+    onNameChange: (String) -> Unit,
+    onBookmarked: (Long) -> Unit,
 ) {
-    // TODO 뷰모델로 옮기기
-    var keyword by remember { mutableStateOf("") }
-    val recruitments = remember { mutableStateListOf<Recruitment>() }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,34 +83,46 @@ private fun SearchRecruitmentScreen(
     ) {
         JobisSmallTopAppBar(onBackPressed = onBackPressed)
         JobisTextField(
-            value = { keyword },
+            value = { state.name ?: "" },
             hint = "검색어를 입력해주세요",
-            onValueChange = { keyword = it },
+            onValueChange = onNameChange,
             leadingIcon = painterResource(id = JobisIcon.Search),
         )
         Recruitments(
             recruitments = recruitments,
             onRecruitmentClick = onRecruitmentDetailsClick,
+            checkRecruitments = checkRecruitments,
+            onBookmarked = onBookmarked,
+            state = state,
         )
     }
 }
 
 @Composable
 private fun Recruitments(
-    recruitments: SnapshotStateList<Recruitment>,
+    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
+    checkRecruitments: (Boolean) -> Unit,
+    onBookmarked: (Long) -> Unit,
+    state: RecruitmentState,
 ) {
-    if (recruitments.isEmpty()) {
-        EmptyRecruitmentContent()
-    } else {
+    checkRecruitments(false)
+    if (recruitments.isNotEmpty() || state.name.isNullOrEmpty()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            itemsIndexed(recruitments) { index, recruitment ->
+            itemsIndexed(recruitments) { _, recruitment ->
                 RecruitmentContent(
                     recruitment = recruitment,
-                    onClick = { onRecruitmentClick(recruitment.recruitId) },
+                    onClick = { onRecruitmentClick(recruitment.id) },
+                    onBookmarked = onBookmarked,
                 )
+                if (recruitment == recruitments.last() && state.page.toLong() != state.totalPage) {
+                    checkRecruitments(true)
+                }
             }
         }
+    } else {
+        checkRecruitments(true)
+        EmptyRecruitmentContent()
     }
 }
 
@@ -99,7 +137,7 @@ private fun EmptyRecruitmentContent() {
     ) {
         Image(
             modifier = Modifier.size(128.dp),
-            painter = painterResource(id = JobisIcon.Information),
+            painter = painterResource(id = R.drawable.ic_empty_company),
             contentDescription = "empty recruitment",
         )
         Spacer(modifier = Modifier.height(16.dp))

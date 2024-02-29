@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
@@ -24,7 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.common.component.Skills
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -34,14 +38,27 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
-fun RecruitmentFilter(onBackPressed: () -> Unit) {
-    RecruitmentFilterScreen(onBackPressed = onBackPressed)
+internal fun RecruitmentFilter(
+    onBackPressed: () -> Unit,
+    recruitmentFilterViewModel: RecruitmentFilterViewModel = hiltViewModel(),
+) {
+    val state by recruitmentFilterViewModel.state.collectAsStateWithLifecycle()
+
+    RecruitmentFilterScreen(
+        onBackPressed = onBackPressed,
+        recruitmentFilterViewModel = recruitmentFilterViewModel,
+        state = state,
+        setKeyword = recruitmentFilterViewModel::setKeyword,
+    )
 }
 
 @Composable
-private fun RecruitmentFilterScreen(onBackPressed: () -> Unit) {
-    // TODO 뷰모델로 옮기기
-    var keyword by remember { mutableStateOf("") }
+private fun RecruitmentFilterScreen(
+    onBackPressed: () -> Unit,
+    recruitmentFilterViewModel: RecruitmentFilterViewModel,
+    state: RecruitmentFilterState,
+    setKeyword: (String) -> Unit,
+) {
     val majors = remember { mutableStateListOf<String>() }
     val selectedMajors = remember { mutableStateListOf<String>() }
     val checkedSkills = remember { mutableStateListOf<String>() }
@@ -64,14 +81,19 @@ private fun RecruitmentFilterScreen(onBackPressed: () -> Unit) {
             title = "필터 설정",
         )
         FilterInputs(
-            keyword = { keyword },
-            onKeywordChange = { keyword = it },
+            keyword = { state.keyword ?: "" },
+            onKeywordChange = setKeyword,
             majors = majors,
             selectedMajors = selectedMajors,
             onMajorSelected = { selectedMajors.add(it) },
             onMajorUnselected = { selectedMajors.remove(it) },
             checkedSkills = checkedSkills,
         )
+        LazyColumn {
+            items(recruitmentFilterViewModel.techs) {
+
+            }
+        }
     }
 }
 
