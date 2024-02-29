@@ -6,6 +6,6 @@ data class CompanyCountEntity(
     val totalPageCount: Long,
 )
 
-fun FetchCompanyPageCountResponse.toCompanyCountEntity() = CompanyCountEntity(
+internal fun FetchCompanyPageCountResponse.toCompanyCountEntity() = CompanyCountEntity(
     totalPageCount = this.totalPageCount,
 )

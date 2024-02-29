@@ -13,7 +13,9 @@ import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
 import team.retum.network.api.AuthApi
 import team.retum.network.api.BookmarkApi
+import team.retum.network.api.CodeApi
 import team.retum.network.api.CompanyApi
+import team.retum.network.api.RecruitmentApi
 import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
 import team.retum.network.util.TokenInterceptor
@@ -88,5 +90,17 @@ object NetworkModule {
     @Singleton
     fun provideStudentApi(retrofit: Retrofit): StudentApi {
         return retrofit.create(StudentApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesRecruitmentApi(retrofit: Retrofit): RecruitmentApi {
+        return retrofit.create(RecruitmentApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCodeApi(retrofit: Retrofit): CodeApi {
+        return retrofit.create(CodeApi::class.java)
     }
 }
