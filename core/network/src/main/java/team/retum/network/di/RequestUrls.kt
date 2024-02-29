@@ -95,4 +95,10 @@ internal object RequestUrls {
 
         const val post = path
     }
+
+    data object Banner {
+        private const val path = "/banners"
+
+        const val banners = path
+    }
 }
