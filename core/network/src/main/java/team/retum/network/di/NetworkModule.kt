@@ -11,7 +11,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
+import team.retum.network.api.ApplicationApi
 import team.retum.network.api.AuthApi
+import team.retum.network.api.BannerApi
 import team.retum.network.api.BookmarkApi
 import team.retum.network.api.CodeApi
 import team.retum.network.api.CompanyApi
@@ -102,5 +104,17 @@ object NetworkModule {
     @Singleton
     fun provideCodeApi(retrofit: Retrofit): CodeApi {
         return retrofit.create(CodeApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApplicationApi(retrofit: Retrofit): ApplicationApi {
+        return retrofit.create(ApplicationApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBannerApi(retrofit: Retrofit): BannerApi {
+        return retrofit.create(BannerApi::class.java)
     }
 }
