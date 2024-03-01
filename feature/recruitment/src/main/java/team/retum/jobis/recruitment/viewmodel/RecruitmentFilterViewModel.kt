@@ -129,5 +129,5 @@ internal data class RecruitmentFilterState(
 }
 
 internal sealed interface RecruitmentFilterSideEffect {
-    data object BadRequest : RecruitmentSideEffect
+    data object BadRequest : RecruitmentFilterSideEffect
 }

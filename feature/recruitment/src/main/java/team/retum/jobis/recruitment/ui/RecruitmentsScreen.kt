@@ -3,9 +3,7 @@ package team.retum.jobis.recruitment.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.recruitment.R
-import team.retum.jobis.recruitment.ui.component.RecruitmentContent
+import team.retum.jobis.recruitment.ui.component.RecruitmentsContent
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentsState
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
@@ -45,10 +43,10 @@ internal fun Recruitments(
 
     RecruitmentsScreen(
         recruitments = recruitmentViewModel.recruitments,
-        onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
-        onBookmarked = recruitmentViewModel::bookmarkRecruitment,
+        onBookmarkClick = recruitmentViewModel::bookmarkRecruitment,
         state = state,
         lazyListState = lazyListState,
     )
@@ -57,10 +55,10 @@ internal fun Recruitments(
 @Composable
 private fun RecruitmentsScreen(
     recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity>,
-    onRecruitmentDetailsClick: (Long) -> Unit,
+    onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
-    onBookmarked: (Long) -> Unit,
+    onBookmarkClick: (Long) -> Unit,
     state: RecruitmentsState,
     lazyListState: LazyListState,
 ) {
@@ -85,14 +83,11 @@ private fun RecruitmentsScreen(
                 onClick = onSearchRecruitmentClick,
             )
         }
-        LazyColumn(state = lazyListState) {
-            items(recruitments) { recruitment ->
-                RecruitmentContent(
-                    recruitment = recruitment,
-                    onClick = onRecruitmentDetailsClick,
-                    onBookmarked = onBookmarked,
-                )
-            }
-        }
+        RecruitmentsContent(
+            lazyListState = lazyListState,
+            recruitments = recruitments,
+            onRecruitmentClick = onRecruitmentClick,
+            onBookmarkClick = onBookmarkClick,
+        )
     }
 }

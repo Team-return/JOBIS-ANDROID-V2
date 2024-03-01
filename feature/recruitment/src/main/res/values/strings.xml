@@ -4,6 +4,10 @@
 
     <string name="military">병역특례</string>
     <string name="train_pay">실습 수당</string>
+
+    <string name="recruitment_no_content">검색어와 관련된 모집의뢰서를 못 찾았어요</string>
+    <string name="retry">제대로 입력했는지 다시 한 번 확인해주세요</string>
+    <string name="recruitment_search_hint">검색어를 입력해주세요</string>
     
     <string name="show_company_detail_info">기업 상세 정보 보기</string>
     <string name="recruitment_period">모집기간</string>

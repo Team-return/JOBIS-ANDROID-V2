@@ -8,8 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -28,7 +32,25 @@ import team.retum.usecase.entity.RecruitmentsEntity
 import java.text.DecimalFormat
 
 @Composable
-internal fun RecruitmentContent(
+internal fun RecruitmentsContent(
+    lazyListState: LazyListState,
+    recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity>,
+    onRecruitmentClick: (Long) -> Unit,
+    onBookmarkClick: (Long) -> Unit,
+) {
+    LazyColumn(state = lazyListState) {
+        items(recruitments) { recruitment ->
+            RecruitmentContent(
+                recruitment = recruitment,
+                onClick = onRecruitmentClick,
+                onBookmarked = onBookmarkClick,
+            )
+        }
+    }
+}
+
+@Composable
+private fun RecruitmentContent(
     recruitment: RecruitmentsEntity.RecruitmentEntity,
     onClick: (recruitId: Long) -> Unit,
     onBookmarked: (recruitId: Long) -> Unit,
