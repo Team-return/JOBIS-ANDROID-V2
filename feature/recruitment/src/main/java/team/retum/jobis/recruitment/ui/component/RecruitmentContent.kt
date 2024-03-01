@@ -94,6 +94,7 @@ internal fun RecruitmentContent(
             ),
             contentDescription = "bookmark",
             onClick = { onBookmarked(recruitment.id) },
+            tint = JobisTheme.colors.onPrimary,
         )
     }
 }
