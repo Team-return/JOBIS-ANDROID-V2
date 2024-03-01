@@ -15,11 +15,11 @@ fun NavGraphBuilder.companyDetails(
 ) {
     composable(
         route = "$NAVIGATION_COMPANY_DETAILS/{${ResourceKeys.COMPANY_ID}}",
-        arguments = listOf(navArgument(ResourceKeys.COMPANY_ID) { NavType.LongType }),
+        arguments = listOf(navArgument(ResourceKeys.COMPANY_ID) { NavType.StringType }),
     ) {
-        val companyId = it.arguments?.getLong(ResourceKeys.COMPANY_ID) ?: throw NullPointerException()
+        val companyId = it.arguments?.getString(ResourceKeys.COMPANY_ID) ?: throw NullPointerException()
         CompanyDetails(
-            companyId = companyId,
+            companyId = companyId.toLong(),
             onBackPressed = onBackPressed,
         )
     }
