@@ -8,17 +8,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.signup.R
+import team.retum.signup.model.SignUpData
+import team.retum.signup.viewmodel.TermsState
+import team.retum.signup.viewmodel.TermsViewModel
 
 private const val TERMS_URL = "https://jobis-webview.team-return.com/sign-up-policy"
 private const val WEB_VIEW_SCROLL_BOTTOM = 1
@@ -27,16 +29,16 @@ private const val WEB_VIEW_SCROLL_BOTTOM = 1
 internal fun Terms(
     onBackPressed: () -> Unit,
     onCompleteClick: () -> Unit,
+    signUpData: SignUpData,
+    termsViewModel: TermsViewModel = hiltViewModel(),
 ) {
-    var buttonEnabled by remember { mutableStateOf(false) }
+    val state by termsViewModel.state.collectAsStateWithLifecycle()
 
     TermsScreen(
         onBackPressed = onBackPressed,
-        onCompleteClick = onCompleteClick,
-        buttonEnabled = { buttonEnabled },
-        onReachTheEnded = {
-            buttonEnabled = it
-        },
+        onCompleteClick = { termsViewModel.onCompleteClick(signUpData = signUpData) },
+        state = state,
+        onReachTheEnded = termsViewModel::onReachTheEnded,
     )
 }
 
@@ -45,7 +47,7 @@ internal fun Terms(
 private fun TermsScreen(
     onBackPressed: () -> Unit,
     onCompleteClick: () -> Unit,
-    buttonEnabled: () -> Boolean,
+    state: TermsState,
     onReachTheEnded: (Boolean) -> Unit,
 ) {
     Column(
@@ -77,7 +79,7 @@ private fun TermsScreen(
             text = stringResource(id = R.string.agree),
             onClick = onCompleteClick,
             color = ButtonColor.Primary,
-            enabled = buttonEnabled(),
+            enabled = state.buttonEnabled,
         )
     }
 }

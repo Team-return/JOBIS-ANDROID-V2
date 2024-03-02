@@ -21,6 +21,7 @@ class TokenInterceptor @Inject constructor(
             RequestUrls.Students.exists,
             RequestUrls.Files.delete,
             RequestUrls.Files.post,
+            RequestUrls.Files.presignedUrl,
         )
     }
 

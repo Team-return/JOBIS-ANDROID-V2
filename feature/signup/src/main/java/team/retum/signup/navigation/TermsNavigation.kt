@@ -23,6 +23,7 @@ fun NavGraphBuilder.terms(
         Terms(
             onBackPressed = onBackPressed,
             onCompleteClick = onCompleteClick,
+            signUpData = it.getSignUpData(),
         )
     }
 }

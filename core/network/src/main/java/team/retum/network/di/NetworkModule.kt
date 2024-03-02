@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
 import team.retum.network.api.ApplicationApi
-import team.retum.network.FileApi
+import team.retum.network.api.FileApi
 import team.retum.network.api.AuthApi
 import team.retum.network.api.BannerApi
 import team.retum.network.api.BookmarkApi
