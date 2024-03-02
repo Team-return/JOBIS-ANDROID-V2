@@ -43,7 +43,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
             navigateToSetPassword = navController::navigateToSetPassword,
             navigateToSelectGender = navController::navigateToSelectGender,
             navigateToSetProfile = navController::navigateToSetProfile,
-            onTermsClick = navController::navigateToTerms,
+            navigateToTerms = navController::navigateToTerms,
             onCompleteClick = navController::navigateToRoot,
         )
         verifyEmail(

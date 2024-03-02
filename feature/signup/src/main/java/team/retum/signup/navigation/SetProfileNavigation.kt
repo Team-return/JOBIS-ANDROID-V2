@@ -14,7 +14,7 @@ const val NAVIGATION_SET_PROFILE = "setProfile"
 
 fun NavGraphBuilder.setProfile(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToTerms: (SignUpData) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_SET_PROFILE/{${ResourceKeys.SIGN_UP}}",
@@ -22,7 +22,8 @@ fun NavGraphBuilder.setProfile(
     ) {
         SetProfile(
             onBackPressed = onBackPressed,
-            onNextClick = onNextClick,
+            navigateToTerms = navigateToTerms,
+            signUpData = it.getSignUpData(),
         )
     }
 }
