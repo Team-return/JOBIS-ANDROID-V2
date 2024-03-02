@@ -12,7 +12,11 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -53,12 +57,14 @@ internal fun Root(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
     )
+    var rejectionReason by remember { mutableStateOf("") }
 
     RootScreen(
         navController = navController,
         sheetState = sheetState,
         onAlarmClick = onAlarmClick,
-        onRejectionReasonClick = {
+        showRejectionModal = {
+            rejectionReason = it
             coroutineScope.launch {
                 sheetState.show()
             }
@@ -71,6 +77,7 @@ internal fun Root(
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
+        rejectionReason = rejectionReason,
     )
 }
 
@@ -84,18 +91,19 @@ private fun RootScreen(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
-    onRejectionReasonClick: () -> Unit,
+    showRejectionModal: (String) -> Unit,
     onCompaniesClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
+    rejectionReason: String,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
             RejectionBottomSheet(
-                reason = "reason",
+                reason = rejectionReason,
                 onReApplyClick = {},
             )
         },
@@ -114,7 +122,7 @@ private fun RootScreen(
             ) {
                 home(
                     onAlarmClick = onAlarmClick,
-                    onRejectionReasonClick = onRejectionReasonClick,
+                    showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
                 )
                 recruitments(

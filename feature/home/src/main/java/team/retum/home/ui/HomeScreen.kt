@@ -34,8 +34,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +52,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.enums.ApplyStatus
 import team.retum.home.R
+import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -80,7 +81,7 @@ private data class MenuItem(
 @Composable
 internal fun Home(
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: () -> Unit,
+    showRejectionModal: (String) -> Unit,
     onCompaniesClick: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -99,11 +100,21 @@ internal fun Home(
         ),
     )
 
+    LaunchedEffect(Unit) {
+        homeViewModel.sideEffect.collect {
+            when(it){
+                is HomeSideEffect.ShowRejectionModal -> {
+                    showRejectionModal(it.rejectionReason)
+                }
+            }
+        }
+    }
+
     HomeScreen(
         pagerState = pagerState,
         menus = menus,
         onAlarmClick = onAlarmClick,
-        onRejectionReasonClick = onRejectionReasonClick,
+        onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
         state = state,
         studentInformation = state.studentInformation,
         appliedCompanies = homeViewModel.appliedCompanies,
@@ -116,10 +127,10 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: () -> Unit,
+    onRejectionReasonClick: (Long) -> Unit,
     state: HomeState,
     studentInformation: StudentInformationEntity,
-    appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity>,
+    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
 ) {
     Column(
         modifier = Modifier
@@ -412,8 +423,8 @@ private fun Menu(
 @Composable
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
-    appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity>,
-    onClick: () -> Unit,
+    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    onClick: (Long) -> Unit,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -442,7 +453,7 @@ private fun ApplyStatus(
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
                     ApplyCompanyItem(
-                        onClick = onClick,
+                        onClick = { onClick(it.applicationId) },
                         appliedCompany = it,
                     )
                 }

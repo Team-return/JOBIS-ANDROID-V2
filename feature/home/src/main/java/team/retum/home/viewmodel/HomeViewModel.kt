@@ -15,6 +15,7 @@ import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import team.retum.usecase.usecase.application.FetchAppliedCompaniesUseCase
 import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
+import team.retum.usecase.usecase.application.FetchRejectionReasonUseCase
 import team.retum.usecase.usecase.banner.FetchBannersUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import javax.inject.Inject
@@ -27,10 +28,11 @@ internal class HomeViewModel @Inject constructor(
     private val fetchAppliedCompaniesUseCase: FetchAppliedCompaniesUseCase,
     private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
     private val fetchBannersUseCase: FetchBannersUseCase,
+    private val fetchRejectionReasonUseCase: FetchRejectionReasonUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
-    internal var appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity> =
-        mutableStateListOf()
+    internal var appliedCompanies: MutableList<AppliedCompaniesEntity.ApplicationEntity> =
+        mutableListOf()
         private set
 
     internal var banners: SnapshotStateList<BannersEntity.BannerEntity> = mutableStateListOf()
@@ -83,6 +85,14 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
+    internal fun onRejectionReasonClick(applicationId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchRejectionReasonUseCase(applicationId = applicationId).onSuccess {
+                postSideEffect(HomeSideEffect.ShowRejectionModal(it.rejectionReason))
+            }
+        }
+    }
+
     private fun fetchBanners() = runBlocking {
         fetchBannersUseCase().onSuccess {
             banners.addAll(it.banners)
@@ -112,5 +122,5 @@ internal data class HomeState(
 }
 
 internal sealed interface HomeSideEffect {
-
+    data class ShowRejectionModal(val rejectionReason: String) : HomeSideEffect
 }
