@@ -4,6 +4,7 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.ktlint.gradle.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
@@ -11,8 +12,4 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.jobis.mypage"
-}
-
-dependencies {
-
 }
