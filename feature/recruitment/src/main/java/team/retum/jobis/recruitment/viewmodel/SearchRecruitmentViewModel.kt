@@ -9,6 +9,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
@@ -34,7 +35,7 @@ internal class SearchRecruitmentViewModel @Inject constructor(
     @OptIn(FlowPreview::class)
     internal fun observeName() {
         viewModelScope.launch {
-            state.map { it.name }.debounce(SEARCH_DEBOUNCE_MILLIS).collect {
+            state.map { it.name }.distinctUntilChanged().debounce(SEARCH_DEBOUNCE_MILLIS).collect {
                 if (!it.isNullOrBlank()) {
                     initState()
                     fetchRecruitmentCount()
@@ -93,7 +94,7 @@ internal class SearchRecruitmentViewModel @Inject constructor(
             val fetchNextPage = async {
                 this@callNextPageByPosition.collect {
                     it?.run {
-                        if (this == recruitments.lastIndex && !state.value.name.isNullOrBlank() && state.value.runPaging) {
+                        if (this == recruitments.lastIndex - 2 && !state.value.name.isNullOrBlank() && state.value.runPaging) {
                             setState { state.value.copy(page = state.value.page + 1) }
                             fetchRecruitments()
                         }
