@@ -102,7 +102,7 @@ internal fun Home(
 
     LaunchedEffect(Unit) {
         homeViewModel.sideEffect.collect {
-            when(it){
+            when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
                     showRejectionModal(it.rejectionReason)
                 }
