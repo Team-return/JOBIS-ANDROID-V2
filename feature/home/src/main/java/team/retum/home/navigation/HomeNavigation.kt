@@ -8,13 +8,13 @@ const val NAVIGATION_HOME = "home"
 
 fun NavGraphBuilder.home(
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: () -> Unit,
+    showRejectionModal: (String) -> Unit,
     onCompaniesClick: () -> Unit,
 ) {
     composable(NAVIGATION_HOME) {
         Home(
             onAlarmClick = onAlarmClick,
-            onRejectionReasonClick = onRejectionReasonClick,
+            showRejectionModal = showRejectionModal,
             onCompaniesClick = onCompaniesClick,
         )
     }

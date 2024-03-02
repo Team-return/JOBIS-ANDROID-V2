@@ -4,8 +4,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import team.retum.network.datasource.application.RemoteApplicationDataSource
+import team.retum.network.datasource.application.RemoteApplicationDataSourceImpl
 import team.retum.network.datasource.auth.RemoteAuthDataSource
 import team.retum.network.datasource.auth.RemoteAuthDataSourceImpl
+import team.retum.network.datasource.banner.RemoteBannerDataSource
+import team.retum.network.datasource.banner.RemoteBannerDataSourceImpl
 import team.retum.network.datasource.bookmark.BookmarkDataSource
 import team.retum.network.datasource.bookmark.BookmarkDataSourceImpl
 import team.retum.network.datasource.code.RemoteCodeDataSource
@@ -50,4 +54,12 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindRemoteCodeDataSource(remoteCodeDataSourceImpl: RemoteCodeDataSourceImpl): RemoteCodeDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteApplicationDataSource(remoteApplicationDataSourceImpl: RemoteApplicationDataSourceImpl): RemoteApplicationDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteBannerDataSource(remoteBannerDataSourceImpl: RemoteBannerDataSourceImpl): RemoteBannerDataSource
 }

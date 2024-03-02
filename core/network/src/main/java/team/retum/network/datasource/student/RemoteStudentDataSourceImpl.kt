@@ -1,6 +1,7 @@
 package team.retum.network.datasource.student
 
 import team.retum.network.api.StudentApi
+import team.retum.network.model.response.FetchStudentInformationResponse
 import team.retum.network.util.RequestHandler
 import javax.inject.Inject
 
@@ -16,6 +17,12 @@ class RemoteStudentDataSourceImpl @Inject constructor(
                 gcn = gcn,
                 name = name,
             )
+        }
+    }
+
+    override suspend fun fetchStudentInformation(): FetchStudentInformationResponse {
+        return RequestHandler<FetchStudentInformationResponse>().request {
+            studentApi.fetchStudentInformation()
         }
     }
 }

@@ -34,6 +34,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,8 +47,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import team.retum.common.enums.ApplyStatus
 import team.retum.home.R
+import team.retum.home.viewmodel.HomeSideEffect
+import team.retum.home.viewmodel.HomeState
+import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
@@ -55,6 +62,8 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.usecase.entity.application.AppliedCompaniesEntity
+import team.retum.usecase.entity.student.StudentInformationEntity
 
 private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40
@@ -68,21 +77,15 @@ private data class MenuItem(
     @DrawableRes val icon: Int,
 )
 
-// TODO 서버 연동 시 제거
-private data class ApplyCompany(
-    val companyId: Long,
-    val companyProfileUrl: String,
-    val name: String,
-    val status: ApplyStatus,
-)
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun Home(
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: () -> Unit,
+    showRejectionModal: (String) -> Unit,
     onCompaniesClick: () -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val state by homeViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = listOf(
         MenuItem(
@@ -96,21 +99,25 @@ internal fun Home(
             icon = R.drawable.ic_snowman,
         ),
     )
-    val applyCompanies = listOf(
-        ApplyCompany(
-            companyId = 0L,
-            companyProfileUrl = "",
-            name = "",
-            status = ApplyStatus.REJECTED,
-        ),
-    )
+
+    LaunchedEffect(Unit) {
+        homeViewModel.sideEffect.collect {
+            when (it) {
+                is HomeSideEffect.ShowRejectionModal -> {
+                    showRejectionModal(it.rejectionReason)
+                }
+            }
+        }
+    }
 
     HomeScreen(
         pagerState = pagerState,
         menus = menus,
         onAlarmClick = onAlarmClick,
-        applyCompanies = applyCompanies,
-        onRejectionReasonClick = onRejectionReasonClick,
+        onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
+        state = state,
+        studentInformation = state.studentInformation,
+        appliedCompanies = homeViewModel.appliedCompanies,
     )
 }
 
@@ -120,8 +127,10 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    applyCompanies: List<ApplyCompany>,
-    onRejectionReasonClick: () -> Unit,
+    onRejectionReasonClick: (Long) -> Unit,
+    state: HomeState,
+    studentInformation: StudentInformationEntity,
+    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
 ) {
     Column(
         modifier = Modifier
@@ -137,16 +146,21 @@ private fun HomeScreen(
             )
         }
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Banner(pagerState = pagerState)
+            Banner(
+                pagerState = pagerState,
+                rate = state.rate,
+                passCount = state.passCount,
+                totalStudentCount = state.totalStudentCount,
+            )
             StudentInformation(
                 modifier = Modifier.padding(
                     horizontal = 24.dp,
                     vertical = 12.dp,
                 ),
-                profileImageUrl = "",
-                number = "3125",
-                name = "박시원",
-                department = "소프트웨어개발과",
+                profileImageUrl = studentInformation.profileImageUrl,
+                number = studentInformation.studentGcn,
+                name = studentInformation.studentName,
+                department = studentInformation.department.value,
             )
             Menus(
                 modifier = Modifier.padding(
@@ -160,7 +174,7 @@ private fun HomeScreen(
                     vertical = 12.dp,
                     horizontal = 24.dp,
                 ),
-                applyCompanies = applyCompanies,
+                appliedCompanies = appliedCompanies,
                 onClick = onRejectionReasonClick,
             )
         }
@@ -169,7 +183,12 @@ private fun HomeScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ColumnScope.Banner(pagerState: PagerState) {
+private fun ColumnScope.Banner(
+    pagerState: PagerState,
+    rate: Float,
+    passCount: Long,
+    totalStudentCount: Long,
+) {
     HorizontalPager(
         state = pagerState,
         contentPadding = PaddingValues(
@@ -182,7 +201,11 @@ private fun ColumnScope.Banner(pagerState: PagerState) {
     ) {
         when (it % PAGE_COUNT) {
             0 -> {
-                EmploymentRate(rate = 76.4)
+                EmploymentRate(
+                    rate = rate,
+                    passCount = passCount,
+                    totalStudentCount = totalStudentCount,
+                )
             }
 
             else -> {
@@ -206,7 +229,9 @@ private fun ColumnScope.Banner(pagerState: PagerState) {
 
 @Composable
 private fun EmploymentRate(
-    rate: Double,
+    rate: Float,
+    passCount: Long,
+    totalStudentCount: Long,
 ) {
     JobisCard(
         onClick = {},
@@ -230,7 +255,7 @@ private fun EmploymentRate(
                             append("현재")
                         }
                         withStyle(SpanStyle(JobisTheme.colors.inverseOnSurface)) {
-                            append(" 14/64 ")
+                            append(" $passCount/$totalStudentCount ")
                         }
                         withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
                             append("명이 취업했어요")
@@ -304,13 +329,13 @@ private fun StudentInformation(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // TODO AsyncImage 사용
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(56.dp)
                 .clip(CircleShape),
-            painter = painterResource(id = JobisIcon.Information),
+            model = profileImageUrl,
             contentDescription = "user profile image",
+            contentScale = ContentScale.Crop,
         )
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             JobisText(
@@ -398,8 +423,8 @@ private fun Menu(
 @Composable
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
-    applyCompanies: List<ApplyCompany>,
-    onClick: () -> Unit,
+    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    onClick: (Long) -> Unit,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -425,11 +450,11 @@ private fun ApplyStatus(
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (applyCompanies.isNotEmpty()) {
-                applyCompanies.forEach {
+            if (appliedCompanies.isNotEmpty()) {
+                appliedCompanies.forEach {
                     ApplyCompanyItem(
-                        applyCompany = it,
-                        onClick = onClick,
+                        onClick = { onClick(it.applicationId) },
+                        appliedCompany = it,
                     )
                 }
             } else {
@@ -460,17 +485,17 @@ private fun ApplyStatus(
 @Composable
 private fun ApplyCompanyItem(
     onClick: () -> Unit,
-    applyCompany: ApplyCompany,
+    appliedCompany: AppliedCompaniesEntity.ApplicationEntity,
 ) {
-    val color = when (applyCompany.status) {
+    val applicationStatus = appliedCompany.applicationStatus
+    val color = when (applicationStatus) {
         ApplyStatus.FAILED, ApplyStatus.REJECTED -> JobisTheme.colors.error
         ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
         ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
         else -> JobisTheme.colors.onPrimary
     }
-
     JobisCard(
-        onClick = if (applyCompany.status == ApplyStatus.REJECTED) {
+        onClick = if (applicationStatus == ApplyStatus.REJECTED) {
             onClick
         } else {
             null
@@ -494,15 +519,15 @@ private fun ApplyCompanyItem(
             Spacer(modifier = Modifier.width(8.dp))
             JobisText(
                 modifier = Modifier.weight(1f),
-                text = applyCompany.name,
+                text = appliedCompany.company,
                 style = JobisTypography.Body,
             )
             JobisText(
-                text = applyCompany.status.value,
+                text = applicationStatus.value,
                 style = JobisTypography.SubBody,
                 color = color,
             )
-            if (applyCompany.status == ApplyStatus.REJECTED) {
+            if (applicationStatus == ApplyStatus.REJECTED) {
                 JobisText(
                     modifier = Modifier.padding(start = 8.dp),
                     text = stringResource(id = R.string.reason),
