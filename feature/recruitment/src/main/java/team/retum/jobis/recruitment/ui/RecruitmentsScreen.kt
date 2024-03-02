@@ -3,84 +3,73 @@ package team.retum.jobis.recruitment.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.recruitment.R
-import team.retum.jobis.recruitment.ui.component.RecruitmentContent
-import team.retum.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
+import team.retum.jobis.recruitment.ui.component.RecruitmentsContent
+import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
+import team.retum.jobis.recruitment.viewmodel.RecruitmentsState
+import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
-
-// TODO 서버 연동 시 제거
-data class Recruitment(
-    val recruitId: Long,
-    val companyProfileUrl: String,
-    val title: String,
-    val military: Boolean,
-    val trainPay: Long,
-    val company: String,
-    val isBookmarked: Boolean,
-)
+import team.retum.usecase.entity.RecruitmentsEntity
 
 @Composable
 internal fun Recruitments(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
-    // TODO 서버 연동 시 제거
-    val recruitments = listOf(
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = false,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = true,
-        ),
-        Recruitment(
-            recruitId = 0L,
-            companyProfileUrl = "",
-            title = "title",
-            military = true,
-            trainPay = 0L,
-            company = "company",
-            isBookmarked = false,
-        ),
-    )
+    val state by recruitmentViewModel.state.collectAsStateWithLifecycle()
+    val lazyListState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        with(recruitmentViewModel) {
+            snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.callNextPageByPosition()
+        }
+    }
+
     RecruitmentsScreen(
-        recruitments = recruitments.toMutableStateList(),
-        onRecruitmentDetailsClick = onRecruitmentDetailsClick,
+        recruitments = recruitmentViewModel.recruitments,
+        onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
+        onBookmarkClick = recruitmentViewModel::bookmarkRecruitment,
+        state = state,
+        lazyListState = lazyListState,
     )
 }
 
 @Composable
 private fun RecruitmentsScreen(
-    recruitments: SnapshotStateList<Recruitment>,
-    onRecruitmentDetailsClick: (Long) -> Unit,
+    recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity>,
+    onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    onBookmarkClick: (Long) -> Unit,
+    state: RecruitmentsState,
+    lazyListState: LazyListState,
 ) {
-    val scrollState = rememberScrollState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(JobisTheme.colors.background),
     ) {
-        JobisCollapsingTopAppBar(
+        // TODO collapsing top app bar lazyliststate 이용하게 변경
+        JobisLargeTopAppBar(
             title = stringResource(id = R.string.recruitment),
-            scrollState = scrollState,
         ) {
             JobisIconButton(
                 painter = painterResource(JobisIcon.Filter),
@@ -94,13 +83,11 @@ private fun RecruitmentsScreen(
                 onClick = onSearchRecruitmentClick,
             )
         }
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
-            recruitments.forEach { recruitment ->
-                RecruitmentContent(
-                    recruitment = recruitment,
-                    onClick = { onRecruitmentDetailsClick(recruitment.recruitId) },
-                )
-            }
-        }
+        RecruitmentsContent(
+            lazyListState = lazyListState,
+            recruitments = recruitments,
+            onRecruitmentClick = onRecruitmentClick,
+            onBookmarkClick = onBookmarkClick,
+        )
     }
 }

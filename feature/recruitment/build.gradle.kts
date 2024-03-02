@@ -12,3 +12,7 @@ apply<ComposeGradlePlugin>()
 android {
     namespace = "team.retum.jobis.recruitment"
 }
+
+dependencies {
+    implementation(libs.coil.compose)
+}
