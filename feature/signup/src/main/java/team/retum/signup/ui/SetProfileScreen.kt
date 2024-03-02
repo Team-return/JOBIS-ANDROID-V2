@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,20 +45,39 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.signup.R
+import team.retum.signup.model.SignUpData
+import team.retum.signup.viewmodel.SetProfileSideEffect
 import team.retum.signup.viewmodel.SetProfileState
 import team.retum.signup.viewmodel.SetProfileViewModel
 
 @Composable
 internal fun SetProfile(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToTerms: (SignUpData) -> Unit,
+    signUpData: SignUpData,
     setProfileViewModel: SetProfileViewModel = hiltViewModel(),
 ) {
     val state by setProfileViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = setProfileViewModel::setUri,
+        onResult = {
+            setProfileViewModel.setUri(
+                context = context,
+                uri = it,
+            )
+        },
     )
+
+    LaunchedEffect(Unit) {
+        setProfileViewModel.sideEffect.collect {
+            when (it) {
+                is SetProfileSideEffect.MoveToNext -> {
+                    navigateToTerms(signUpData.copy(profileImageUrl = it.profileImageUrl))
+                }
+            }
+        }
+    }
 
     SetProfileScreen(
         onBackPressed = onBackPressed,
