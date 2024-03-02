@@ -6,7 +6,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -25,16 +24,18 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -42,24 +43,26 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.signup.R
+import team.retum.signup.viewmodel.SetProfileState
+import team.retum.signup.viewmodel.SetProfileViewModel
 
 @Composable
 internal fun SetProfile(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
+    setProfileViewModel: SetProfileViewModel = hiltViewModel(),
 ) {
-    // TODO viewModel로 옮기기
-    var uri: Uri? by remember { mutableStateOf(null) }
+    val state by setProfileViewModel.state.collectAsStateWithLifecycle()
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri = it },
+        onResult = setProfileViewModel::setUri,
     )
 
     SetProfileScreen(
         onBackPressed = onBackPressed,
-        onNextClick = onNextClick,
+        onNextClick = setProfileViewModel::onNextClick,
         activityResultLauncher = activityResultLauncher,
-        uri = uri,
+        state = state,
     )
 }
 
@@ -68,7 +71,7 @@ private fun SetProfileScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
     activityResultLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
-    uri: Uri?,
+    state: SetProfileState,
 ) {
     Column(
         modifier = Modifier
@@ -80,7 +83,7 @@ private fun SetProfileScreen(
             onBackPressed = onBackPressed,
         )
         SetImage(
-            uri = uri,
+            uri = state.uri,
             onClick = {
                 val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
                 val request = PickVisualMediaRequest(mediaType)
@@ -92,6 +95,7 @@ private fun SetProfileScreen(
             text = stringResource(id = R.string.next),
             onClick = onNextClick,
             color = ButtonColor.Primary,
+            enabled = state.buttonEnabled,
         )
     }
 }
@@ -108,15 +112,14 @@ private fun SetImage(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        // TODO async image 사용
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape),
-            painter = painterResource(id = team.retum.common.R.drawable.ic_person),
+            model = uri ?: team.retum.common.R.drawable.ic_person,
             contentDescription = "user profile",
+            contentScale = ContentScale.Crop,
         )
-        // TODO jobis medium button 구현하기
         SetImageButton(
             text = stringResource(id = R.string.edit_image),
             onClick = onClick,
