@@ -1,9 +1,10 @@
 package team.retum.jobisandroidv2.root
 
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import team.retum.landing.navigation.NAVIGATION_LANDING
+import team.retum.signin.navigation.NAVIGATION_SIGN_IN
 
 const val NAVIGATION_ROOT = "root"
 
@@ -36,5 +37,9 @@ fun NavGraphBuilder.root(
 }
 
 fun NavController.navigateToRoot() {
-    navigate(NAVIGATION_ROOT)
+    navigate(NAVIGATION_ROOT) {
+        popUpTo(NAVIGATION_LANDING) {
+            inclusive = true
+        }
+    }
 }
