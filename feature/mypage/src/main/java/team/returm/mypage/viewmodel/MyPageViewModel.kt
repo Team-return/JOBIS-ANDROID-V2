@@ -20,6 +20,7 @@ internal class MyPageViewModel @Inject constructor(
     private val fetchReviewableCompaniesUseCase: FetchReviewableCompaniesUseCase,
     private val signOutUseCase: SignOutUseCase,
 ) : BaseViewModel<MyPageState, MyPageSideEffect>(MyPageState.getInitialState()) {
+
     init {
         fetchStudentInformation()
         fetchReviewableCompanies()

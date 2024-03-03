@@ -13,3 +13,7 @@ apply<ComposeGradlePlugin>()
 android {
     namespace = "team.retum.jobis.mypage"
 }
+
+dependencies {
+    api(libs.coil.compose)
+}
