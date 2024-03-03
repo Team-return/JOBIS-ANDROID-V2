@@ -1,7 +1,6 @@
 package team.retum.jobisandroidv2
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -34,7 +33,7 @@ class MainActivity : ComponentActivity() {
             delay = System.currentTimeMillis() + 1000
             JobisToast.create(
                 context = this,
-                message = getString(R.string.close_app)
+                message = getString(R.string.close_app),
             ).show()
         } else {
             finish()

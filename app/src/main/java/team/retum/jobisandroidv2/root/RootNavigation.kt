@@ -4,7 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import team.retum.landing.navigation.NAVIGATION_LANDING
-import team.retum.signin.navigation.NAVIGATION_SIGN_IN
 
 const val NAVIGATION_ROOT = "root"
 
