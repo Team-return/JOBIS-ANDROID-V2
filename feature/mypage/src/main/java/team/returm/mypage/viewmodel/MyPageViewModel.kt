@@ -83,5 +83,5 @@ internal data class MyPageState(
 }
 
 internal sealed interface MyPageSideEffect {
-    data object SuccessSignOut: MyPageSideEffect
+    data object SuccessSignOut : MyPageSideEffect
 }
