@@ -57,7 +57,14 @@ internal class SetProfileViewModel @Inject constructor(
             presignedUrl = presignedUrl,
             file = state.value.image!!,
         ).onSuccess {
-            postSideEffect(SetProfileSideEffect.MoveToNext(profileImageUrl = fileUrl))
+            postSideEffect(
+                SetProfileSideEffect.MoveToNext(
+                    profileImageUrl = fileUrl.replace(
+                        "/",
+                        " ",
+                    ),
+                ),
+            )
         }
     }
 }
