@@ -54,7 +54,7 @@ class LocalUserDataSourceImpl @Inject constructor(
 
     override fun clearUserInformation() {
         sharedPreferences.edit {
-            this.clear()
+            this@edit.clear()
         }
     }
 }

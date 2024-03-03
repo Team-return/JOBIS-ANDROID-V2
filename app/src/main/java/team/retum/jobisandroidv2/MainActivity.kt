@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         if (System.currentTimeMillis() > delay) {
             delay = System.currentTimeMillis() + 1000
             JobisToast.create(
-                context = this,
+                context = applicationContext,
                 message = getString(R.string.close_app),
             ).show()
         } else {
