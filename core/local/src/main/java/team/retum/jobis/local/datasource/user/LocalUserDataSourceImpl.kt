@@ -51,4 +51,10 @@ class LocalUserDataSourceImpl @Inject constructor(
         return sharedPreferences.getString(ResourceKeys.REFRESH_EXPIRES_AT, "")
             ?: throw NullPointerException()
     }
+
+    override fun clearUserInformation() {
+        sharedPreferences.edit {
+            this.clear()
+        }
+    }
 }

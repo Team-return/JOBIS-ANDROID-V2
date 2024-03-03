@@ -1,6 +1,7 @@
 package team.retum.jobisandroidv2.root
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
@@ -16,6 +17,7 @@ fun NavGraphBuilder.root(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
+    navigateToLanding: () -> Unit,
 ) {
     composable(NAVIGATION_ROOT) {
         Root(
@@ -28,6 +30,7 @@ fun NavGraphBuilder.root(
             onSelectInterestClick = onSelectInterestClick,
             onChangePasswordClick = onChangePasswordClick,
             onReportBugClick = onReportBugClick,
+            navigateToLanding = navigateToLanding,
         )
     }
 }

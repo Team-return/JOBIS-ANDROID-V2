@@ -45,6 +45,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onReportBugClick = navController::navigateToReportBug,
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
             onNoticeClick = navController::navigateToNotificationsList,
+            navigateToLanding = navController::popBackStack,
         )
         alarm(onBackPressed = navController::popBackStack)
         recruitmentDetails(

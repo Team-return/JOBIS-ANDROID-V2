@@ -11,13 +11,15 @@ import team.retum.usecase.entity.company.ReviewableCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import team.retum.usecase.usecase.company.FetchReviewableCompaniesUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
+import team.retum.usecase.usecase.user.SignOutUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class MyPageViewModel @Inject constructor(
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val fetchReviewableCompaniesUseCase: FetchReviewableCompaniesUseCase,
-) : BaseViewModel<MyPageState, Unit>(MyPageState.getInitialState()) {
+    private val signOutUseCase: SignOutUseCase,
+) : BaseViewModel<MyPageState, MyPageSideEffect>(MyPageState.getInitialState()) {
     init {
         fetchStudentInformation()
         fetchReviewableCompanies()
@@ -47,6 +49,16 @@ internal class MyPageViewModel @Inject constructor(
             }
         }
     }
+
+    internal fun onSignOutClick() {
+        signOutUseCase().onSuccess {
+            postSideEffect(MyPageSideEffect.SuccessSignOut)
+        }
+    }
+
+    internal fun onWithdrawalClick() {
+        // TODO 회원탈퇴 로직 구현
+    }
 }
 
 internal data class MyPageState(
@@ -68,4 +80,8 @@ internal data class MyPageState(
             reviewableCompany = null,
         )
     }
+}
+
+internal sealed interface MyPageSideEffect {
+    data object SuccessSignOut: MyPageSideEffect
 }

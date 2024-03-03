@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +36,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.returm.mypage.viewmodel.MyPageSideEffect
 import team.returm.mypage.viewmodel.MyPageState
 import team.returm.mypage.viewmodel.MyPageViewModel
 
@@ -44,10 +46,21 @@ internal fun MyPage(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    navigateToLanding: () -> Unit,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val state by myPageViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(Unit) {
+        myPageViewModel.sideEffect.collect {
+            when (it) {
+                is MyPageSideEffect.SuccessSignOut -> {
+                    navigateToLanding()
+                }
+            }
+        }
+    }
 
     MyPageScreen(
         onSelectInterestClick = onSelectInterestClick,
@@ -58,6 +71,8 @@ internal fun MyPage(
         scrollState = scrollState,
         setShowSignOutModal = myPageViewModel::setShowSignOutModal,
         setShowWithdrawalModal = myPageViewModel::setShowWithdrawalModal,
+        onSignOutClick = myPageViewModel::onSignOutClick,
+        onWithdrawalClick = myPageViewModel::onWithdrawalClick,
     )
 }
 
@@ -71,6 +86,8 @@ private fun MyPageScreen(
     scrollState: ScrollState,
     setShowSignOutModal: (Boolean) -> Unit,
     setShowWithdrawalModal: (Boolean) -> Unit,
+    onSignOutClick: () -> Unit,
+    onWithdrawalClick: () -> Unit,
 ) {
     if (state.showSignOutModal) {
         JobisDialog(
@@ -80,7 +97,7 @@ private fun MyPageScreen(
             subButtonText = stringResource(id = R.string.modal_button_cancel),
             mainButtonText = stringResource(id = R.string.modal_button_logout),
             onSubButtonClick = { setShowSignOutModal(false) },
-            onMainButtonClick = { /* TODO 뷰모델 로그아웃 함수 작성 */ },
+            onMainButtonClick = onSignOutClick,
         )
     } else if (state.showWithdrawalModal) {
         JobisDialog(
@@ -90,7 +107,7 @@ private fun MyPageScreen(
             subButtonText = stringResource(id = R.string.modal_button_cancel),
             mainButtonText = stringResource(id = R.string.modal_button_withdrawal),
             onSubButtonClick = { setShowSignOutModal(false) },
-            onMainButtonClick = { /* TODO 뷰모델 회원가입 함수 작성 */ },
+            onMainButtonClick = onWithdrawalClick,
         )
     }
 
@@ -115,7 +132,7 @@ private fun MyPageScreen(
             }
             state.reviewableCompany?.run {
                 WriteInterviewReview(
-                    companyName = "sdfjisjfisejfisjfasdf",
+                    companyName = state.reviewableCompany.name,
                     onClick = { /*TODO 면접 후기 작 페이지로 이동 */ },
                 )
             }
