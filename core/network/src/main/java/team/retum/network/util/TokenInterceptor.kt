@@ -32,11 +32,16 @@ class TokenInterceptor @Inject constructor(
         val accessToken = localUserDataSource.getAccessToken()
 
         return chain.proceed(
-            when (ignorePaths.contains(path)) {
-                true -> request
-                false -> request.newBuilder()
+            if (ignorePaths.contains(path) || checkS3Request(url = request.url.toString())) {
+                request
+            } else {
+                request.newBuilder()
                     .addHeader("Authorization", "${ResourceKeys.BEARER} $accessToken").build()
             },
         )
+    }
+
+    private fun checkS3Request(url: String): Boolean {
+        return url.contains(ResourceKeys.IMAGE_URL)
     }
 }
