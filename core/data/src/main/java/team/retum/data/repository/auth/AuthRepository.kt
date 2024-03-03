@@ -7,9 +7,9 @@ interface AuthRepository {
         email: String,
         authCodeType: AuthCodeType,
     )
-
     suspend fun authorizeAuthenticationCode(
         email: String,
         authCode: String,
     )
+    suspend fun reissueToken(refreshToken: String)
 }
