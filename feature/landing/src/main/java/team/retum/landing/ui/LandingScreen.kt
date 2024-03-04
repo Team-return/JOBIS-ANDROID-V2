@@ -73,6 +73,7 @@ private fun LandingScreen(
                 text = "새 계정으로 시작하기",
                 onClick = onSignUpClick,
                 color = ButtonColor.Primary,
+                keyboardInteractionEnabled = false,
             )
             JobisText(
                 modifier = Modifier
