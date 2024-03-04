@@ -13,6 +13,7 @@ import javax.inject.Inject
 internal class TermsViewModel @Inject constructor(
     private val postSignUpUseCase: PostSignUpUseCase,
 ) : BaseViewModel<TermsState, TermsSideEffect>(TermsState.getInitialState()) {
+
     internal fun onReachTheEnded(buttonEnabled: Boolean) = setState {
         state.value.copy(buttonEnabled = buttonEnabled)
     }
@@ -28,10 +29,9 @@ internal class TermsViewModel @Inject constructor(
                     gender = gender!!,
                     classRoom = classRoom.toLong(),
                     number = number.toLong(),
+                    profileImageUrl = profileImageUrl.replace(" ", "/"),
                 ).onSuccess {
                     postSideEffect(TermsSideEffect.Success)
-                }.onFailure {
-
                 }
             }
         }
