@@ -18,6 +18,7 @@ fun NavGraphBuilder.root(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     navigateToLanding: () -> Unit,
+    onPostReviewClick: () -> Unit,
 ) {
     composable(NAVIGATION_ROOT) {
         Root(
@@ -31,6 +32,7 @@ fun NavGraphBuilder.root(
             onChangePasswordClick = onChangePasswordClick,
             onReportBugClick = onReportBugClick,
             navigateToLanding = navigateToLanding,
+            onPostReviewClick = onPostReviewClick,
         )
     }
 }

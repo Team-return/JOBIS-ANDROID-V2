@@ -25,5 +25,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.com.google.android.material)
 
+    testApi(libs.junit)
     androidTestApi(libs.androidx.compose.ui.test.junit4)
+    androidTestApi(libs.androidx.junit)
+    androidTestApi(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    debugApi(libs.androidx.compose.ui.tooling)
+    debugApi(libs.androidx.compose.ui.test.manifest)
 }

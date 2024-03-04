@@ -10,12 +10,14 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -114,6 +116,7 @@ private fun TextField(
     showVisibleIcon: Boolean,
     leadingIcon: Painter?,
     content: @Composable () -> Unit,
+    fieldColor: Color,
 ) {
     val hintAlpha by animateFloatAsState(
         targetValue = if (value().isEmpty()) {
@@ -138,10 +141,12 @@ private fun TextField(
         BasicTextField(
             value = value().take(maxLength),
             onValueChange = onValueChange,
-            modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            ),
+            modifier = Modifier
+                .background(fieldColor)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp,
+                ),
             textStyle = style,
             singleLine = singleLine,
             visualTransformation = visualTransformation,
@@ -284,6 +289,8 @@ fun JobisTextField(
     showEmailHint: Boolean = false,
     showVisibleIcon: Boolean = false,
     leadingIcon: Painter? = null,
+    fieldColor: Color = JobisTheme.colors.inverseSurface,
+    fieldSize: Modifier = Modifier.height(100.dp),
     content: @Composable () -> Unit = { },
 ) {
     Column(
@@ -319,6 +326,7 @@ fun JobisTextField(
             showVisibleIcon = showVisibleIcon,
             leadingIcon = leadingIcon,
             content = content,
+            fieldColor = fieldColor,
         )
         AnimatedVisibility(
             visible = showDescription(),

@@ -51,6 +51,7 @@ internal fun MyPage(
     onNoticeClick: () -> Unit,
     navigateToLanding: () -> Unit,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
+    onPostReviewClick: () -> Unit,
 ) {
     val state by myPageViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -76,6 +77,7 @@ internal fun MyPage(
         setShowWithdrawalModal = myPageViewModel::setShowWithdrawalModal,
         onSignOutClick = myPageViewModel::onSignOutClick,
         onWithdrawalClick = myPageViewModel::onWithdrawalClick,
+        onPostReviewClick = onPostReviewClick,
     )
 }
 
@@ -91,6 +93,7 @@ private fun MyPageScreen(
     setShowWithdrawalModal: (Boolean) -> Unit,
     onSignOutClick: () -> Unit,
     onWithdrawalClick: () -> Unit,
+    onPostReviewClick: () -> Unit,
 ) {
     if (state.showSignOutModal) {
         JobisDialog(
