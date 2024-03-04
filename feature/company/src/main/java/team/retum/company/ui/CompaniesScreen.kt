@@ -112,7 +112,9 @@ private fun CompaniesScreen(
                     }
                 }
             }
-        } else checkCompanies(true)
+        } else {
+            checkCompanies(true)
+        }
         checkCompanies(false)
     }
 }
