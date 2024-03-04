@@ -19,7 +19,7 @@ fun NavGraphBuilder.recruitmentDetails(
         arguments = listOf(navArgument(RECRUITMENT_ID) { NavType.StringType }),
     ) {
         RecruitmentDetails(
-            recruitmentId = it.arguments?.getString(RECRUITMENT_ID)?.toLong(),
+            recruitmentId = it.arguments?.getString(RECRUITMENT_ID)?.toLong() ?: throw NullPointerException(),
             onBackPressed = onBackPressed,
             onApplyClick = onApplyClick,
         )

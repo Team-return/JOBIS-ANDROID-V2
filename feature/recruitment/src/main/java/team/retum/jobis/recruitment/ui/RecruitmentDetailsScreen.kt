@@ -54,7 +54,7 @@ import team.retum.usecase.entity.RecruitmentDetailsEntity
 
 @Composable
 internal fun RecruitmentDetails(
-    recruitmentId: Long?,
+    recruitmentId: Long,
     onBackPressed: () -> Unit,
     onApplyClick: () -> Unit,
     recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
@@ -68,7 +68,7 @@ internal fun RecruitmentDetails(
     RecruitmentDetailsScreen(
         onBackPressed = onBackPressed,
         onApplyClick = onApplyClick,
-        onBookmarkClick = { recruitmentDetailsViewModel.bookmarkRecruitmentDetail(recruitmentId!!) },
+        onBookmarkClick = { recruitmentDetailsViewModel.bookmarkRecruitmentDetail(recruitmentId) },
         recruitmentDetail = state.recruitmentDetailsEntity,
         scrollState = rememberScrollState(),
     )
