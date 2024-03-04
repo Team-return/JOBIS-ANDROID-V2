@@ -22,4 +22,6 @@
     <string name="sub_manager_phone_number">전화번호2</string>
     <string name="email">이메일</string>
     <string name="fax">팩스</string>
+
+    <string name="review">면접 후기</string>
 </resources>
