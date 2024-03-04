@@ -96,7 +96,6 @@ internal class InputEmailViewModel @Inject constructor(
         }
     }
 
-
     internal fun setEmail(email: String) = setState {
         state.value.copy(
             email = email,
@@ -153,5 +152,5 @@ internal data class InputEmailState(
 internal sealed interface InputEmailSideEffect {
     data class MoveToInputPassword(val email: String) : InputEmailSideEffect
     data object CheckEmailValidation : InputEmailSideEffect
-    data object AuthenticationCodeExpiration: InputEmailSideEffect
+    data object AuthenticationCodeExpiration : InputEmailSideEffect
 }

@@ -49,7 +49,7 @@ internal fun InputPersonalInfo(
                             grade = it.grade,
                             classRoom = it.classRoom,
                             number = it.number,
-                        )
+                        ),
                     )
                 }
 

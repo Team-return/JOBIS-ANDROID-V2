@@ -29,5 +29,5 @@ fun NavGraphBuilder.terms(
 }
 
 fun NavController.navigateToTerms(signUpData: SignUpData) {
-    navigate("${NAVIGATION_TERMS}/${signUpData.toJsonString()}")
+    navigate("$NAVIGATION_TERMS/${signUpData.toJsonString()}")
 }

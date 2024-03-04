@@ -25,7 +25,7 @@ internal class SetPasswordViewModel @Inject constructor() :
                         DescriptionType.Information
                     } else {
                         DescriptionType.Error
-                    }
+                    },
                 )
             }
         }

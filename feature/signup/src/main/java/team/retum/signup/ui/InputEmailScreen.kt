@@ -141,8 +141,11 @@ private fun EmailInputs(
     ) {
         JobisSmallButton(
             text = stringResource(
-                id = if (sendAuthenticationCode()) R.string.re_send_authentication_code
-                else R.string.authentication,
+                id = if (sendAuthenticationCode()) {
+                    R.string.re_send_authentication_code
+                } else {
+                    R.string.authentication
+                },
             ),
             color = ButtonColor.Secondary,
             onClick = onAuthenticationClick,

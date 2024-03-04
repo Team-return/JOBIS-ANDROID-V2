@@ -29,5 +29,5 @@ fun NavGraphBuilder.setProfile(
 }
 
 fun NavController.navigateToSetProfile(signUpData: SignUpData) {
-    navigate("${NAVIGATION_SET_PROFILE}/${signUpData.toJsonString()}")
+    navigate("$NAVIGATION_SET_PROFILE/${signUpData.toJsonString()}")
 }

@@ -17,7 +17,7 @@ fun NavGraphBuilder.selectGender(
     navigateToSetProfile: (SignUpData) -> Unit,
 ) {
     composable(
-        route = "${NAVIGATION_SELECT_GENDER}/{${ResourceKeys.SIGN_UP}}",
+        route = "$NAVIGATION_SELECT_GENDER/{${ResourceKeys.SIGN_UP}}",
         arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { NavType.StringType }),
     ) {
         SelectGender(
