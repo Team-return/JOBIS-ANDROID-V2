@@ -2,6 +2,7 @@ package team.retum.network.datasource.recruitment
 
 import android.util.Log
 import team.retum.network.api.RecruitmentApi
+import team.retum.network.model.response.FetchRecruitmentDetailsResponse
 import team.retum.network.model.response.FetchRecruitmentPageCountResponse
 import team.retum.network.model.response.FetchRecruitmentsResponse
 import team.retum.network.util.RequestHandler
@@ -39,5 +40,10 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
                 techCode = techCode,
                 winterIntern = winterIntern,
             )
+        }
+
+    override suspend fun fetchRecruitmentDetails(recruitmentId: Long): FetchRecruitmentDetailsResponse =
+        RequestHandler<FetchRecruitmentDetailsResponse>().request {
+            recruitmentApi.fetchRecruitmentDetails(recruitmentId = recruitmentId)
         }
 }
