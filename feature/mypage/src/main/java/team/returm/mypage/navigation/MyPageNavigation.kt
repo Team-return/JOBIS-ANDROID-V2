@@ -12,6 +12,7 @@ fun NavGraphBuilder.myPage(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    navigateToLanding: () -> Unit,
 ) {
     composable(NAVIGATION_MY_PAGE) {
         MyPage(
@@ -19,6 +20,7 @@ fun NavGraphBuilder.myPage(
             onChangePasswordClick = onChangePasswordClick,
             onReportBugClick = onReportBugClick,
             onNoticeClick = onNoticeClick,
+            navigateToLanding = navigateToLanding,
         )
     }
 }

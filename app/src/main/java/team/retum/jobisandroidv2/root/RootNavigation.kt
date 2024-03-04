@@ -3,6 +3,7 @@ package team.retum.jobisandroidv2.root
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import team.retum.landing.navigation.NAVIGATION_LANDING
 
 const val NAVIGATION_ROOT = "root"
 
@@ -16,6 +17,7 @@ fun NavGraphBuilder.root(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
+    navigateToLanding: () -> Unit,
 ) {
     composable(NAVIGATION_ROOT) {
         Root(
@@ -28,10 +30,15 @@ fun NavGraphBuilder.root(
             onSelectInterestClick = onSelectInterestClick,
             onChangePasswordClick = onChangePasswordClick,
             onReportBugClick = onReportBugClick,
+            navigateToLanding = navigateToLanding,
         )
     }
 }
 
 fun NavController.navigateToRoot() {
-    navigate(NAVIGATION_ROOT)
+    navigate(NAVIGATION_ROOT) {
+        popUpTo(NAVIGATION_LANDING) {
+            inclusive = true
+        }
+    }
 }

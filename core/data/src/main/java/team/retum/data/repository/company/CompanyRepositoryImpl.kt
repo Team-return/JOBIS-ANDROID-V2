@@ -3,6 +3,7 @@ package team.retum.data.repository.company
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
+import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import javax.inject.Inject
 
 class CompanyRepositoryImpl @Inject constructor(
@@ -14,4 +15,7 @@ class CompanyRepositoryImpl @Inject constructor(
     override suspend fun fetchPageCount(name: String?): FetchCompanyPageCountResponse =
         companyDataSource.fetchPageCount(name = name)
 
+    override suspend fun fetchReviewableCompanies(): FetchReviewableCompaniesResponse {
+        return companyDataSource.fetchReviewableCompanies()
+    }
 }

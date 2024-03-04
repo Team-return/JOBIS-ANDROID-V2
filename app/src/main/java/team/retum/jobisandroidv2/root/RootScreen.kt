@@ -50,6 +50,7 @@ internal fun Root(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
+    navigateToLanding: () -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -78,6 +79,7 @@ internal fun Root(
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
         rejectionReason = rejectionReason,
+        navigateToLanding = navigateToLanding,
     )
 }
 
@@ -98,6 +100,7 @@ private fun RootScreen(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     rejectionReason: String,
+    navigateToLanding: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -136,6 +139,7 @@ private fun RootScreen(
                     onChangePasswordClick = onChangePasswordClick,
                     onReportBugClick = onReportBugClick,
                     onNoticeClick = onNoticeClick,
+                    navigateToLanding = navigateToLanding,
                 )
             }
         }

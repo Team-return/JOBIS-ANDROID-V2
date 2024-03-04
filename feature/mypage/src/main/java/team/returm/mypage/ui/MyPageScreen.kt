@@ -1,6 +1,6 @@
 package team.returm.mypage.ui
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,20 +10,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import team.retum.jobis.mypage.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
@@ -33,6 +39,9 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.returm.mypage.viewmodel.MyPageSideEffect
+import team.returm.mypage.viewmodel.MyPageState
+import team.returm.mypage.viewmodel.MyPageViewModel
 
 @Composable
 internal fun MyPage(
@@ -40,12 +49,33 @@ internal fun MyPage(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    navigateToLanding: () -> Unit,
+    myPageViewModel: MyPageViewModel = hiltViewModel(),
 ) {
+    val state by myPageViewModel.state.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(Unit) {
+        myPageViewModel.sideEffect.collect {
+            when (it) {
+                is MyPageSideEffect.SuccessSignOut -> {
+                    navigateToLanding()
+                }
+            }
+        }
+    }
+
     MyPageScreen(
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
         onNoticeClick = onNoticeClick,
+        state = state,
+        scrollState = scrollState,
+        setShowSignOutModal = myPageViewModel::setShowSignOutModal,
+        setShowWithdrawalModal = myPageViewModel::setShowWithdrawalModal,
+        onSignOutClick = myPageViewModel::onSignOutClick,
+        onWithdrawalClick = myPageViewModel::onWithdrawalClick,
     )
 }
 
@@ -55,12 +85,14 @@ private fun MyPageScreen(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    state: MyPageState,
+    scrollState: ScrollState,
+    setShowSignOutModal: (Boolean) -> Unit,
+    setShowWithdrawalModal: (Boolean) -> Unit,
+    onSignOutClick: () -> Unit,
+    onWithdrawalClick: () -> Unit,
 ) {
-    val scrollState = rememberScrollState()
-    val (showSignOutModal, setShowSignOutModal) = remember { mutableStateOf(false) }
-    val (showWithdrawalModal, setShowWithdrawalModal) = remember { mutableStateOf(false) }
-
-    if (showSignOutModal) {
+    if (state.showSignOutModal) {
         JobisDialog(
             onDismissRequest = { setShowSignOutModal(false) },
             title = stringResource(id = R.string.sign_out_modal_title),
@@ -68,9 +100,9 @@ private fun MyPageScreen(
             subButtonText = stringResource(id = R.string.modal_button_cancel),
             mainButtonText = stringResource(id = R.string.modal_button_logout),
             onSubButtonClick = { setShowSignOutModal(false) },
-            onMainButtonClick = { /* TODO 뷰모델 로그아웃 함수 작성 */ },
+            onMainButtonClick = onSignOutClick,
         )
-    } else if (showWithdrawalModal) {
+    } else if (state.showWithdrawalModal) {
         JobisDialog(
             onDismissRequest = { setShowWithdrawalModal(false) },
             title = stringResource(id = R.string.withdrawal_modal_title),
@@ -78,15 +110,12 @@ private fun MyPageScreen(
             subButtonText = stringResource(id = R.string.modal_button_cancel),
             mainButtonText = stringResource(id = R.string.modal_button_withdrawal),
             onSubButtonClick = { setShowSignOutModal(false) },
-            onMainButtonClick = { /* TODO 뷰모델 회원가입 함수 작성 */ },
+            onMainButtonClick = onWithdrawalClick,
         )
     }
 
     Column {
-        JobisLargeTopAppBar(
-            title = stringResource(id = R.string.mypage),
-            onBackPressed = null,
-        )
+        JobisLargeTopAppBar(title = stringResource(id = R.string.mypage))
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -94,18 +123,22 @@ private fun MyPageScreen(
                 .padding(horizontal = 24.dp)
                 .verticalScroll(state = scrollState),
         ) {
-            StudentInfo(
-                modifier = Modifier.padding(vertical = 12.dp),
-                profileImageUrl = "",
-                number = "3125",
-                name = "박시원",
-                department = "소프트웨어개발과",
-                onClick = { /*TODO 회원정보 수정 페이지로 이동 */ },
-            )
-            WriteInterviewReview(
-                companyName = "㈜마이다스아이티주ㅇㅁㅇㄴㅁㅁ",
-                onClick = { /*TODO 면접 후기 작 페이지로 이동 */ },
-            )
+            with(state.studentInformation) {
+                StudentInfo(
+                    modifier = Modifier.padding(vertical = 12.dp),
+                    profileImageUrl = state.studentInformation.profileImageUrl,
+                    number = studentGcn,
+                    name = studentName,
+                    department = department.value,
+                    onClick = { /*TODO 회원정보 수정 페이지로 이동 */ },
+                )
+            }
+            state.reviewableCompany?.run {
+                WriteInterviewReview(
+                    companyName = state.reviewableCompany.name,
+                    onClick = { /*TODO 면접 후기 작 페이지로 이동 */ },
+                )
+            }
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.help),
                 contentItemInfo = ContentItemInfo(
@@ -194,10 +227,13 @@ private fun StudentInfo(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(
-            modifier = Modifier.size(48.dp),
-            painter = painterResource(id = R.drawable.ic_user_profile),
+        AsyncImage(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape),
+            model = profileImageUrl,
             contentDescription = "user profile image",
+            contentScale = ContentScale.Crop,
         )
         Column(
             modifier = Modifier.weight(1f),
@@ -257,11 +293,11 @@ private fun WriteInterviewReview(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     JobisText(
-                        text = companyName.take(7) + "...",
+                        text = companyName.take(10) + "...",
                         style = JobisTypography.Description,
-                        textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         color = JobisTheme.colors.inverseOnSurface,
+                        maxLines = 1,
                     )
                     JobisText(
                         text = stringResource(id = R.string.write_interview_review),

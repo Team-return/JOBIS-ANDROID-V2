@@ -52,4 +52,8 @@ class UserRepositoryImpl @Inject constructor(
     override fun getRefreshExpiresAt(): String {
         return localUserDataSource.getRefreshExpiresAt()
     }
+
+    override fun signOut() {
+        localUserDataSource.clearUserInformation()
+    }
 }

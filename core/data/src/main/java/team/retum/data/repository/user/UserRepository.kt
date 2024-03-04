@@ -13,4 +13,5 @@ interface UserRepository {
     fun getAccessExpiresAt(): String
     fun getRefreshToken(): String
     fun getRefreshExpiresAt(): String
+    fun signOut()
 }
