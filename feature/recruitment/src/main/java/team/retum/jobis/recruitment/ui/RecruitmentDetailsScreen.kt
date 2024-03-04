@@ -1,24 +1,29 @@
 package team.retum.jobis.recruitment.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,10 +36,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import team.retum.common.enums.HiringProgress
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import team.retum.jobis.recruitment.R
+import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -42,105 +49,39 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
-
-// TODO: 서버 연동 시 제거
-private data class RecruitmentDetail(
-    val companyId: Long,
-    val companyProfileUrl: String,
-    val companyName: String,
-    val areas: List<Area>,
-    val requiredGrade: String?,
-    val startTime: String,
-    val endTime: String,
-    val requiredLicenses: List<String>?,
-    val hiringProgress: List<HiringProgress>,
-    val trainPay: Long,
-    val pay: String?,
-    val benefits: String?,
-    val military: Boolean,
-    val submitDocument: String,
-    val startDate: String,
-    val endDate: String,
-    val etc: String?,
-)
-
-// TODO: 서버 연동 시 제거
-private data class Area(
-    val id: Long,
-    val job: List<String>,
-    val tech: List<String>,
-    val hiring: Long,
-    val majorTask: String,
-    val preferentialTreatment: String?,
-)
+import team.retum.usecase.entity.AreasEntity
+import team.retum.usecase.entity.RecruitmentDetailsEntity
 
 @Composable
 internal fun RecruitmentDetails(
+    recruitmentId: Long?,
     onBackPressed: () -> Unit,
     onApplyClick: () -> Unit,
+    recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
 ) {
-    // TODO: 서버 연동 시 제거
-    val recruitmentDetail = RecruitmentDetail(
-        companyId = 118,
-        companyProfileUrl = "LOGO_IMAGE/logo_73155.jpg",
-        companyName = "(주)네이션에이",
-        areas = listOf(
-            Area(
-                id = 19,
-                job = listOf("서버 개발자"),
-                tech = listOf(
-                    "SpringBoot",
-                    "SpringSecurity",
-                    "SpringBatch",
-                    "SpringDataJpa",
-                    "Docker",
-                ),
-                hiring = 1,
-                majorTask = "토스 서버를 개발해요",
-                preferentialTreatment = "TS에 대한 지식이 깊으신분",
-            ),
-            Area(
-                id = 20,
-                job = listOf("Android", "iOS"),
-                tech = listOf("Swift", "Java"),
-                hiring = 2,
-                majorTask = "토스 앱을 개발해요",
-                preferentialTreatment = "안드에 대한 지식이 깊으신분",
-            ),
-        ),
-        requiredGrade = "",
-        startTime = "08:00:00",
-        endTime = "06:00:00",
-        requiredLicenses = listOf("정보처리 기능사, 정보처리 기능사, 정보처리 기능서, 정보처리 기능사"),
-        hiringProgress = listOf(
-            HiringProgress.DOCUMENT,
-            HiringProgress.TECH_INTERVIEW,
-            HiringProgress.CODING_TEST,
-        ),
-        trainPay = 250,
-        pay = "3000",
-        benefits = "",
-        military = false,
-        submitDocument = "이력서, 포트폴리오",
-        startDate = "2023-06-10",
-        endDate = "20023-06-17",
-        etc = "",
-    )
-    RecruitmentDetailScreen(
+    val state by recruitmentDetailsViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        recruitmentDetailsViewModel.fetchRecruitmentDetails(recruitmentId)
+    }
+
+    RecruitmentDetailsScreen(
         onBackPressed = onBackPressed,
         onApplyClick = onApplyClick,
-        recruitmentDetail = recruitmentDetail,
+        onBookmarkClick = { recruitmentDetailsViewModel.bookmarkRecruitmentDetail(recruitmentId!!) },
+        recruitmentDetail = state.recruitmentDetailsEntity,
+        scrollState = rememberScrollState(),
     )
 }
 
 @Composable
-private fun RecruitmentDetailScreen(
+private fun RecruitmentDetailsScreen(
     onBackPressed: () -> Unit,
     onApplyClick: () -> Unit,
-    recruitmentDetail: RecruitmentDetail,
+    onBookmarkClick: () -> Unit,
+    recruitmentDetail: RecruitmentDetailsEntity,
+    scrollState: ScrollState,
 ) {
-    val scrollState = rememberScrollState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -161,49 +102,18 @@ private fun RecruitmentDetailScreen(
             )
             RecruitmentDetailInfo(recruitmentDetail = recruitmentDetail)
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .background(color = JobisTheme.colors.background),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            JobisButton(
-                modifier = Modifier.weight(1f),
-                text = stringResource(id = R.string.apply),
-                color = ButtonColor.Primary,
-                onClick = onApplyClick,
-            )
-            Icon(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .size(56.dp)
-                    .clip(RectangleShape)
-                    .clickable(
-                        enabled = true,
-                        onPressed = { },
-                        onClick = { },
-                    )
-                    .padding(
-                        start = 4.dp,
-                        top = 12.dp,
-                        bottom = 12.dp,
-                        end = 24.dp,
-                    )
-                    .background(
-                        color = JobisTheme.colors.inverseSurface,
-                        shape = RoundedCornerShape(12.dp),
-                    ),
-                painter = painterResource(id = JobisIcon.BookmarkOn),
-                contentDescription = "bookmark",
-            )
-        }
+        BottomBar(
+            onApplyClick = onApplyClick,
+            onBookmarkClick = onBookmarkClick,
+            isBookmark = recruitmentDetail.bookmarked,
+            isApplicable = recruitmentDetail.isApplicable,
+        )
     }
 }
 
 @Composable
 private fun CompanyInformation(
-    recruitmentDetail: RecruitmentDetail,
+    recruitmentDetail: RecruitmentDetailsEntity,
 ) {
     Row(
         modifier = Modifier.padding(
@@ -213,7 +123,7 @@ private fun CompanyInformation(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(64.dp)
                 .border(
@@ -221,7 +131,7 @@ private fun CompanyInformation(
                     color = JobisTheme.colors.inverseSurface,
                     shape = RoundedCornerShape(12.dp),
                 ),
-            painter = painterResource(JobisIcon.Information),
+            model = recruitmentDetail.companyProfileUrl,
             contentDescription = "company profile",
             contentScale = ContentScale.FillBounds,
         )
@@ -238,7 +148,7 @@ private fun CompanyInformation(
 
 @Composable
 private fun RecruitmentDetailInfo(
-    recruitmentDetail: RecruitmentDetail,
+    recruitmentDetail: RecruitmentDetailsEntity,
 ) {
     Column(modifier = Modifier.padding(horizontal = 24.dp)) {
         recruitmentDetail.apply {
@@ -268,7 +178,7 @@ private fun RecruitmentDetailInfo(
             )
             Detail(
                 title = stringResource(id = R.string.required_grade),
-                content = requiredGrade,
+                content = requiredGrade.toString(),
             )
             Detail(
                 title = stringResource(id = R.string.work_hours),
@@ -320,7 +230,7 @@ internal fun Detail(
 
 @Composable
 private fun Position(
-    areas: List<Area>,
+    areas: List<AreasEntity>,
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         JobisText(
@@ -360,9 +270,10 @@ private fun PositionCard(
         Row(
             modifier = Modifier.padding(all = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
         ) {
             JobisText(
+                modifier = Modifier.weight(1f),
                 text = job,
                 style = JobisTypography.SubHeadLine,
             )
@@ -425,4 +336,67 @@ internal fun exceptBracket(text: String): String {
         .replace("[", "")
         .replace("]", "")
         .trim()
+}
+
+@Composable
+private fun BottomBar(
+    onApplyClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
+    isBookmark: Boolean,
+    isApplicable: Boolean,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .background(color = JobisTheme.colors.background)
+            .padding(
+                horizontal = 24.dp,
+                vertical = 12.dp,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+    ) {
+        Button(
+            modifier = Modifier.weight(1f),
+            enabled = isApplicable,
+            shape = RoundedCornerShape(12.dp),
+            contentPadding = PaddingValues(vertical = 16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = JobisTheme.colors.onPrimary,
+                contentColor = JobisTheme.colors.background,
+                disabledContainerColor = JobisTheme.colors.surfaceTint,
+                disabledContentColor = JobisTheme.colors.background,
+            ),
+            onClick = onApplyClick,
+        ) {
+            JobisText(
+                text = if (isApplicable) stringResource(id = R.string.apply)
+                else stringResource(id = R.string.can_do_apply_third),
+                style = JobisTypography.SubHeadLine,
+                color = JobisTheme.colors.background,
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Icon(
+                painter = painterResource(id = JobisIcon.LongArrow),
+                contentDescription = "long arrow",
+            )
+        }
+        Icon(
+            modifier = Modifier
+                .background(
+                    color = JobisTheme.colors.inverseSurface,
+                    shape = RoundedCornerShape(12.dp),
+                )
+                .clip(RectangleShape)
+                .padding(16.dp)
+                .clickable(
+                    enabled = true,
+                    onClick = onBookmarkClick,
+                ),
+            painter = if (isBookmark) painterResource(id = JobisIcon.BookmarkOn)
+            else painterResource(id = JobisIcon.BookmarkOff),
+            contentDescription = "bookmark",
+        )
+    }
 }
