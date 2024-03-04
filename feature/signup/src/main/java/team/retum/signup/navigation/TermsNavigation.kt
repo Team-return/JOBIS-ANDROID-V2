@@ -14,7 +14,7 @@ const val NAVIGATION_TERMS = "terms"
 
 fun NavGraphBuilder.terms(
     onBackPressed: () -> Unit,
-    onCompleteClick: () -> Unit,
+    navigateToRoot: () -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_TERMS/{${ResourceKeys.SIGN_UP}}",
@@ -22,7 +22,7 @@ fun NavGraphBuilder.terms(
     ) {
         Terms(
             onBackPressed = onBackPressed,
-            onCompleteClick = onCompleteClick,
+            navigateToRoot = navigateToRoot,
             signUpData = it.getSignUpData(),
         )
     }

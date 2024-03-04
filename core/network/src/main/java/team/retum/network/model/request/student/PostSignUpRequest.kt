@@ -12,5 +12,6 @@ data class PostSignUpRequest(
     @SerializedName("gender") val gender: Gender,
     @SerializedName("class_room") val classRoom: Long,
     @SerializedName("number") val number: Long,
+    @SerializedName("profile_image_url") val profileImageUrl: String,
     @SerializedName("platform_type") val platformType: PlatformType,
 )
