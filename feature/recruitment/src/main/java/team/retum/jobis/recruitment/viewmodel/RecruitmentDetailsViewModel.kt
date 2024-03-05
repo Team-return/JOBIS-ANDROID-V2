@@ -19,22 +19,25 @@ internal class RecruitmentDetailsViewModel @Inject constructor(
 
     internal fun fetchRecruitmentDetails(recruitmentId: Long?) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (recruitmentId == null) {
-                postSideEffect(RecruitmentDetailsSideEffect.Success)
-            } else {
-                fetchRecruitmentDetailsUseCase(recruitmentId = recruitmentId)
-                    .onSuccess { detail ->
-                        with(detail) {
-                            setState {
-                                state.value.copy(
-                                    recruitmentDetailsEntity = copy(
-                                        companyProfileUrl = ResourceKeys.IMAGE_URL + companyProfileUrl,
-                                    ),
-                                )
-                            }
+            fetchRecruitmentDetailsUseCase(recruitmentId = recruitmentId!!)
+                .onSuccess { detail ->
+                    with(detail) {
+                        setState {
+                            state.value.copy(
+                                recruitmentDetailsEntity = copy(
+                                    companyProfileUrl = ResourceKeys.IMAGE_URL + companyProfileUrl,
+                                ),
+                            )
                         }
                     }
-            }
+                }
+                .onFailure {
+                    when (it) {
+                        is NullPointerException -> {
+                            postSideEffect(RecruitmentDetailsSideEffect.BadRequest)
+                        }
+                    }
+                }
         }
     }
 
@@ -80,5 +83,5 @@ internal data class RecruitmentDetailsState(
 }
 
 sealed interface RecruitmentDetailsSideEffect {
-    data object Success: RecruitmentDetailsSideEffect
+    data object BadRequest : RecruitmentDetailsSideEffect
 }

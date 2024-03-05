@@ -69,7 +69,7 @@ internal fun RecruitmentDetails(
         recruitmentDetailsViewModel.fetchRecruitmentDetails(recruitmentId)
         recruitmentDetailsViewModel.sideEffect.collect {
             when (it) {
-                is RecruitmentDetailsSideEffect.Success -> {
+                is RecruitmentDetailsSideEffect.BadRequest -> {
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.occurred_error),
