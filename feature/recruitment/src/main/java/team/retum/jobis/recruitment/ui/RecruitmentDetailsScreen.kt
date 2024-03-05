@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.jobis.recruitment.R
+import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -48,6 +50,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.AreasEntity
 import team.retum.usecase.entity.RecruitmentDetailsEntity
@@ -60,9 +63,21 @@ internal fun RecruitmentDetails(
     recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
 ) {
     val state by recruitmentDetailsViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         recruitmentDetailsViewModel.fetchRecruitmentDetails(recruitmentId)
+        recruitmentDetailsViewModel.sideEffect.collect {
+            when (it) {
+                is RecruitmentDetailsSideEffect.Success -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.occurred_error),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+            }
+        }
     }
 
     RecruitmentDetailsScreen(
@@ -394,8 +409,9 @@ private fun BottomBar(
                     enabled = true,
                     onClick = onBookmarkClick,
                 ),
-            painter = if (isBookmark) painterResource(id = JobisIcon.BookmarkOn)
-            else painterResource(id = JobisIcon.BookmarkOff),
+            painter = painterResource(
+                if (isBookmark) JobisIcon.BookmarkOn else JobisIcon.BookmarkOff,
+            ),
             contentDescription = "bookmark",
         )
     }
