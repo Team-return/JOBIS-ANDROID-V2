@@ -14,8 +14,8 @@ import team.retum.data.repository.bookmark.BookmarkRepository
 import team.retum.data.repository.bookmark.BookmarkRepositoryImpl
 import team.retum.data.repository.code.CodeRepository
 import team.retum.data.repository.code.CodeRepositoryImpl
-import team.retum.data.repository.ReviewRepository
-import team.retum.data.repository.ReviewRepositoryImpl
+import team.retum.data.repository.review.ReviewRepository
+import team.retum.data.repository.review.ReviewRepositoryImpl
 import team.retum.data.repository.company.CompanyRepository
 import team.retum.data.repository.company.CompanyRepositoryImpl
 import team.retum.data.repository.recruitment.RecruitmentRepository

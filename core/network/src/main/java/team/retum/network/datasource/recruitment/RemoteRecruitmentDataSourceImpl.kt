@@ -1,6 +1,5 @@
 package team.retum.network.datasource.recruitment
 
-import android.util.Log
 import team.retum.network.api.RecruitmentApi
 import team.retum.network.model.response.FetchRecruitmentPageCountResponse
 import team.retum.network.model.response.FetchRecruitmentsResponse
