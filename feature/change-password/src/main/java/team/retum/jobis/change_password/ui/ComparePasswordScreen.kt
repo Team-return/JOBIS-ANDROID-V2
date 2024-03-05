@@ -19,18 +19,18 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 
 @Composable
-internal fun ConfirmPassword(
+internal fun ComparePassword(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
-    ConfirmPasswordScreen(
+    ComparePasswordScreen(
         onBackPressed = onBackPressed,
         onNextClick = onNextClick,
     )
 }
 
 @Composable
-private fun ConfirmPasswordScreen(
+private fun ComparePasswordScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
 ) {
