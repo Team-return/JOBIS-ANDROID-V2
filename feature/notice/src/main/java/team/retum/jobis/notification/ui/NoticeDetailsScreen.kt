@@ -24,17 +24,17 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 
 
 @Composable
-internal fun NotificationDetails(
+internal fun NoticeDetails(
     onBackPressed: () -> Unit,
 ) {
-    NotificationDetailsScreen(
+    NoticeDetailsScreen(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
     )
 }
 
 @Composable
-private fun NotificationDetailsScreen(
+private fun NoticeDetailsScreen(
     onBackPressed: () -> Unit,
     scrollState: ScrollState,
 ) {

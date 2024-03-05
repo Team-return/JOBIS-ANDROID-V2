@@ -14,9 +14,9 @@ import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.navigateToInterests
-import team.retum.jobis.notification.navigation.navigateToNotificationsList
+import team.retum.jobis.notification.navigation.navigateToNoticeList
+import team.retum.jobis.notification.navigation.noticeList
 import team.retum.jobis.notification.navigation.notificationDetails
-import team.retum.jobis.notification.navigation.notificationList
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -45,7 +45,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onChangePasswordClick = navController::navigateToConfirmPassword,
             onReportBugClick = navController::navigateToReportBug,
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
-            onNoticeClick = navController::navigateToNotificationsList,
+            onNoticeClick = navController::navigateToNoticeList,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
         )
         alarm(onBackPressed = navController::popBackStack)
@@ -67,6 +67,6 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
         )
         application(onBackPressed = navController::popBackStack)
-        notificationList(onBackPressed = navController::popBackStack)
+        noticeList(onBackPressed = navController::popBackStack)
     }
 }

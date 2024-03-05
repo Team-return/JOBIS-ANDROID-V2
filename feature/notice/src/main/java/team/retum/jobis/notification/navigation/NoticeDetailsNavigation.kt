@@ -3,19 +3,19 @@ package team.retum.jobis.notification.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.jobis.notification.ui.NotificationDetails
+import team.retum.jobis.notification.ui.NoticeDetails
 
-const val NAVIGATION_NOTIFICATION_DETAILS = "notificationDetails/"
-const val NOTIFICATION_ID = "{notification-id}"
+const val NAVIGATION_NOTICE_DETAILS = "noticeDetails/"
+const val NOTICE_ID = "{notice-id}"
 
 fun NavGraphBuilder.notificationDetails(
     onBackPressed: () -> Unit,
 ) {
-    composable(NAVIGATION_NOTIFICATION_DETAILS + NOTIFICATION_ID) {
-        NotificationDetails(onBackPressed = onBackPressed)
+    composable(NAVIGATION_NOTICE_DETAILS + NOTICE_ID) {
+        NoticeDetails(onBackPressed = onBackPressed)
     }
 }
 
-fun NavController.navigateToNotificationDetails(notificationId: Long) {
-    navigate(NAVIGATION_NOTIFICATION_DETAILS + notificationId)
+fun NavController.navigateToNoticeDetails(noticeId: Long) {
+    navigate(NAVIGATION_NOTICE_LIST + noticeId)
 }
