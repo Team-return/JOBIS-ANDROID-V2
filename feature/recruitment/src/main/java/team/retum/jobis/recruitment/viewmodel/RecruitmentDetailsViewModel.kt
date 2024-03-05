@@ -15,22 +15,26 @@ import javax.inject.Inject
 internal class RecruitmentDetailsViewModel @Inject constructor(
     private val fetchRecruitmentDetailsUseCase: FetchRecruitmentDetailsUseCase,
     private val bookmarkRecruitmentUseCase: BookmarkRecruitmentUseCase,
-) : BaseViewModel<RecruitmentDetailsState, Unit>(RecruitmentDetailsState.getDefaultState()) {
+) : BaseViewModel<RecruitmentDetailsState, RecruitmentDetailsSideEffect>(RecruitmentDetailsState.getDefaultState()) {
 
     internal fun fetchRecruitmentDetails(recruitmentId: Long?) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchRecruitmentDetailsUseCase(recruitmentId = recruitmentId!!)
-                .onSuccess { detail ->
-                    with(detail) {
-                        setState {
-                            state.value.copy(
-                                recruitmentDetailsEntity = copy(
-                                    companyProfileUrl = ResourceKeys.IMAGE_URL + companyProfileUrl,
-                                ),
-                            )
+            if (recruitmentId == null) {
+                postSideEffect(RecruitmentDetailsSideEffect.Success)
+            } else {
+                fetchRecruitmentDetailsUseCase(recruitmentId = recruitmentId)
+                    .onSuccess { detail ->
+                        with(detail) {
+                            setState {
+                                state.value.copy(
+                                    recruitmentDetailsEntity = copy(
+                                        companyProfileUrl = ResourceKeys.IMAGE_URL + companyProfileUrl,
+                                    ),
+                                )
+                            }
                         }
                     }
-                }
+            }
         }
     }
 
@@ -73,4 +77,8 @@ internal data class RecruitmentDetailsState(
             ),
         )
     }
+}
+
+sealed interface RecruitmentDetailsSideEffect {
+    data object Success: RecruitmentDetailsSideEffect
 }
