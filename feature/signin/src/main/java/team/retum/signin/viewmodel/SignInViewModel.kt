@@ -20,18 +20,24 @@ class SignInViewModel @Inject constructor(
 
     internal fun setEmail(email: String) = setState {
         setButtonEnabled()
-        state.value.copy(email = email)
+        state.value.copy(
+            email = email,
+            showEmailDescription = false,
+        )
     }
 
     internal fun setPassword(password: String) = setState {
         setButtonEnabled()
-        state.value.copy(password = password)
+        state.value.copy(
+            password = password,
+            showPasswordDescription = false,
+        )
     }
 
     private fun setButtonEnabled() = setState {
         with(state.value) {
             val isSignInValueNotBlank = email.isNotBlank() && password.isNotBlank()
-            val hasNoError = !notFoundEmail && !invalidPassword
+            val hasNoError = !showEmailDescription && !showPasswordDescription
             copy(buttonEnabled = isSignInValueNotBlank && hasNoError)
         }
     }
@@ -53,8 +59,8 @@ class SignInViewModel @Inject constructor(
                     else -> {
                         setState {
                             state.value.copy(
-                                notFoundEmail = it is NotFoundException,
-                                invalidPassword = it is UnAuthorizedException,
+                                showEmailDescription = it is NotFoundException,
+                                showPasswordDescription = it is UnAuthorizedException,
                             )
                         }
                     }
@@ -68,16 +74,16 @@ data class SignInState(
     val email: String,
     val password: String,
     val buttonEnabled: Boolean,
-    val notFoundEmail: Boolean,
-    val invalidPassword: Boolean,
+    val showEmailDescription: Boolean,
+    val showPasswordDescription: Boolean,
 ) {
     companion object {
         fun getDefaultState() = SignInState(
             email = "",
             password = "",
             buttonEnabled = false,
-            notFoundEmail = false,
-            invalidPassword = false,
+            showEmailDescription = false,
+            showPasswordDescription = false,
         )
     }
 }
