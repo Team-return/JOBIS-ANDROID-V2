@@ -10,14 +10,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
@@ -27,26 +34,99 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
+import team.retum.review.viewmodel.ReviewSideEffect
+import team.retum.review.viewmodel.ReviewViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PostReviewScreen(onBackPressed: () -> Unit) {
+internal fun PostReview(
+    onBackPressed: () -> Unit,
+    companyId: Long,
+    reviewViewModel: ReviewViewModel = hiltViewModel(),
+) {
+    val state by reviewViewModel.state.collectAsStateWithLifecycle()
     val sheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val sheetScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        reviewViewModel.fetchReviews(companyId)
+        reviewViewModel.sideEffect.collect {
+            if (it is ReviewSideEffect.Success) {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.added_question),
+                ).show()
+            }
+        }
+    }
+    LaunchedEffect(reviewViewModel.reviews) {
+        if (reviewViewModel.reviews.value.reviews.isNotEmpty()) {
+            reviewViewModel.reviews.value.reviews.forEach {
+                reviewViewModel.fetchReviewDetail(it.reviewId)
+            }
+        }
+    }
+
+    PostReviewScreen(
+        onBackPressed = onBackPressed,
+        sheetScope = sheetScope,
+        sheetState = sheetState,
+        companyId = companyId,
+        addQuestion = { id ->
+            reviewViewModel.postReview(
+                companyId = id,
+                answer = state.answer,
+                question = state.question,
+                codeId = reviewViewModel.techs.toList()[0].code,
+            )
+        },
+        question = state.question,
+        answer = state.answer,
+        setQuestion = reviewViewModel::setQuestion,
+        setAnswer = reviewViewModel::setAnswer,
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun PostReviewScreen(
+    onBackPressed: () -> Unit,
+    sheetScope: CoroutineScope,
+    sheetState: ModalBottomSheetState,
+    companyId: Long,
+    addQuestion: (Long) -> Unit,
+    question: String,
+    answer: String,
+    setQuestion: (String) -> Unit,
+    setAnswer: (String) -> Unit,
+) {
     ModalBottomSheetLayout(
         modifier = Modifier
             .background(JobisTheme.colors.background)
             .fillMaxSize(),
         sheetState = sheetState,
-        sheetContent = { AddQuestionBottomSheet() },
+        sheetContent = {
+            AddQuestionBottomSheet(
+                addQuestion = {
+                    addQuestion(companyId)
+                    sheetScope.launch { sheetState.hide() }
+                },
+                question = question,
+                answer = answer,
+                setQuestion = setQuestion,
+                setAnswer = setAnswer,
+            )
+        },
         sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
         sheetBackgroundColor = JobisTheme.colors.inverseSurface,
     ) {
         Column(
             modifier = Modifier
                 .background(JobisTheme.colors.background)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             JobisLargeTopAppBar(
                 onBackPressed = onBackPressed,
@@ -83,9 +163,14 @@ fun PostReviewScreen(onBackPressed: () -> Unit) {
     }
 }
 
-
 @Composable
-fun AddQuestionBottomSheet() {
+private fun AddQuestionBottomSheet(
+    addQuestion: () -> Unit,
+    question: String,
+    answer: String,
+    setQuestion: (String) -> Unit,
+    setAnswer: (String) -> Unit,
+) {
     Column {
         JobisText(
             text = stringResource(id = R.string.add_question),
@@ -96,25 +181,25 @@ fun AddQuestionBottomSheet() {
                 bottom = 16.dp,
                 start = 24.dp,
                 end = 24.dp,
-            )
+            ),
         )
         JobisTextField(
-            value = { "" },
+            value = { question },
             hint = "example",
-            onValueChange = {},
+            onValueChange = setQuestion,
             title = "질문",
             fieldColor = JobisTheme.colors.background,
         )
         JobisTextField(
-            value = { "" },
+            value = { answer },
             hint = "example",
-            onValueChange = {},
+            onValueChange = setAnswer,
             title = "답변",
             fieldColor = JobisTheme.colors.background,
         )
         JobisButton(
             text = stringResource(id = R.string.add_question),
-            onClick = {},
+            onClick = addQuestion,
             color = ButtonColor.Primary,
         )
     }
