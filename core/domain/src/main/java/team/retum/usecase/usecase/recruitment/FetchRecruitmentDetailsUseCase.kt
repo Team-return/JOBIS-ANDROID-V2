@@ -1,7 +1,7 @@
 package team.retum.usecase.usecase.recruitment
 
 import team.retum.data.repository.recruitment.RecruitmentRepository
-import team.retum.usecase.entity.toRecruitmentDetailsEntity
+import team.retum.usecase.entity.toEntity
 import javax.inject.Inject
 
 class FetchRecruitmentDetailsUseCase @Inject constructor(
@@ -12,6 +12,6 @@ class FetchRecruitmentDetailsUseCase @Inject constructor(
     ) = runCatching {
         recruitmentRepository.fetchRecruitmentDetails(
             recruitmentId = recruitmentId,
-        ).toRecruitmentDetailsEntity()
+        ).toEntity()
     }
 }

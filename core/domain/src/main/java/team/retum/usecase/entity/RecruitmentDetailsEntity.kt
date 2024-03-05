@@ -34,7 +34,7 @@ data class AreasEntity(
     val preferentialTreatment: String?,
 )
 
-internal fun FetchRecruitmentDetailsResponse.toRecruitmentDetailsEntity() =
+internal fun FetchRecruitmentDetailsResponse.toEntity() =
     RecruitmentDetailsEntity(
         companyProfileUrl = this.companyProfileUrl,
         companyName = this.companyName,
