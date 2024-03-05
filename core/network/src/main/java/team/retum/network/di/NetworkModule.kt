@@ -18,8 +18,8 @@ import team.retum.network.api.BookmarkApi
 import team.retum.network.api.CodeApi
 import team.retum.network.api.CompanyApi
 import team.retum.network.api.RecruitmentApi
-import team.retum.network.api.StudentApi
 import team.retum.network.api.ReviewApi
+import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
 import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
@@ -118,6 +118,9 @@ object NetworkModule {
     fun provideBannerApi(retrofit: Retrofit): BannerApi {
         return retrofit.create(BannerApi::class.java)
     }
+
+    @Provides
+    @Singleton
     fun provideReviewApi(retrofit: Retrofit): ReviewApi {
         return retrofit.create(ReviewApi::class.java)
     }

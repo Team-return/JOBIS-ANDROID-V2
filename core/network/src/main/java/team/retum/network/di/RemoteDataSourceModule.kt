@@ -14,8 +14,8 @@ import team.retum.network.datasource.bookmark.BookmarkDataSource
 import team.retum.network.datasource.bookmark.BookmarkDataSourceImpl
 import team.retum.network.datasource.code.RemoteCodeDataSource
 import team.retum.network.datasource.code.RemoteCodeDataSourceImpl
-import team.retum.network.datasource.ReviewDataSource
-import team.retum.network.datasource.ReviewDataSourceImpl
+import team.retum.network.datasource.review.ReviewDataSource
+import team.retum.network.datasource.review.ReviewDataSourceImpl
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSource
