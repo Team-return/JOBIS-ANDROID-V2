@@ -26,6 +26,6 @@ fun NavGraphBuilder.recruitmentDetails(
     }
 }
 
-fun NavController.navigateToRecruitmentDetails(recruitmentId: Long?) {
+fun NavController.navigateToRecruitmentDetails(recruitmentId: Long) {
     navigate(NAVIGATION_RECRUITMENT_DETAILS + recruitmentId)
 }
