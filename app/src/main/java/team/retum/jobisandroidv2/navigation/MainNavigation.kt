@@ -3,8 +3,8 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import team.retum.alarm.navigation.alarm
-import team.retum.alarm.navigation.navigateToAlarm
+import team.retum.alarm.navigation.navigateToNotification
+import team.retum.alarm.navigation.notification
 import team.retum.bug.navigateToReportBug
 import team.retum.bug.reportBug
 import team.retum.company.navigation.companies
@@ -37,7 +37,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         startDestination = NAVIGATION_ROOT,
     ) {
         root(
-            onAlarmClick = navController::navigateToAlarm,
+            onAlarmClick = navController::navigateToNotification,
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
             onCompaniesClick = navController::navigateToCompanies,
             onRecruitmentFilterClick = navController::navigateToRecruitmentFilter,
@@ -48,7 +48,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onNoticeClick = navController::navigateToNoticeList,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
         )
-        alarm(onBackPressed = navController::popBackStack)
+        notification(onBackPressed = navController::popBackStack)
         recruitmentDetails(
             onBackPressed = navController::navigateUp,
             onApplyClick = navController::navigateToApplication,

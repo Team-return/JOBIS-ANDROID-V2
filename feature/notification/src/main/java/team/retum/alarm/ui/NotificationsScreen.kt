@@ -33,7 +33,7 @@ private data class AlarmData(
 )
 
 @Composable
-internal fun Alarm(
+internal fun Notification(
     onBackPressed: () -> Unit,
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
@@ -114,9 +114,9 @@ internal fun Alarm(
             "date",
         ),
     )
-    AlarmScreen(
+    NotificationsScreen(
         onBackPressed = onBackPressed,
-        alarmList = alarmList,
+        notificationList = alarmList,
         selectedTabIndex = selectedTabIndex,
         tabs = tabs,
         onSelectTab = { selectedTabIndex = it },
@@ -124,9 +124,9 @@ internal fun Alarm(
 }
 
 @Composable
-private fun AlarmScreen(
+private fun NotificationsScreen(
     onBackPressed: () -> Unit,
-    alarmList: List<AlarmData>,
+    notificationList: List<AlarmData>,
     selectedTabIndex: Int,
     tabs: List<String>,
     onSelectTab: (Int) -> Unit,
@@ -150,8 +150,8 @@ private fun AlarmScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
         ) {
-            items(alarmList) {
-                AlarmContent(
+            items(notificationList) {
+                NotificationContent(
                     companyName = it.companyName,
                     content = it.content,
                     date = it.date,
@@ -162,7 +162,7 @@ private fun AlarmScreen(
 }
 
 @Composable
-private fun AlarmContent(
+private fun NotificationContent(
     companyName: String,
     content: String,
     date: String,
