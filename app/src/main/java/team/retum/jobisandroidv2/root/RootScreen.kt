@@ -50,7 +50,7 @@ internal fun Root(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
-    onPostReviewClick: () -> Unit,
+    onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
 ) {
     val navController = rememberNavController()
@@ -103,7 +103,7 @@ private fun RootScreen(
     onReportBugClick: () -> Unit,
     rejectionReason: String,
     navigateToLanding: () -> Unit,
-    onPostReviewClick: () -> Unit,
+    onPostReviewClick: (Long) -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,

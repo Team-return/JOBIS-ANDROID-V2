@@ -51,7 +51,7 @@ internal fun MyPage(
     onNoticeClick: () -> Unit,
     navigateToLanding: () -> Unit,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
-    onPostReviewClick: () -> Unit,
+    onPostReviewClick: (Long) -> Unit,
 ) {
     val state by myPageViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -93,7 +93,7 @@ private fun MyPageScreen(
     setShowWithdrawalModal: (Boolean) -> Unit,
     onSignOutClick: () -> Unit,
     onWithdrawalClick: () -> Unit,
-    onPostReviewClick: () -> Unit,
+    onPostReviewClick: (Long) -> Unit,
 ) {
     if (state.showSignOutModal) {
         JobisDialog(
@@ -139,7 +139,7 @@ private fun MyPageScreen(
             state.reviewableCompany?.run {
                 WriteInterviewReview(
                     companyName = state.reviewableCompany.name,
-                    onClick = { /*TODO 면접 후기 작 페이지로 이동 */ },
+                    onClick = { onPostReviewClick(state.reviewableCompany.id) },
                 )
             }
             ContentListItem(
