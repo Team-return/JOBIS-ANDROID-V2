@@ -386,8 +386,11 @@ private fun BottomBar(
             onClick = onApplyClick,
         ) {
             JobisText(
-                text = if (isApplicable) stringResource(id = R.string.apply)
-                else stringResource(id = R.string.can_do_apply_third),
+                text = if (isApplicable) {
+                    stringResource(id = R.string.apply)
+                } else {
+                    stringResource(id = R.string.can_do_apply_third)
+                },
                 style = JobisTypography.SubHeadLine,
                 color = JobisTheme.colors.background,
             )

@@ -15,7 +15,7 @@ fun NavGraphBuilder.recruitmentDetails(
     onApplyClick: () -> Unit,
 ) {
     composable(
-        route = "$NAVIGATION_RECRUITMENT_DETAILS{${RECRUITMENT_ID}}",
+        route = "$NAVIGATION_RECRUITMENT_DETAILS{$RECRUITMENT_ID}",
         arguments = listOf(navArgument(RECRUITMENT_ID) { NavType.StringType }),
     ) {
         RecruitmentDetails(
