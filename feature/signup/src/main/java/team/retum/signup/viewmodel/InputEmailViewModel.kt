@@ -8,6 +8,7 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.AuthCodeType
 import team.retum.common.exception.BadRequestException
 import team.retum.common.exception.ConflictException
+import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.UnAuthorizedException
 import team.retum.common.utils.TimerUtil
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
@@ -43,6 +44,10 @@ internal class InputEmailViewModel @Inject constructor(
                                 buttonEnabled = false,
                             )
                         }
+                    }
+
+                    is NotFoundException -> {
+                        postSideEffect(InputEmailSideEffect.AuthenticationCodeExpiration)
                     }
 
                     is ConflictException -> {
@@ -91,9 +96,11 @@ internal class InputEmailViewModel @Inject constructor(
         }
     }
 
-
-    internal fun onEmailChange(email: String) = setState {
-        state.value.copy(email = email)
+    internal fun setEmail(email: String) = setState {
+        state.value.copy(
+            email = email,
+            showEmailDescription = false,
+        )
     }
 
     internal fun onAuthenticationCodeChange(authenticationCode: String) = setState {
@@ -144,5 +151,6 @@ internal data class InputEmailState(
 
 internal sealed interface InputEmailSideEffect {
     data class MoveToInputPassword(val email: String) : InputEmailSideEffect
-    data object CheckEmailValidation: InputEmailSideEffect
+    data object CheckEmailValidation : InputEmailSideEffect
+    data object AuthenticationCodeExpiration : InputEmailSideEffect
 }

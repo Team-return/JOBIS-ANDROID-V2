@@ -14,7 +14,7 @@ const val NAVIGATION_SET_PASSWORD = "setPassword"
 
 fun NavGraphBuilder.setPassword(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToSelectGender: (SignUpData) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_SET_PASSWORD/{${ResourceKeys.SIGN_UP}}",
@@ -22,7 +22,7 @@ fun NavGraphBuilder.setPassword(
     ) {
         SetPassword(
             onBackPressed = onBackPressed,
-            onNextClick = onNextClick,
+            navigateToSelectGender = navigateToSelectGender,
             signUpData = it.getSignUpData(),
         )
     }

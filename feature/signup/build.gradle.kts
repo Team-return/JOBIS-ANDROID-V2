@@ -4,6 +4,7 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
     id(libs.plugins.kotlinx.serialization.get().pluginId)
+    id(libs.plugins.ktlint.gradle.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
@@ -16,4 +17,5 @@ android {
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.coil.compose)
 }
