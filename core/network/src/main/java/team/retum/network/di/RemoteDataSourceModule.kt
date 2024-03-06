@@ -18,6 +18,8 @@ import team.retum.network.datasource.review.ReviewDataSource
 import team.retum.network.datasource.review.ReviewDataSourceImpl
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
+import team.retum.network.datasource.file.RemoteFileDataSource
+import team.retum.network.datasource.file.RemoteFileDataSourceImpl
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSource
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSourceImpl
 import team.retum.network.datasource.student.RemoteStudentDataSource
@@ -68,4 +70,8 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindReviewDataSource(reviewDataSourceImpl: ReviewDataSourceImpl): ReviewDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteFileDataSource(remoteFileDataSourceImpl: RemoteFileDataSourceImpl): RemoteFileDataSource
 }

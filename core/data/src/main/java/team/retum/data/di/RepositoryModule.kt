@@ -18,6 +18,8 @@ import team.retum.data.repository.review.ReviewRepository
 import team.retum.data.repository.review.ReviewRepositoryImpl
 import team.retum.data.repository.company.CompanyRepository
 import team.retum.data.repository.company.CompanyRepositoryImpl
+import team.retum.data.repository.file.FileRepository
+import team.retum.data.repository.file.FileRepositoryImpl
 import team.retum.data.repository.recruitment.RecruitmentRepository
 import team.retum.data.repository.recruitment.RecruitmentRepositoryImpl
 import team.retum.data.repository.student.StudentRepository
@@ -68,4 +70,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindReviewRepository(reviewRepositoryImpl: ReviewRepositoryImpl): ReviewRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFileRepository(fileRepositoryImpl: FileRepositoryImpl): FileRepository
 }
