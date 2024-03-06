@@ -8,6 +8,7 @@ import androidx.navigation.navArgument
 import team.retum.review.ui.PostReview
 
 const val NAVIGATION_POST_REVIEW = "postReview"
+
 private const val COMPANY_ID = "companyId"
 fun NavGraphBuilder.postReview(onBackPressed: () -> Unit) {
     composable(

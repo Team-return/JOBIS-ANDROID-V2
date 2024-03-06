@@ -290,7 +290,6 @@ fun JobisTextField(
     showVisibleIcon: Boolean = false,
     leadingIcon: Painter? = null,
     fieldColor: Color = JobisTheme.colors.inverseSurface,
-    fieldSize: Modifier = Modifier.height(100.dp),
     content: @Composable () -> Unit = { },
 ) {
     Column(

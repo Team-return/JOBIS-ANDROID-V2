@@ -52,20 +52,12 @@ internal fun PostReview(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        reviewViewModel.fetchReviews(companyId)
         reviewViewModel.sideEffect.collect {
             if (it is ReviewSideEffect.Success) {
                 JobisToast.create(
                     context = context,
                     message = context.getString(R.string.added_question),
                 ).show()
-            }
-        }
-    }
-    LaunchedEffect(reviewViewModel.reviews) {
-        if (reviewViewModel.reviews.value.reviews.isNotEmpty()) {
-            reviewViewModel.reviews.value.reviews.forEach {
-                reviewViewModel.fetchReviewDetail(it.reviewId)
             }
         }
     }

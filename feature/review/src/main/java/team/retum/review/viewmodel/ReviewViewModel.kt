@@ -1,8 +1,6 @@
 package team.retum.review.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,34 +10,19 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
 import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.CodesEntity
-import team.retum.usecase.entity.FetchReviewDetailEntity
-import team.retum.usecase.entity.FetchReviewsEntity
 import team.retum.usecase.entity.PostReviewEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
-import team.retum.usecase.usecase.review.FetchReviewDetailUseCase
-import team.retum.usecase.usecase.review.FetchReviewsUseCase
 import team.retum.usecase.usecase.review.PostReviewUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class ReviewViewModel @Inject constructor(
     private val postReviewUseCase: PostReviewUseCase,
-    private val fetchReviewsUseCase: FetchReviewsUseCase,
     private val fetchCodeUseCase: FetchCodeUseCase,
-    private val fetchReviewDetailUseCase: FetchReviewDetailUseCase,
 ) : BaseViewModel<ReviewState, ReviewSideEffect>(ReviewState.getDefaultState()) {
-
-    private var _reviews: MutableState<FetchReviewsEntity> =
-        mutableStateOf(FetchReviewsEntity(emptyList()))
-    val reviews: MutableState<FetchReviewsEntity> get() = _reviews
 
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
         private set
-
-    //Todo 기획 바뀔 예정
-    private var _detail: MutableList<List<FetchReviewDetailEntity.Detail>> =
-        mutableListOf(mutableStateListOf(FetchReviewDetailEntity.Detail("", "", "")))
-    val detail: MutableList<List<FetchReviewDetailEntity.Detail>> get() = _detail
 
     init {
         fetchCodes()
@@ -71,24 +54,11 @@ internal class ReviewViewModel @Inject constructor(
                 ),
             ).onSuccess {
                 postSideEffect(ReviewSideEffect.Success)
-                fetchReviews(companyId)
             }.onFailure {
                 when (it) {
                     is BadRequestException -> {
                         postSideEffect(ReviewSideEffect.BadRequest)
                     }
-                }
-            }
-        }
-    }
-
-    internal fun fetchReviews(companyId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchReviewsUseCase.invoke(companyId = companyId).onSuccess {
-                _reviews.value = it
-            }.onFailure {
-                if (it == BadRequestException) {
-                    postSideEffect(ReviewSideEffect.BadRequest)
                 }
             }
         }
@@ -102,17 +72,6 @@ internal class ReviewViewModel @Inject constructor(
                 parentCode = null,
             ).onSuccess {
                 techs.addAll(it.codes)
-            }
-        }
-
-    internal fun fetchReviewDetail(reviewId: String) =
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchReviewDetailUseCase.invoke(reviewId = reviewId).onSuccess {
-                _detail.add(it.qnaResponses)
-            }.onFailure {
-                if (it == BadRequestException) {
-                    postSideEffect(ReviewSideEffect.BadRequest)
-                }
             }
         }
 }
