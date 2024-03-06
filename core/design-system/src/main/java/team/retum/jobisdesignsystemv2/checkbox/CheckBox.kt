@@ -23,13 +23,19 @@ fun CheckBox(
     onClick: (Boolean) -> Unit,
 ) {
     val tint by animateColorAsState(
-        targetValue = if (checked) JobisTheme.colors.background
-        else JobisTheme.colors.surfaceTint,
+        targetValue = if (checked) {
+            JobisTheme.colors.background
+        } else {
+            JobisTheme.colors.surfaceTint
+        },
         label = "",
     )
     val background by animateColorAsState(
-        targetValue = if (checked) JobisTheme.colors.onPrimary
-        else JobisTheme.colors.inverseSurface,
+        targetValue = if (checked) {
+            JobisTheme.colors.onPrimary
+        } else {
+            JobisTheme.colors.inverseSurface
+        },
         label = "",
     )
 

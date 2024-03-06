@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="write_review">다른 학생들을 위하여\n면접의 후기를 작성해주세요</string>
+    <string name="add_question">질문 추가하기</string>
+    <string name="empty">현재 입력 된 질문이 없어요</string>
+    <string name="added_question">질문이 추가되었어요!</string>
+</resources>

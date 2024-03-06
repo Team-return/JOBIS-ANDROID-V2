@@ -28,6 +28,8 @@ import team.retum.jobisandroidv2.navigateToApplication
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.landing.navigation.navigateToLanding
+import team.retum.review.navigation.navigateToPostReview
+import team.retum.review.navigation.postReview
 
 const val NAVIGATION_MAIN = "main"
 
@@ -47,6 +49,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
             onNoticeClick = navController::navigateToNotificationsList,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
+            onPostReviewClick = navController::navigateToPostReview,
         )
         alarm(onBackPressed = navController::popBackStack)
         recruitmentDetails(
@@ -68,5 +71,6 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         )
         application(onBackPressed = navController::popBackStack)
         notificationList(onBackPressed = navController::popBackStack)
+        postReview(onBackPressed = navController::popBackStack)
     }
 }
