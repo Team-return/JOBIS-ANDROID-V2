@@ -16,6 +16,8 @@ import team.retum.network.datasource.code.RemoteCodeDataSource
 import team.retum.network.datasource.code.RemoteCodeDataSourceImpl
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
+import team.retum.network.datasource.file.RemoteFileDataSource
+import team.retum.network.datasource.file.RemoteFileDataSourceImpl
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSource
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSourceImpl
 import team.retum.network.datasource.student.RemoteStudentDataSource
@@ -62,4 +64,8 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindRemoteBannerDataSource(remoteBannerDataSourceImpl: RemoteBannerDataSourceImpl): RemoteBannerDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteFileDataSource(remoteFileDataSourceImpl: RemoteFileDataSourceImpl): RemoteFileDataSource
 }

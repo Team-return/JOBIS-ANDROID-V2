@@ -14,10 +14,10 @@ fun NavGraphBuilder.signUp(
     onBackPressed: () -> Unit,
     navigateToInputEmail: (SignUpData) -> Unit,
     navigateToSetPassword: (SignUpData) -> Unit,
-    onSelectGenderClick: () -> Unit,
-    onSetProfileClick: () -> Unit,
-    onTermsClick: () -> Unit,
-    onCompleteClick: () -> Unit,
+    navigateToSelectGender: (SignUpData) -> Unit,
+    navigateToSetProfile: (SignUpData) -> Unit,
+    navigateToTerms: (SignUpData) -> Unit,
+    navigateToRoot: () -> Unit,
 ) {
     navigation(
         route = NAVIGATION_SIGN_UP,
@@ -33,19 +33,19 @@ fun NavGraphBuilder.signUp(
         )
         setPassword(
             onBackPressed = onBackPressed,
-            onNextClick = onSelectGenderClick,
+            navigateToSelectGender = navigateToSelectGender,
         )
         selectGender(
             onBackPressed = onBackPressed,
-            onNextClick = onSetProfileClick,
+            navigateToSetProfile = navigateToSetProfile,
         )
         setProfile(
             onBackPressed = onBackPressed,
-            onNextClick = onTermsClick,
+            navigateToTerms = navigateToTerms,
         )
         terms(
             onBackPressed = onBackPressed,
-            onCompleteClick = onCompleteClick,
+            navigateToRoot = navigateToRoot,
         )
     }
 }
