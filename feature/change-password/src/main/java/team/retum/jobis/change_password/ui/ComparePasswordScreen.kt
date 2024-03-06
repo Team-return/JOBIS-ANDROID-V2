@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.change_password.R
+import team.retum.jobis.change_password.viewmodel.ComparePasswordSideEffect
 import team.retum.jobis.change_password.viewmodel.ComparePasswordState
 import team.retum.jobis.change_password.viewmodel.ComparePasswordViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
@@ -28,9 +30,17 @@ internal fun ComparePassword(
 ) {
     val state by comparePasswordViewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        comparePasswordViewModel.sideEffect.collect {
+            if (it is ComparePasswordSideEffect.Success) {
+                onNextClick()
+            }
+        }
+    }
+
     ComparePasswordScreen(
         onBackPressed = onBackPressed,
-        onNextClick = onNextClick,
+        onNextClick = comparePasswordViewModel::comparePassword,
         state = state,
         onPasswordChange = comparePasswordViewModel::setPassword,
     )

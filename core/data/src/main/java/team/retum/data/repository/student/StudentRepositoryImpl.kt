@@ -33,4 +33,8 @@ class StudentRepositoryImpl @Inject constructor(
             saveRefreshExpiresAt(response.refreshExpiresAt)
         }
     }
+
+    override suspend fun comparePassword(password: String) {
+        remoteStudentDataSource.comparePassword(password = password)
+    }
 }

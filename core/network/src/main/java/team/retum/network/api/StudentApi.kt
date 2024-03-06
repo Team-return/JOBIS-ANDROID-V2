@@ -23,4 +23,9 @@ interface StudentApi {
     suspend fun postSignUp(
         @Body postSignUpRequest: PostSignUpRequest,
     ): TokenResponse
+
+    @GET(RequestUrls.Students.password)
+    suspend fun comparePassword(
+        @Query("password") password: String,
+    )
 }

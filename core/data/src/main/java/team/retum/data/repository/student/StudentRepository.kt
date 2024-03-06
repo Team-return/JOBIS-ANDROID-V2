@@ -9,4 +9,6 @@ interface StudentRepository {
     )
     suspend fun fetchStudentInformation(): FetchStudentInformationResponse
     suspend fun postSignUp(postSignUpRequest: PostSignUpRequest)
+
+    suspend fun comparePassword(password: String)
 }

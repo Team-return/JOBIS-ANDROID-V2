@@ -33,4 +33,10 @@ class RemoteStudentDataSourceImpl @Inject constructor(
             studentApi.postSignUp(postSignUpRequest = postSignUpRequest)
         }
     }
+
+    override suspend fun comparePassword(password: String) {
+        RequestHandler<Unit>().request {
+            studentApi.comparePassword(password = password)
+        }
+    }
 }

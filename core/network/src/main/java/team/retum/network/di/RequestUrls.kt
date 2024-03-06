@@ -47,7 +47,6 @@ internal object RequestUrls {
         const val exists = "$path/exists"
         const val profile = "$path/profile"
         const val password = "$path/password"
-        const val comparePassword = "$path/password"
     }
 
     data object Codes {

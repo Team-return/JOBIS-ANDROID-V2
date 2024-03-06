@@ -1,13 +1,18 @@
 package team.retum.jobis.change_password.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.exception.UnAuthorizedException
+import team.retum.usecase.usecase.student.ComparePasswordUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class ComparePasswordViewModel @Inject constructor(
-
-): BaseViewModel<ComparePasswordState, ComparePasswordSideEffect>(ComparePasswordState.getInitialState()) {
+    private val comparePasswordUseCase: ComparePasswordUseCase,
+) : BaseViewModel<ComparePasswordState, ComparePasswordSideEffect>(ComparePasswordState.getInitialState()) {
 
     internal fun setPassword(password: String) = setState {
         state.value.copy(
@@ -15,6 +20,19 @@ internal class ComparePasswordViewModel @Inject constructor(
             showPasswordDescription = false,
             buttonEnabled = password.isNotBlank(),
         )
+    }
+
+    internal fun comparePassword() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val password = state.value.password
+            comparePasswordUseCase(password = password).onSuccess {
+                postSideEffect(ComparePasswordSideEffect.Success(password = password))
+            }.onFailure {
+                setState {
+                    state.value.copy(showPasswordDescription = it is UnAuthorizedException)
+                }
+            }
+        }
     }
 }
 
@@ -33,5 +51,5 @@ internal data class ComparePasswordState(
 }
 
 internal sealed interface ComparePasswordSideEffect {
-    data class Success(val password: String): ComparePasswordSideEffect
+    data class Success(val password: String) : ComparePasswordSideEffect
 }

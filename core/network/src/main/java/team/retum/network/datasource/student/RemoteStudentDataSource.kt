@@ -11,4 +11,6 @@ interface RemoteStudentDataSource {
     )
     suspend fun fetchStudentInformation(): FetchStudentInformationResponse
     suspend fun postSignUp(postSignUpRequest: PostSignUpRequest): TokenResponse
+
+    suspend fun comparePassword(password: String)
 }
