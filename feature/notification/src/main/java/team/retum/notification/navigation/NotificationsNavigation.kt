@@ -7,9 +7,15 @@ import team.retum.alarm.ui.Notification
 
 const val NAVIGATION_NOTIFICATION = "notification"
 
-fun NavGraphBuilder.notification(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.notification(
+    onBackPressed: () -> Unit,
+    onNotificationDetailsClick: (Long) -> Unit,
+) {
     composable(NAVIGATION_NOTIFICATION) {
-        Notification(onBackPressed = onBackPressed)
+        Notification(
+            onBackPressed = onBackPressed,
+            onNotificationDetailsClick = onNotificationDetailsClick,
+        )
     }
 }
 

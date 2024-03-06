@@ -12,124 +12,62 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.alarm.R
+import team.retum.alarm.viewmodel.NotificationsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
-
-// TODO 서버 연동 시 제거
-private data class AlarmData(
-    val companyName: String,
-    val content: String,
-    val date: String,
-)
+import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.usecase.entity.notification.NotificationsEntity
 
 @Composable
 internal fun Notification(
     onBackPressed: () -> Unit,
+    onNotificationDetailsClick: (Long) -> Unit,
+    notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
+    val state by notificationsViewModel.state.collectAsStateWithLifecycle()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf(
         stringResource(id = R.string.all),
         stringResource(id = R.string.read),
         stringResource(id = R.string.not_read),
     )
-    val alarmList = listOf(
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-        AlarmData(
-            "companyName",
-            "contet",
-            "date",
-        ),
-    )
+
+    LaunchedEffect(Unit) {
+        notificationsViewModel.fetchNotifications()
+    }
+
     NotificationsScreen(
         onBackPressed = onBackPressed,
-        notificationList = alarmList,
+        notificationList = notificationsViewModel.notifications,
         selectedTabIndex = selectedTabIndex,
         tabs = tabs,
         onSelectTab = { selectedTabIndex = it },
+        onNotificationDetailsClick = onNotificationDetailsClick
     )
 }
 
 @Composable
 private fun NotificationsScreen(
     onBackPressed: () -> Unit,
-    notificationList: List<AlarmData>,
+    notificationList: SnapshotStateList<NotificationsEntity.NotificationEntity>,
     selectedTabIndex: Int,
     tabs: List<String>,
     onSelectTab: (Int) -> Unit,
+    onNotificationDetailsClick: (Long) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -152,9 +90,11 @@ private fun NotificationsScreen(
         ) {
             items(notificationList) {
                 NotificationContent(
-                    companyName = it.companyName,
+                    notifications = it,
+                    companyName = it.title,
                     content = it.content,
-                    date = it.date,
+                    date = it.createAt,
+                    onClick = onNotificationDetailsClick
                 )
             }
         }
@@ -163,14 +103,20 @@ private fun NotificationsScreen(
 
 @Composable
 private fun NotificationContent(
+    notifications: NotificationsEntity.NotificationEntity,
     companyName: String,
     content: String,
     date: String,
+    onClick: (notificationId: Long) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight(0.14f)
-            .padding(vertical = 16.dp),
+            .padding(vertical = 16.dp)
+            .clickable(
+                enabled = true,
+                onClick = { onClick(notifications.notificationId) },
+            ),
     ) {
         Text(
             text = companyName,
