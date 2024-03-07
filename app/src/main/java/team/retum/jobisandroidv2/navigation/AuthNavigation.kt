@@ -56,7 +56,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         )
         confirmPassword(
             onBackPressed = navController::popBackStack,
-            onNextClick = navController::navigateToResetPassword,
+            navigateToResetPassword = navController::navigateToResetPassword,
         )
     }
 }
