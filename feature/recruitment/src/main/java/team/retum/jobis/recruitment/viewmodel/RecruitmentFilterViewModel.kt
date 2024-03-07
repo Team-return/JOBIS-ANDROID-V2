@@ -60,9 +60,9 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     internal fun setType(type: CodeType) =
         setState { state.value.copy(type = type) }
 
-    internal fun setParentCode(parentCode: Long?) =
+    internal fun setParentCode(parentCode: Long?) = 
         setState { state.value.copy(selectedJobCode = parentCode) }
-    
+
     internal fun onSelectTech(
         code: Long,
         keyword: String,
