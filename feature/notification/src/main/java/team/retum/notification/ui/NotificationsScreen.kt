@@ -1,4 +1,4 @@
-package team.retum.alarm.ui
+package team.retum.notification.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.alarm.R
-import team.retum.alarm.viewmodel.NotificationsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.notification.viewmodel.NotificationsViewModel
 import team.retum.usecase.entity.notification.NotificationsEntity
 
 @Composable
@@ -47,6 +47,10 @@ internal fun Notification(
     )
 
     LaunchedEffect(Unit) {
+        when (selectedTabIndex) {
+            1 -> state.isNew ?: true
+            2 -> state.isNew ?: false
+        }
         notificationsViewModel.fetchNotifications()
     }
 
@@ -56,7 +60,7 @@ internal fun Notification(
         selectedTabIndex = selectedTabIndex,
         tabs = tabs,
         onSelectTab = { selectedTabIndex = it },
-        onNotificationDetailsClick = onNotificationDetailsClick
+        onNotificationDetailsClick = onNotificationDetailsClick,
     )
 }
 
@@ -94,7 +98,7 @@ private fun NotificationsScreen(
                     companyName = it.title,
                     content = it.content,
                     date = it.createAt,
-                    onClick = onNotificationDetailsClick
+                    onClick = onNotificationDetailsClick,
                 )
             }
         }
