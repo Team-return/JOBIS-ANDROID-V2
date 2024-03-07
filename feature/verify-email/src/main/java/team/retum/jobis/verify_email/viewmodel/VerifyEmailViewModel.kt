@@ -16,7 +16,7 @@ import team.retum.usecase.usecase.auth.AuthorizeAuthenticationCodeUseCase
 import team.retum.usecase.usecase.auth.SendAuthenticationCodeUseCase
 import javax.inject.Inject
 
-private const val EMAIL_ADDRESS = "@dsm.hs.kr"
+internal const val EMAIL_ADDRESS = "@dsm.hs.kr"
 
 @HiltViewModel
 internal class VerifyEmailViewModel @Inject constructor(
