@@ -197,7 +197,7 @@ private fun RecruitmentDetailInfo(
             )
             Detail(
                 title = stringResource(id = R.string.work_hours),
-                content = "$startTime ~ $endTime",
+                content = workingHours,
             )
             Detail(
                 title = stringResource(id = R.string.train_pay),
@@ -363,7 +363,6 @@ private fun BottomBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
             .background(color = JobisTheme.colors.background)
             .padding(
                 horizontal = 24.dp,
