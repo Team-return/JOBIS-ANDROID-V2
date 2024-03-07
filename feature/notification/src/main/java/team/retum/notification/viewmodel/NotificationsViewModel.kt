@@ -42,10 +42,12 @@ internal class NotificationsViewModel @Inject constructor(
 
 internal data class NotificationsState(
     val isNew: Boolean,
+    val selectedTabIndex: Int,
 ) {
     companion object {
         fun getDefaultState() = NotificationsState(
             isNew = false,
+            selectedTabIndex = 0,
         )
     }
 }

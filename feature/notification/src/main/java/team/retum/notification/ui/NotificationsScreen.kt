@@ -39,7 +39,7 @@ internal fun Notification(
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val state by notificationsViewModel.state.collectAsStateWithLifecycle()
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    var selectedTabIndex = state.selectedTabIndex
     val tabs = listOf(
         stringResource(id = R.string.all),
         stringResource(id = R.string.read),
