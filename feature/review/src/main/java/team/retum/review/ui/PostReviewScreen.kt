@@ -321,6 +321,7 @@ private fun AddQuestionBottomSheet(
     setSelectedTech: (Long) -> Unit,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
 ) {
+    var checked by remember { mutableStateOf("") }
     Column {
         JobisText(
             text = if (reviewProcess == ReviewProcess.QUESTION) {
@@ -362,7 +363,6 @@ private fun AddQuestionBottomSheet(
             )
             LazyColumn(modifier = Modifier.fillMaxHeight(0.3f)) {
                 items(techs) { codes ->
-                    var checked by remember { mutableStateOf(false) }
                     Row(
                         modifier = Modifier.padding(
                             horizontal = 24.dp,
@@ -370,13 +370,11 @@ private fun AddQuestionBottomSheet(
                         ),
                     ) {
                         JobisCheckBox(
-                            checked = checked,
+                            checked = checked == codes.keyword,
                             onClick = {
-                                checked = !checked
-                                if (checked) {
-                                    setKeyword(codes.keyword)
-                                    setSelectedTech(codes.code)
-                                }
+                                checked = codes.keyword
+                                setKeyword(codes.keyword)
+                                setSelectedTech(codes.code)
                             },
                             backgroundColor = JobisTheme.colors.background,
                         )
@@ -385,6 +383,7 @@ private fun AddQuestionBottomSheet(
                             text = codes.keyword,
                             style = JobisTypography.Body,
                             color = JobisTheme.colors.inverseOnSurface,
+                            modifier = Modifier.align(Alignment.CenterVertically),
                         )
                     }
                 }
