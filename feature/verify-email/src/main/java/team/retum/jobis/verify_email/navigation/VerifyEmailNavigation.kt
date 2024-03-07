@@ -9,12 +9,12 @@ const val NAVIGATION_VERIFY_EMAIL = "verifyEmail"
 
 fun NavGraphBuilder.verifyEmail(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToResetPassword: () -> Unit,
 ) {
     composable(NAVIGATION_VERIFY_EMAIL) {
         VerifyEmail(
             onBackPressed = onBackPressed,
-            onNextClick = onNextClick,
+            navigateToResetPassword = navigateToResetPassword,
         )
     }
 }

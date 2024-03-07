@@ -5,30 +5,70 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.verify_email.R
+import team.retum.jobis.verify_email.viewmodel.VerifyEmailSideEffect
+import team.retum.jobis.verify_email.viewmodel.VerifyEmailState
+import team.retum.jobis.verify_email.viewmodel.VerifyEmailViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisSmallButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.textfield.DescriptionType
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 
 @Composable
 internal fun VerifyEmail(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToResetPassword: () -> Unit,
+    verifyEmailViewModel: VerifyEmailViewModel = hiltViewModel(),
 ) {
+    val state by verifyEmailViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        verifyEmailViewModel.sideEffect.collect {
+            when (it) {
+                is VerifyEmailSideEffect.MoveToVerifyPassword -> {
+                    navigateToResetPassword()
+                }
+
+                is VerifyEmailSideEffect.AuthenticationCodeExpiration -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.description_authentication_code_expired),
+                    ).show()
+                }
+
+                is VerifyEmailSideEffect.CheckEmailValidation -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_check_email_validation),
+                    ).show()
+                }
+            }
+        }
+    }
+
     VerifyEmailScreen(
         onBackPressed = onBackPressed,
-        onNextClick = onNextClick,
-        onAuthorizeClick = {},
+        onNextClick = verifyEmailViewModel::onNextClick,
+        state = state,
+        onEmailChange = verifyEmailViewModel::setEmail,
+        onAuthenticationCodeChange = verifyEmailViewModel::onAuthenticationCodeChange,
+        onAuthenticationClick = verifyEmailViewModel::onAuthenticationClick,
     )
 }
 
@@ -36,12 +76,11 @@ internal fun VerifyEmail(
 private fun VerifyEmailScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
-    onAuthorizeClick: () -> Unit,
+    state: VerifyEmailState,
+    onEmailChange: (String) -> Unit,
+    onAuthenticationCodeChange: (String) -> Unit,
+    onAuthenticationClick: () -> Unit,
 ) {
-    // TODO 뷰모델로 옮기기
-    var email by remember { mutableStateOf("") }
-    var authenticationCode by remember { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,29 +91,40 @@ private fun VerifyEmailScreen(
             title = stringResource(id = R.string.title_change_password),
             onBackPressed = onBackPressed,
         )
-        ChangePasswordInputs(
-            email = { email },
-            authenticationCode = { authenticationCode },
-            onEmailChange = { email = it },
-            onAuthenticationCodeChange = { authenticationCode = it },
-            onAuthorizeClick = {},
+        VerifyEmailInputs(
+            email = { state.email },
+            authenticationCode = { state.authenticationCode },
+            onEmailChange = onEmailChange,
+            onAuthenticationCodeChange = onAuthenticationCodeChange,
+            onAuthenticationClick = onAuthenticationClick,
+            emailDescriptionType = state.emailDescriptionType,
+            showEmailDescription = { state.showEmailDescription },
+            showAuthenticationCodeDescription = { state.showAuthenticationCodeDescription },
+            sendAuthenticationCode = { state.sendAuthenticationCode },
+            remainTime = state.remainTime,
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
             text = stringResource(id = R.string.next),
             onClick = onNextClick,
             color = ButtonColor.Primary,
+            enabled = state.buttonEnabled,
         )
     }
 }
 
 @Composable
-private fun ChangePasswordInputs(
+private fun VerifyEmailInputs(
     email: () -> String,
     authenticationCode: () -> String,
     onEmailChange: (String) -> Unit,
     onAuthenticationCodeChange: (String) -> Unit,
-    onAuthorizeClick: () -> Unit,
+    onAuthenticationClick: () -> Unit,
+    emailDescriptionType: DescriptionType,
+    showEmailDescription: () -> Boolean,
+    showAuthenticationCodeDescription: () -> Boolean,
+    sendAuthenticationCode: () -> Boolean,
+    remainTime: String,
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
@@ -82,10 +132,21 @@ private fun ChangePasswordInputs(
         hint = stringResource(id = R.string.hint_email),
         onValueChange = onEmailChange,
         showEmailHint = true,
+        checkDescription = stringResource(id = R.string.description_email_sent),
+        errorDescription = stringResource(id = R.string.description_conflict_email),
+        showDescription = showEmailDescription,
+        descriptionType = emailDescriptionType,
     ) {
         JobisSmallButton(
-            text = stringResource(id = R.string.authorize),
-            onClick = onAuthorizeClick,
+            text = stringResource(
+                id = if (sendAuthenticationCode()) {
+                    R.string.re_send_authentication_code
+                } else {
+                    R.string.authentication
+                },
+            ),
+            color = ButtonColor.Secondary,
+            onClick = onAuthenticationClick,
             keyboardInteractionEnabled = false,
         )
     }
@@ -94,5 +155,15 @@ private fun ChangePasswordInputs(
         value = authenticationCode,
         hint = stringResource(id = R.string.hint_authentication_code),
         onValueChange = onAuthenticationCodeChange,
-    )
+        errorDescription = stringResource(id = R.string.description_invalid_authentication_code),
+        showDescription = showAuthenticationCodeDescription,
+        descriptionType = DescriptionType.Error,
+        keyboardType = KeyboardType.NumberPassword,
+    ) {
+        JobisText(
+            text = remainTime,
+            style = JobisTypography.Body,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+    }
 }

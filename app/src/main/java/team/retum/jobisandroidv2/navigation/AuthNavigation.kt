@@ -48,11 +48,11 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         )
         verifyEmail(
             onBackPressed = navController::popBackStack,
-            onNextClick = navController::navigateToResetPassword,
+            navigateToResetPassword = navController::navigateToResetPassword,
         )
         resetPassword(
             onBackPressed = navController::popBackStack,
-            onCompleteClick = {},
+            navigateToSignIn = navController::navigateToSignIn,
         )
         confirmPassword(
             onBackPressed = navController::popBackStack,
