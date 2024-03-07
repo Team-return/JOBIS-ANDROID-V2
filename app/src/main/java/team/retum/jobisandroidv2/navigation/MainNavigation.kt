@@ -3,8 +3,8 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import team.retum.alarm.navigation.navigateToNotification
-import team.retum.alarm.navigation.notification
+import team.retum.notification.navigation.navigateToNotification
+import team.retum.notification.navigation.notification
 import team.retum.bug.navigateToReportBug
 import team.retum.bug.reportBug
 import team.retum.company.navigation.companies
@@ -14,9 +14,9 @@ import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.navigateToInterests
-import team.retum.jobis.notification.navigation.navigateToNoticeList
-import team.retum.jobis.notification.navigation.noticeList
-import team.retum.jobis.notification.navigation.notificationDetails
+import team.retum.jobis.notice.navigation.navigateToNoticeList
+import team.retum.jobis.notice.navigation.noticeList
+import team.retum.jobis.notice.navigation.notificationDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment

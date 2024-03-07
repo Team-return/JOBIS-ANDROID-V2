@@ -1,9 +1,9 @@
-package team.retum.jobis.notification.navigation
+package team.retum.jobis.notice.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.jobis.notification.ui.NoticeList
+import team.retum.jobis.notice.ui.NoticeList
 
 const val NAVIGATION_NOTICE_LIST = "noticeList"
 

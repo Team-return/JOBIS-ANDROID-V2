@@ -1,9 +1,9 @@
-package team.retum.alarm.navigation
+package team.retum.notification.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.alarm.ui.Notification
+import team.retum.notification.ui.Notification
 
 const val NAVIGATION_NOTIFICATION = "notification"
 

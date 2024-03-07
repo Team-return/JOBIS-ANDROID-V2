@@ -1,4 +1,4 @@
-package team.retum.jobis.notification.ui
+package team.retum.jobis.notice.ui
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
