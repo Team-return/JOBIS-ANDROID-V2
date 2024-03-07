@@ -24,9 +24,22 @@ internal class ReviewViewModel @Inject constructor(
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
         private set
 
-    init {
-        fetchCodes()
-    }
+    var reviews: SnapshotStateList<PostReviewEntity.PostReviewContentEntity> = mutableStateListOf()
+        private set
+
+    var keywords: SnapshotStateList<String> = mutableStateListOf()
+        private set
+
+    internal fun setInit() =
+        setState {
+            state.value.copy(
+                question = "",
+                answer = "",
+                keyword = "",
+                selectedTech = 0,
+                tech = null,
+            )
+        }
 
     internal fun setQuestion(question: String) =
         setState { state.value.copy(question = question) }
@@ -34,23 +47,34 @@ internal class ReviewViewModel @Inject constructor(
     internal fun setAnswer(answer: String) =
         setState { state.value.copy(answer = answer) }
 
-    internal fun postReview(
-        companyId: Long,
-        question: String,
+    internal fun setKeyword(keyword: String?) {
+        techs.clear()
+        setState { state.value.copy(keyword = keyword) }
+    }
+
+    internal fun addReview(
         answer: String,
+        question: String,
         codeId: Long,
     ) {
+        reviews.add(
+            PostReviewEntity.PostReviewContentEntity(
+                answer = answer,
+                question = question,
+                codeId = codeId,
+            ),
+        )
+    }
+
+    internal fun setSelectedTech(selectedTech: Long) =
+        setState { state.value.copy(selectedTech = selectedTech) }
+
+    internal fun postReview(companyId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             postReviewUseCase.invoke(
                 postReviewRequest = PostReviewEntity(
                     companyId = companyId,
-                    qnaElements = listOf(
-                        PostReviewEntity.PostReviewContentEntity(
-                            answer = answer,
-                            question = question,
-                            codeId = codeId,
-                        ),
-                    ),
+                    qnaElements = reviews,
                 ),
             ).onSuccess {
                 postSideEffect(ReviewSideEffect.Success)
@@ -64,10 +88,10 @@ internal class ReviewViewModel @Inject constructor(
         }
     }
 
-    private fun fetchCodes() =
+    internal fun fetchCodes(keyword: String?) =
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase.invoke(
-                keyword = null,
+                keyword = keyword,
                 type = CodeType.TECH,
                 parentCode = null,
             ).onSuccess {
@@ -79,11 +103,17 @@ internal class ReviewViewModel @Inject constructor(
 internal data class ReviewState(
     val question: String,
     val answer: String,
+    val keyword: String?,
+    val selectedTech: Long,
+    val tech: String?,
 ) {
     companion object {
         fun getDefaultState() = ReviewState(
             question = "",
             answer = "",
+            keyword = "",
+            selectedTech = 0,
+            tech = null,
         )
     }
 }
