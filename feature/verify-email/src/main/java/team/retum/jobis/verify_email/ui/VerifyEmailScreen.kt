@@ -14,7 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.jobis.verify_email.R
+import team.retum.jobis.verify_email.viewmodel.EMAIL_ADDRESS
 import team.retum.jobis.verify_email.viewmodel.VerifyEmailSideEffect
 import team.retum.jobis.verify_email.viewmodel.VerifyEmailState
 import team.retum.jobis.verify_email.viewmodel.VerifyEmailViewModel
@@ -32,7 +34,7 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 @Composable
 internal fun VerifyEmail(
     onBackPressed: () -> Unit,
-    navigateToResetPassword: () -> Unit,
+    navigateToResetPassword: (type: ResetPasswordNavigationArgumentType, email: String) -> Unit,
     verifyEmailViewModel: VerifyEmailViewModel = hiltViewModel(),
 ) {
     val state by verifyEmailViewModel.state.collectAsStateWithLifecycle()
@@ -42,7 +44,10 @@ internal fun VerifyEmail(
         verifyEmailViewModel.sideEffect.collect {
             when (it) {
                 is VerifyEmailSideEffect.MoveToVerifyPassword -> {
-                    navigateToResetPassword()
+                    navigateToResetPassword(
+                        ResetPasswordNavigationArgumentType.EMAIL,
+                        state.email + EMAIL_ADDRESS,
+                    )
                 }
 
                 is VerifyEmailSideEffect.AuthenticationCodeExpiration -> {

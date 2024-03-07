@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.jobis.change_password.R
 import team.retum.jobis.change_password.viewmodel.ComparePasswordSideEffect
 import team.retum.jobis.change_password.viewmodel.ComparePasswordState
@@ -25,7 +26,7 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 @Composable
 internal fun ComparePassword(
     onBackPressed: () -> Unit,
-    onNextClick: () -> Unit,
+    navigateToResetPassword: (type: ResetPasswordNavigationArgumentType, currentPassword: String) -> Unit,
     comparePasswordViewModel: ComparePasswordViewModel = hiltViewModel(),
 ) {
     val state by comparePasswordViewModel.state.collectAsStateWithLifecycle()
@@ -33,7 +34,9 @@ internal fun ComparePassword(
     LaunchedEffect(Unit) {
         comparePasswordViewModel.sideEffect.collect {
             if (it is ComparePasswordSideEffect.Success) {
-                onNextClick()
+                navigateToResetPassword(
+                    ResetPasswordNavigationArgumentType.PASSWORD, state.password,
+                )
             }
         }
     }
