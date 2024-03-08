@@ -35,7 +35,8 @@ internal fun ComparePassword(
         comparePasswordViewModel.sideEffect.collect {
             if (it is ComparePasswordSideEffect.Success) {
                 navigateToResetPassword(
-                    ResetPasswordNavigationArgumentType.PASSWORD, state.password,
+                    ResetPasswordNavigationArgumentType.PASSWORD,
+                    state.password,
                 )
             }
         }
