@@ -1,23 +1,27 @@
 package team.retum.notification.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -29,8 +33,10 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.notification.viewmodel.NotificationsSideEffect
 import team.retum.notification.viewmodel.NotificationsViewModel
 import team.retum.usecase.entity.notification.NotificationsEntity
+import kotlin.reflect.KFunction1
 
 @Composable
 internal fun Notification(
@@ -39,7 +45,7 @@ internal fun Notification(
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val state by notificationsViewModel.state.collectAsStateWithLifecycle()
-    var selectedTabIndex = state.selectedTabIndex
+    //var selectedTabIndex = state.selectedTabIndex
     val tabs = listOf(
         stringResource(id = R.string.all),
         stringResource(id = R.string.read),
@@ -47,9 +53,20 @@ internal fun Notification(
     )
 
     LaunchedEffect(Unit) {
-        when (selectedTabIndex) {
-            1 -> state.isNew ?: true
-            2 -> state.isNew ?: false
+        notificationsViewModel.sideEffect.collect{
+            when(it) {
+                is NotificationsSideEffect.MoveToDetail -> {
+                    //onNotificationDetailsClick
+                }
+            }
+        }
+    }
+    LaunchedEffect(state.selectedTabIndex) {
+        Log.d("TEST","ss${state.selectedTabIndex}")
+        when (state.selectedTabIndex) {
+            0 -> notificationsViewModel.setIsNew(isNew = null)
+            1 -> notificationsViewModel.setIsNew(isNew = false)
+            2 -> notificationsViewModel.setIsNew(isNew = true)
         }
         notificationsViewModel.fetchNotifications()
     }
@@ -57,10 +74,10 @@ internal fun Notification(
     NotificationsScreen(
         onBackPressed = onBackPressed,
         notificationList = notificationsViewModel.notifications,
-        selectedTabIndex = selectedTabIndex,
+        selectedTabIndex = state.selectedTabIndex,
         tabs = tabs,
-        onSelectTab = { selectedTabIndex = it },
-        onNotificationDetailsClick = onNotificationDetailsClick,
+        onSelectTab = { notificationsViewModel.setTabIndex(it) },
+        onNotificationDetailsClick = notificationsViewModel::readNotification,
     )
 }
 
@@ -71,7 +88,7 @@ private fun NotificationsScreen(
     selectedTabIndex: Int,
     tabs: List<String>,
     onSelectTab: (Int) -> Unit,
-    onNotificationDetailsClick: (Long) -> Unit,
+    onNotificationDetailsClick: KFunction1<Long, Unit>,
 ) {
     Column(
         modifier = Modifier
@@ -98,6 +115,7 @@ private fun NotificationsScreen(
                     companyName = it.title,
                     content = it.content,
                     date = it.createAt,
+                    isNew = it.new,
                     onClick = onNotificationDetailsClick,
                 )
             }
@@ -111,6 +129,7 @@ private fun NotificationContent(
     companyName: String,
     content: String,
     date: String,
+    isNew: Boolean,
     onClick: (notificationId: Long) -> Unit,
 ) {
     Column(
@@ -133,10 +152,30 @@ private fun NotificationContent(
             color = JobisTheme.colors.onBackground,
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = date,
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
-        )
+        Row(
+            horizontalArrangement = Arrangement
+                .spacedBy(
+                    space = 4.dp,
+                    alignment = Alignment.Start,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = date,
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onSurfaceVariant,
+            )
+            if(isNew) {
+                Box(
+                    modifier = Modifier
+                        .size(4.dp)
+                        .background(
+                            shape = CircleShape,
+                            color = JobisTheme.colors.error,
+                        )
+                )
+            }
+        }
+
     }
 }
