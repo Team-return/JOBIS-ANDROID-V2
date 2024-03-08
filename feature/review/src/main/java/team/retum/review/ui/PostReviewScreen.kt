@@ -99,11 +99,7 @@ internal fun PostReview(
         sheetScope = sheetScope,
         sheetState = sheetState,
         addQuestion = {
-            reviewViewModel.addReview(
-                answer = state.answer,
-                question = state.question,
-                codeId = state.selectedTech,
-            )
+            reviewViewModel.addReview()
             reviewViewModel.keywords.add(state.keyword ?: "")
         },
         state = state,
@@ -164,7 +160,10 @@ private fun PostReviewScreen(
                 )
             }
         },
-        sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
+        sheetShape = RoundedCornerShape(
+            topStart = 12.dp,
+            topEnd = 12.dp,
+        ),
         sheetBackgroundColor = JobisTheme.colors.inverseSurface,
     ) {
         Column(
@@ -203,79 +202,10 @@ private fun PostReviewScreen(
             } else {
                 LazyColumn {
                     items(reviews.size) {
-                        var questionDetail by remember { mutableStateOf(false) }
-                        JobisCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = 24.dp,
-                                    vertical = 4.dp,
-                                )
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(JobisTheme.colors.surfaceVariant),
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .padding(
-                                        vertical = 12.dp,
-                                        horizontal = 16.dp,
-                                    ),
-                            ) {
-                                Column {
-                                    if (!questionDetail) {
-                                        JobisText(
-                                            text = reviews[it].question,
-                                            style = JobisTypography.SubHeadLine,
-                                            modifier = Modifier.padding(bottom = 4.dp),
-                                        )
-                                        JobisText(
-                                            text = keywords[it],
-                                            style = JobisTypography.Description,
-                                            color = JobisTheme.colors.onPrimary,
-                                        )
-                                    } else {
-                                        Text(
-                                            text = buildAnnotatedString {
-                                                withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                                    append("Q ")
-                                                }
-                                                withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
-                                                    append(reviews[it].question)
-                                                }
-                                            },
-                                            style = JobisTypography.SubHeadLine,
-                                            modifier = Modifier.padding(bottom = 4.dp),
-                                        )
-                                        JobisText(
-                                            text = keywords[it],
-                                            style = JobisTypography.Description,
-                                            color = JobisTheme.colors.onPrimary,
-                                        )
-                                        Text(
-                                            text = buildAnnotatedString {
-                                                withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                                    append("A ")
-                                                }
-                                                withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface)) {
-                                                    append(reviews[it].answer)
-                                                }
-                                            },
-                                            style = JobisTypography.Description,
-                                            modifier = Modifier
-                                                .padding(top = 12.dp)
-                                                .fillMaxWidth(0.5f),
-                                        )
-                                    }
-                                }
-                                Spacer(modifier = Modifier.weight(1f))
-                                JobisIconButton(
-                                    painter = painterResource(id = R.drawable.ic_arrow_down),
-                                    contentDescription = "arrow_down",
-                                    onClick = { questionDetail = !questionDetail },
-                                    modifier = Modifier.align(Alignment.CenterVertically),
-                                )
-                            }
-                        }
+                        ReviewContent(
+                            review = reviews[it],
+                            keyword = keywords[it],
+                        )
                     }
                 }
             }
@@ -341,16 +271,16 @@ private fun AddQuestionBottomSheet(
         if (reviewProcess == ReviewProcess.QUESTION) {
             JobisTextField(
                 value = { state.question },
-                hint = "example",
+                hint = stringResource(id = R.string.example),
                 onValueChange = setQuestion,
-                title = "질문",
+                title = stringResource(id = R.string.question),
                 fieldColor = JobisTheme.colors.background,
             )
             JobisTextField(
                 value = { state.answer },
-                hint = "example",
+                hint = stringResource(id = R.string.example),
                 onValueChange = setAnswer,
-                title = "답변",
+                title = stringResource(id = R.string.answer),
                 fieldColor = JobisTheme.colors.background,
             )
         } else {
@@ -392,13 +322,94 @@ private fun AddQuestionBottomSheet(
         JobisButton(
             text = stringResource(id = R.string.next),
             onClick = {
-                if (reviewProcess == ReviewProcess.QUESTION) {
-                    onReviewProcess(ReviewProcess.TECH)
-                } else if (reviewProcess == ReviewProcess.TECH) {
-                    onReviewProcess(ReviewProcess.FINISH)
-                }
+                onReviewProcess(
+                    when (reviewProcess) {
+                        ReviewProcess.QUESTION -> ReviewProcess.TECH
+                        else -> ReviewProcess.FINISH
+                    },
+                )
             },
             color = ButtonColor.Primary,
         )
+    }
+}
+
+@Composable
+fun ReviewContent(
+    review: PostReviewEntity.PostReviewContentEntity,
+    keyword: String,
+) {
+    var showQuestionDetail by remember { mutableStateOf(false) }
+    JobisCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 24.dp,
+                vertical = 4.dp,
+            )
+            .clip(RoundedCornerShape(12.dp))
+            .background(JobisTheme.colors.surfaceVariant),
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(
+                    vertical = 12.dp,
+                    horizontal = 16.dp,
+                ),
+        ) {
+            Column {
+                if (!showQuestionDetail) {
+                    JobisText(
+                        text = review.question,
+                        style = JobisTypography.SubHeadLine,
+                        modifier = Modifier.padding(bottom = 4.dp),
+                    )
+                    JobisText(
+                        text = keyword,
+                        style = JobisTypography.Description,
+                        color = JobisTheme.colors.onPrimary,
+                    )
+                } else {
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
+                                append("Q ")
+                            }
+                            withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
+                                append(review.question)
+                            }
+                        },
+                        style = JobisTypography.SubHeadLine,
+                        modifier = Modifier.padding(bottom = 4.dp),
+                    )
+                    JobisText(
+                        text = keyword,
+                        style = JobisTypography.Description,
+                        color = JobisTheme.colors.onPrimary,
+                    )
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
+                                append("A ")
+                            }
+                            withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface)) {
+                                append(review.answer)
+                            }
+                        },
+                        style = JobisTypography.Description,
+                        modifier = Modifier
+                            .padding(top = 12.dp)
+                            .fillMaxWidth(0.5f),
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            JobisIconButton(
+                painter = painterResource(id = R.drawable.ic_arrow_down),
+                contentDescription = "arrow_down",
+                onClick = { showQuestionDetail = !showQuestionDetail },
+                modifier = Modifier.align(Alignment.CenterVertically),
+            )
+        }
     }
 }

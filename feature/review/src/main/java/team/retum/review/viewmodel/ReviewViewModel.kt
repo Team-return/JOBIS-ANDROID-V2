@@ -52,16 +52,12 @@ internal class ReviewViewModel @Inject constructor(
         setState { state.value.copy(keyword = keyword) }
     }
 
-    internal fun addReview(
-        answer: String,
-        question: String,
-        codeId: Long,
-    ) {
+    internal fun addReview() {
         reviews.add(
             PostReviewEntity.PostReviewContentEntity(
-                answer = answer,
-                question = question,
-                codeId = codeId,
+                answer = state.value.answer,
+                question = state.value.question,
+                codeId = state.value.selectedTech,
             ),
         )
     }
@@ -71,7 +67,7 @@ internal class ReviewViewModel @Inject constructor(
 
     internal fun postReview(companyId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            postReviewUseCase.invoke(
+            postReviewUseCase(
                 postReviewRequest = PostReviewEntity(
                     companyId = companyId,
                     qnaElements = reviews,
@@ -90,7 +86,7 @@ internal class ReviewViewModel @Inject constructor(
 
     internal fun fetchCodes(keyword: String?) =
         viewModelScope.launch(Dispatchers.IO) {
-            fetchCodeUseCase.invoke(
+            fetchCodeUseCase(
                 keyword = keyword,
                 type = CodeType.TECH,
                 parentCode = null,
