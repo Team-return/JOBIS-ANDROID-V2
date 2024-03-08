@@ -1,6 +1,8 @@
 package team.retum.usecase.entity.notification
 
+import android.annotation.SuppressLint
 import team.retum.network.model.response.notification.FetchNotificationsResponse
+import java.text.SimpleDateFormat
 
 data class NotificationsEntity(
     val notifications: List<NotificationEntity>,
@@ -20,6 +22,12 @@ internal fun FetchNotificationsResponse.toNotificationsEntity() = NotificationsE
     notifications = this.notifications.map { it.toEntity() },
 )
 
+@SuppressLint("SimpleDateFormat")
+val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+
+@SuppressLint("SimpleDateFormat")
+val outputFormat = SimpleDateFormat("yyyy-MM-dd")
+
 private fun FetchNotificationsResponse.NotificationResponse.toEntity() =
     NotificationsEntity.NotificationEntity(
         notificationId = this.notificationId,
@@ -27,6 +35,6 @@ private fun FetchNotificationsResponse.NotificationResponse.toEntity() =
         content = this.content,
         topic = this.topic,
         detailId = this.detailId,
-        createAt = this.createdAt,
+        createAt = outputFormat.format(inputFormat.parse(this.createdAt)!!),
         new = this.new,
     )
