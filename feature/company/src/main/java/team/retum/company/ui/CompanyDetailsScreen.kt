@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -35,6 +37,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.usecase.entity.FetchReviewsEntity
 import team.retum.usecase.entity.company.CompanyDetailsEntity
 
 @Composable
@@ -49,6 +52,7 @@ internal fun CompanyDetails(
         with(companyDetailsViewModel) {
             setCompanyId(companyId = companyId)
             fetchCompanyDetails()
+            fetchReviews()
         }
     }
 
@@ -81,7 +85,12 @@ private fun CompanyDetailsScreen(
             description = state.companyDetailsEntity.companyIntroduce,
         )
         CompanyInformations(companyDetailsEntity = state.companyDetailsEntity)
-        Reviews()
+        if(state.reviews.isNotEmpty()) {
+            Reviews(
+                reviews = state.reviews,
+                navigateToReviewDetails = {},
+            )
+        }
     }
 }
 
@@ -216,7 +225,10 @@ private fun CompanyInformation(
 }
 
 @Composable
-private fun Reviews() {
+private fun Reviews(
+    reviews: List<FetchReviewsEntity.Review>,
+    navigateToReviewDetails: (String) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -231,15 +243,25 @@ private fun Reviews() {
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
         )
+        LazyColumn {
+            items(reviews) {
+                ReviewContent(
+                    onClick = navigateToReviewDetails,
+                    reviewId = it.reviewId,
+                    writer = it.writer,
+                    year = it.year,
+                )
+            }
+        }
     }
 }
 
 @Composable
 private fun ReviewContent(
-    onClick: (Long) -> Unit,
-    reviewId: Long,
+    onClick: (String) -> Unit,
+    reviewId: String,
     writer: String,
-    year: String,
+    year: Int,
 ) {
     JobisCard(onClick = { onClick(reviewId) }) {
         Row(
@@ -257,7 +279,7 @@ private fun ReviewContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             JobisText(
-                text = year,
+                text = year.toString(),
                 style = JobisTypography.Description,
             )
             Spacer(modifier = Modifier.weight(1f))
