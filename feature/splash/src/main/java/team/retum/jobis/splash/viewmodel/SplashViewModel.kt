@@ -89,5 +89,5 @@ internal data class SplashState(
 
 internal sealed interface SplashSideEffect {
     data object MoveToSignIn : SplashSideEffect
-    data object MoveToMain: SplashSideEffect
+    data object MoveToMain : SplashSideEffect
 }
