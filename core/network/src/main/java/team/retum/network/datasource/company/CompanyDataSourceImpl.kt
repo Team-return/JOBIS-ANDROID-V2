@@ -4,6 +4,7 @@ import team.retum.network.api.CompanyApi
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
 import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
+import team.retum.network.model.response.company.FetchCompanyDetailsResponse
 import team.retum.network.util.RequestHandler
 import javax.inject.Inject
 
@@ -21,6 +22,11 @@ class CompanyDataSourceImpl @Inject constructor(
     override suspend fun fetchReviewableCompanies(): FetchReviewableCompaniesResponse {
         return RequestHandler<FetchReviewableCompaniesResponse>().request {
             companyApi.fetchReviewableCompanies()
+        }
+    }
+    override suspend fun fetchCompanyDetails(companyId: Long): FetchCompanyDetailsResponse {
+        return RequestHandler<FetchCompanyDetailsResponse>().request {
+            companyApi.fetchCompanyDetails(companyId = companyId)
         }
     }
 }

@@ -8,7 +8,9 @@ import team.retum.alarm.navigation.navigateToAlarm
 import team.retum.bug.navigateToReportBug
 import team.retum.bug.reportBug
 import team.retum.company.navigation.companies
+import team.retum.company.navigation.companyDetails
 import team.retum.company.navigation.navigateToCompanies
+import team.retum.company.navigation.navigateToCompanyDetails
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
@@ -62,6 +64,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         companies(
             onBackPressed = navController::popBackStack,
             onSearchClick = navController::navigateToSearchCompanies,
+            onCompanyContentClick = navController::navigateToCompanyDetails,
         )
         searchCompanies(onBackPressed = navController::popBackStack)
         recruitmentFilter(onBackPressed = navController::popBackStack)
@@ -72,5 +75,6 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         application(onBackPressed = navController::popBackStack)
         notificationList(onBackPressed = navController::popBackStack)
         postReview(onBackPressed = navController::popBackStack)
+        companyDetails(onBackPressed = navController::popBackStack)
     }
 }
