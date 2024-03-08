@@ -1,6 +1,5 @@
 package team.retum.jobis.recruitment.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +32,6 @@ internal class RecruitmentDetailsViewModel @Inject constructor(
                     }
                 }
                 .onFailure {
-                    Log.d("asd",it.message.toString())
                     when (it) {
                         is NullPointerException -> {
                             postSideEffect(RecruitmentDetailsSideEffect.BadRequest)
