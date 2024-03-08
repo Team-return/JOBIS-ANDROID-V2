@@ -1,6 +1,5 @@
 package team.retum.notification.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,7 +35,6 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.notification.viewmodel.NotificationsSideEffect
 import team.retum.notification.viewmodel.NotificationsViewModel
 import team.retum.usecase.entity.notification.NotificationsEntity
-import kotlin.reflect.KFunction1
 
 @Composable
 internal fun Notification(
@@ -45,7 +43,6 @@ internal fun Notification(
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val state by notificationsViewModel.state.collectAsStateWithLifecycle()
-    //var selectedTabIndex = state.selectedTabIndex
     val tabs = listOf(
         stringResource(id = R.string.all),
         stringResource(id = R.string.read),
@@ -53,16 +50,15 @@ internal fun Notification(
     )
 
     LaunchedEffect(Unit) {
-        notificationsViewModel.sideEffect.collect{
-            when(it) {
+        notificationsViewModel.sideEffect.collect {
+            when (it) {
                 is NotificationsSideEffect.MoveToDetail -> {
-                    //onNotificationDetailsClick
+                    onNotificationDetailsClick(it.notificationId)
                 }
             }
         }
     }
     LaunchedEffect(state.selectedTabIndex) {
-        Log.d("TEST","ss${state.selectedTabIndex}")
         when (state.selectedTabIndex) {
             0 -> notificationsViewModel.setIsNew(isNew = null)
             1 -> notificationsViewModel.setIsNew(isNew = false)
@@ -88,7 +84,7 @@ private fun NotificationsScreen(
     selectedTabIndex: Int,
     tabs: List<String>,
     onSelectTab: (Int) -> Unit,
-    onNotificationDetailsClick: KFunction1<Long, Unit>,
+    onNotificationDetailsClick: (Long) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -165,14 +161,14 @@ private fun NotificationContent(
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onSurfaceVariant,
             )
-            if(isNew) {
+            if (isNew) {
                 Box(
                     modifier = Modifier
                         .size(4.dp)
                         .background(
                             shape = CircleShape,
                             color = JobisTheme.colors.error,
-                        )
+                        ),
                 )
             }
         }
