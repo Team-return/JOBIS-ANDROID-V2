@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":feature:verify-email"))
     implementation(project(":feature:notice"))
     implementation(project(":feature:company"))
+    implementation(project(":feature:review"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)

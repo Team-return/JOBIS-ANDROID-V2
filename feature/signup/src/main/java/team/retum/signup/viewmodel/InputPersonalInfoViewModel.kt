@@ -66,7 +66,7 @@ internal class InputPersonalInfoViewModel @Inject constructor(
                             grade = grade,
                             classRoom = classRoom,
                             number = number,
-                        )
+                        ),
                     )
                 }.onFailure {
                     when (it) {
@@ -114,5 +114,5 @@ internal sealed interface InputPersonalInfoSideEffect {
     ) : InputPersonalInfoSideEffect
 
     data object NotFoundStudent : InputPersonalInfoSideEffect
-    data object HideKeyboard: InputPersonalInfoSideEffect
+    data object HideKeyboard : InputPersonalInfoSideEffect
 }

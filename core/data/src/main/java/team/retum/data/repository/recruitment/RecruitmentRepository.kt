@@ -1,5 +1,6 @@
 package team.retum.data.repository.recruitment
 
+import team.retum.network.model.response.FetchRecruitmentDetailsResponse
 import team.retum.network.model.response.FetchRecruitmentPageCountResponse
 import team.retum.network.model.response.FetchRecruitmentsResponse
 
@@ -18,4 +19,6 @@ interface RecruitmentRepository {
         techCode: String?,
         winterIntern: Boolean,
     ): FetchRecruitmentPageCountResponse
+
+    suspend fun fetchRecruitmentDetails(recruitmentId: Long): FetchRecruitmentDetailsResponse
 }

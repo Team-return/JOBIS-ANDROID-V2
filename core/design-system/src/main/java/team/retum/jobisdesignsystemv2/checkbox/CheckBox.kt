@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -18,18 +19,25 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
-fun CheckBox(
+fun JobisCheckBox(
     checked: Boolean,
     onClick: (Boolean) -> Unit,
+    backgroundColor: Color = JobisTheme.colors.inverseSurface,
 ) {
     val tint by animateColorAsState(
-        targetValue = if (checked) JobisTheme.colors.background
-        else JobisTheme.colors.surfaceTint,
+        targetValue = if (checked) {
+            JobisTheme.colors.background
+        } else {
+            JobisTheme.colors.surfaceTint
+        },
         label = "",
     )
     val background by animateColorAsState(
-        targetValue = if (checked) JobisTheme.colors.onPrimary
-        else JobisTheme.colors.inverseSurface,
+        targetValue = if (checked) {
+            JobisTheme.colors.onPrimary
+        } else {
+            backgroundColor
+        },
         label = "",
     )
 

@@ -6,7 +6,9 @@ import androidx.navigation.navigation
 import team.retum.bug.navigateToReportBug
 import team.retum.bug.reportBug
 import team.retum.company.navigation.companies
+import team.retum.company.navigation.companyDetails
 import team.retum.company.navigation.navigateToCompanies
+import team.retum.company.navigation.navigateToCompanyDetails
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
@@ -28,6 +30,8 @@ import team.retum.jobisandroidv2.root.root
 import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.navigateToNotification
 import team.retum.notification.navigation.notifications
+import team.retum.review.navigation.navigateToPostReview
+import team.retum.review.navigation.postReview
 
 const val NAVIGATION_MAIN = "main"
 
@@ -47,6 +51,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
             onNoticeClick = navController::navigateToNoticeList,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
+            onPostReviewClick = navController::navigateToPostReview,
         )
         notifications(
             onBackPressed = navController::popBackStack,
@@ -62,6 +67,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         companies(
             onBackPressed = navController::popBackStack,
             onSearchClick = navController::navigateToSearchCompanies,
+            onCompanyContentClick = navController::navigateToCompanyDetails,
         )
         searchCompanies(onBackPressed = navController::popBackStack)
         recruitmentFilter(onBackPressed = navController::popBackStack)
@@ -71,5 +77,8 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         )
         application(onBackPressed = navController::popBackStack)
         noticeList(onBackPressed = navController::popBackStack)
+        notificationList(onBackPressed = navController::popBackStack)
+        postReview(onBackPressed = navController::popBackStack)
+        companyDetails(onBackPressed = navController::popBackStack)
     }
 }

@@ -3,6 +3,7 @@ plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.ktlint.gradle.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
@@ -25,5 +26,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.com.google.android.material)
 
+    testApi(libs.junit)
     androidTestApi(libs.androidx.compose.ui.test.junit4)
+    androidTestApi(libs.androidx.junit)
+    androidTestApi(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    debugApi(libs.androidx.compose.ui.tooling)
+    debugApi(libs.androidx.compose.ui.test.manifest)
 }

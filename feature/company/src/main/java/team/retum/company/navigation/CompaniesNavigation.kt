@@ -10,11 +10,13 @@ const val NAVIGATION_COMPANIES = "companies"
 fun NavGraphBuilder.companies(
     onBackPressed: () -> Unit,
     onSearchClick: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
 ) {
     composable(NAVIGATION_COMPANIES) {
         Companies(
             onBackPressed = onBackPressed,
             onSearchClick = onSearchClick,
+            onCompanyContentClick = onCompanyContentClick,
         )
     }
 }

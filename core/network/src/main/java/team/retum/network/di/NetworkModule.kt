@@ -13,6 +13,7 @@ import retrofit2.create
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
 import team.retum.network.api.ApplicationApi
+import team.retum.network.api.FileApi
 import team.retum.network.api.AuthApi
 import team.retum.network.api.BannerApi
 import team.retum.network.api.BookmarkApi
@@ -20,6 +21,7 @@ import team.retum.network.api.CodeApi
 import team.retum.network.api.CompanyApi
 import team.retum.network.api.NotificationApi
 import team.retum.network.api.RecruitmentApi
+import team.retum.network.api.ReviewApi
 import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
 import team.retum.network.util.TokenInterceptor
@@ -124,5 +126,14 @@ object NetworkModule {
     @Singleton
     fun provideNotificationAPi(retrofit: Retrofit): NotificationApi {
         return retrofit.create(NotificationApi::class.java)
+
+    fun provideReviewApi(retrofit: Retrofit): ReviewApi {
+        return retrofit.create(ReviewApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFileApi(retrofit: Retrofit): FileApi {
+        return retrofit.create(FileApi::class.java)
     }
 }

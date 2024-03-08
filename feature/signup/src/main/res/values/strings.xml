@@ -28,16 +28,27 @@
     <string name="toast_check_email_validation">이메일 형식을 확인해주세요</string>
 
     <string name="description_invalid_authentication_code">인증코드가 잘못되었어요</string>
+    <string name="description_authentication_code_expired">인증코드가 만료되었어요</string>
 
+    <!--Set Password Screen-->
     <string name="setting_password">비밀번호를 설정해주세요</string>
+
+    <string name="password">비밀번호</string>
+    <string name="check_password">비밀번호 확인</string>
+
+    <string name="hint_password">계정의 비밀번호를 설정해주세요.</string>
+    <string name="hint_check_password">위 비밀번호를 한 번 더 입력해주세요.</string>
+
+    <string name="password_information_description">8 ~ 16자, 영문자, 숫자, 특수문자 포함</string>
+    <string name="password_error_description">비밀번호 형식에 맞지 않아요</string>
+    <string name="repeat_password_error_description">비밀번호가 일치하지 않아요</string>
+
+
+
     <string name="name">이름</string>
     <string name="student_number">학번</string>
     <string name="next">다음</string>
 
-    <string name="password">비밀번호</string>
-    <string name="hint_password">계정의 비밀번호를 설정해주세요.</string>
-    <string name="check_password">비밀번호 확인</string>
-    <string name="hint_check_password">위 비밀번호를 한 번 더 입력해주세요.</string>
 
     <string name="select_gender">성별을 선택해주세요</string>
     <string name="gender_man">남성</string>
