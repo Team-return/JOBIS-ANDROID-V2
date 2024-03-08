@@ -3,9 +3,9 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import team.retum.jobis.change_password.navigation.confirmPassword
-import team.retum.jobis.change_password.navigation.navigateToResetPassword
-import team.retum.jobis.change_password.navigation.resetPassword
+import team.retum.jobis.change.password.navigation.confirmPassword
+import team.retum.jobis.change.password.navigation.navigateToResetPassword
+import team.retum.jobis.change.password.navigation.resetPassword
 import team.retum.jobis.verify_email.navigation.navigateToVerifyEmail
 import team.retum.jobis.verify_email.navigation.verifyEmail
 import team.retum.jobisandroidv2.root.navigateToRoot

@@ -13,7 +13,7 @@ import team.retum.company.navigation.navigateToCompanies
 import team.retum.company.navigation.navigateToCompanyDetails
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.company.navigation.searchCompanies
-import team.retum.jobis.change_password.navigation.navigateToComparePassword
+import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.navigateToInterests
 import team.retum.jobis.notification.navigation.navigateToNotificationsList

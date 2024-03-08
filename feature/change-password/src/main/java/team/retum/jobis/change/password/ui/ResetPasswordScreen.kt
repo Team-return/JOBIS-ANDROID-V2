@@ -1,4 +1,4 @@
-package team.retum.jobis.change_password.ui
+package team.retum.jobis.change.password.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,10 +15,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import team.retum.jobis.change_password.R
-import team.retum.jobis.change_password.viewmodel.ResetPasswordSideEffect
-import team.retum.jobis.change_password.viewmodel.ResetPasswordState
-import team.retum.jobis.change_password.viewmodel.ResetPasswordViewModel
+import team.retum.jobis.change.R
+import team.retum.jobis.change.password.viewmodel.ResetPasswordSideEffect
+import team.retum.jobis.change.password.viewmodel.ResetPasswordState
+import team.retum.jobis.change.password.viewmodel.ResetPasswordViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton

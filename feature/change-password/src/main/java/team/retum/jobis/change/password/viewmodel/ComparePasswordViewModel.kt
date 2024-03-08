@@ -1,4 +1,4 @@
-package team.retum.jobis.change_password.viewmodel
+package team.retum.jobis.change.password.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

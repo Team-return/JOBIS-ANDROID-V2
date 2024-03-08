@@ -1,4 +1,4 @@
-package team.retum.jobis.change_password.navigation
+package team.retum.jobis.change.password.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.common.utils.ResourceKeys
-import team.retum.jobis.change_password.ui.ResetPassword
+import team.retum.jobis.change.password.ui.ResetPassword
 
 const val NAVIGATION_RESET_PASSWORD = "resetPassword"
 
