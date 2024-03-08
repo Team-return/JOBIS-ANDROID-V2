@@ -37,7 +37,7 @@ internal class NotificationsViewModel @Inject constructor(
     internal fun readNotification(notificationId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             notificationUseCase(notificationId)
-            postSideEffect(NotificationsSideEffect.MoveToDetail)
+            postSideEffect(NotificationsSideEffect.MoveToDetail(notificationId = notificationId))
         }
     }
 
@@ -63,5 +63,5 @@ internal data class NotificationsState(
 }
 
 internal sealed interface NotificationsSideEffect {
-    data object MoveToDetail : NotificationsSideEffect
+    data class MoveToDetail(val notificationId: Long) : NotificationsSideEffect
 }
