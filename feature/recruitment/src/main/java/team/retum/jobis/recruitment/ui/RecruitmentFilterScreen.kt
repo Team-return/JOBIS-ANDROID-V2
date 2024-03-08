@@ -91,7 +91,6 @@ private fun RecruitmentFilterScreen(
         )
         LazyColumn {
             items(recruitmentFilterViewModel.techs) {
-
             }
         }
     }

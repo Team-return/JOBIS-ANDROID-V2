@@ -18,7 +18,6 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     private val _techs = mutableListOf<CodesEntity.CodeEntity>()
     val techs: MutableList<CodesEntity.CodeEntity> get() = _techs
 
-
     internal fun fetchCodes() {
         val type = state.value.type
         viewModelScope.launch(Dispatchers.IO) {
@@ -63,7 +62,6 @@ internal class RecruitmentFilterViewModel @Inject constructor(
 
     internal fun setParentCode(parentCode: Long?) =
         setState { state.value.copy(selectedJobCode = parentCode) }
-
 
     internal fun onSelectTech(
         code: Long,
