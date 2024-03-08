@@ -50,7 +50,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         )
         notification(
             onBackPressed = navController::popBackStack,
-            onNotificationDetailsClick = navController::navigateToRecruitmentDetails,
+            navigateToDetail = navController::navigateToRecruitmentDetails,
         )
         recruitmentDetails(
             onBackPressed = navController::navigateUp,

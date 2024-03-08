@@ -39,7 +39,7 @@ import team.retum.usecase.entity.notification.NotificationsEntity
 @Composable
 internal fun Notification(
     onBackPressed: () -> Unit,
-    onNotificationDetailsClick: (Long) -> Unit,
+    navigateToDetail: (Long) -> Unit,
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val state by notificationsViewModel.state.collectAsStateWithLifecycle()
@@ -53,7 +53,7 @@ internal fun Notification(
         notificationsViewModel.sideEffect.collect {
             when (it) {
                 is NotificationsSideEffect.MoveToDetail -> {
-                    onNotificationDetailsClick(it.notificationId)
+                    navigateToDetail(it.notificationId)
                 }
             }
         }
