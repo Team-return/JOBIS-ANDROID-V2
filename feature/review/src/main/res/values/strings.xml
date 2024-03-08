@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="question">질문</string>
+    <string name="answer">답변</string>
     <string name="write_review">다른 학생들을 위하여\n면접의 후기를 작성해주세요</string>
     <string name="add_question">질문 추가하기</string>
     <string name="empty">현재 입력 된 질문이 없어요</string>
     <string name="added_question">질문이 추가되었어요!</string>
+    <string name="next">다음</string>
+    <string name="tech">기술 스택</string>
+    <string name="finish">작성 완료</string>
+    <string name="please_write_review">후기를 작성해주세요</string>
+    <string name="search">검색어를 입력해주세요</string>
+    <string name="example">example</string>
 </resources>

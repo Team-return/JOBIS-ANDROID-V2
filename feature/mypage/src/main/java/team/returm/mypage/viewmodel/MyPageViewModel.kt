@@ -46,7 +46,7 @@ internal class MyPageViewModel @Inject constructor(
     private fun fetchReviewableCompanies() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewableCompaniesUseCase().onSuccess {
-                setState { state.value.copy(reviewableCompany = it.companies.first()) }
+                setState { state.value.copy(reviewableCompany = it.companies.firstOrNull()) }
             }
         }
     }
