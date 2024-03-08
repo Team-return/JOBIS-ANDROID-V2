@@ -220,22 +220,19 @@ private fun PostReviewScreen(
                 },
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (reviewProcess == ReviewProcess.FINISH) {
-                JobisButton(
-                    text = stringResource(id = R.string.finish),
-                    onClick = {
-                        fetchQuestion()
-                        onBackPressed()
-                    },
-                    color = ButtonColor.Primary,
-                )
-            } else {
-                JobisButton(
-                    text = stringResource(id = R.string.please_write_review),
-                    onClick = {},
-                    enabled = false,
-                )
-            }
+            JobisButton(
+                text = if (reviewProcess == ReviewProcess.FINISH) {
+                    stringResource(id = R.string.finish)
+                } else {
+                    stringResource(id = R.string.please_write_review)
+                },
+                onClick = {
+                    fetchQuestion()
+                    onBackPressed()
+                },
+                enabled = reviews.isNotEmpty(),
+                color = ButtonColor.Primary,
+            )
         }
     }
 }
