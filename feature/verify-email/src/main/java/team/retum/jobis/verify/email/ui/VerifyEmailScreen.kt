@@ -1,4 +1,4 @@
-package team.retum.jobis.verify_email.ui
+package team.retum.jobis.verify.email.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,11 +15,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
+import team.retum.jobis.verify.email.viewmodel.EMAIL_ADDRESS
+import team.retum.jobis.verify.email.viewmodel.VerifyEmailSideEffect
+import team.retum.jobis.verify.email.viewmodel.VerifyEmailState
+import team.retum.jobis.verify.email.viewmodel.VerifyEmailViewModel
 import team.retum.jobis.verify_email.R
-import team.retum.jobis.verify_email.viewmodel.EMAIL_ADDRESS
-import team.retum.jobis.verify_email.viewmodel.VerifyEmailSideEffect
-import team.retum.jobis.verify_email.viewmodel.VerifyEmailState
-import team.retum.jobis.verify_email.viewmodel.VerifyEmailViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton

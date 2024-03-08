@@ -1,4 +1,4 @@
-package team.retum.jobis.verify_email.viewmodel
+package team.retum.jobis.verify.email.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

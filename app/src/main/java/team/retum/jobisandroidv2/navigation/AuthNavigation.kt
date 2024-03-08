@@ -6,8 +6,8 @@ import androidx.navigation.navigation
 import team.retum.jobis.change.password.navigation.confirmPassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
 import team.retum.jobis.change.password.navigation.resetPassword
-import team.retum.jobis.verify_email.navigation.navigateToVerifyEmail
-import team.retum.jobis.verify_email.navigation.verifyEmail
+import team.retum.jobis.verify.email.navigation.navigateToVerifyEmail
+import team.retum.jobis.verify.email.navigation.verifyEmail
 import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.landing.navigation.NAVIGATION_LANDING
 import team.retum.landing.navigation.landing
