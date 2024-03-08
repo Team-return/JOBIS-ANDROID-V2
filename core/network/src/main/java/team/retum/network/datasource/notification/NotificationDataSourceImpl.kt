@@ -8,7 +8,7 @@ import javax.inject.Inject
 class NotificationDataSourceImpl @Inject constructor(
     private val notificationApi: NotificationApi,
 ) : NotificationDataSource {
-    override suspend fun fetchNotifications(isNew: Boolean): FetchNotificationsResponse =
+    override suspend fun fetchNotifications(isNew: Boolean?): FetchNotificationsResponse =
         RequestHandler<FetchNotificationsResponse>().request {
             notificationApi.fetchNotifications(isNew = isNew)
         }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class NotificationRepositoryImpl @Inject constructor(
     private val notificationDataSource: NotificationDataSource,
 ) : NotificationRepository {
-    override suspend fun fetchNotifications(isNew: Boolean): FetchNotificationsResponse =
+    override suspend fun fetchNotifications(isNew: Boolean?): FetchNotificationsResponse =
         notificationDataSource.fetchNotifications(isNew = isNew)
 
     override suspend fun fetchNotificationRead(notificationId: Long) =

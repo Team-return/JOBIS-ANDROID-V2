@@ -8,7 +8,7 @@ class FetchNotificationsUseCase @Inject constructor(
     private val notificationRepository: NotificationRepository,
 ) {
     suspend operator fun invoke(
-        isNew: Boolean,
+        isNew: Boolean?,
     ) = runCatching {
         notificationRepository.fetchNotifications(isNew = isNew).toNotificationsEntity()
     }

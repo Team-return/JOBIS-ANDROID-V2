@@ -16,7 +16,7 @@ import javax.inject.Inject
 internal class NotificationsViewModel @Inject constructor(
     private val fetchNotificationsUseCase: FetchNotificationsUseCase,
     private val notificationUseCase: NotificationUseCase,
-) : BaseViewModel<NotificationsState, Unit>(NotificationsState.getDefaultState()) {
+) : BaseViewModel<NotificationsState, NotificationsSideEffect>(NotificationsState.getDefaultState()) {
 
     internal var notifications: SnapshotStateList<NotificationsEntity.NotificationEntity> =
         mutableStateListOf()
@@ -27,6 +27,7 @@ internal class NotificationsViewModel @Inject constructor(
             with(state.value) {
                 fetchNotificationsUseCase(isNew = isNew)
                     .onSuccess {
+                        notifications.clear()
                         notifications.addAll(it.notifications)
                     }
             }
@@ -36,18 +37,31 @@ internal class NotificationsViewModel @Inject constructor(
     internal fun readNotification(notificationId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             notificationUseCase(notificationId)
+            postSideEffect(NotificationsSideEffect.MoveToDetail)
         }
+    }
+
+    internal fun setTabIndex(tabIndex: Int) {
+        setState { state.value.copy(selectedTabIndex = tabIndex) }
+    }
+
+    internal fun setIsNew(isNew: Boolean?) {
+        setState { state.value.copy(isNew = isNew) }
     }
 }
 
 internal data class NotificationsState(
-    val isNew: Boolean,
+    val isNew: Boolean?,
     val selectedTabIndex: Int,
 ) {
     companion object {
         fun getDefaultState() = NotificationsState(
-            isNew = false,
+            isNew = null,
             selectedTabIndex = 0,
         )
     }
+}
+
+internal sealed interface NotificationsSideEffect {
+    data object MoveToDetail : NotificationsSideEffect
 }

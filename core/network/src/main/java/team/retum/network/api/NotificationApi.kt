@@ -11,7 +11,7 @@ interface NotificationApi {
 
     @GET(RequestUrls.Notification.notifications)
     suspend fun fetchNotifications(
-        @Query("is_new") isNew: Boolean,
+        @Query("is_new") isNew: Boolean?,
     ): FetchNotificationsResponse
 
     @PATCH(RequestUrls.Notification.notification)
