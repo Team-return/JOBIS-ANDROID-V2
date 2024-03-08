@@ -12,10 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
-import team.retum.jobis.change.R
 import team.retum.jobis.change.password.viewmodel.ComparePasswordSideEffect
 import team.retum.jobis.change.password.viewmodel.ComparePasswordState
 import team.retum.jobis.change.password.viewmodel.ComparePasswordViewModel
+import team.retum.jobis.change_password.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
