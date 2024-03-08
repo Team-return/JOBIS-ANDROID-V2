@@ -19,18 +19,19 @@ internal class SplashViewModel @Inject constructor(
     private val getRefreshTokenUseCase: GetRefreshTokenUseCase,
     private val reissueTokenUseCase: ReissueTokenUseCase,
 ) : BaseViewModel<SplashState, SplashSideEffect>(SplashState.getInitialState()) {
-    init {
-        getAccessToken()
-    }
 
-    private fun getAccessToken() {
+    internal fun getAccessToken() {
         viewModelScope.launch(Dispatchers.IO) {
             getAccessTokenUseCase().onSuccess {
-                checkRefreshTokenExpired()
+                if (it.isBlank()) {
+                    postSideEffect(SplashSideEffect.MoveToLanding)
+                } else {
+                    checkRefreshTokenExpired()
+                }
             }.onFailure {
                 when (it) {
                     is NullPointerException -> {
-                        postSideEffect(SplashSideEffect.MoveToSignIn)
+                        postSideEffect(SplashSideEffect.MoveToLanding)
                     }
                 }
             }
@@ -40,14 +41,14 @@ internal class SplashViewModel @Inject constructor(
     private fun checkRefreshTokenExpired() {
         getRefreshExpiresAtUseCase().onSuccess { refreshExpiresAt ->
             if (LocalDateTime.now().isAfter(LocalDateTime.parse(refreshExpiresAt))) {
-                postSideEffect(SplashSideEffect.MoveToSignIn)
+                postSideEffect(SplashSideEffect.MoveToLanding)
             } else {
                 reissueToken()
             }
         }.onFailure {
             when (it) {
                 is NullPointerException -> {
-                    postSideEffect(SplashSideEffect.MoveToSignIn)
+                    postSideEffect(SplashSideEffect.MoveToLanding)
                 }
             }
         }
@@ -68,7 +69,7 @@ internal class SplashViewModel @Inject constructor(
         }.onFailure {
             when (it) {
                 is NullPointerException -> {
-                    postSideEffect(SplashSideEffect.MoveToSignIn)
+                    postSideEffect(SplashSideEffect.MoveToLanding)
                 }
             }
         }
@@ -88,6 +89,6 @@ internal data class SplashState(
 }
 
 internal sealed interface SplashSideEffect {
-    data object MoveToSignIn : SplashSideEffect
+    data object MoveToLanding : SplashSideEffect
     data object MoveToMain : SplashSideEffect
 }

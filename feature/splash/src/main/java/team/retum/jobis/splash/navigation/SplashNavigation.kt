@@ -7,12 +7,12 @@ import team.retum.jobis.splash.ui.Splash
 const val NAVIGATION_SPLASH = "splash"
 
 fun NavGraphBuilder.splash(
-    navigateToSignIn: () -> Unit,
+    navigateToLanding: () -> Unit,
     navigateToRoot: () -> Unit,
 ) {
     composable(NAVIGATION_SPLASH) {
         Splash(
-            navigateToSignIn = navigateToSignIn,
+            navigateToLanding = navigateToLanding,
             navigateToRoot = navigateToRoot,
         )
     }

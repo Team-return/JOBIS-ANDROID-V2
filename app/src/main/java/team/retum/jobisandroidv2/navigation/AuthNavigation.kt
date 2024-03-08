@@ -12,6 +12,7 @@ import team.retum.jobis.verify_email.navigation.navigateToVerifyEmail
 import team.retum.jobis.verify_email.navigation.verifyEmail
 import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.landing.navigation.landing
+import team.retum.landing.navigation.navigateToLanding
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signin.navigation.signIn
 import team.retum.signup.navigation.navigateToInputEmail
@@ -30,7 +31,7 @@ internal fun NavGraphBuilder.authNavigation(navController: NavController) {
         startDestination = NAVIGATION_SPLASH,
     ) {
         splash(
-            navigateToSignIn = navController::navigateToSignIn,
+            navigateToLanding = { navController.navigateToLanding(NAVIGATION_SPLASH) },
             navigateToRoot = navController::navigateToRoot,
         )
         landing(

@@ -18,18 +18,21 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 @Composable
 internal fun Splash(
     splashViewModel: SplashViewModel = hiltViewModel(),
-    navigateToSignIn: () -> Unit,
+    navigateToLanding: () -> Unit,
     navigateToRoot: () -> Unit,
 ) {
     LaunchedEffect(Unit) {
-        splashViewModel.sideEffect.collect {
-            when (it) {
-                is SplashSideEffect.MoveToSignIn -> {
-                    navigateToSignIn()
-                }
+        with(splashViewModel) {
+            getAccessToken()
+            splashViewModel.sideEffect.collect {
+                when (it) {
+                    is SplashSideEffect.MoveToLanding -> {
+                        navigateToLanding()
+                    }
 
-                is SplashSideEffect.MoveToMain -> {
-                    navigateToRoot()
+                    is SplashSideEffect.MoveToMain -> {
+                        navigateToRoot()
+                    }
                 }
             }
         }
