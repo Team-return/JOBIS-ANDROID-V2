@@ -85,7 +85,7 @@ private fun CompanyDetailsScreen(
             description = state.companyDetailsEntity.companyIntroduce,
         )
         CompanyInformations(companyDetailsEntity = state.companyDetailsEntity)
-        if(state.reviews.isNotEmpty()) {
+        if (state.reviews.isNotEmpty()) {
             Reviews(
                 reviews = state.reviews,
                 navigateToReviewDetails = {},
