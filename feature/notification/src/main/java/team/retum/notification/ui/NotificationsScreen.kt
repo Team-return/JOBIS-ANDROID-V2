@@ -37,7 +37,7 @@ import team.retum.notification.viewmodel.NotificationsViewModel
 import team.retum.usecase.entity.notification.NotificationsEntity
 
 @Composable
-internal fun Notification(
+internal fun Notifications(
     onBackPressed: () -> Unit,
     navigateToDetail: (Long) -> Unit,
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),

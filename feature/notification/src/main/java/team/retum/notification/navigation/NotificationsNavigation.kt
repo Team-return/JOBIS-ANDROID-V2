@@ -3,16 +3,16 @@ package team.retum.notification.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.notification.ui.Notification
+import team.retum.notification.ui.Notifications
 
-const val NAVIGATION_NOTIFICATION = "notification"
+const val NAVIGATION_NOTIFICATIONS = "notifications"
 
-fun NavGraphBuilder.notification(
+fun NavGraphBuilder.notifications(
     onBackPressed: () -> Unit,
     navigateToDetail: (Long) -> Unit,
 ) {
-    composable(NAVIGATION_NOTIFICATION) {
-        Notification(
+    composable(NAVIGATION_NOTIFICATIONS) {
+        Notifications(
             onBackPressed = onBackPressed,
             navigateToDetail = navigateToDetail,
         )
@@ -20,5 +20,5 @@ fun NavGraphBuilder.notification(
 }
 
 fun NavController.navigateToNotification() {
-    navigate(NAVIGATION_NOTIFICATION)
+    navigate(NAVIGATION_NOTIFICATIONS)
 }

@@ -3,8 +3,6 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import team.retum.notification.navigation.navigateToNotification
-import team.retum.notification.navigation.notification
 import team.retum.bug.navigateToReportBug
 import team.retum.bug.reportBug
 import team.retum.company.navigation.companies
@@ -28,6 +26,8 @@ import team.retum.jobisandroidv2.navigateToApplication
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.landing.navigation.navigateToLanding
+import team.retum.notification.navigation.navigateToNotification
+import team.retum.notification.navigation.notifications
 
 const val NAVIGATION_MAIN = "main"
 
@@ -48,7 +48,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onNoticeClick = navController::navigateToNoticeList,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
         )
-        notification(
+        notifications(
             onBackPressed = navController::popBackStack,
             navigateToDetail = navController::navigateToRecruitmentDetails,
         )
