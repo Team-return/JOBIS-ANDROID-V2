@@ -139,11 +139,12 @@ private fun CompanyInformation(
     ) {
         AsyncImage(
             modifier = Modifier
+                .clip(shape = RoundedCornerShape(8.dp))
                 .size(64.dp)
                 .border(
                     width = 1.dp,
                     color = JobisTheme.colors.inverseSurface,
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(8.dp),
                 ),
             model = recruitmentDetail.companyProfileUrl,
             contentDescription = "company profile",

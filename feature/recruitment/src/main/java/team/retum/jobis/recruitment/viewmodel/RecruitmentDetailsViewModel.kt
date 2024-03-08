@@ -5,7 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.utils.ResourceKeys
 import team.retum.usecase.entity.RecruitmentDetailsEntity
 import team.retum.usecase.usecase.bookmark.BookmarkRecruitmentUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentDetailsUseCase
@@ -21,14 +20,12 @@ internal class RecruitmentDetailsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             fetchRecruitmentDetailsUseCase(recruitmentId = recruitmentId)
                 .onSuccess { detail ->
-                    with(detail) {
-                        setState {
-                            state.value.copy(
-                                recruitmentDetailsEntity = copy(
-                                    companyProfileUrl = ResourceKeys.IMAGE_URL + companyProfileUrl,
-                                ),
-                            )
-                        }
+                    setState {
+                        state.value.copy(
+                            recruitmentDetailsEntity = detail.copy(
+                                companyProfileUrl = detail.companyProfileUrl,
+                            ),
+                        )
                     }
                 }
                 .onFailure {

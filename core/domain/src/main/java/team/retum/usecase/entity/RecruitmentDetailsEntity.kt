@@ -1,6 +1,7 @@
 package team.retum.usecase.entity
 
 import team.retum.common.enums.HiringProgress
+import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.Areas
 import team.retum.network.model.response.FetchRecruitmentDetailsResponse
 
@@ -35,7 +36,7 @@ data class AreasEntity(
 
 internal fun FetchRecruitmentDetailsResponse.toEntity() =
     RecruitmentDetailsEntity(
-        companyProfileUrl = this.companyProfileUrl,
+        companyProfileUrl = ResourceKeys.IMAGE_URL + this.companyProfileUrl,
         companyName = this.companyName,
         areas = this.areas.map { it.toEntity() },
         requiredGrade = this.requiredGrade,
