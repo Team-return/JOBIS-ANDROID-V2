@@ -128,6 +128,8 @@ object NetworkModule {
         return retrofit.create(NotificationApi::class.java)
     }
 
+    @Provides
+    @Singleton
     fun provideReviewApi(retrofit: Retrofit): ReviewApi {
         return retrofit.create(ReviewApi::class.java)
     }
