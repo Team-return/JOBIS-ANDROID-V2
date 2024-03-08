@@ -126,6 +126,7 @@ object NetworkModule {
     @Singleton
     fun provideNotificationAPi(retrofit: Retrofit): NotificationApi {
         return retrofit.create(NotificationApi::class.java)
+    }
 
     fun provideReviewApi(retrofit: Retrofit): ReviewApi {
         return retrofit.create(ReviewApi::class.java)
