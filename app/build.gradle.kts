@@ -60,7 +60,7 @@ dependencies {
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:home"))
-    implementation(project(":feature:alarm"))
+    implementation(project(":feature:notification"))
     implementation(project(":feature:recruitment"))
     implementation(project(":feature:bookmark"))
     implementation(project(":feature:bug"))
@@ -68,7 +68,7 @@ dependencies {
     implementation(project(":feature:interests"))
     implementation(project(":feature:change-password"))
     implementation(project(":feature:verify-email"))
-    implementation(project(":feature:notification"))
+    implementation(project(":feature:notice"))
     implementation(project(":feature:company"))
     implementation(project(":feature:review"))
 

@@ -3,8 +3,6 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import team.retum.alarm.navigation.alarm
-import team.retum.alarm.navigation.navigateToAlarm
 import team.retum.bug.navigateToReportBug
 import team.retum.bug.reportBug
 import team.retum.company.navigation.companies
@@ -16,9 +14,9 @@ import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.navigateToInterests
-import team.retum.jobis.notification.navigation.navigateToNotificationsList
-import team.retum.jobis.notification.navigation.notificationDetails
-import team.retum.jobis.notification.navigation.notificationList
+import team.retum.jobis.notice.navigation.navigateToNotices
+import team.retum.jobis.notice.navigation.noticeDetails
+import team.retum.jobis.notice.navigation.notices
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -30,6 +28,8 @@ import team.retum.jobisandroidv2.navigateToApplication
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.landing.navigation.navigateToLanding
+import team.retum.notification.navigation.navigateToNotification
+import team.retum.notification.navigation.notifications
 import team.retum.review.navigation.navigateToPostReview
 import team.retum.review.navigation.postReview
 
@@ -41,7 +41,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         startDestination = NAVIGATION_ROOT,
     ) {
         root(
-            onAlarmClick = navController::navigateToAlarm,
+            onAlarmClick = navController::navigateToNotification,
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
             onCompaniesClick = navController::navigateToCompanies,
             onRecruitmentFilterClick = navController::navigateToRecruitmentFilter,
@@ -49,18 +49,21 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onChangePasswordClick = navController::navigateToComparePassword,
             onReportBugClick = navController::navigateToReportBug,
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
-            onNoticeClick = navController::navigateToNotificationsList,
+            onNoticeClick = navController::navigateToNotices,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navController::navigateToPostReview,
         )
-        alarm(onBackPressed = navController::popBackStack)
+        notifications(
+            onBackPressed = navController::popBackStack,
+            navigateToDetail = navController::navigateToRecruitmentDetails,
+        )
         recruitmentDetails(
             onBackPressed = navController::navigateUp,
             onApplyClick = navController::navigateToApplication,
         )
         reportBug(onBackPressed = navController::popBackStack)
         interests(onBackPressed = navController::popBackStack)
-        notificationDetails(onBackPressed = navController::navigateUp)
+        noticeDetails(onBackPressed = navController::navigateUp)
         companies(
             onBackPressed = navController::popBackStack,
             onSearchClick = navController::navigateToSearchCompanies,
@@ -73,7 +76,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
         )
         application(onBackPressed = navController::popBackStack)
-        notificationList(onBackPressed = navController::popBackStack)
+        notices(onBackPressed = navController::popBackStack)
         postReview(onBackPressed = navController::popBackStack)
         companyDetails(onBackPressed = navController::popBackStack)
     }
