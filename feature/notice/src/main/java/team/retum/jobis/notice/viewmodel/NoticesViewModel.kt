@@ -16,9 +16,10 @@ internal class NoticesViewModel @Inject constructor(
     private val fetchNoticesUseCase: FetchNoticesUseCase,
 ) : BaseViewModel<NoticesState, Unit>(NoticesState.getDefaultState()) {
 
-    internal var notices: SnapshotStateList<NoticesEntity.NoticeEntity> =
-        mutableStateListOf()
-        private set
+//    internal var notices: SnapshotStateList<NoticesEntity.NoticeEntity> = mutableStateListOf()
+//        private set
+
+    //private val notices: SnapshotStateList<NoticesEntity.NoticeEntity> = mutableStateListOf()
 
     internal fun fetchNotices(page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -31,14 +32,21 @@ internal class NoticesViewModel @Inject constructor(
 
         }
     }
+
+    private fun addNotice() = setState {
+        notices.add()
+        state.value.copy(notices = notices)
+    }
 }
 
 internal data class NoticesState(
     val page: Int,
+    val notices: SnapshotStateList<NoticesEntity.NoticeEntity>
 ) {
     companion object {
         fun getDefaultState() = NoticesState(
             page = 0,
+            notices = mutableStateListOf()
         )
     }
 }
