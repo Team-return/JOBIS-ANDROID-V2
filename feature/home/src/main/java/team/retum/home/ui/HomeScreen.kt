@@ -64,6 +64,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
+import java.time.LocalDate
 
 private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40
@@ -87,18 +88,30 @@ internal fun Home(
 ) {
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
-    val menus = listOf(
-        MenuItem(
-            title = stringResource(id = R.string.search_other_companies),
-            onClick = onCompaniesClick,
-            icon = R.drawable.ic_building,
-        ),
-        MenuItem(
-            title = stringResource(id = R.string.experiential_field_training),
-            onClick = {},
-            icon = R.drawable.ic_snowman,
-        ),
-    )
+    val currentDate = LocalDate.now()
+    val isDecemberOrLater = currentDate.monthValue >= 12
+    val menus = if (isDecemberOrLater) {
+        listOf(
+            MenuItem(
+                title = stringResource(id = R.string.search_other_companies),
+                onClick = onCompaniesClick,
+                icon = R.drawable.ic_building,
+            ),
+            MenuItem(
+                title = stringResource(id = R.string.experiential_field_training),
+                onClick = {},
+                icon = R.drawable.ic_snowman,
+            ),
+        )
+    } else {
+        listOf(
+            MenuItem(
+                title = stringResource(id = R.string.how_about_other_companies),
+                onClick = onCompaniesClick,
+                icon = R.drawable.ic_building,
+            ),
+        )
+    }
 
     LaunchedEffect(Unit) {
         homeViewModel.sideEffect.collect {
