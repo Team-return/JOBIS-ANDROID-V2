@@ -12,14 +12,15 @@ const val RECRUITMENT_ID = "recruitment-id"
 
 fun NavGraphBuilder.recruitmentDetails(
     onBackPressed: () -> Unit,
-    onApplyClick: () -> Unit,
+    onApplyClick: (Long, String, String) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_RECRUITMENT_DETAILS{$RECRUITMENT_ID}",
         arguments = listOf(navArgument(RECRUITMENT_ID) { NavType.StringType }),
     ) {
         RecruitmentDetails(
-            recruitmentId = it.arguments?.getString(RECRUITMENT_ID)?.toLong() ?: throw NullPointerException(),
+            recruitmentId = it.arguments?.getString(RECRUITMENT_ID)?.toLong()
+                ?: throw NullPointerException(),
             onBackPressed = onBackPressed,
             onApplyClick = onApplyClick,
         )
