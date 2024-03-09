@@ -2,9 +2,12 @@ package team.retum.network.api
 
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 import team.retum.network.di.RequestUrls
+import team.retum.network.model.request.student.ChangePasswordRequest
+import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.TokenResponse
@@ -23,4 +26,19 @@ interface StudentApi {
     suspend fun postSignUp(
         @Body postSignUpRequest: PostSignUpRequest,
     ): TokenResponse
+
+    @GET(RequestUrls.Students.password)
+    suspend fun comparePassword(
+        @Query("password") password: String,
+    )
+
+    @PATCH(RequestUrls.Students.forgottenPassword)
+    suspend fun resetPassword(
+        @Body forgottenPasswordRequest: ForgottenPasswordRequest,
+    )
+
+    @PATCH(RequestUrls.Students.password)
+    suspend fun changePassword(
+        @Body changePasswordRequest: ChangePasswordRequest,
+    )
 }

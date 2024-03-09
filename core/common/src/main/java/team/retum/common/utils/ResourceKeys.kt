@@ -10,4 +10,6 @@ object ResourceKeys {
     const val BEARER = "Bearer"
     const val SIGN_UP = "signUp"
     const val COMPANY_ID = "companyId"
+    const val TYPE = "type"
+    const val VALUE = "value"
 }

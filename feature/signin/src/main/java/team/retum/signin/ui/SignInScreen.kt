@@ -104,8 +104,8 @@ private fun SignInScreen(
             password = { state.password },
             onEmailChange = onEmailChange,
             onPasswordChange = onPasswordChange,
-            notFoundEmail = { state.notFoundEmail },
-            invalidPassword = { state.invalidPassword },
+            notFoundEmail = { state.showEmailDescription },
+            invalidPassword = { state.showPasswordDescription },
         )
         Spacer(modifier = Modifier.height(8.dp))
         JobisMediumButton(

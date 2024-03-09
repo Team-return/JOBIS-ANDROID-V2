@@ -2,6 +2,8 @@ package team.retum.data.repository.student
 
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.datasource.student.RemoteStudentDataSource
+import team.retum.network.model.request.student.ChangePasswordRequest
+import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
 import team.retum.network.model.request.student.PostSignUpRequest
 import javax.inject.Inject
@@ -32,5 +34,17 @@ class StudentRepositoryImpl @Inject constructor(
             saveRefreshToken(response.refreshToken)
             saveRefreshExpiresAt(response.refreshExpiresAt)
         }
+    }
+
+    override suspend fun comparePassword(password: String) {
+        remoteStudentDataSource.comparePassword(password = password)
+    }
+
+    override suspend fun resetPassword(forgottenPasswordRequest: ForgottenPasswordRequest) {
+        remoteStudentDataSource.resetPassword(forgottenPasswordRequest = forgottenPasswordRequest)
+    }
+
+    override suspend fun changePassword(changePasswordRequest: ChangePasswordRequest) {
+        remoteStudentDataSource.changePassword(changePasswordRequest = changePasswordRequest)
     }
 }

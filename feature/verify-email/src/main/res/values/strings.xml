@@ -7,4 +7,15 @@
     <string name="hint_email">example</string>
     <string name="hint_authentication_code">이메일로 온 코드를 입력해주세요</string>
     <string name="next">다음</string>
+
+    <string name="description_email_sent">인증 메일이 발송되었어요</string>
+    <string name="description_conflict_email">이미 가입 된 이메일이에요</string>
+
+    <string name="description_invalid_authentication_code">인증코드가 잘못되었어요</string>
+    <string name="description_authentication_code_expired">인증코드가 만료되었어요</string>
+
+    <string name="re_send_authentication_code">재전송</string>
+    <string name="authentication">인증 하기</string>
+
+    <string name="toast_check_email_validation">이메일 형식을 확인해주세요</string>
 </resources>
