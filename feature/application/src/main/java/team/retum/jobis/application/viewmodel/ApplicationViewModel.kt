@@ -190,7 +190,6 @@ internal class ApplicationViewModel @Inject constructor(
 
     private fun addPresignedUrlOrUrlToAttachments(urls: List<Pair<String, AttachmentType>>) {
         attachments.addAll(urls)
-
     }
 }
 

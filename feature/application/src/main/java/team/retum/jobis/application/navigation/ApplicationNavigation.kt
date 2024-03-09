@@ -18,7 +18,7 @@ fun NavGraphBuilder.application(
     onBackPressed: () -> Unit,
 ) {
     composable(
-        route = "$NAVIGATION_APPLICATION/{${RECRUITMENT_ID}}/{$COMPANY_INFORMATION}",
+        route = "$NAVIGATION_APPLICATION/{$RECRUITMENT_ID}/{$COMPANY_INFORMATION}",
         arguments = listOf(
             navArgument(COMPANY_INFORMATION) { NavType.StringType },
             navArgument(RECRUITMENT_ID) { NavType.StringType },
