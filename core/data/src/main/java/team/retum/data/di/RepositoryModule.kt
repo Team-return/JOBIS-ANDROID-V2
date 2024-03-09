@@ -73,6 +73,8 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindNotificationRepository(notificationRepositoryImpl: NotificationRepositoryImpl) : NotificationRepository
 
+    @Binds
+    @Singleton
     abstract fun bindReviewRepository(reviewRepositoryImpl: ReviewRepositoryImpl): ReviewRepository
 
     @Binds
