@@ -77,7 +77,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         )
         application(onBackPressed = navController::popBackStack)
         noticeList(onBackPressed = navController::popBackStack)
-        notificationList(onBackPressed = navController::popBackStack)
+        noticeList(onBackPressed = navController::popBackStack)
         postReview(onBackPressed = navController::popBackStack)
         companyDetails(onBackPressed = navController::popBackStack)
     }
