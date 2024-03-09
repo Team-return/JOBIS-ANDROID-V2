@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +29,7 @@ import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
+import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.notification.viewmodel.NotificationsSideEffect
 import team.retum.notification.viewmodel.NotificationsViewModel
@@ -130,19 +129,18 @@ private fun NotificationContent(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxHeight(0.14f)
             .padding(vertical = 16.dp)
             .clickable(
                 enabled = true,
                 onClick = { onClick(notifications.notificationId) },
             ),
     ) {
-        Text(
+        JobisText(
             text = companyName,
             style = JobisTypography.Description,
             color = JobisTheme.colors.onPrimary,
         )
-        Text(
+        JobisText(
             text = content,
             style = JobisTypography.HeadLine,
             color = JobisTheme.colors.onBackground,
@@ -156,7 +154,7 @@ private fun NotificationContent(
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            JobisText(
                 text = date,
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onSurfaceVariant,

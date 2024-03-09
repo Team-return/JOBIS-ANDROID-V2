@@ -23,10 +23,10 @@ internal fun FetchNotificationsResponse.toNotificationsEntity() = NotificationsE
 )
 
 @SuppressLint("SimpleDateFormat")
-val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+private val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
 
 @SuppressLint("SimpleDateFormat")
-val outputFormat = SimpleDateFormat("yyyy-MM-dd")
+private val outputFormat = SimpleDateFormat("yyyy-MM-dd")
 
 private fun FetchNotificationsResponse.NotificationResponse.toEntity() =
     NotificationsEntity.NotificationEntity(

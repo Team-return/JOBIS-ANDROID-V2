@@ -15,7 +15,7 @@ interface NotificationApi {
     ): FetchNotificationsResponse
 
     @PATCH(RequestUrls.Notification.notification)
-    suspend fun fetchNotificationRead(
+    suspend fun readNotification(
         @Path("notification-id") notificationId: Long,
     )
 }

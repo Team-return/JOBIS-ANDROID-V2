@@ -8,7 +8,7 @@ import team.retum.jobis.notice.ui.NoticeDetails
 const val NAVIGATION_NOTICE_DETAILS = "noticeDetails/"
 const val NOTICE_ID = "{notice-id}"
 
-fun NavGraphBuilder.notificationDetails(
+fun NavGraphBuilder.noticeDetails(
     onBackPressed: () -> Unit,
 ) {
     composable(NAVIGATION_NOTICE_DETAILS + NOTICE_ID) {
@@ -17,5 +17,5 @@ fun NavGraphBuilder.notificationDetails(
 }
 
 fun NavController.navigateToNoticeDetails(noticeId: Long) {
-    navigate(NAVIGATION_NOTICE_LIST + noticeId)
+    navigate(NAVIGATION_NOTICE_DETAILS + noticeId)
 }

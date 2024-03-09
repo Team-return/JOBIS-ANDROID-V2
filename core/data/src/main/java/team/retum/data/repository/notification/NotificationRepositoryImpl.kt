@@ -10,6 +10,6 @@ class NotificationRepositoryImpl @Inject constructor(
     override suspend fun fetchNotifications(isNew: Boolean?): FetchNotificationsResponse =
         notificationDataSource.fetchNotifications(isNew = isNew)
 
-    override suspend fun fetchNotificationRead(notificationId: Long) =
-        notificationDataSource.fetchNotificationRead(notificationId = notificationId)
+    override suspend fun readNotification(notificationId: Long) =
+        notificationDataSource.readNotification(notificationId = notificationId)
 }

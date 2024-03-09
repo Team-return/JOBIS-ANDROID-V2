@@ -14,9 +14,9 @@ import team.retum.company.navigation.searchCompanies
 import team.retum.jobis.change_password.navigation.navigateToConfirmPassword
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.navigateToInterests
-import team.retum.jobis.notice.navigation.navigateToNoticeList
-import team.retum.jobis.notice.navigation.noticeList
-import team.retum.jobis.notice.navigation.notificationDetails
+import team.retum.jobis.notice.navigation.navigateToNotices
+import team.retum.jobis.notice.navigation.noticeDetails
+import team.retum.jobis.notice.navigation.notices
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -49,7 +49,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onChangePasswordClick = navController::navigateToConfirmPassword,
             onReportBugClick = navController::navigateToReportBug,
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
-            onNoticeClick = navController::navigateToNoticeList,
+            onNoticeClick = navController::navigateToNotices,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navController::navigateToPostReview,
         )
@@ -63,7 +63,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         )
         reportBug(onBackPressed = navController::popBackStack)
         interests(onBackPressed = navController::popBackStack)
-        notificationDetails(onBackPressed = navController::navigateUp)
+        noticeDetails(onBackPressed = navController::navigateUp)
         companies(
             onBackPressed = navController::popBackStack,
             onSearchClick = navController::navigateToSearchCompanies,
@@ -76,8 +76,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
         )
         application(onBackPressed = navController::popBackStack)
-        noticeList(onBackPressed = navController::popBackStack)
-        noticeList(onBackPressed = navController::popBackStack)
+        notices(onBackPressed = navController::popBackStack)
         postReview(onBackPressed = navController::popBackStack)
         companyDetails(onBackPressed = navController::popBackStack)
     }

@@ -27,17 +27,17 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
-internal fun NoticeList(
+internal fun Notices(
     onBackPressed: () -> Unit,
 ) {
-    NoticeListScreen(
+    NoticesScreen(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
     )
 }
 
 @Composable
-private fun NoticeListScreen(
+private fun NoticesScreen(
     onBackPressed: () -> Unit,
     scrollState: ScrollState,
 ) {

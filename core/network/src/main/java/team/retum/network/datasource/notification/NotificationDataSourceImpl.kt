@@ -13,8 +13,8 @@ class NotificationDataSourceImpl @Inject constructor(
             notificationApi.fetchNotifications(isNew = isNew)
         }
 
-    override suspend fun fetchNotificationRead(notificationId: Long) =
+    override suspend fun readNotification(notificationId: Long) =
         RequestHandler<Unit>().request {
-            notificationApi.fetchNotificationRead(notificationId = notificationId)
+            notificationApi.readNotification(notificationId = notificationId)
         }
 }
