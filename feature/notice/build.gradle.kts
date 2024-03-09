@@ -12,7 +12,3 @@ apply<ComposeGradlePlugin>()
 android {
     namespace = "team.retum.jobis.notification"
 }
-
-dependencies {
-
-}
