@@ -20,7 +20,7 @@ fun NavGraphBuilder.landing(
 }
 
 fun NavController.navigateToLanding(popUpRoute: String) {
-    navigate(NAVIGATION_LANDING){
+    navigate(NAVIGATION_LANDING) {
         popUpTo(popUpRoute) {
             inclusive = true
         }
