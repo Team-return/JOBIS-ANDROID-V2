@@ -58,7 +58,7 @@ import team.retum.usecase.entity.RecruitmentDetailsEntity
 internal fun RecruitmentDetails(
     recruitmentId: Long,
     onBackPressed: () -> Unit,
-    onApplyClick: (String, String) -> Unit,
+    onApplyClick: (Long, String, String) -> Unit,
     recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
 ) {
     val state by recruitmentDetailsViewModel.state.collectAsStateWithLifecycle()
@@ -84,6 +84,7 @@ internal fun RecruitmentDetails(
         onApplyClick = onApplyClick,
         onBookmarkClick = { recruitmentDetailsViewModel.bookmarkRecruitmentDetail(recruitmentId) },
         recruitmentDetail = state.recruitmentDetailsEntity,
+        recruitmentId = recruitmentId,
         scrollState = rememberScrollState(),
     )
 }
@@ -91,9 +92,10 @@ internal fun RecruitmentDetails(
 @Composable
 private fun RecruitmentDetailsScreen(
     onBackPressed: () -> Unit,
-    onApplyClick: (String, String) -> Unit,
+    onApplyClick: (Long, String, String) -> Unit,
     onBookmarkClick: () -> Unit,
     recruitmentDetail: RecruitmentDetailsEntity,
+    recruitmentId: Long,
     scrollState: ScrollState,
 ) {
     Column(
@@ -119,6 +121,7 @@ private fun RecruitmentDetailsScreen(
         BottomBar(
             onApplyClick = {
                 onApplyClick(
+                    recruitmentId,
                     recruitmentDetail.companyProfileUrl.replace("/", " "),
                     recruitmentDetail.companyName,
                 )

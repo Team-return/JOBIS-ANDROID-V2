@@ -56,6 +56,7 @@ import java.io.File
 internal fun Application(
     onBackPressed: () -> Unit,
     companyInfo: CompanyInfo,
+    recruitmentId: String,
     applicationViewModel: ApplicationViewModel = hiltViewModel(),
 ) {
     val state by applicationViewModel.state.collectAsStateWithLifecycle()
@@ -64,7 +65,7 @@ internal fun Application(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
-            applicationViewModel.addAttachment(
+            applicationViewModel.addFile(
                 activityResult = it,
                 context = context,
             )
@@ -72,6 +73,7 @@ internal fun Application(
     )
 
     LaunchedEffect(Unit) {
+        applicationViewModel.setRecruitmentId(recruitmentId = recruitmentId.toLong())
         applicationViewModel.sideEffect.collect {
             when (it) {
                 is ApplicationSideEffect.ExceedFileCount -> {
@@ -80,6 +82,46 @@ internal fun Application(
                         message = context.getString(R.string.toast_max_count),
                         drawable = JobisIcon.Error,
                     ).show()
+                }
+
+                is ApplicationSideEffect.InvalidFileExtension -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_invalid_file_extension),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is ApplicationSideEffect.SuccessApply -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_success_apply),
+                    ).show()
+                    onBackPressed()
+                }
+
+                is ApplicationSideEffect.ConflictApply -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_conflict_apply),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is ApplicationSideEffect.NotFoundRecruitment -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_not_found_recruitment),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is ApplicationSideEffect.UnexpectedGrade -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_unexpected_grade),
+                        drawable = JobisIcon.Error,
+                    )
                 }
             }
         }
@@ -102,8 +144,9 @@ internal fun Application(
                 launcher.launch(this)
             }
         },
-        removeAttachmentClick = applicationViewModel::removeAttachment,
-        attachments = applicationViewModel.getAttachments(),
+        removeAttachmentClick = applicationViewModel::removeFile,
+        attachments = applicationViewModel.getFiles(),
+        onApplyClick = applicationViewModel::createPresignedUrl,
     )
 }
 
@@ -120,6 +163,7 @@ private fun ApplicationScreen(
     onAddAttachmentClick: () -> Unit,
     removeAttachmentClick: (Int) -> Unit,
     attachments: SnapshotStateList<File>,
+    onApplyClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -153,7 +197,7 @@ private fun ApplicationScreen(
         }
         JobisButton(
             text = stringResource(id = R.string.apply),
-            onClick = {},
+            onClick = onApplyClick,
             color = ButtonColor.Primary,
             enabled = state.buttonEnabled,
         )

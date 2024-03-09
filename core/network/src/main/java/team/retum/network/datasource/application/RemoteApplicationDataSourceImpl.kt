@@ -33,9 +33,11 @@ class RemoteApplicationDataSourceImpl @Inject constructor(
         recruitmentId: Long,
         applyCompanyRequest: ApplyCompanyRequest,
     ) {
-        applicationApi.applyCompany(
-            recruitmentId = recruitmentId,
-            applyCompanyRequest = applyCompanyRequest,
-        )
+        RequestHandler<Unit>().request {
+            applicationApi.applyCompany(
+                recruitmentId = recruitmentId,
+                applyCompanyRequest = applyCompanyRequest,
+            )
+        }
     }
 }
