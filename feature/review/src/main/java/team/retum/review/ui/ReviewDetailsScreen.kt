@@ -1,6 +1,7 @@
 package team.retum.review.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,11 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -24,19 +32,29 @@ import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.review.viewmodel.ReviewDetailsState
+import team.retum.review.viewmodel.ReviewDetailsViewModel
 
 @Composable
 internal fun ReviewDetails(
     onBackPressed: () -> Unit,
     writer: String,
     reviewId: String,
+    reviewDetailsViewModel: ReviewDetailsViewModel = hiltViewModel(),
 ) {
     val scrollState = rememberScrollState()
+    val state by reviewDetailsViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        reviewDetailsViewModel.setReviewId(reviewId = reviewId)
+        reviewDetailsViewModel.fetchReviewDetails()
+    }
 
     ReviewDetailsScreen(
         onBackPressed = onBackPressed,
         writer = writer,
         scrollState = scrollState,
+        state = state,
     )
 }
 
@@ -45,6 +63,7 @@ private fun ReviewDetailsScreen(
     onBackPressed: () -> Unit,
     writer: String,
     scrollState: ScrollState,
+    state: ReviewDetailsState,
 ) {
     Column(
         modifier = Modifier
@@ -66,13 +85,18 @@ private fun ReviewDetailsScreen(
                 color = JobisTheme.colors.onSurfaceVariant,
                 style = JobisTypography.Description,
             )
-            ReviewQuestionContent(
-                question = "나에게 뭐든 물어봐",
-                area = "서버 개발자",
-                answer = "알잖아 나",
-                showAnswer = true,
-                onShowAnswerClick = {},
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                state.questions.forEach {
+                    val (showAnswer, setShowAnswer) = remember { mutableStateOf(false) }
+                    ReviewQuestionContent(
+                        question = it.question,
+                        area = it.answer,
+                        answer = it.area,
+                        showAnswer = showAnswer,
+                        onShowAnswerClick = setShowAnswer,
+                    )
+                }
+            }
         }
     }
 }
@@ -85,6 +109,12 @@ private fun ReviewQuestionContent(
     showAnswer: Boolean,
     onShowAnswerClick: (Boolean) -> Unit,
 ) {
+    val rotate by animateFloatAsState(
+        targetValue = if (showAnswer) 180f
+        else 0f,
+        label = "",
+    )
+
     JobisCard {
         Column(
             modifier = Modifier.padding(
@@ -102,6 +132,7 @@ private fun ReviewQuestionContent(
                     area = area,
                 )
                 JobisIconButton(
+                    modifier = Modifier.rotate(rotate),
                     painter = painterResource(id = R.drawable.ic_arrow_down),
                     contentDescription = "down",
                     onClick = { onShowAnswerClick(!showAnswer) },
