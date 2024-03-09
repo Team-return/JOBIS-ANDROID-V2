@@ -363,15 +363,8 @@ private fun AddApplicationDocument(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                horizontal = 24.dp,
-                //vertical = 8.dp,
-            )
-            .clickable(
-                enabled = true,
-                onClick = onClick,
-                onPressed = {},
-            )
+            .padding(horizontal = 24.dp)
+            .clickable(onClick = onClick)
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
