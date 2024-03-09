@@ -22,6 +22,8 @@ import team.retum.data.repository.notification.NotificationRepository
 import team.retum.data.repository.notification.NotificationRepositoryImpl
 import team.retum.data.repository.file.FileRepository
 import team.retum.data.repository.file.FileRepositoryImpl
+import team.retum.data.repository.notice.NoticeRepository
+import team.retum.data.repository.notice.NoticeRepositoryImpl
 import team.retum.data.repository.recruitment.RecruitmentRepository
 import team.retum.data.repository.recruitment.RecruitmentRepositoryImpl
 import team.retum.data.repository.student.StudentRepository
@@ -71,7 +73,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindNotificationRepository(notificationRepositoryImpl: NotificationRepositoryImpl) : NotificationRepository
+    abstract fun bindNotificationRepository(notificationRepositoryImpl: NotificationRepositoryImpl): NotificationRepository
 
     @Binds
     @Singleton
@@ -80,4 +82,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindFileRepository(fileRepositoryImpl: FileRepositoryImpl): FileRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNoticeRepository(noticeRepositoryImpl: NoticeRepositoryImpl): NoticeRepository
 }
