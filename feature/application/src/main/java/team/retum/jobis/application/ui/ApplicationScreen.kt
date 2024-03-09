@@ -1,6 +1,5 @@
-package team.retum.jobisandroidv2.ui
+package team.retum.jobis.application.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,7 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import team.retum.jobis.application.R
+import team.retum.jobis.application.model.CompanyInfo
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -40,6 +43,7 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 @Composable
 internal fun Application(
     onBackPressed: () -> Unit,
+    companyInfo: CompanyInfo,
 ) {
     val scrollState = rememberScrollState()
     val urls = remember { mutableStateListOf<String>() }
@@ -50,6 +54,7 @@ internal fun Application(
         urls = urls,
         onUrlChange = { index, url -> urls[index] = url },
         onAddUrlClick = { urls.add("") },
+        companyInfo = companyInfo,
     )
 }
 
@@ -60,6 +65,7 @@ private fun ApplicationScreen(
     urls: SnapshotStateList<String>,
     onUrlChange: (Int, String) -> Unit,
     onAddUrlClick: () -> Unit,
+    companyInfo: CompanyInfo,
 ) {
     Column(
         modifier = Modifier
@@ -68,7 +74,7 @@ private fun ApplicationScreen(
     ) {
         JobisSmallTopAppBar(
             onBackPressed = onBackPressed,
-            title = "지원하기", // stringResource(id = R.string.apply),
+            title = stringResource(id = R.string.apply),
         )
         Column(
             modifier = Modifier
@@ -76,8 +82,8 @@ private fun ApplicationScreen(
                 .verticalScroll(scrollState),
         ) {
             CompanyInformation(
-                companyProfileUrl = "",
-                companyName = "㈜비바리퍼블리카",
+                companyProfileUrl = companyInfo.companyProfileUrl.replace(" ", "/"),
+                companyName = companyInfo.companyName,
             )
             Attachments(
                 attachments = listOf("길근우 -자기소개서").toMutableStateList(),
@@ -91,7 +97,7 @@ private fun ApplicationScreen(
             )
         }
         JobisButton(
-            text = "지원하기",
+            text = stringResource(id = R.string.apply),
             onClick = {},
             color = ButtonColor.Primary,
         )
@@ -113,8 +119,7 @@ private fun CompanyInformation(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // TODO AsyncImage 사용
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(48.dp)
                 .clip(RoundedCornerShape(8.dp))
@@ -123,7 +128,7 @@ private fun CompanyInformation(
                     color = JobisTheme.colors.inverseSurface,
                     shape = RoundedCornerShape(8.dp),
                 ),
-            painter = painterResource(id = JobisIcon.Information),
+            model = companyProfileUrl,
             contentDescription = "company profile url",
         )
         JobisText(

@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":feature:notice"))
     implementation(project(":feature:company"))
     implementation(project(":feature:review"))
+    implementation(project(":feature:application"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)

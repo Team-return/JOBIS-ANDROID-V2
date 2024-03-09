@@ -12,7 +12,7 @@ const val RECRUITMENT_ID = "recruitment-id"
 
 fun NavGraphBuilder.recruitmentDetails(
     onBackPressed: () -> Unit,
-    onApplyClick: () -> Unit,
+    onApplyClick: (String, String) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_RECRUITMENT_DETAILS{$RECRUITMENT_ID}",

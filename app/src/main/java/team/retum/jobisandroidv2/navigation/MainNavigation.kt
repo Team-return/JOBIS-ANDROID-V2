@@ -23,8 +23,8 @@ import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
 import team.retum.jobis.recruitment.navigation.recruitmentDetails
 import team.retum.jobis.recruitment.navigation.recruitmentFilter
 import team.retum.jobis.recruitment.navigation.searchRecruitment
-import team.retum.jobisandroidv2.application
-import team.retum.jobisandroidv2.navigateToApplication
+import team.retum.jobis.application.navigation.application
+import team.retum.jobis.application.navigation.navigateToApplication
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.landing.navigation.navigateToLanding
