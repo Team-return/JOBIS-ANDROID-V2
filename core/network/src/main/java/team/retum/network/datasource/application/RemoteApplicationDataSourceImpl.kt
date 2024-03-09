@@ -1,6 +1,7 @@
 package team.retum.network.datasource.application
 
 import team.retum.network.api.ApplicationApi
+import team.retum.network.model.request.application.ApplyCompanyRequest
 import team.retum.network.model.response.application.FetchAppliedCompaniesResponse
 import team.retum.network.model.response.application.FetchEmploymentCountResponse
 import team.retum.network.model.response.application.FetchRejectionReasonResponse
@@ -9,7 +10,7 @@ import javax.inject.Inject
 
 class RemoteApplicationDataSourceImpl @Inject constructor(
     private val applicationApi: ApplicationApi,
-): RemoteApplicationDataSource {
+) : RemoteApplicationDataSource {
     override suspend fun fetchAppliedCompanies(): FetchAppliedCompaniesResponse {
         return RequestHandler<FetchAppliedCompaniesResponse>().request {
             applicationApi.fetchAppliedCompanies()
@@ -26,5 +27,15 @@ class RemoteApplicationDataSourceImpl @Inject constructor(
         return RequestHandler<FetchRejectionReasonResponse>().request {
             applicationApi.fetchRejectionReason(applicationId = applicationId)
         }
+    }
+
+    override suspend fun applyCompany(
+        recruitmentId: Long,
+        applyCompanyRequest: ApplyCompanyRequest,
+    ) {
+        applicationApi.applyCompany(
+            recruitmentId = recruitmentId,
+            applyCompanyRequest = applyCompanyRequest,
+        )
     }
 }
