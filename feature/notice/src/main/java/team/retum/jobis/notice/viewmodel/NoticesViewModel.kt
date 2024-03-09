@@ -33,10 +33,10 @@ internal class NoticesViewModel @Inject constructor(
         }
     }
 
-    private fun addNotice() = setState {
-        notices.add()
-        state.value.copy(notices = notices)
-    }
+//    private fun addNotice() = setState {
+//        notices.add()
+//        state.value.copy(notices = notices)
+//    }
 }
 
 internal data class NoticesState(
