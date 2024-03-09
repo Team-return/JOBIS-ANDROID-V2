@@ -31,7 +31,9 @@ import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.navigateToNotification
 import team.retum.notification.navigation.notifications
 import team.retum.review.navigation.navigateToPostReview
+import team.retum.review.navigation.navigateToReviewDetails
 import team.retum.review.navigation.postReview
+import team.retum.review.navigation.reviewDetails
 
 const val NAVIGATION_MAIN = "main"
 
@@ -78,6 +80,10 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         application(onBackPressed = navController::popBackStack)
         notices(onBackPressed = navController::popBackStack)
         postReview(onBackPressed = navController::popBackStack)
-        companyDetails(onBackPressed = navController::popBackStack)
+        companyDetails(
+            onBackPressed = navController::popBackStack,
+            navigateToReviewDetails = navController::navigateToReviewDetails,
+        )
+        reviewDetails(navController::popBackStack)
     }
 }

@@ -12,4 +12,7 @@
     <string name="please_write_review">후기를 작성해주세요</string>
     <string name="search">검색어를 입력해주세요</string>
     <string name="example">example</string>
+
+    <!--Review Details Screen-->
+    <string name="review_questions">받은 면접 질문</string>
 </resources>

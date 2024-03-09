@@ -44,6 +44,7 @@ import team.retum.usecase.entity.company.CompanyDetailsEntity
 internal fun CompanyDetails(
     companyId: Long,
     onBackPressed: () -> Unit,
+    navigateToReviewDetails: (String, String) -> Unit,
     companyDetailsViewModel: CompanyDetailsViewModel = hiltViewModel(),
 ) {
     val state by companyDetailsViewModel.state.collectAsStateWithLifecycle()
@@ -59,6 +60,7 @@ internal fun CompanyDetails(
     CompanyDetailsScreen(
         companyId = companyId,
         onBackPressed = onBackPressed,
+        navigateToReviewDetails = navigateToReviewDetails,
         state = state,
     )
 }
@@ -67,6 +69,7 @@ internal fun CompanyDetails(
 private fun CompanyDetailsScreen(
     companyId: Long,
     onBackPressed: () -> Unit,
+    navigateToReviewDetails: (String, String) -> Unit,
     state: CompanyDetailsState,
 ) {
     Column(
@@ -88,7 +91,7 @@ private fun CompanyDetailsScreen(
         if (state.reviews.isNotEmpty()) {
             Reviews(
                 reviews = state.reviews,
-                navigateToReviewDetails = {},
+                navigateToReviewDetails = navigateToReviewDetails,
             )
         }
     }
@@ -227,7 +230,7 @@ private fun CompanyInformation(
 @Composable
 private fun Reviews(
     reviews: List<FetchReviewsEntity.Review>,
-    navigateToReviewDetails: (String) -> Unit,
+    navigateToReviewDetails: (String, String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -258,12 +261,12 @@ private fun Reviews(
 
 @Composable
 private fun ReviewContent(
-    onClick: (String) -> Unit,
+    onClick: (String, String) -> Unit,
     reviewId: String,
     writer: String,
     year: Int,
 ) {
-    JobisCard(onClick = { onClick(reviewId) }) {
+    JobisCard(onClick = { onClick(reviewId, writer) }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
