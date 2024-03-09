@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apply">지원하기</string>
+    <string name="attachment">첨부 파일</string>
+    <string name="add_attachment">파일 추가하기</string>
+    <string name="url">URL</string>
+    <string name="hint_url">링크를 입력해주세요</string>
+    <string name="add_url">URL 추가하기</string>
+
+    <string name="toast_max_count">최대 3개까지만 등록할 수 있어요</string>
+</resources>

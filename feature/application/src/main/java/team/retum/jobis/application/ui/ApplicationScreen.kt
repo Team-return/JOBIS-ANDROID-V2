@@ -1,9 +1,13 @@
 package team.retum.jobis.application.ui
 
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,19 +19,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.jobis.application.R
 import team.retum.jobis.application.model.CompanyInfo
+import team.retum.jobis.application.viewmodel.ApplicationSideEffect
+import team.retum.jobis.application.viewmodel.ApplicationState
+import team.retum.jobis.application.viewmodel.ApplicationViewModel
+import team.retum.jobis.application.viewmodel.MAX_ATTACHMENT_COUNT
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -38,34 +48,78 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
+import java.io.File
 
 @Composable
 internal fun Application(
     onBackPressed: () -> Unit,
     companyInfo: CompanyInfo,
+    applicationViewModel: ApplicationViewModel = hiltViewModel(),
 ) {
+    val state by applicationViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
-    val urls = remember { mutableStateListOf<String>() }
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            applicationViewModel.addAttachment(
+                activityResult = it,
+                context = context,
+            )
+        },
+    )
+
+    LaunchedEffect(Unit) {
+        applicationViewModel.sideEffect.collect {
+            when (it) {
+                is ApplicationSideEffect.ExceedFileCount -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_max_count),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+            }
+        }
+    }
 
     ApplicationScreen(
+        state = state,
         scrollState = scrollState,
         onBackPressed = onBackPressed,
-        urls = urls,
-        onUrlChange = { index, url -> urls[index] = url },
-        onAddUrlClick = { urls.add("") },
+        urls = applicationViewModel.getUrls(),
+        onUrlChange = applicationViewModel::onUrlChange,
+        onAddUrlClick = applicationViewModel::addUrl,
+        onRemoveUrlClick = applicationViewModel::removeUrl,
         companyInfo = companyInfo,
+        onAddAttachmentClick = {
+            Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "*/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                addCategory(Intent.CATEGORY_OPENABLE)
+                launcher.launch(this)
+            }
+        },
+        removeAttachmentClick = applicationViewModel::removeAttachment,
+        attachments = applicationViewModel.getAttachments(),
     )
 }
 
 @Composable
 private fun ApplicationScreen(
+    state: ApplicationState,
     scrollState: ScrollState,
     onBackPressed: () -> Unit,
     urls: SnapshotStateList<String>,
     onUrlChange: (Int, String) -> Unit,
     onAddUrlClick: () -> Unit,
+    onRemoveUrlClick: (Int) -> Unit,
     companyInfo: CompanyInfo,
+    onAddAttachmentClick: () -> Unit,
+    removeAttachmentClick: (Int) -> Unit,
+    attachments: SnapshotStateList<File>,
 ) {
     Column(
         modifier = Modifier
@@ -86,20 +140,22 @@ private fun ApplicationScreen(
                 companyName = companyInfo.companyName,
             )
             Attachments(
-                attachments = listOf("길근우 -자기소개서").toMutableStateList(),
-                onClick = { /*TODO*/ },
-                onRemoveClick = {},
+                attachments = attachments,
+                onClick = onAddAttachmentClick,
+                onRemoveClick = removeAttachmentClick,
             )
             Urls(
                 urls = urls,
                 onUrlChange = onUrlChange,
                 onClick = onAddUrlClick,
+                onRemoveUrlClick = onRemoveUrlClick,
             )
         }
         JobisButton(
             text = stringResource(id = R.string.apply),
             onClick = {},
             color = ButtonColor.Primary,
+            enabled = state.buttonEnabled,
         )
     }
 }
@@ -121,7 +177,7 @@ private fun CompanyInformation(
     ) {
         AsyncImage(
             modifier = Modifier
-                .size(48.dp)
+                .size(64.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .border(
                     width = 1.dp,
@@ -140,34 +196,37 @@ private fun CompanyInformation(
 
 @Composable
 private fun Attachments(
-    attachments: SnapshotStateList<String>,
+    attachments: SnapshotStateList<File>,
     onClick: () -> Unit,
     onRemoveClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                horizontal = 24.dp,
-                vertical = 12.dp,
-            ),
+            .padding(vertical = 12.dp),
     ) {
         JobisText(
-            modifier = Modifier.padding(vertical = 8.dp),
-            text = "첨부 파일",
+            modifier = Modifier.padding(
+                horizontal = 24.dp,
+                vertical = 8.dp,
+            ),
+            text = stringResource(id = R.string.attachment),
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
         )
-        if (attachments.isEmpty()) {
-            AddApplicationDocument(
-                text = "파일 추가하기",
-                onClick = onClick,
-            )
-        } else {
-            attachments.forEachIndexed { index, name ->
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            attachments.forEachIndexed { index, file ->
                 Attachment(
-                    name = name,
+                    name = file.name,
                     onRemoveClick = { onRemoveClick(index) },
+                )
+            }
+        }
+        if (attachments.size < MAX_ATTACHMENT_COUNT) {
+            Box(modifier = Modifier.padding(vertical = 8.dp)) {
+                AddApplicationDocument(
+                    text = stringResource(id = R.string.add_attachment),
+                    onClick = onClick,
                 )
             }
         }
@@ -179,7 +238,7 @@ private fun Attachment(
     name: String,
     onRemoveClick: () -> Unit,
 ) {
-    JobisCard {
+    JobisCard(modifier = Modifier.padding(horizontal = 24.dp)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -210,6 +269,7 @@ private fun Urls(
     urls: SnapshotStateList<String>,
     onUrlChange: (Int, String) -> Unit,
     onClick: () -> Unit,
+    onRemoveUrlClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -221,23 +281,33 @@ private fun Urls(
                 horizontal = 24.dp,
                 vertical = 8.dp,
             ),
-            text = "URL",
+            text = stringResource(id = R.string.url),
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
         )
         urls.forEachIndexed { index, url ->
-            JobisTextField(
-                title = "title",
-                value = { url },
-                hint = "링크를 입력해주세요",
-                onValueChange = { onUrlChange(index, it) },
-            ) {
+            Box(contentAlignment = Alignment.CenterEnd) {
+                JobisTextField(
+                    value = { url },
+                    hint = stringResource(id = R.string.hint_url),
+                    onValueChange = { onUrlChange(index, it) },
+                    leadingIcon = painterResource(id = JobisIcon.Link),
+                )
+                JobisIconButton(
+                    modifier = Modifier.padding(end = 32.dp),
+                    painter = painterResource(id = JobisIcon.Close),
+                    contentDescription = "close",
+                    onClick = { onRemoveUrlClick(index) },
+                    defaultBackgroundColor = JobisTheme.colors.inverseSurface,
+                )
             }
         }
-        AddApplicationDocument(
-            text = "URL 추가하기",
-            onClick = onClick,
-        )
+        if (urls.size < 3) {
+            AddApplicationDocument(
+                text = stringResource(id = R.string.add_url),
+                onClick = onClick,
+            )
+        }
     }
 }
 
@@ -249,7 +319,10 @@ private fun AddApplicationDocument(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+            .padding(
+                horizontal = 24.dp,
+                //vertical = 8.dp,
+            )
             .clickable(
                 enabled = true,
                 onClick = onClick,
