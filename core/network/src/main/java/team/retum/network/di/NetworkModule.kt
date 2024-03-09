@@ -19,6 +19,7 @@ import team.retum.network.api.BannerApi
 import team.retum.network.api.BookmarkApi
 import team.retum.network.api.CodeApi
 import team.retum.network.api.CompanyApi
+import team.retum.network.api.NoticeApi
 import team.retum.network.api.NotificationApi
 import team.retum.network.api.RecruitmentApi
 import team.retum.network.api.ReviewApi
@@ -138,5 +139,11 @@ object NetworkModule {
     @Singleton
     fun provideFileApi(retrofit: Retrofit): FileApi {
         return retrofit.create(FileApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoticeApi(retrofit: Retrofit): NoticeApi {
+        return retrofit.create(NoticeApi::class.java)
     }
 }

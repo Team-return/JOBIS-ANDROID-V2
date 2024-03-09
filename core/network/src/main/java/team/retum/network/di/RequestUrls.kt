@@ -7,6 +7,7 @@ internal object RequestUrls {
         const val applicationId = "application-id"
         const val reviewId = "review-id"
         const val notificationId = "notification-id"
+        const val noticeId = "notice-id"
     }
 
     data object Users {
@@ -107,5 +108,12 @@ internal object RequestUrls {
 
         const val notifications = path
         const val notification = "$path/{${PATH.notificationId}}"
+    }
+
+    data object Notice {
+        private const val path = "/notices"
+
+        const val notices = path
+        const val notice = "$path/{${PATH.noticeId}}"
     }
 }
