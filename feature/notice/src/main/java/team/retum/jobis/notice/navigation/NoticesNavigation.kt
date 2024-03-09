@@ -15,6 +15,6 @@ fun NavGraphBuilder.noticeList(
     }
 }
 
-fun NavController.navigateToNoticeList() {
+fun NavController.navigateToNotices() {
     navigate(NAVIGATION_NOTICE_LIST)
 }

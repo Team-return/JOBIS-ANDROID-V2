@@ -9,6 +9,6 @@ class NotificationUseCase @Inject constructor(
     suspend operator fun invoke(
         notificationId: Long,
     ) = runCatching {
-        notificationRepository.fetchNotificationRead(notificationId = notificationId)
+        notificationRepository.readNotification(notificationId = notificationId)
     }
 }
