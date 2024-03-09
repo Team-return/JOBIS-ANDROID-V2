@@ -6,11 +6,13 @@ import androidx.navigation.navigation
 import team.retum.jobis.change.password.navigation.confirmPassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
 import team.retum.jobis.change.password.navigation.resetPassword
+import team.retum.jobis.splash.navigation.NAVIGATION_SPLASH
+import team.retum.jobis.splash.navigation.splash
 import team.retum.jobis.verify.email.navigation.navigateToVerifyEmail
 import team.retum.jobis.verify.email.navigation.verifyEmail
 import team.retum.jobisandroidv2.root.navigateToRoot
-import team.retum.landing.navigation.NAVIGATION_LANDING
 import team.retum.landing.navigation.landing
+import team.retum.landing.navigation.navigateToLanding
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signin.navigation.signIn
 import team.retum.signup.navigation.navigateToInputEmail
@@ -26,8 +28,12 @@ const val NAVIGATION_AUTH = "auth"
 internal fun NavGraphBuilder.authNavigation(navController: NavController) {
     navigation(
         route = NAVIGATION_AUTH,
-        startDestination = NAVIGATION_LANDING,
+        startDestination = NAVIGATION_SPLASH,
     ) {
+        splash(
+            navigateToLanding = { navController.navigateToLanding(NAVIGATION_SPLASH) },
+            navigateToRoot = navController::navigateToRoot,
+        )
         landing(
             onSignInClick = navController::navigateToSignIn,
             onSignUpClick = navController::navigateToSignUp,
