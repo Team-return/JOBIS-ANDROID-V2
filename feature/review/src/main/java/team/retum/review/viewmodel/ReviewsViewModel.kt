@@ -25,7 +25,6 @@ internal class ReviewsViewModel @Inject constructor(
             }
         }
     }
-
 }
 
 internal data class ReviewsState(

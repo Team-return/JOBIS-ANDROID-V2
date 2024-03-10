@@ -110,8 +110,11 @@ private fun ReviewQuestionContent(
     onShowAnswerClick: (Boolean) -> Unit,
 ) {
     val rotate by animateFloatAsState(
-        targetValue = if (showAnswer) 180f
-        else 0f,
+        targetValue = if (showAnswer) {
+            180f
+        } else {
+            0f
+        },
         label = "",
     )
 
