@@ -13,6 +13,7 @@ const val NAVIGATION_COMPANY_DETAILS = "companyDetails"
 fun NavGraphBuilder.companyDetails(
     onBackPressed: () -> Unit,
     navigateToReviewDetails: (String, String) -> Unit,
+    navigateToReviews: (Long, String) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_COMPANY_DETAILS/{${ResourceKeys.COMPANY_ID}}",
@@ -24,6 +25,7 @@ fun NavGraphBuilder.companyDetails(
             companyId = companyId.toLong(),
             onBackPressed = onBackPressed,
             navigateToReviewDetails = navigateToReviewDetails,
+            navigateToReviews = navigateToReviews,
         )
     }
 }
