@@ -84,7 +84,7 @@ private data class MenuItem(
 @Composable
 internal fun Home(
     onAlarmClick: () -> Unit,
-    showRejectionModal: (String) -> Unit,
+    showRejectionModal: (String, Long) -> Unit,
     onCompaniesClick: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -120,7 +120,7 @@ internal fun Home(
         homeViewModel.sideEffect.collect {
             when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
-                    showRejectionModal(it.rejectionReason)
+                    showRejectionModal(it.rejectionReason, it.recruitmentId)
                 }
 
                 is HomeSideEffect.NotFoundApplication -> {
@@ -150,7 +150,7 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: (Long) -> Unit,
+    onRejectionReasonClick: (Long, Long) -> Unit,
     state: HomeState,
     studentInformation: StudentInformationEntity,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
@@ -456,7 +456,7 @@ private fun Menu(
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
-    onClick: (Long) -> Unit,
+    onClick: (Long, Long) -> Unit,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -485,7 +485,7 @@ private fun ApplyStatus(
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
                     ApplyCompanyItem(
-                        onClick = { onClick(it.applicationId) },
+                        onClick = { onClick(it.applicationId, it.recruitmentId) },
                         appliedCompany = it,
                     )
                 }

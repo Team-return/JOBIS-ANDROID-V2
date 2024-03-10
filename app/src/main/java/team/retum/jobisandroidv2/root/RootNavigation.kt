@@ -19,6 +19,7 @@ fun NavGraphBuilder.root(
     onReportBugClick: () -> Unit,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     composable(NAVIGATION_ROOT) {
         Root(
@@ -33,6 +34,7 @@ fun NavGraphBuilder.root(
             onReportBugClick = onReportBugClick,
             navigateToLanding = navigateToLanding,
             onPostReviewClick = onPostReviewClick,
+            navigateToRecruitmentDetails = navigateToRecruitmentDetails,
         )
     }
 }

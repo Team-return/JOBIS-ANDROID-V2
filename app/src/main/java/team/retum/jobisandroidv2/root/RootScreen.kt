@@ -13,6 +13,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,6 +53,7 @@ internal fun Root(
     onReportBugClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -60,13 +62,15 @@ internal fun Root(
         skipHalfExpanded = true,
     )
     var rejectionReason by remember { mutableStateOf("") }
+    var recruitmentId by remember { mutableLongStateOf(0) }
 
     RootScreen(
         navController = navController,
         sheetState = sheetState,
         onAlarmClick = onAlarmClick,
-        showRejectionModal = {
-            rejectionReason = it
+        showRejectionModal = { reason, id ->
+            rejectionReason = reason
+            recruitmentId = id
             coroutineScope.launch {
                 sheetState.show()
             }
@@ -82,6 +86,12 @@ internal fun Root(
         rejectionReason = rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
+        navigateToRecruitmentDetails = {
+            coroutineScope.launch {
+                sheetState.hide()
+            }
+            navigateToRecruitmentDetails(recruitmentId)
+        },
     )
 }
 
@@ -95,7 +105,7 @@ private fun RootScreen(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
-    showRejectionModal: (String) -> Unit,
+    showRejectionModal: (String, Long) -> Unit,
     onCompaniesClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
@@ -104,13 +114,14 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    navigateToRecruitmentDetails: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
             RejectionBottomSheet(
                 reason = rejectionReason,
-                onReApplyClick = {},
+                onReApplyClick = navigateToRecruitmentDetails,
             )
         },
         sheetShape = RoundedCornerShape(

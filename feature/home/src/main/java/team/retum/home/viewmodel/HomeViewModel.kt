@@ -86,10 +86,18 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
-    internal fun onRejectionReasonClick(applicationId: Long) {
+    internal fun onRejectionReasonClick(
+        applicationId: Long,
+        recruitmentId: Long,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             fetchRejectionReasonUseCase(applicationId = applicationId).onSuccess {
-                postSideEffect(HomeSideEffect.ShowRejectionModal(it.rejectionReason))
+                postSideEffect(
+                    HomeSideEffect.ShowRejectionModal(
+                        rejectionReason = it.rejectionReason,
+                        recruitmentId = recruitmentId,
+                    ),
+                )
             }.onFailure {
                 when (it) {
                     is NotFoundException -> {
@@ -129,6 +137,10 @@ internal data class HomeState(
 }
 
 internal sealed interface HomeSideEffect {
-    data class ShowRejectionModal(val rejectionReason: String) : HomeSideEffect
+    data class ShowRejectionModal(
+        val rejectionReason: String,
+        val recruitmentId: Long,
+    ) : HomeSideEffect
+
     data object NotFoundApplication : HomeSideEffect
 }

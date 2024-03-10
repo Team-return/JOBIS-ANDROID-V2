@@ -52,6 +52,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onNoticeClick = navController::navigateToNotices,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navController::navigateToPostReview,
+            navigateToRecruitmentDetails = navController::navigateToRecruitmentDetails,
         )
         notifications(
             onBackPressed = navController::popBackStack,
