@@ -2,8 +2,8 @@ package team.retum.jobis.recruitment.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
@@ -12,116 +12,90 @@ import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
 import javax.inject.Inject
 
+@HiltViewModel
 internal class RecruitmentFilterViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
 ) : BaseViewModel<RecruitmentFilterState, RecruitmentFilterSideEffect>(RecruitmentFilterState.getDefaultState()) {
-    private val _techs = mutableListOf<CodesEntity.CodeEntity>()
-    val techs: MutableList<CodesEntity.CodeEntity> get() = _techs
+
+    companion object {
+        var jobCode: Long? = null
+        var techCode: String? = null
+    }
+
+    init {
+        fetchCodes()
+    }
+
+    private var _majors: MutableList<CodesEntity.CodeEntity> = mutableStateListOf()
+    val majors get() = _majors
+
+    private var _techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
+    val techs get() = _techs
+
+    private var _checkedSkills: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
+    val checkedSkills get() = _checkedSkills
 
     internal fun fetchCodes() {
-        val type = state.value.type
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase(
                 keyword = state.value.keyword,
-                type = type,
-                parentCode = state.value.selectedJobCode,
+                type = state.value.type,
+                parentCode = state.value.parentCode,
             ).onSuccess {
-                when (type) {
-                    CodeType.JOB -> setJobs(jobs = it.codes)
-
-                    CodeType.TECH -> {
-                        with(_techs) {
-                            clear()
-                            addAll(it.codes)
-                            setTechs(techs = this)
-                        }
-                    }
-
-                    CodeType.BUSINESS_AREA -> setBusinessAreas(businessAreas = it.codes)
+                if (state.value.type == CodeType.JOB) {
+                    setType()
+                    _majors.addAll(it.codes)
+                } else {
+                    _techs.clear()
+                    _techs.addAll(it.codes)
                 }
             }
         }
     }
 
-    private fun setJobs(jobs: List<CodesEntity.CodeEntity>) =
-        setState { state.value.copy(jobs = jobs.sortedByDescending { it.keyword.length }) }
-
-    private fun setTechs(techs: MutableList<CodesEntity.CodeEntity>) =
-        setState { state.value.copy(techs = techs.toMutableStateList()) }
-
-    private fun setBusinessAreas(businessAreas: List<CodesEntity.CodeEntity>) =
-        setState { state.value.copy(businessAreas = businessAreas) }
-
-    internal fun setKeyword(keyword: String) {
-        setState { state.value.copy(keyword = keyword) }
-        searchTechCode(keyword)
+    internal fun addSkill(
+        skill: CodesEntity.CodeEntity,
+        check: Boolean,
+    ) {
+        if (check) {
+            _checkedSkills.add(skill)
+        } else {
+            _checkedSkills.remove(skill)
+        }
     }
 
-    internal fun setType(type: CodeType) =
-        setState { state.value.copy(type = type) }
+    internal fun setKeyword(keyword: String) = setState {
+        state.value.copy(keyword = keyword)
+    }
 
-    internal fun setParentCode(parentCode: Long?) =
-        setState { state.value.copy(selectedJobCode = parentCode) }
-
-    internal fun onSelectTech(
-        code: Long,
-        keyword: String,
+    internal fun setSelectedMajor(
+        major: String,
+        parentCode: Long?,
     ) {
-        val tech = code to keyword
-
-        with(state.value.selectedTechs) {
-            if (contains(tech)) {
-                remove(tech)
-            } else {
-                add(tech)
-            }
-        }
         setState {
-            state.value.copy(selectedTechs = state.value.selectedTechs)
+            state.value.copy(
+                selectedMajor = major,
+                parentCode = parentCode,
+            )
         }
     }
 
-    private fun searchTechCode(
-        keyword: String,
-    ) {
-        val resultList = mutableListOf<CodesEntity.CodeEntity>()
-
-        _techs.filter {
-            keyword.length <= it.keyword.length && keyword.uppercase() == it.keyword.substring(
-                keyword.indices,
-            ).uppercase()
-        }.map {
-            resultList.add(it)
-        }
-
-        setTechs(
-            techs = if (keyword.isBlank()) {
-                _techs
-            } else {
-                resultList
-            },
-        )
-    }
+    private fun setType() =
+        setState { state.value.copy(type = CodeType.TECH) }
 }
 
 internal data class RecruitmentFilterState(
-    val jobs: List<CodesEntity.CodeEntity>,
-    val techs: SnapshotStateList<CodesEntity.CodeEntity>,
-    val businessAreas: List<CodesEntity.CodeEntity>,
-    val selectedTechs: SnapshotStateList<Pair<Long, String>>,
     val type: CodeType,
-    val selectedJobCode: Long?,
     val keyword: String?,
+    val selectedMajor: String,
+    val parentCode: Long?,
 ) {
     companion object {
         fun getDefaultState() = RecruitmentFilterState(
-            jobs = emptyList(),
-            techs = mutableStateListOf(),
-            businessAreas = emptyList(),
-            selectedTechs = mutableStateListOf(),
             type = CodeType.JOB,
-            selectedJobCode = null,
             keyword = null,
+            selectedMajor = "",
+            parentCode = null,
         )
     }
 }

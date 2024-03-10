@@ -10,32 +10,37 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.common.component.Skills
+import team.retum.common.enums.CodeType
+import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.jobCode
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.techCode
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.usecase.entity.CodesEntity
 
 @Composable
 internal fun RecruitmentFilter(
@@ -44,55 +49,68 @@ internal fun RecruitmentFilter(
 ) {
     val state by recruitmentFilterViewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(state.keyword, state.type, state.parentCode) {
+        if (state.type == CodeType.TECH) {
+            recruitmentFilterViewModel.fetchCodes()
+        }
+    }
+
     RecruitmentFilterScreen(
         onBackPressed = onBackPressed,
-        recruitmentFilterViewModel = recruitmentFilterViewModel,
         state = state,
         setKeyword = recruitmentFilterViewModel::setKeyword,
+        setSelectedMajor = recruitmentFilterViewModel::setSelectedMajor,
+        majors = recruitmentFilterViewModel.majors,
+        techs = recruitmentFilterViewModel.techs,
+        onCheckSkill = recruitmentFilterViewModel::addSkill,
+        checkedSkills = recruitmentFilterViewModel.checkedSkills,
     )
 }
 
 @Composable
 private fun RecruitmentFilterScreen(
     onBackPressed: () -> Unit,
-    recruitmentFilterViewModel: RecruitmentFilterViewModel,
     state: RecruitmentFilterState,
     setKeyword: (String) -> Unit,
+    setSelectedMajor: (String, Long?) -> Unit,
+    majors: List<CodesEntity.CodeEntity>,
+    techs: SnapshotStateList<CodesEntity.CodeEntity>,
+    onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
+    checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
 ) {
-    val majors = remember { mutableStateListOf<String>() }
-    val selectedMajors = remember { mutableStateListOf<String>() }
-    val checkedSkills = remember { mutableStateListOf<String>() }
-    majors.run {
-        add("iOS")
-        add("Android")
-        add("Front-end")
-        add("Back-end")
-        add("Embedded")
-        add("Security")
-    }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(JobisTheme.colors.background),
+        ) {
+            JobisSmallTopAppBar(
+                onBackPressed = onBackPressed,
+                title = stringResource(id = R.string.setting_filter),
+            )
+            FilterInputs(
+                keyword = { state.keyword ?: "" },
+                onKeywordChange = setKeyword,
+                majors = majors,
+                techs = techs,
+                selectedMajor = state.selectedMajor,
+                onMajorSelected = setSelectedMajor,
+                onMajorUnselected = { setSelectedMajor("", null) },
+                checkedSkills = checkedSkills,
+                onCheckSkill = onCheckSkill,
+            )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(JobisTheme.colors.background),
-    ) {
-        JobisSmallTopAppBar(
-            onBackPressed = onBackPressed,
-            title = "필터 설정",
-        )
-        FilterInputs(
-            keyword = { state.keyword ?: "" },
-            onKeywordChange = setKeyword,
-            majors = majors,
-            selectedMajors = selectedMajors,
-            onMajorSelected = { selectedMajors.add(it) },
-            onMajorUnselected = { selectedMajors.remove(it) },
-            checkedSkills = checkedSkills,
-        )
-        LazyColumn {
-            items(recruitmentFilterViewModel.techs) {
-            }
         }
+        JobisButton(
+            text = stringResource(id = R.string.appliance),
+            onClick = {
+                jobCode = state.parentCode
+                techCode = checkedSkills.joinToString(separator = ",") { it.code.toString() }
+                onBackPressed()
+            },
+            modifier = Modifier.align(Alignment.BottomCenter),
+            color = ButtonColor.Primary,
+        )
     }
 }
 
@@ -101,15 +119,17 @@ private fun RecruitmentFilterScreen(
 private fun FilterInputs(
     keyword: () -> String,
     onKeywordChange: (String) -> Unit,
-    majors: SnapshotStateList<String>,
-    selectedMajors: SnapshotStateList<String>,
-    onMajorSelected: (String) -> Unit,
-    onMajorUnselected: (String) -> Unit,
-    checkedSkills: MutableList<String>,
+    majors: List<CodesEntity.CodeEntity>,
+    techs: List<CodesEntity.CodeEntity>,
+    selectedMajor: String,
+    onMajorSelected: (String, Long?) -> Unit,
+    onMajorUnselected: () -> Unit,
+    checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
+    onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
 ) {
     JobisTextField(
         value = keyword,
-        hint = "검색어를 입력해주세요",
+        hint = stringResource(id = R.string.recruitment_search_hint),
         onValueChange = onKeywordChange,
         leadingIcon = painterResource(id = JobisIcon.Search),
     )
@@ -124,46 +144,43 @@ private fun FilterInputs(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         majors.forEach {
-            val selected = selectedMajors.contains(it)
             MajorContent(
-                major = it,
-                selected = { selected },
-                onClick = {
-                    when (selected) {
-                        true -> onMajorUnselected(it)
-                        false -> onMajorSelected(it)
+                major = it.keyword,
+                selected = selectedMajor == it.keyword,
+                onClick = { major ->
+                    when (selectedMajor == it.keyword) {
+                        true -> onMajorUnselected()
+                        false -> onMajorSelected(major, it.code)
                     }
                 },
             )
         }
     }
-    // TODO 더미 데이터 제거
     Skills(
-        skills = listOf(
-            "Kotlin",
-            "Java",
-        ).toMutableStateList(),
-        checkedSkills = checkedSkills,
-        onCheckedChange = { index, checked ->
-            // TODO 뷰모델로 함수 옮기기
-            checkedSkills.run {
-                when (checked) {
-                    true -> add(index)
-                    false -> remove(index)
-                }
-            }
-        },
-    )
+        skills = techs.map { it.keyword }.toMutableStateList(),
+        checkedSkills = checkedSkills.map { it.keyword },
+        checkSkillsId = techs.map { it.code },
+    ) { index, checked, id ->
+        checkedSkills.run {
+            onCheckSkill(
+                CodesEntity.CodeEntity(
+                    code = id,
+                    keyword = index,
+                ),
+                checked,
+            )
+        }
+    }
 }
 
 @Composable
 private fun MajorContent(
     major: String,
-    selected: () -> Boolean,
-    onClick: () -> Unit,
+    selected: Boolean,
+    onClick: (String) -> Unit,
 ) {
     val background by animateColorAsState(
-        targetValue = if (selected()) {
+        targetValue = if (selected) {
             JobisTheme.colors.onPrimary
         } else {
             JobisTheme.colors.inverseSurface
@@ -171,7 +188,7 @@ private fun MajorContent(
         label = "",
     )
     val textColor by animateColorAsState(
-        targetValue = if (selected()) {
+        targetValue = if (selected) {
             JobisTheme.colors.background
         } else {
             JobisTheme.colors.onPrimaryContainer
@@ -183,7 +200,7 @@ private fun MajorContent(
         modifier = Modifier
             .clickable(
                 enabled = true,
-                onClick = onClick,
+                onClick = { onClick(major) },
                 onPressed = {},
             )
             .clip(RoundedCornerShape(30.dp))
