@@ -159,8 +159,13 @@ private fun HomeScreen(
             )
         }
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Banner(
+            /*Banner(
                 pagerState = pagerState,
+                rate = state.rate,
+                passCount = state.passCount,
+                totalStudentCount = state.totalStudentCount,
+            )*/
+            EmploymentRate(
                 rate = state.rate,
                 passCount = state.passCount,
                 totalStudentCount = state.totalStudentCount,
@@ -247,8 +252,12 @@ private fun EmploymentRate(
     totalStudentCount: Long,
 ) {
     JobisCard(
-        onClick = {},
-        enabled = false,
+        modifier = Modifier.padding(
+            top = 16.dp,
+            bottom = 32.dp,
+            start = 24.dp,
+            end = 24.dp,
+        ),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.padding(24.dp)) {
