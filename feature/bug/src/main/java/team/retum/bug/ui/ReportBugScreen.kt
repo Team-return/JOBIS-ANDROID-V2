@@ -113,7 +113,6 @@ internal fun ReportBug(
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.toast_report_bug_success),
-                        drawable = JobisIcon.Error,
                     ).show()
                     onBackPressed()
                 }
