@@ -22,6 +22,8 @@ import team.retum.network.datasource.notification.NotificationDataSource
 import team.retum.network.datasource.notification.NotificationDataSourceImpl
 import team.retum.network.datasource.file.RemoteFileDataSource
 import team.retum.network.datasource.file.RemoteFileDataSourceImpl
+import team.retum.network.datasource.notice.NoticeDataSource
+import team.retum.network.datasource.notice.NoticeDataSourceImpl
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSource
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSourceImpl
 import team.retum.network.datasource.student.RemoteStudentDataSource
@@ -80,4 +82,8 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindRemoteFileDataSource(remoteFileDataSourceImpl: RemoteFileDataSourceImpl): RemoteFileDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindNoticeDataSource(noticeDataSourceImpl: NoticeDataSourceImpl): NoticeDataSource
 }

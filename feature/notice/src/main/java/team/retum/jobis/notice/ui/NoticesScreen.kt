@@ -13,11 +13,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.jobis.notice.viewmodel.NoticesViewModel
 import team.retum.jobis.notification.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -29,7 +33,14 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 @Composable
 internal fun Notices(
     onBackPressed: () -> Unit,
+    noticesViewModel: NoticesViewModel = hiltViewModel(),
 ) {
+    val state = noticesViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        //noticesViewModel.fetchNotices()
+    }
+
     NoticesScreen(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
@@ -57,7 +68,7 @@ private fun NoticesScreen(
         ) {
             // TODO: viewmodel 추가시 제거
             for (i in 0..20) {
-                NoticeListItem(
+                NoticesItem(
                     noticeTitle = "[중요] 오리엔테이션날 일정 안내",
                     noticeDate = "2024.01.17",
                     onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
@@ -68,7 +79,7 @@ private fun NoticesScreen(
 }
 
 @Composable
-private fun NoticeListItem(
+private fun NoticesItem(
     noticeTitle: String,
     noticeDate: String,
     onClick: () -> Unit,
