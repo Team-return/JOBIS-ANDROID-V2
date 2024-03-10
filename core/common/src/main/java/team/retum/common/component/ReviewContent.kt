@@ -22,7 +22,7 @@ fun ReviewContent(
     onClick: (String, String) -> Unit,
     reviewId: String,
     writer: String,
-    year: Int,
+    year: String,
 ) {
     JobisCard(onClick = { onClick(reviewId, writer) }) {
         Row(
@@ -40,7 +40,7 @@ fun ReviewContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             JobisText(
-                text = year.toString(),
+                text = year,
                 style = JobisTypography.Description,
             )
             Spacer(modifier = Modifier.weight(1f))
