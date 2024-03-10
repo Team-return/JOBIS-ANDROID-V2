@@ -1,4 +1,4 @@
-package team.retum.bug
+package team.retum.bug.ui
 
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import team.retum.common.enums.DevelopmentArea
+import team.retum.jobis.bug.R
 import team.retum.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton

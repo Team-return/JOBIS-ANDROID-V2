@@ -3,8 +3,8 @@ package team.retum.jobisandroidv2.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import team.retum.bug.navigateToReportBug
-import team.retum.bug.reportBug
+import team.retum.bug.navigation.navigateToReportBug
+import team.retum.bug.navigation.reportBug
 import team.retum.company.navigation.companies
 import team.retum.company.navigation.companyDetails
 import team.retum.company.navigation.navigateToCompanies
