@@ -52,6 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.enums.ApplyStatus
+import team.retum.common.model.ReApplyData
 import team.retum.home.R
 import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
@@ -84,7 +85,7 @@ private data class MenuItem(
 @Composable
 internal fun Home(
     onAlarmClick: () -> Unit,
-    showRejectionModal: (String, Long) -> Unit,
+    showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -120,7 +121,7 @@ internal fun Home(
         homeViewModel.sideEffect.collect {
             when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
-                    showRejectionModal(it.rejectionReason, it.recruitmentId)
+                    showRejectionModal(it.reApplyData)
                 }
 
                 is HomeSideEffect.NotFoundApplication -> {
@@ -150,7 +151,7 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: (Long, Long) -> Unit,
+    onRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
     state: HomeState,
     studentInformation: StudentInformationEntity,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
@@ -456,7 +457,7 @@ private fun Menu(
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
-    onClick: (Long, Long) -> Unit,
+    onClick: (applicationId: Long, ReApplyData) -> Unit,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -485,7 +486,16 @@ private fun ApplyStatus(
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
                     ApplyCompanyItem(
-                        onClick = { onClick(it.applicationId, it.recruitmentId) },
+                        onClick = {
+                            onClick(
+                                it.applicationId,
+                                ReApplyData(
+                                    recruitmentId = it.recruitmentId,
+                                    companyLogoUrl = it.companyLogoUrl,
+                                    companyName = it.company,
+                                ),
+                            )
+                        },
                         appliedCompany = it,
                     )
                 }

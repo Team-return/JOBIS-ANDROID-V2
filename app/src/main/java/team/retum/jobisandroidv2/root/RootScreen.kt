@@ -13,7 +13,6 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.bookmarks
+import team.retum.common.model.ReApplyData
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
@@ -53,7 +53,7 @@ internal fun Root(
     onReportBugClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
-    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigateToApplication: (ReApplyData) -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -61,16 +61,14 @@ internal fun Root(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
     )
-    var rejectionReason by remember { mutableStateOf("") }
-    var recruitmentId by remember { mutableLongStateOf(0) }
+    var reApplyData by remember { mutableStateOf(ReApplyData()) }
 
     RootScreen(
         navController = navController,
         sheetState = sheetState,
         onAlarmClick = onAlarmClick,
-        showRejectionModal = { reason, id ->
-            rejectionReason = reason
-            recruitmentId = id
+        showRejectionModal = {
+            reApplyData = it
             coroutineScope.launch {
                 sheetState.show()
             }
@@ -83,14 +81,14 @@ internal fun Root(
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
-        rejectionReason = rejectionReason,
+        rejectionReason = reApplyData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
         navigateToRecruitmentDetails = {
             coroutineScope.launch {
                 sheetState.hide()
             }
-            navigateToRecruitmentDetails(recruitmentId)
+            navigateToApplication(reApplyData)
         },
     )
 }
@@ -105,7 +103,7 @@ private fun RootScreen(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
-    showRejectionModal: (String, Long) -> Unit,
+    showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,

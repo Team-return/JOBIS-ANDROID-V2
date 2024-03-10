@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import team.retum.common.model.ReApplyData
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
@@ -58,7 +59,7 @@ import team.retum.usecase.entity.RecruitmentDetailsEntity
 internal fun RecruitmentDetails(
     recruitmentId: Long,
     onBackPressed: () -> Unit,
-    onApplyClick: (Long, String, String) -> Unit,
+    onApplyClick: (ReApplyData) -> Unit,
     recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
 ) {
     val state by recruitmentDetailsViewModel.state.collectAsStateWithLifecycle()
@@ -92,7 +93,7 @@ internal fun RecruitmentDetails(
 @Composable
 private fun RecruitmentDetailsScreen(
     onBackPressed: () -> Unit,
-    onApplyClick: (Long, String, String) -> Unit,
+    onApplyClick: (ReApplyData) -> Unit,
     onBookmarkClick: () -> Unit,
     recruitmentDetail: RecruitmentDetailsEntity,
     recruitmentId: Long,
@@ -121,9 +122,11 @@ private fun RecruitmentDetailsScreen(
         BottomBar(
             onApplyClick = {
                 onApplyClick(
-                    recruitmentId,
-                    recruitmentDetail.companyProfileUrl.replace("/", " "),
-                    recruitmentDetail.companyName,
+                    ReApplyData(
+                        recruitmentId = recruitmentId,
+                        companyLogoUrl = recruitmentDetail.companyProfileUrl.replace("/", " "),
+                        companyName = recruitmentDetail.companyName,
+                    ),
                 )
             },
             onBookmarkClick = onBookmarkClick,
