@@ -11,7 +11,7 @@ data class AppliedCompaniesEntity(
         val applicationId: Long,
         val recruitmentId: Long,
         val company: String,
-        val companyLogoUrl: String?,
+        val companyLogoUrl: String,
         val attachments: List<AttachmentEntity>,
         val applicationStatus: ApplyStatus,
     ) {
