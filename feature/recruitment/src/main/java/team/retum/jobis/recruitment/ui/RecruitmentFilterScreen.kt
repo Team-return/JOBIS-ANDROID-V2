@@ -105,7 +105,7 @@ private fun RecruitmentFilterScreen(
             text = stringResource(id = R.string.appliance),
             onClick = {
                 jobCode = state.parentCode
-                techCode = checkedSkills.joinToString(separator = ", ") { it.keyword }
+                techCode = checkedSkills.joinToString(separator = ",") { it.code.toString() }
                 onBackPressed()
             },
             modifier = Modifier.align(Alignment.BottomCenter),
