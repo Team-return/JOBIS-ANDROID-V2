@@ -7,18 +7,16 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentsContent
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
-import team.retum.jobis.recruitment.viewmodel.RecruitmentsState
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -32,11 +30,14 @@ internal fun Recruitments(
     onSearchRecruitmentClick: () -> Unit,
     recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
-    val state by recruitmentViewModel.state.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
         with(recruitmentViewModel) {
+            setJobCode(RecruitmentFilterViewModel.jobCode)
+            setTechCode(RecruitmentFilterViewModel.techCode)
+            recruitmentViewModel.clearRecruitment()
+            recruitmentViewModel.fetchRecruitments()
             snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.callNextPageByPosition()
         }
     }
@@ -47,7 +48,6 @@ internal fun Recruitments(
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
         onBookmarkClick = recruitmentViewModel::bookmarkRecruitment,
-        state = state,
         lazyListState = lazyListState,
     )
 }
@@ -59,7 +59,6 @@ private fun RecruitmentsScreen(
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
     onBookmarkClick: (Long) -> Unit,
-    state: RecruitmentsState,
     lazyListState: LazyListState,
 ) {
     Column(

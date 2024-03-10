@@ -1,5 +1,6 @@
 package team.retum.jobis.recruitment.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
@@ -30,7 +31,19 @@ internal class RecruitmentViewModel @Inject constructor(
         fetchTotalRecruitmentCount()
     }
 
-    private fun fetchRecruitments() {
+    internal fun clearRecruitment() {
+        recruitments.clear()
+    }
+
+    internal fun setJobCode(jobCode: Long?) = setState {
+        state.value.copy(jobCode = jobCode)
+    }
+
+    internal fun setTechCode(techCode: String?) = setState {
+        state.value.copy(techCode = techCode)
+    }
+
+    internal fun fetchRecruitments() {
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 fetchRecruitmentsUseCase(
