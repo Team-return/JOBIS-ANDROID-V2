@@ -11,6 +11,8 @@ import team.retum.usecase.usecase.company.FetchCompanyDetailsUseCase
 import team.retum.usecase.usecase.review.FetchReviewsUseCase
 import javax.inject.Inject
 
+private const val MAX_REVIEW_COUNT = 3
+
 @HiltViewModel
 internal class CompanyDetailsViewModel @Inject constructor(
     private val fetchCompanyDetailsUseCase: FetchCompanyDetailsUseCase,
@@ -32,7 +34,13 @@ internal class CompanyDetailsViewModel @Inject constructor(
     internal fun fetchReviews() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewsUseCase(companyId = state.value.companyId).onSuccess {
-                setState { state.value.copy(reviews = it.reviews) }
+                val reviews = it.reviews
+                setState {
+                    state.value.copy(
+                        reviews = reviews.take(MAX_REVIEW_COUNT),
+                        showMoreReviews = reviews.size > MAX_REVIEW_COUNT,
+                    )
+                }
             }
         }
     }
@@ -42,6 +50,7 @@ internal data class CompanyDetailsState(
     val companyId: Long,
     val companyDetailsEntity: CompanyDetailsEntity,
     val reviews: List<FetchReviewsEntity.Review>,
+    val showMoreReviews: Boolean,
 ) {
     companion object {
         fun getInitialState() = CompanyDetailsState(
@@ -69,6 +78,7 @@ internal data class CompanyDetailsState(
                 businessArea = "",
             ),
             reviews = emptyList(),
+            showMoreReviews = false,
         )
     }
 }

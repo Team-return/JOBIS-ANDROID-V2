@@ -8,11 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -24,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,6 +37,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.FetchReviewsEntity
 import team.retum.usecase.entity.company.CompanyDetailsEntity
 
@@ -92,6 +93,8 @@ private fun CompanyDetailsScreen(
             Reviews(
                 reviews = state.reviews,
                 navigateToReviewDetails = navigateToReviewDetails,
+                showMoreReviews = state.showMoreReviews,
+                onShowMoreReviewClick = {},
             )
         }
     }
@@ -231,6 +234,8 @@ private fun CompanyInformation(
 private fun Reviews(
     reviews: List<FetchReviewsEntity.Review>,
     navigateToReviewDetails: (String, String) -> Unit,
+    showMoreReviews: Boolean,
+    onShowMoreReviewClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -246,8 +251,8 @@ private fun Reviews(
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
         )
-        LazyColumn {
-            items(reviews) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            reviews.forEach {
                 ReviewContent(
                     onClick = navigateToReviewDetails,
                     reviewId = it.reviewId,
@@ -255,6 +260,19 @@ private fun Reviews(
                     year = it.year,
                 )
             }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        if (showMoreReviews) {
+            JobisText(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 4.dp)
+                    .clickable(onClick = onShowMoreReviewClick),
+                text = stringResource(id = R.string.show_more_reviews),
+                style = JobisTypography.SubBody,
+                color = JobisTheme.colors.onSurfaceVariant,
+                textDecoration = TextDecoration.Underline,
+            )
         }
     }
 }
