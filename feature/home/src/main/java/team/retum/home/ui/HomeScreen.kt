@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -62,6 +63,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.time.LocalDate
@@ -86,6 +88,7 @@ internal fun Home(
     onCompaniesClick: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val currentDate = LocalDate.now()
@@ -118,6 +121,13 @@ internal fun Home(
             when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
                     showRejectionModal(it.rejectionReason)
+                }
+
+                is HomeSideEffect.NotFoundApplication -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_not_found_application),
+                    ).show()
                 }
             }
         }
@@ -530,12 +540,12 @@ private fun ApplyCompanyItem(
             ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // TODO AsyncImage 사용
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                painter = painterResource(id = JobisIcon.Information),
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(JobisTheme.colors.background),
+                model = appliedCompany.companyLogoUrl,
                 contentDescription = "company profile url",
             )
             Spacer(modifier = Modifier.width(8.dp))
