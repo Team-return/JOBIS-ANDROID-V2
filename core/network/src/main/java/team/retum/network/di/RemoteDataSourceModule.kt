@@ -12,12 +12,14 @@ import team.retum.network.datasource.banner.RemoteBannerDataSource
 import team.retum.network.datasource.banner.RemoteBannerDataSourceImpl
 import team.retum.network.datasource.bookmark.BookmarkDataSource
 import team.retum.network.datasource.bookmark.BookmarkDataSourceImpl
+import team.retum.network.datasource.bug.RemoteBugDataSource
+import team.retum.network.datasource.bug.RemoteBugDataSourceImpl
 import team.retum.network.datasource.code.RemoteCodeDataSource
 import team.retum.network.datasource.code.RemoteCodeDataSourceImpl
-import team.retum.network.datasource.review.ReviewDataSource
-import team.retum.network.datasource.review.ReviewDataSourceImpl
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
+import team.retum.network.datasource.file.RemoteFileDataSource
+import team.retum.network.datasource.file.RemoteFileDataSourceImpl
 import team.retum.network.datasource.notification.NotificationDataSource
 import team.retum.network.datasource.notification.NotificationDataSourceImpl
 import team.retum.network.datasource.file.RemoteFileDataSource
@@ -26,6 +28,8 @@ import team.retum.network.datasource.notice.NoticeDataSource
 import team.retum.network.datasource.notice.NoticeDataSourceImpl
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSource
 import team.retum.network.datasource.recruitment.RemoteRecruitmentDataSourceImpl
+import team.retum.network.datasource.review.ReviewDataSource
+import team.retum.network.datasource.review.ReviewDataSourceImpl
 import team.retum.network.datasource.student.RemoteStudentDataSource
 import team.retum.network.datasource.student.RemoteStudentDataSourceImpl
 import team.retum.network.datasource.user.RemoteUserDataSource
@@ -86,4 +90,8 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindNoticeDataSource(noticeDataSourceImpl: NoticeDataSourceImpl): NoticeDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteBugDataSource(remoteBugDataSourceImpl: RemoteBugDataSourceImpl): RemoteBugDataSource
 }

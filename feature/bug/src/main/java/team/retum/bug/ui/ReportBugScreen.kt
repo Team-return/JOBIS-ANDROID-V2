@@ -108,6 +108,15 @@ internal fun ReportBug(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+
+                is ReportBugSideEffect.Success -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_report_bug_success),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                    onBackPressed()
+                }
             }
         }
     }
@@ -117,7 +126,7 @@ internal fun ReportBug(
         state = state,
         onTitleChange = reportBugViewModel::setTitle,
         onContentChange = reportBugViewModel::setContent,
-        onReportBugClick = reportBugViewModel::onNextClick,
+        onReportBugClick = { reportBugViewModel.onNextClick(context = context) },
         activityResultLauncher = activityResultLauncher,
         screenshots = screenshots.toMutableStateList(),
         onRemoveClick = reportBugViewModel::removeScreenshot,
