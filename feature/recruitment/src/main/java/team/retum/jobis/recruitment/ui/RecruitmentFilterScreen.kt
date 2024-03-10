@@ -73,7 +73,7 @@ private fun RecruitmentFilterScreen(
     state: RecruitmentFilterState,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
-    majors: SnapshotStateList<CodesEntity.CodeEntity>,
+    majors: List<CodesEntity.CodeEntity>,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
     onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
     checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
@@ -85,7 +85,7 @@ private fun RecruitmentFilterScreen(
                 .background(JobisTheme.colors.background),
         ) {
             JobisSmallTopAppBar(
-                onBackPressed = { onBackPressed() },
+                onBackPressed = onBackPressed,
                 title = stringResource(id = R.string.setting_filter),
             )
             FilterInputs(
@@ -119,7 +119,7 @@ private fun RecruitmentFilterScreen(
 private fun FilterInputs(
     keyword: () -> String,
     onKeywordChange: (String) -> Unit,
-    majors: SnapshotStateList<CodesEntity.CodeEntity>,
+    majors: List<CodesEntity.CodeEntity>,
     techs: List<CodesEntity.CodeEntity>,
     selectedMajor: String,
     onMajorSelected: (String, Long?) -> Unit,

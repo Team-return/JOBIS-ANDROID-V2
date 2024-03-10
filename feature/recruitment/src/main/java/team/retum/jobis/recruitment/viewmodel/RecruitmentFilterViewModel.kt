@@ -21,16 +21,19 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         var jobCode: Long? = null
         var techCode: String? = null
     }
+
     init {
         fetchCodes()
     }
 
-    var majors: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
-        private set
-    var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
-        private set
-    var checkedSkills: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
-        private set
+    private var _majors: MutableList<CodesEntity.CodeEntity> = mutableStateListOf()
+    val majors get() = _majors
+
+    private var _techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
+    val techs get() = _techs
+
+    private var _checkedSkills: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
+    val checkedSkills get() = _checkedSkills
 
     internal fun fetchCodes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -41,10 +44,10 @@ internal class RecruitmentFilterViewModel @Inject constructor(
             ).onSuccess {
                 if (state.value.type == CodeType.JOB) {
                     setType()
-                    majors.addAll(it.codes)
+                    _majors.addAll(it.codes)
                 } else {
-                    techs.clear()
-                    techs.addAll(it.codes)
+                    _techs.clear()
+                    _techs.addAll(it.codes)
                 }
             }
         }
@@ -55,14 +58,14 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         check: Boolean,
     ) {
         if (check) {
-            checkedSkills.add(skill)
+            _checkedSkills.add(skill)
         } else {
-            checkedSkills.remove(skill)
+            _checkedSkills.remove(skill)
         }
     }
 
-    internal fun setKeyword(keyword: String) {
-        setState { state.value.copy(keyword = keyword) }
+    internal fun setKeyword(keyword: String) = setState {
+        state.value.copy(keyword = keyword)
     }
 
     internal fun setSelectedMajor(
