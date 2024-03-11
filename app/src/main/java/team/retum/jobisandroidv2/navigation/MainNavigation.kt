@@ -16,6 +16,7 @@ import team.retum.jobis.application.navigation.navigateToApplication
 import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.navigateToInterests
+import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices
 import team.retum.jobis.notice.navigation.noticeDetails
 import team.retum.jobis.notice.navigation.notices
@@ -81,7 +82,10 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onRecruitmentDetailsClick = navController::navigateToRecruitmentDetails,
         )
         application(onBackPressed = navController::popBackStack)
-        notices(onBackPressed = navController::popBackStack)
+        notices(
+            onBackPressed = navController::popBackStack,
+            navigateToDetails = navController::navigateToNoticeDetails,
+        )
         postReview(onBackPressed = navController::popBackStack)
         companyDetails(
             onBackPressed = navController::popBackStack,
