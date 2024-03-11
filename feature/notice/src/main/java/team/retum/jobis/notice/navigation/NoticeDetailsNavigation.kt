@@ -8,7 +8,7 @@ import androidx.navigation.navArgument
 import team.retum.jobis.notice.ui.NoticeDetails
 
 const val NAVIGATION_NOTICE_DETAILS = "noticeDetails/"
-const val NOTICE_ID = "notice-id"
+const val NOTICE_ID = "noticeId"
 
 fun NavGraphBuilder.noticeDetails(
     onBackPressed: () -> Unit,
