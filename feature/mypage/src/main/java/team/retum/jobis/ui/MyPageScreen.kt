@@ -69,7 +69,12 @@ internal fun MyPage(
     }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { },
+        onResult = {
+            myPageViewModel.setUri(
+                uri = it,
+                context = context,
+            )
+        },
     )
     val showGallery = {
         val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
@@ -82,6 +87,21 @@ internal fun MyPage(
             when (it) {
                 is MyPageSideEffect.SuccessSignOut -> {
                     navigateToLanding()
+                }
+
+                is MyPageSideEffect.BadEditProfileImage -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_bad_request_edit_image),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is MyPageSideEffect.SuccessEditProfileImage -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_success_edit_profile_image),
+                    ).show()
                 }
             }
         }
