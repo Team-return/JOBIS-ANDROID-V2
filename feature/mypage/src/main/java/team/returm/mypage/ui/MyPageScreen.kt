@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -38,6 +39,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.returm.mypage.viewmodel.MyPageSideEffect
 import team.returm.mypage.viewmodel.MyPageState
@@ -54,7 +56,14 @@ internal fun MyPage(
     onPostReviewClick: (Long) -> Unit,
 ) {
     val state by myPageViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
+    val showUpdateLaterToast = {
+        JobisToast.create(
+            context = context,
+            message = context.getString(R.string.toast_update_later),
+        ).show()
+    }
 
     LaunchedEffect(Unit) {
         myPageViewModel.sideEffect.collect {
@@ -78,6 +87,7 @@ internal fun MyPage(
         onSignOutClick = myPageViewModel::onSignOutClick,
         onWithdrawalClick = myPageViewModel::onWithdrawalClick,
         onPostReviewClick = onPostReviewClick,
+        showUpdateLaterToast = showUpdateLaterToast,
     )
 }
 
@@ -94,6 +104,7 @@ private fun MyPageScreen(
     onSignOutClick: () -> Unit,
     onWithdrawalClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    showUpdateLaterToast: () -> Unit,
 ) {
     if (state.showSignOutModal) {
         JobisDialog(
@@ -155,6 +166,7 @@ private fun MyPageScreen(
                         ),
                     ),
                 ),
+                showUpdateLaterToast = showUpdateLaterToast,
             )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.account),
@@ -190,6 +202,7 @@ private fun MyPageScreen(
                         ),
                     ),
                 ),
+                showUpdateLaterToast = showUpdateLaterToast,
             )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.bug_report),
@@ -202,15 +215,9 @@ private fun MyPageScreen(
                             onClick = onReportBugClick,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
-                        ListItemInfo(
-                            imageResource = painterResource(id = JobisIcon.Box),
-                            description = "bug report box icon",
-                            contentTitle = stringResource(id = R.string.bug_report_box),
-                            onClick = { /*TODO 버그 제보함 페이지로 이동 */ },
-                            iconColor = JobisTheme.colors.onPrimary,
-                        ),
                     ),
                 ),
+                showUpdateLaterToast = showUpdateLaterToast,
             )
         }
     }
@@ -324,6 +331,7 @@ private fun WriteInterviewReview(
 private fun ContentListItem(
     contentItemInfo: ContentItemInfo,
     contentListTitle: String,
+    showUpdateLaterToast: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -337,9 +345,18 @@ private fun ContentListItem(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         contentItemInfo.items.forEach { item ->
+            val isNotImplementedFeature =
+                item.contentTitle == stringResource(id = R.string.interest_field) ||
+                        item.contentTitle == stringResource(id = R.string.membership_withdrawal)
             ListItem(
                 item = item,
-                onItemClick = item.onClick,
+                onItemClick = {
+                    if (isNotImplementedFeature) {
+                        showUpdateLaterToast()
+                    } else {
+                        item.onClick()
+                    }
+                },
             )
         }
     }

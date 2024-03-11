@@ -21,4 +21,5 @@
     <string name="withdrawal_modal_title">JOBIS에서 탈퇴 하시겠어요?</string>
     <string name="modal_if_withdrawal">JOBIS에서 탈퇴하면,\n다시 가입 할 때 까지 사용하지 못해요</string>
     <string name="modal_button_withdrawal">회원탈퇴</string>
+    <string name="toast_update_later">추후 업데이트 될 예정이에요</string>
 </resources>
