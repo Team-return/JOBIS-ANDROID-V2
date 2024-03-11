@@ -1,4 +1,4 @@
-package team.retum.bug
+package team.retum.bug.ui
 
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -6,7 +6,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,24 +31,33 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import team.retum.bug.viewmodel.ReportBugSideEffect
+import team.retum.bug.viewmodel.ReportBugState
+import team.retum.bug.viewmodel.ReportBugViewModel
 import team.retum.common.enums.DevelopmentArea
+import team.retum.jobis.bug.R
 import team.retum.jobisdesignsystemv2.appbar.JobisCollapsingTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -72,10 +80,13 @@ private val developmentAreas = listOf(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun ReportBug(onBackPressed: () -> Unit) {
+internal fun ReportBug(
+    onBackPressed: () -> Unit,
+    reportBugViewModel: ReportBugViewModel = hiltViewModel(),
+) {
+    val state by reportBugViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val screenshots = remember { mutableStateListOf<Uri>() }
-    var selectedField by remember { mutableStateOf(DevelopmentArea.ANDROID) }
+    val screenshots = reportBugViewModel.getUris()
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
@@ -84,30 +95,46 @@ internal fun ReportBug(onBackPressed: () -> Unit) {
     )
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = {
-            if (screenshots.size + it.size > 5) {
-                JobisToast.create(
-                    context = context,
-                    message = context.getString(R.string.screenshot_over_flow),
-                    drawable = JobisIcon.Error,
-                ).show()
-            } else {
-                screenshots.addAll(it)
-            }
-        },
+        onResult = reportBugViewModel::addUris,
     )
 
+    LaunchedEffect(Unit) {
+        reportBugViewModel.sideEffect.collect {
+            when (it) {
+                is ReportBugSideEffect.MaxScreenshotCount -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.screenshot_over_flow),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is ReportBugSideEffect.Success -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_report_bug_success),
+                    ).show()
+                    onBackPressed()
+                }
+            }
+        }
+    }
+
     ReportBugScreen(
+        onBackPressed = onBackPressed,
+        state = state,
+        onTitleChange = reportBugViewModel::setTitle,
+        onContentChange = reportBugViewModel::setContent,
+        onReportBugClick = { reportBugViewModel.onNextClick(context = context) },
         activityResultLauncher = activityResultLauncher,
-        screenshots = screenshots,
-        onRemoveClick = { screenshots.removeAt(it) },
+        screenshots = screenshots.toMutableStateList(),
+        onRemoveClick = reportBugViewModel::removeScreenshot,
         onFieldSelect = {
-            selectedField = it
+            reportBugViewModel.setDevelopmentArea(developmentArea = it)
             coroutineScope.launch {
                 sheetState.hide()
             }
         },
-        selectedField = selectedField,
         scrollState = scrollState,
         sheetState = sheetState,
         coroutineScope = coroutineScope,
@@ -117,19 +144,19 @@ internal fun ReportBug(onBackPressed: () -> Unit) {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ReportBugScreen(
+    onBackPressed: () -> Unit,
+    state: ReportBugState,
+    onTitleChange: (String) -> Unit,
+    onContentChange: (String) -> Unit,
+    onReportBugClick: () -> Unit,
     activityResultLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, List<Uri>>,
     screenshots: SnapshotStateList<Uri>,
     onRemoveClick: (Int) -> Unit,
     onFieldSelect: (DevelopmentArea) -> Unit,
-    selectedField: DevelopmentArea,
     scrollState: ScrollState,
     sheetState: ModalBottomSheetState,
     coroutineScope: CoroutineScope,
 ) {
-    // TODO 뷰모델로 옮기기
-    var title by remember { mutableStateOf("") }
-    var content by remember { mutableStateOf("") }
-
     ModalBottomSheetLayout(
         sheetContent = {
             FieldBottomSheet(onFieldSelect = onFieldSelect)
@@ -147,7 +174,7 @@ private fun ReportBugScreen(
         ) {
             JobisCollapsingTopAppBar(
                 title = stringResource(id = R.string.report_bug),
-                onBackPressed = { },
+                onBackPressed = onBackPressed,
                 scrollState = scrollState,
             )
             Column(
@@ -156,7 +183,7 @@ private fun ReportBugScreen(
                     .verticalScroll(scrollState),
             ) {
                 FieldDropDown(
-                    selectedField = selectedField,
+                    selectedField = state.developmentArea,
                     onClick = {
                         coroutineScope.launch {
                             sheetState.show()
@@ -164,10 +191,10 @@ private fun ReportBugScreen(
                     },
                 )
                 ReportBugInputs(
-                    title = { title },
-                    content = { content },
-                    onTitleChange = { title = it },
-                    onContentChange = { content = it },
+                    title = { state.title },
+                    content = { state.content },
+                    onTitleChange = onTitleChange,
+                    onContentChange = onContentChange,
                 )
                 Screenshots(
                     screenshots = screenshots,
@@ -177,9 +204,9 @@ private fun ReportBugScreen(
             }
             JobisButton(
                 text = stringResource(id = R.string.report_bug),
-                onClick = {},
+                onClick = onReportBugClick,
                 color = ButtonColor.Primary,
-                keyboardInteractionEnabled = false,
+                enabled = state.buttonEnabled,
             )
         }
     }
@@ -367,11 +394,7 @@ private fun AddImage(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                enabled = true,
-                onClick = onClick,
-                onPressed = {},
-            )
+            .clickable(onClick = onClick)
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
@@ -401,9 +424,8 @@ private fun Screenshot(
     index: Int,
     onRemoveClick: (Int) -> Unit,
 ) {
-    // TODO AsyncImage 사용
     Box(contentAlignment = Alignment.BottomEnd) {
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(92.dp)
                 .clip(RoundedCornerShape(12.dp))
@@ -412,8 +434,9 @@ private fun Screenshot(
                     color = JobisTheme.colors.surfaceVariant,
                     shape = RoundedCornerShape(12.dp),
                 ),
-            painter = painterResource(id = JobisIcon.Information),
+            model = uri,
             contentDescription = "bug image",
+            contentScale = ContentScale.Crop,
         )
         DeleteButton(
             index = index,
@@ -433,11 +456,7 @@ private fun DeleteButton(
                 horizontal = 4.dp,
                 vertical = 8.dp,
             )
-            .clickable(
-                enabled = true,
-                onClick = { onClick(index) },
-                onPressed = {},
-            )
+            .clickable(onClick = { onClick(index) })
             .clip(CircleShape)
             .background(JobisTheme.colors.error)
             .padding(

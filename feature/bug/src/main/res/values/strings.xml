@@ -10,6 +10,7 @@
     <string name="attachment_screenshots">클릭하여 이미지를 첨부해주세요</string>
     <string name="add_image">이미지 추가</string>
     <string name="remove">삭제</string>
-    <string name="screenshot_over_flow">이미지는 5장까지만 첨부할 수 있습니다</string>
+    <string name="screenshot_over_flow">이미지는 5장까지만 첨부할 수 있어요</string>
     <string name="select_field">분야 선택</string>
+    <string name="toast_report_bug_success">버그가 성공적으로 제보되었어요</string>
 </resources>
