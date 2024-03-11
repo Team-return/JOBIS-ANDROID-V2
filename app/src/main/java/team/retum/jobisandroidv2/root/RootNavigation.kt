@@ -3,6 +3,7 @@ package team.retum.jobisandroidv2.root
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import team.retum.common.model.ReApplyData
 import team.retum.jobis.splash.navigation.NAVIGATION_SPLASH
 
 const val NAVIGATION_ROOT = "root"
@@ -19,6 +20,7 @@ fun NavGraphBuilder.root(
     onReportBugClick: () -> Unit,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    navigateToApplication: (ReApplyData) -> Unit,
 ) {
     composable(NAVIGATION_ROOT) {
         Root(
@@ -33,6 +35,7 @@ fun NavGraphBuilder.root(
             onReportBugClick = onReportBugClick,
             navigateToLanding = navigateToLanding,
             onPostReviewClick = onPostReviewClick,
+            navigateToApplication = navigateToApplication,
         )
     }
 }

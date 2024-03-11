@@ -11,7 +11,7 @@ data class FetchAppliedCompaniesResponse(
         @SerializedName("application_id") val applicationId: Long,
         @SerializedName("recruitment_id") val recruitmentId: Long,
         @SerializedName("company") val company: String,
-        @SerializedName("company_logo_url") val companyLogoUrl: String?,
+        @SerializedName("company_logo_url") val companyLogoUrl: String,
         @SerializedName("attachments") val attachments: List<AttachmentResponse>,
         @SerializedName("application_status") val applicationStatus: ApplyStatus,
     ) {

@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import team.retum.common.model.ReApplyData
 import team.retum.jobis.application.model.CompanyInfo
 import team.retum.jobis.application.ui.Application
 
@@ -37,14 +38,12 @@ fun NavGraphBuilder.application(
 }
 
 fun NavController.navigateToApplication(
-    recruitmentId: Long,
-    companyProfileUrl: String,
-    companyName: String,
+    reApplyData: ReApplyData,
 ) {
     val companyInfo = CompanyInfo(
-        companyProfileUrl = companyProfileUrl,
-        companyName = companyName,
+        companyProfileUrl = reApplyData.companyLogoUrl.replace("/", " "),
+        companyName = reApplyData.companyName,
     )
     val jsonString = Json.encodeToString(companyInfo)
-    navigate("$NAVIGATION_APPLICATION/$recruitmentId/$jsonString")
+    navigate("$NAVIGATION_APPLICATION/${reApplyData.recruitmentId}/$jsonString")
 }

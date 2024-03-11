@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.bookmarks
+import team.retum.common.model.ReApplyData
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
@@ -52,6 +53,7 @@ internal fun Root(
     onReportBugClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
+    navigateToApplication: (ReApplyData) -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -59,14 +61,14 @@ internal fun Root(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
     )
-    var rejectionReason by remember { mutableStateOf("") }
+    var reApplyData by remember { mutableStateOf(ReApplyData()) }
 
     RootScreen(
         navController = navController,
         sheetState = sheetState,
         onAlarmClick = onAlarmClick,
         showRejectionModal = {
-            rejectionReason = it
+            reApplyData = it
             coroutineScope.launch {
                 sheetState.show()
             }
@@ -79,9 +81,15 @@ internal fun Root(
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
-        rejectionReason = rejectionReason,
+        rejectionReason = reApplyData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
+        navigateToRecruitmentDetails = {
+            coroutineScope.launch {
+                sheetState.hide()
+            }
+            navigateToApplication(reApplyData)
+        },
     )
 }
 
@@ -95,7 +103,7 @@ private fun RootScreen(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
-    showRejectionModal: (String) -> Unit,
+    showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
@@ -104,13 +112,14 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    navigateToRecruitmentDetails: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
             RejectionBottomSheet(
                 reason = rejectionReason,
-                onReApplyClick = {},
+                onReApplyClick = navigateToRecruitmentDetails,
             )
         },
         sheetShape = RoundedCornerShape(

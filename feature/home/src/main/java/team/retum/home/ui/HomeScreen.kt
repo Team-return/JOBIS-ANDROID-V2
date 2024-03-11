@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -51,6 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.enums.ApplyStatus
+import team.retum.common.model.ReApplyData
 import team.retum.home.R
 import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
@@ -62,6 +64,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.time.LocalDate
@@ -82,10 +85,11 @@ private data class MenuItem(
 @Composable
 internal fun Home(
     onAlarmClick: () -> Unit,
-    showRejectionModal: (String) -> Unit,
+    showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val currentDate = LocalDate.now()
@@ -117,7 +121,14 @@ internal fun Home(
         homeViewModel.sideEffect.collect {
             when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
-                    showRejectionModal(it.rejectionReason)
+                    showRejectionModal(it.reApplyData)
+                }
+
+                is HomeSideEffect.NotFoundApplication -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_not_found_application),
+                    ).show()
                 }
             }
         }
@@ -140,7 +151,7 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: (Long) -> Unit,
+    onRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
     state: HomeState,
     studentInformation: StudentInformationEntity,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
@@ -159,8 +170,13 @@ private fun HomeScreen(
             )
         }
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Banner(
+            /*Banner(
                 pagerState = pagerState,
+                rate = state.rate,
+                passCount = state.passCount,
+                totalStudentCount = state.totalStudentCount,
+            )*/
+            EmploymentRate(
                 rate = state.rate,
                 passCount = state.passCount,
                 totalStudentCount = state.totalStudentCount,
@@ -247,8 +263,12 @@ private fun EmploymentRate(
     totalStudentCount: Long,
 ) {
     JobisCard(
-        onClick = {},
-        enabled = false,
+        modifier = Modifier.padding(
+            top = 16.dp,
+            bottom = 32.dp,
+            start = 24.dp,
+            end = 24.dp,
+        ),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.padding(24.dp)) {
@@ -437,7 +457,7 @@ private fun Menu(
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
-    onClick: (Long) -> Unit,
+    onClick: (applicationId: Long, ReApplyData) -> Unit,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -466,7 +486,16 @@ private fun ApplyStatus(
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
                     ApplyCompanyItem(
-                        onClick = { onClick(it.applicationId) },
+                        onClick = {
+                            onClick(
+                                it.applicationId,
+                                ReApplyData(
+                                    recruitmentId = it.recruitmentId,
+                                    companyLogoUrl = it.companyLogoUrl,
+                                    companyName = it.company,
+                                ),
+                            )
+                        },
                         appliedCompany = it,
                     )
                 }
@@ -521,12 +550,12 @@ private fun ApplyCompanyItem(
             ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // TODO AsyncImage 사용
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                painter = painterResource(id = JobisIcon.Information),
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(JobisTheme.colors.background),
+                model = appliedCompany.companyLogoUrl,
                 contentDescription = "company profile url",
             )
             Spacer(modifier = Modifier.width(8.dp))
