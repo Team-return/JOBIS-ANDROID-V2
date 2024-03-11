@@ -9,9 +9,13 @@ const val NAVIGATION_NOTICES = "notices"
 
 fun NavGraphBuilder.notices(
     onBackPressed: () -> Unit,
+    navigateToDetails: (Long) -> Unit,
 ) {
     composable(NAVIGATION_NOTICES) {
-        Notices(onBackPressed = onBackPressed)
+        Notices(
+            onBackPressed = onBackPressed,
+            navigateToDetail = navigateToDetails,
+        )
     }
 }
 
