@@ -114,6 +114,6 @@ internal object RequestUrls {
         private const val path = "/notices"
 
         const val notices = path
-        const val notice = "$path/{${PATH.noticeId}}"
+        const val details = "$path/{${PATH.noticeId}}"
     }
 }
