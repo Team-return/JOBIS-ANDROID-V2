@@ -18,7 +18,7 @@ internal class NotificationsViewModel @Inject constructor(
     private val readNotificationUseCase: ReadNotificationUseCase,
 ) : BaseViewModel<NotificationsState, NotificationsSideEffect>(NotificationsState.getDefaultState()) {
 
-     private var _notifications: SnapshotStateList<NotificationsEntity.NotificationEntity> =
+     private val _notifications: SnapshotStateList<NotificationsEntity.NotificationEntity> =
          mutableStateListOf()
     val notifications get() = _notifications
 
