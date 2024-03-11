@@ -8,8 +8,8 @@ import javax.inject.Inject
 class NoticeRepositoryImpl @Inject constructor(
     private val noticeDataSource: NoticeDataSource,
 ) : NoticeRepository {
-    override suspend fun fetchNotices(page: Int): FetchNoticesResponse =
-        noticeDataSource.fetchNotices(page = page)
+    override suspend fun fetchNotices(): FetchNoticesResponse =
+        noticeDataSource.fetchNotices()
 
     override suspend fun fetchNoticeDetails(noticeId: Long): FetchNoticeDetailsResponse =
         noticeDataSource.fetchNoticeDetails(noticeId = noticeId)
