@@ -2,6 +2,7 @@ package team.retum.network.datasource.student
 
 import team.retum.network.api.StudentApi
 import team.retum.network.model.request.student.ChangePasswordRequest
+import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
@@ -51,6 +52,12 @@ class RemoteStudentDataSourceImpl @Inject constructor(
     override suspend fun changePassword(changePasswordRequest: ChangePasswordRequest) {
         RequestHandler<Unit>().request {
             studentApi.changePassword(changePasswordRequest = changePasswordRequest)
+        }
+    }
+
+    override suspend fun editProfileImage(editProfileImageRequest: EditProfileImageRequest) {
+        RequestHandler<Unit>().request {
+            studentApi.editProfileImage(editProfileImageRequest = editProfileImageRequest)
         }
     }
 }
