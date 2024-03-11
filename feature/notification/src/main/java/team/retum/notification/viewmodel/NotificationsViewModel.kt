@@ -18,17 +18,17 @@ internal class NotificationsViewModel @Inject constructor(
     private val readNotificationUseCase: ReadNotificationUseCase,
 ) : BaseViewModel<NotificationsState, NotificationsSideEffect>(NotificationsState.getDefaultState()) {
 
-    internal var notifications: SnapshotStateList<NotificationsEntity.NotificationEntity> =
-        mutableStateListOf()
-        private set
+     private var _notifications: SnapshotStateList<NotificationsEntity.NotificationEntity> =
+         mutableStateListOf()
+    val notifications get() = _notifications
 
     internal fun fetchNotifications() {
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 fetchNotificationsUseCase(isNew = isNew)
                     .onSuccess {
-                        notifications.clear()
-                        notifications.addAll(it.notifications)
+                        _notifications.clear()
+                        _notifications.addAll(it.notifications)
                     }
             }
         }
