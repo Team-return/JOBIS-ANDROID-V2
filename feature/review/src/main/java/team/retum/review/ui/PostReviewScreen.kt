@@ -332,7 +332,7 @@ private fun AddQuestionBottomSheet(
 }
 
 @Composable
-fun ReviewContent(
+private fun ReviewContent(
     review: PostReviewEntity.PostReviewContentEntity,
     keyword: String,
 ) {

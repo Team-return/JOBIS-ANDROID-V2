@@ -16,6 +16,8 @@ android {
 
 dependencies {
 
+    implementation(project(":core:common"))
+
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.ui.graphics)
     api(libs.androidx.compose.ui.tooling.preview)

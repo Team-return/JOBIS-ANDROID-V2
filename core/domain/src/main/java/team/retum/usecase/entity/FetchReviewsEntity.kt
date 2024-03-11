@@ -7,7 +7,7 @@ data class FetchReviewsEntity(
 ) {
     data class Review(
         val reviewId: String,
-        val year: Int,
+        val year: String,
         val writer: String,
         val date: String,
     )
@@ -19,7 +19,7 @@ internal fun FetchReviewsResponse.toEntity() = FetchReviewsEntity(
 
 private fun FetchReviewsResponse.Review.toEntity() = FetchReviewsEntity.Review(
     reviewId = this.reviewId,
-    year = this.year,
+    year = this.year.toString(),
     writer = this.writer,
     date = this.date,
 )

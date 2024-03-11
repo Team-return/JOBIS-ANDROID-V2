@@ -12,4 +12,6 @@ object ResourceKeys {
     const val COMPANY_ID = "companyId"
     const val TYPE = "type"
     const val VALUE = "value"
+    const val REVIEW_ID = "reviewId"
+    const val COMPANY_NAME = "companyName"
 }

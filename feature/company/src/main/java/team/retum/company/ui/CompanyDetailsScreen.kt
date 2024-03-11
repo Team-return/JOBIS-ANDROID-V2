@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,21 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import team.retum.common.component.ReviewContent
 import team.retum.company.viewmodel.CompanyDetailsState
 import team.retum.company.viewmodel.CompanyDetailsViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.retum.jobisdesignsystemv2.card.JobisCard
-import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.FetchReviewsEntity
 import team.retum.usecase.entity.company.CompanyDetailsEntity
 
@@ -44,6 +41,8 @@ import team.retum.usecase.entity.company.CompanyDetailsEntity
 internal fun CompanyDetails(
     companyId: Long,
     onBackPressed: () -> Unit,
+    navigateToReviewDetails: (String, String) -> Unit,
+    navigateToReviews: (Long, String) -> Unit,
     companyDetailsViewModel: CompanyDetailsViewModel = hiltViewModel(),
 ) {
     val state by companyDetailsViewModel.state.collectAsStateWithLifecycle()
@@ -59,6 +58,8 @@ internal fun CompanyDetails(
     CompanyDetailsScreen(
         companyId = companyId,
         onBackPressed = onBackPressed,
+        navigateToReviewDetails = navigateToReviewDetails,
+        navigateToReviews = navigateToReviews,
         state = state,
     )
 }
@@ -67,6 +68,8 @@ internal fun CompanyDetails(
 private fun CompanyDetailsScreen(
     companyId: Long,
     onBackPressed: () -> Unit,
+    navigateToReviewDetails: (String, String) -> Unit,
+    navigateToReviews: (Long, String) -> Unit,
     state: CompanyDetailsState,
 ) {
     Column(
@@ -88,7 +91,14 @@ private fun CompanyDetailsScreen(
         if (state.reviews.isNotEmpty()) {
             Reviews(
                 reviews = state.reviews,
-                navigateToReviewDetails = {},
+                navigateToReviewDetails = navigateToReviewDetails,
+                showMoreReviews = state.showMoreReviews,
+                onShowMoreReviewClick = {
+                    navigateToReviews(
+                        companyId,
+                        state.companyDetailsEntity.companyName,
+                    )
+                },
             )
         }
     }
@@ -227,7 +237,9 @@ private fun CompanyInformation(
 @Composable
 private fun Reviews(
     reviews: List<FetchReviewsEntity.Review>,
-    navigateToReviewDetails: (String) -> Unit,
+    navigateToReviewDetails: (String, String) -> Unit,
+    showMoreReviews: Boolean,
+    onShowMoreReviewClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -243,8 +255,8 @@ private fun Reviews(
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
         )
-        LazyColumn {
-            items(reviews) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            reviews.forEach {
                 ReviewContent(
                     onClick = navigateToReviewDetails,
                     reviewId = it.reviewId,
@@ -253,40 +265,17 @@ private fun Reviews(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun ReviewContent(
-    onClick: (String) -> Unit,
-    reviewId: String,
-    writer: String,
-    year: Int,
-) {
-    JobisCard(onClick = { onClick(reviewId) }) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    vertical = 12.dp,
-                    horizontal = 16.dp,
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
+        Spacer(modifier = Modifier.height(8.dp))
+        if (showMoreReviews) {
             JobisText(
-                text = writer,
-                style = JobisTypography.SubHeadLine,
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            JobisText(
-                text = year.toString(),
-                style = JobisTypography.Description,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(id = JobisIcon.LongArrow),
-                contentDescription = "long arrow",
-                tint = JobisTheme.colors.onSurfaceVariant,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 4.dp)
+                    .clickable(onClick = onShowMoreReviewClick),
+                text = stringResource(id = R.string.show_more_reviews),
+                style = JobisTypography.SubBody,
+                color = JobisTheme.colors.onSurfaceVariant,
+                textDecoration = TextDecoration.Underline,
             )
         }
     }
