@@ -1,4 +1,4 @@
-package team.returm.mypage.ui
+package team.retum.jobis.ui
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -41,9 +41,9 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.returm.mypage.viewmodel.MyPageSideEffect
-import team.returm.mypage.viewmodel.MyPageState
-import team.returm.mypage.viewmodel.MyPageViewModel
+import team.retum.jobis.viewmodel.MyPageSideEffect
+import team.retum.jobis.viewmodel.MyPageState
+import team.retum.jobis.viewmodel.MyPageViewModel
 
 @Composable
 internal fun MyPage(

@@ -1,9 +1,9 @@
-package team.returm.mypage.navigation
+package team.retum.jobis.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.returm.mypage.ui.MyPage
+import team.retum.jobis.ui.MyPage
 
 const val NAVIGATION_MY_PAGE = "myPage"
 

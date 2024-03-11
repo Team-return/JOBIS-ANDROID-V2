@@ -36,7 +36,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
-import team.returm.mypage.navigation.myPage
+import team.retum.jobis.navigation.myPage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
