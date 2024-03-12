@@ -52,7 +52,7 @@ internal fun NoticeDetails(
                         context = context,
                         message = context.getString(R.string.occurred_error),
                         drawable = JobisIcon.Error,
-                    )
+                    ).show()
                 }
             }
         }
