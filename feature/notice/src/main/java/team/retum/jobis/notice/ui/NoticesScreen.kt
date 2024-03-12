@@ -76,10 +76,9 @@ private fun NoticesScreen(
         ) {
             items(notices) {
                 NoticesItem(
-                    noticeId = it.noticeId,
                     noticeTitle = it.title,
                     noticeDate = it.createdAt,
-                    onClick = { navigateToDetail(it.noticeId) },
+                    onClick = { navigateToDetail(it.id) },
                 )
             }
         }
@@ -88,7 +87,6 @@ private fun NoticesScreen(
 
 @Composable
 private fun NoticesItem(
-    noticeId: Long,
     noticeTitle: String,
     noticeDate: String,
     onClick: () -> Unit,
