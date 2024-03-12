@@ -1,6 +1,7 @@
 package team.retum.jobisandroidv2.service
 
 import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,5 +20,9 @@ class JobisMessagingService : FirebaseMessagingService() {
         CoroutineScope(Dispatchers.IO).launch {
             deviceTokenManager.saveDeviceToken(deviceToken = token)
         }
+    }
+
+    override fun onMessageReceived(message: RemoteMessage) {
+        super.onMessageReceived(message)
     }
 }
