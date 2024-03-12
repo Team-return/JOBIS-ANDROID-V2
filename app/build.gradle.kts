@@ -4,6 +4,7 @@ plugins {
     id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
+    id(libs.plugins.google.service.get().pluginId)
 }
 
 android {
@@ -76,6 +77,9 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)
+
+    implementation(platform(libs.com.google.firebase.bom))
+    implementation(libs.firebase.messaging)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
