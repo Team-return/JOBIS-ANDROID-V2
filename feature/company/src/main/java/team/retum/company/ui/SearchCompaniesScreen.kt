@@ -60,6 +60,7 @@ internal fun SearchCompanies(
         onNameChange = companyViewModel::setName,
         companies = companyViewModel.companies.value.companies,
         checkCompanies = companyViewModel::setCheckCompany,
+        onCompanyContentClick = onCompanyContentClick,
         state = state,
     )
 }
@@ -70,6 +71,7 @@ private fun SearchCompaniesScreen(
     onNameChange: (String) -> Unit,
     companies: List<CompaniesEntity.CompanyEntity>,
     checkCompanies: (Boolean) -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     state: CompanyState,
 ) {
     checkCompanies(false)
@@ -94,6 +96,7 @@ private fun SearchCompaniesScreen(
             ) {
                 items(companies) {
                     SearchCompanyItem(
+                        onCompanyContentClick = onCompanyContentClick,
                         companyImageUrl = IMAGE_URL + it.logoUrl,
                         companyName = it.name,
                         id = it.id,
@@ -113,6 +116,7 @@ private fun SearchCompaniesScreen(
 
 @Composable
 private fun SearchCompanyItem(
+    onCompanyContentClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     companyImageUrl: String,
     companyName: String,
@@ -124,7 +128,9 @@ private fun SearchCompanyItem(
     val hasRecruitmentColor =
         if (hasRecruitment) JobisTheme.colors.primaryContainer else JobisTheme.colors.onSurface
     Row(
-        modifier = modifier.padding(vertical = 16.dp),
+        modifier = modifier
+            .padding(vertical = 16.dp)
+            .clickable(onClick = { onCompanyContentClick(id) }),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

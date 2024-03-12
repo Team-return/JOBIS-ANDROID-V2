@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.utils.ResourceKeys.IMAGE_URL
+import team.retum.company.viewmodel.CompanySideEffect
 import team.retum.company.viewmodel.CompanyViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -30,6 +32,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CompaniesEntity
 
@@ -42,8 +45,19 @@ internal fun Companies(
 ) {
     val state by companyViewModel.state.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         companyViewModel.fetchTotalCompanyCount(name = state.name)
+        companyViewModel.sideEffect.collect {
+            when (it) {
+                CompanySideEffect.ServerDown -> {
+                    JobisToast.create(
+                        context = context,
+                        message = "서비스 오류",
+                    ).show()
+                }
+            }
+        }
     }
 
     LaunchedEffect(state.checkCompany) {

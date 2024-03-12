@@ -7,9 +7,15 @@ import team.retum.company.ui.SearchCompanies
 
 const val NAVIGATION_SEARCH_COMPANIES = "searchCompanies"
 
-fun NavGraphBuilder.searchCompanies(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.searchCompanies(
+    onBackPressed: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
+) {
     composable(NAVIGATION_SEARCH_COMPANIES) {
-        SearchCompanies(onBackPressed = onBackPressed)
+        SearchCompanies(
+            onBackPressed = onBackPressed,
+            onCompanyContentClick = onCompanyContentClick,
+        )
     }
 }
 

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
+import team.retum.common.exception.ServerException
 import team.retum.usecase.entity.CompaniesEntity
 import team.retum.usecase.usecase.company.FetchCompaniesUseCase
 import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
@@ -33,7 +34,7 @@ internal class CompanyViewModel @Inject constructor(
 
     internal fun fetchCompanies(page: Int, name: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchCompaniesUseCase.invoke(page = page, name = name).onSuccess {
+            fetchCompaniesUseCase(page = page, name = name).onSuccess {
                 val currentCompanies = _companies.value.companies.toMutableList()
                 currentCompanies.addAll(it.companies)
                 val newCompaniesEntity = _companies.value.copy(companies = currentCompanies)
@@ -42,7 +43,11 @@ internal class CompanyViewModel @Inject constructor(
             }.onFailure {
                 when (it) {
                     is BadRequestException -> {
-                        postSideEffect(CompanySideEffect.BadRequest)
+                        fetchCompaniesUseCase(page = 1, name = null)
+                    }
+
+                    is ServerException -> {
+                        postSideEffect(CompanySideEffect.ServerDown)
                     }
                 }
             }
@@ -75,5 +80,5 @@ internal data class CompanyState(
 }
 
 internal sealed interface CompanySideEffect {
-    data object BadRequest : CompanySideEffect
+    data object ServerDown : CompanySideEffect
 }
