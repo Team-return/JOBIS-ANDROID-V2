@@ -15,10 +15,4 @@ class RemoteUserDataSourceImpl @Inject constructor(
             userApi.signIn(signInRequest = signInRequest)
         }
     }
-
-    override suspend fun registerDeviceToken(registerDeviceTokenRequest: RegisterDeviceTokenRequest) {
-        RequestHandler<Unit>().request {
-            userApi.registerDeviceToken(registerDeviceTokenRequest = registerDeviceTokenRequest)
-        }
-    }
 }

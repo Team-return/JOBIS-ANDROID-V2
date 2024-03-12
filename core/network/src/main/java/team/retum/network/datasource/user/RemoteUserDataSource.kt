@@ -6,6 +6,4 @@ import team.retum.network.model.response.TokenResponse
 
 interface RemoteUserDataSource {
     suspend fun signIn(signInRequest: SignInRequest): TokenResponse
-
-    suspend fun registerDeviceToken(registerDeviceTokenRequest: RegisterDeviceTokenRequest)
 }

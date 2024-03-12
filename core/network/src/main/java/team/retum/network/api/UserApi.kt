@@ -13,9 +13,4 @@ interface UserApi {
     suspend fun signIn(
         @Body signInRequest: SignInRequest,
     ): TokenResponse
-
-    @PATCH(RequestUrls.Users.token)
-    suspend fun registerDeviceToken(
-        @Body registerDeviceTokenRequest: RegisterDeviceTokenRequest,
-    )
 }

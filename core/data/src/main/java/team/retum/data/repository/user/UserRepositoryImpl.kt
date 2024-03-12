@@ -58,7 +58,11 @@ class UserRepositoryImpl @Inject constructor(
         localUserDataSource.clearUserInformation()
     }
 
-    override suspend fun registerDeviceToken(registerDeviceTokenRequest: RegisterDeviceTokenRequest) {
-        remoteUserDataSource.registerDeviceToken(registerDeviceTokenRequest = registerDeviceTokenRequest)
+    override suspend fun saveDeviceToken(deviceToken: String) {
+        localUserDataSource.saveDeviceToken(deviceToken = deviceToken)
+    }
+
+    override suspend fun getDeviceToken(): String {
+        return localUserDataSource.getDeviceToken()
     }
 }
