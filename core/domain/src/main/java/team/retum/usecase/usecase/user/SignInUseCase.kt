@@ -10,11 +10,13 @@ class SignInUseCase @Inject constructor(
     suspend operator fun invoke(
         email: String,
         password: String,
+        deviceToken: String,
     ) = runCatching {
         userRepository.signIn(
             signInRequest = SignInRequest(
                 email = email,
                 password = password,
+                deviceToken = deviceToken,
             ),
         )
     }

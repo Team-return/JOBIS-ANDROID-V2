@@ -5,6 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import team.retum.notification.util.DeviceTokenManager
+import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
+import team.retum.usecase.usecase.user.SaveDeviceTokenUseCase
 import javax.inject.Singleton
 
 @Module
@@ -12,7 +14,7 @@ import javax.inject.Singleton
 object TokenManagerModule {
     @Provides
     @Singleton
-    fun provideTokenManager(registerDeviceTokenUseCase: RegisterDeviceTokenUseCase): DeviceTokenManager {
-        return DeviceTokenManager(registerDeviceTokenUseCase = registerDeviceTokenUseCase)
+    fun provideTokenManager(saveDeviceTokenUseCase: SaveDeviceTokenUseCase): DeviceTokenManager {
+        return DeviceTokenManager(saveDeviceTokenUseCase = saveDeviceTokenUseCase)
     }
 }

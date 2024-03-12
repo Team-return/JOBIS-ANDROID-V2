@@ -7,4 +7,5 @@ data class SignInRequest(
     @SerializedName("account_id") val email: String,
     @SerializedName("password") val password: String,
     @SerializedName("platform_type") val platformType: PlatformType = PlatformType.ANDROID,
+    @SerializedName("device_token") val deviceToken: String,
 )

@@ -8,6 +8,7 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.UnAuthorizedException
+import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
 import team.retum.usecase.usecase.user.SignInUseCase
 import javax.inject.Inject
 
@@ -16,7 +17,22 @@ private const val EMAIL = "@dsm.hs.kr"
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
+    private val getDeviceTokenUseCase: GetDeviceTokenUseCase,
 ) : BaseViewModel<SignInState, SignInSideEffect>(SignInState.getDefaultState()) {
+
+    private lateinit var deviceToken: String
+
+    init {
+        getDeviceToken()
+    }
+
+    private fun getDeviceToken() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getDeviceTokenUseCase().onSuccess {
+                deviceToken = it
+            }
+        }
+    }
 
     internal fun setEmail(email: String) = setState {
         setButtonEnabled()
@@ -48,6 +64,7 @@ class SignInViewModel @Inject constructor(
             signInUseCase(
                 email = state.value.email + EMAIL,
                 password = state.value.password,
+                deviceToken = deviceToken,
             ).onSuccess {
                 postSideEffect(SignInSideEffect.Success)
             }.onFailure {

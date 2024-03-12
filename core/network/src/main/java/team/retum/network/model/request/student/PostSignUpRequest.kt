@@ -14,4 +14,5 @@ data class PostSignUpRequest(
     @SerializedName("number") val number: Long,
     @SerializedName("profile_image_url") val profileImageUrl: String,
     @SerializedName("platform_type") val platformType: PlatformType,
+    @SerializedName("device_token") val deviceToken: String,
 )
