@@ -9,9 +9,9 @@ import javax.inject.Inject
 class NoticeDataSourceImpl @Inject constructor(
     private val noticeApi: NoticeApi,
 ) : NoticeDataSource {
-    override suspend fun fetchNotices(page: Int): FetchNoticesResponse =
+    override suspend fun fetchNotices(): FetchNoticesResponse =
         RequestHandler<FetchNoticesResponse>().request {
-            noticeApi.fetchNotices(page = page)
+            noticeApi.fetchNotices()
         }
 
     override suspend fun fetchNoticeDetails(noticeId: Long): FetchNoticeDetailsResponse =
