@@ -31,3 +31,5 @@ jobs:
       run: ./gradlew build
     - name: Check Ktlint
       run: ./gradlew ktlintCheck
+    - name: Create google services file
+      run: cat /home/runner/work/<Project-Name>/<Project-Name>/app/google-services.json | base64
