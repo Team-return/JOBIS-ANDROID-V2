@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.enums.ReviewProcess
 import team.retum.jobis.review.R
@@ -91,6 +92,7 @@ internal fun PostReview(
     }
 
     LaunchedEffect(state.keyword) {
+        delay(300)
         reviewViewModel.fetchCodes(state.keyword)
     }
 

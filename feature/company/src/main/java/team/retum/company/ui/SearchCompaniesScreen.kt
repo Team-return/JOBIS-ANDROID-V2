@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
 import team.retum.common.utils.ResourceKeys.IMAGE_URL
 import team.retum.company.viewmodel.CompanyState
 import team.retum.company.viewmodel.CompanyViewModel
@@ -34,15 +35,18 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CompaniesEntity
 
 @Composable
 internal fun SearchCompanies(
     onBackPressed: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     companyViewModel: CompanyViewModel = hiltViewModel(),
 ) {
     val state by companyViewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(state.name) {
+        delay(300)
         if (state.checkCompany && state.name?.isNotBlank() ?: "".isNotBlank()) {
             companyViewModel.fetchTotalCompanyCount(name = state.name)
             companyViewModel.fetchCompanies(

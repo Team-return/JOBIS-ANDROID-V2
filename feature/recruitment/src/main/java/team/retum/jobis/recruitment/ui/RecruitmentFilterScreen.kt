@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
 import team.retum.common.component.Skills
 import team.retum.common.enums.CodeType
 import team.retum.jobis.recruitment.R
@@ -50,6 +51,7 @@ internal fun RecruitmentFilter(
     val state by recruitmentFilterViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.keyword, state.type, state.parentCode) {
+        delay(300)
         if (state.type == CodeType.TECH) {
             recruitmentFilterViewModel.fetchCodes()
         }
