@@ -7,6 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import team.retum.network.di.RequestUrls
 import team.retum.network.model.request.student.ChangePasswordRequest
+import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
 import team.retum.network.model.request.student.PostSignUpRequest
@@ -40,5 +41,10 @@ interface StudentApi {
     @PATCH(RequestUrls.Students.password)
     suspend fun changePassword(
         @Body changePasswordRequest: ChangePasswordRequest,
+    )
+
+    @PATCH(RequestUrls.Students.profile)
+    suspend fun editProfileImage(
+        @Body editProfileImageRequest: EditProfileImageRequest,
     )
 }

@@ -22,4 +22,7 @@
     <string name="modal_if_withdrawal">JOBIS에서 탈퇴하면,\n다시 가입 할 때 까지 사용하지 못해요</string>
     <string name="modal_button_withdrawal">회원탈퇴</string>
     <string name="toast_update_later">추후 업데이트 될 예정이에요</string>
+
+    <string name="toast_bad_request_edit_image">잘못된 요청이에요</string>
+    <string name="toast_success_edit_profile_image">프로필이 성공적으로 업데이트 되었어요</string>
 </resources>

@@ -1,5 +1,8 @@
 package team.retum.jobis.ui
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +35,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.jobis.mypage.R
+import team.retum.jobis.viewmodel.MyPageSideEffect
+import team.retum.jobis.viewmodel.MyPageState
+import team.retum.jobis.viewmodel.MyPageViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.dialog.JobisDialog
@@ -41,9 +47,9 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.retum.jobis.viewmodel.MyPageSideEffect
-import team.retum.jobis.viewmodel.MyPageState
-import team.retum.jobis.viewmodel.MyPageViewModel
+
+private const val INTEREST_MENU_ID = 1
+private const val WITHDRAWAL_MENU_ID = 4
 
 @Composable
 internal fun MyPage(
@@ -64,12 +70,41 @@ internal fun MyPage(
             message = context.getString(R.string.toast_update_later),
         ).show()
     }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+            myPageViewModel.setUri(
+                uri = it,
+                context = context,
+            )
+        },
+    )
+    val showGallery = {
+        val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+        val request = PickVisualMediaRequest(mediaType)
+        launcher.launch(request)
+    }
 
     LaunchedEffect(Unit) {
         myPageViewModel.sideEffect.collect {
             when (it) {
                 is MyPageSideEffect.SuccessSignOut -> {
                     navigateToLanding()
+                }
+
+                is MyPageSideEffect.BadEditProfileImage -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_bad_request_edit_image),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is MyPageSideEffect.SuccessEditProfileImage -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_success_edit_profile_image),
+                    ).show()
                 }
             }
         }
@@ -88,6 +123,7 @@ internal fun MyPage(
         onWithdrawalClick = myPageViewModel::onWithdrawalClick,
         onPostReviewClick = onPostReviewClick,
         showUpdateLaterToast = showUpdateLaterToast,
+        showGallery = showGallery,
     )
 }
 
@@ -105,6 +141,7 @@ private fun MyPageScreen(
     onWithdrawalClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
     showUpdateLaterToast: () -> Unit,
+    showGallery: () -> Unit,
 ) {
     if (state.showSignOutModal) {
         JobisDialog(
@@ -144,7 +181,7 @@ private fun MyPageScreen(
                     number = studentGcn,
                     name = studentName,
                     department = department.value,
-                    onClick = { /*TODO 회원정보 수정 페이지로 이동 */ },
+                    onClick = showGallery,
                 )
             }
             state.reviewableCompany?.run {
@@ -158,6 +195,7 @@ private fun MyPageScreen(
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
+                            menuId = 0,
                             imageResource = painterResource(id = R.drawable.ic_loud_speaker),
                             description = "notice icon",
                             contentTitle = stringResource(id = R.string.notice),
@@ -173,6 +211,7 @@ private fun MyPageScreen(
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
+                            menuId = 1,
                             imageResource = painterResource(id = JobisIcon.Code),
                             description = "interest field icon",
                             contentTitle = stringResource(id = R.string.interest_field),
@@ -180,6 +219,7 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
+                            menuId = 2,
                             imageResource = painterResource(id = JobisIcon.LockReset),
                             description = "password change icon",
                             contentTitle = stringResource(id = R.string.password_change),
@@ -187,6 +227,7 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
+                            menuId = 3,
                             imageResource = painterResource(id = JobisIcon.LogOut),
                             description = "logout icon",
                             contentTitle = stringResource(id = R.string.logout),
@@ -194,6 +235,7 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.error,
                         ),
                         ListItemInfo(
+                            menuId = 4,
                             imageResource = painterResource(id = JobisIcon.PersonRemove),
                             description = "membership withdrawal icon",
                             contentTitle = stringResource(id = R.string.membership_withdrawal),
@@ -209,6 +251,7 @@ private fun MyPageScreen(
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
+                            menuId = 5,
                             imageResource = painterResource(id = JobisIcon.Report),
                             description = "bug report icon",
                             contentTitle = stringResource(id = R.string.to_bug_report),
@@ -345,13 +388,10 @@ private fun ContentListItem(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         contentItemInfo.items.forEach { item ->
-            val isNotImplementedFeature =
-                item.contentTitle == stringResource(id = R.string.interest_field) ||
-                        item.contentTitle == stringResource(id = R.string.membership_withdrawal)
             ListItem(
                 item = item,
                 onItemClick = {
-                    if (isNotImplementedFeature) {
+                    if (item.menuId == INTEREST_MENU_ID || item.menuId == WITHDRAWAL_MENU_ID) {
                         showUpdateLaterToast()
                     } else {
                         item.onClick()
@@ -389,6 +429,7 @@ private fun ListItem(
 }
 
 private data class ListItemInfo(
+    val menuId: Int,
     val imageResource: Painter,
     val description: String,
     val contentTitle: String,
