@@ -12,11 +12,17 @@ import javax.inject.Inject
 @HiltViewModel
 internal class NoticeDetailsViewModel @Inject constructor(
     private val fetchNoticeDetailsUseCase: FetchNoticeDetailsUseCase,
-) : BaseViewModel<NoticeDetailsState, Unit>(NoticeDetailsState.getDefaultState()) {
+) : BaseViewModel<NoticeDetailsState, NoticeDetailsSideEffect>(NoticeDetailsState.getDefaultState()) {
 
     internal fun fetchNoticeDetails(noticeId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             fetchNoticeDetailsUseCase(noticeId = noticeId)
+                .onSuccess {
+                    setState { state.value.copy(noticeDetailsEntity = it) }
+                }
+                .onFailure {
+                    postSideEffect(NoticeDetailsSideEffect.BadRequest)
+                }
         }
     }
 }
@@ -36,4 +42,8 @@ internal data class NoticeDetailsState(
             ),
         )
     }
+}
+
+internal sealed interface NoticeDetailsSideEffect {
+    data object BadRequest : NoticeDetailsSideEffect
 }
