@@ -1,9 +1,11 @@
 package team.retum.network.api
 
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import team.retum.network.di.RequestUrls
-import team.retum.network.model.request.SignInRequest
+import team.retum.network.model.request.user.RegisterDeviceTokenRequest
+import team.retum.network.model.request.user.SignInRequest
 import team.retum.network.model.response.TokenResponse
 
 interface UserApi {
@@ -11,4 +13,9 @@ interface UserApi {
     suspend fun signIn(
         @Body signInRequest: SignInRequest,
     ): TokenResponse
+
+    @PATCH(RequestUrls.Users.token)
+    suspend fun registerDeviceToken(
+        @Body registerDeviceTokenRequest: RegisterDeviceTokenRequest,
+    )
 }

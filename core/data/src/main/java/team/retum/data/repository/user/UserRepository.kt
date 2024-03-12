@@ -1,6 +1,7 @@
 package team.retum.data.repository.user
 
-import team.retum.network.model.request.SignInRequest
+import team.retum.network.model.request.user.RegisterDeviceTokenRequest
+import team.retum.network.model.request.user.SignInRequest
 import team.retum.network.model.response.TokenResponse
 
 interface UserRepository {
@@ -14,4 +15,6 @@ interface UserRepository {
     fun getRefreshToken(): String
     fun getRefreshExpiresAt(): String
     fun signOut()
+
+    suspend fun registerDeviceToken(registerDeviceTokenRequest: RegisterDeviceTokenRequest)
 }

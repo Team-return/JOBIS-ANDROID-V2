@@ -2,7 +2,8 @@ package team.retum.data.repository.user
 
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.datasource.user.RemoteUserDataSource
-import team.retum.network.model.request.SignInRequest
+import team.retum.network.model.request.user.RegisterDeviceTokenRequest
+import team.retum.network.model.request.user.SignInRequest
 import team.retum.network.model.response.TokenResponse
 import javax.inject.Inject
 
@@ -55,5 +56,9 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun signOut() {
         localUserDataSource.clearUserInformation()
+    }
+
+    override suspend fun registerDeviceToken(registerDeviceTokenRequest: RegisterDeviceTokenRequest) {
+        remoteUserDataSource.registerDeviceToken(registerDeviceTokenRequest = registerDeviceTokenRequest)
     }
 }

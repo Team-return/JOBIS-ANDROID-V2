@@ -1,4 +1,4 @@
-package team.retum.network.model.request
+package team.retum.network.model.request.user
 
 import com.google.gson.annotations.SerializedName
 import team.retum.common.enums.PlatformType
