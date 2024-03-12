@@ -1,6 +1,5 @@
 package team.retum.jobis.notice.ui
 
-import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +31,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.notice.NoticeDetailsEntity
 
-
 @Composable
 internal fun NoticeDetails(
     noticeId: Long,
@@ -46,7 +43,7 @@ internal fun NoticeDetails(
         noticeDetailsViewModel.fetchNoticeDetails(noticeId = noticeId)
     }
 
-     NoticeDetailsScreen(
+    NoticeDetailsScreen(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
         state = state,

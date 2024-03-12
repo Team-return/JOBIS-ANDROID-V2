@@ -75,7 +75,10 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onSearchClick = navController::navigateToSearchCompanies,
             onCompanyContentClick = navController::navigateToCompanyDetails,
         )
-        searchCompanies(onBackPressed = navController::popBackStack)
+        searchCompanies(
+            onBackPressed = navController::popBackStack,
+            onCompanyContentClick = navController::navigateToCompanyDetails,
+        )
         recruitmentFilter(onBackPressed = navController::popBackStack)
         searchRecruitment(
             onBackPressed = navController::popBackStack,

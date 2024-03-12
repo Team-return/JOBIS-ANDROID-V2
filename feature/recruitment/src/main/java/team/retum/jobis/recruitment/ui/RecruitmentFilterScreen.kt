@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
 import team.retum.common.component.Skills
 import team.retum.common.enums.CodeType
 import team.retum.jobis.recruitment.R
@@ -42,6 +43,8 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CodesEntity
 
+const val SEARCH_DELAY: Long = 200
+
 @Composable
 internal fun RecruitmentFilter(
     onBackPressed: () -> Unit,
@@ -50,6 +53,7 @@ internal fun RecruitmentFilter(
     val state by recruitmentFilterViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.keyword, state.type, state.parentCode) {
+        delay(SEARCH_DELAY)
         if (state.type == CodeType.TECH) {
             recruitmentFilterViewModel.fetchCodes()
         }
@@ -99,7 +103,6 @@ private fun RecruitmentFilterScreen(
                 checkedSkills = checkedSkills,
                 onCheckSkill = onCheckSkill,
             )
-
         }
         JobisButton(
             text = stringResource(id = R.string.appliance),

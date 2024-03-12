@@ -17,19 +17,16 @@ internal class NoticesViewModel @Inject constructor(
 ) : BaseViewModel<NoticesState, NoticesSideEffect>(NoticesState.getDefaultState()) {
     internal fun fetchNotices() {
         viewModelScope.launch(Dispatchers.IO) {
-            with(state.value) {
-                fetchNoticesUseCase()
-                    .onSuccess {
-                        setState { state.value.copy(notices = it.notices) }
-                    }
-                    .onFailure {
-                        when (it) {
-                            is BadRequestException -> {
-                                postSideEffect(NoticesSideEffect.BadRequest)
-                            }
+            fetchNoticesUseCase()
+                .onSuccess {
+                    setState { state.value.copy(notices = it.notices) }
+                }.onFailure {
+                    when (it) {
+                        is BadRequestException -> {
+                            postSideEffect(NoticesSideEffect.BadRequest)
                         }
                     }
-            }
+                }
         }
     }
 }

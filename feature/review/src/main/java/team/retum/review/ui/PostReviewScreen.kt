@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.enums.ReviewProcess
 import team.retum.jobis.review.R
@@ -63,6 +64,8 @@ import team.retum.review.viewmodel.ReviewState
 import team.retum.review.viewmodel.ReviewViewModel
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.PostReviewEntity
+
+const val SEARCH_DELAY: Long = 200
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -91,6 +94,7 @@ internal fun PostReview(
     }
 
     LaunchedEffect(state.keyword) {
+        delay(SEARCH_DELAY)
         reviewViewModel.fetchCodes(state.keyword)
     }
 
@@ -406,6 +410,7 @@ private fun ReviewContent(
                 contentDescription = "arrow_down",
                 onClick = { showQuestionDetail = !showQuestionDetail },
                 modifier = Modifier.align(Alignment.CenterVertically),
+                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
             )
         }
     }

@@ -6,6 +6,7 @@
     <string name="not_found_company">검색어와 관련 된 회사를 못찾았어요</string>
     <string name="double_check">제대로 입력했는지 다시 한번 확인해주세요</string>
     <string name="search_hint">검색어를 입력해주세요</string>
+    <string name="error">서비스 오류</string>
 
     <!--Company Details Screen-->
     <string name="company_details">기업 상세</string>

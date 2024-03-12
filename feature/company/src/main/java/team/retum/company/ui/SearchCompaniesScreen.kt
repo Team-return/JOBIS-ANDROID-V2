@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
 import team.retum.common.utils.ResourceKeys.IMAGE_URL
 import team.retum.company.viewmodel.CompanyState
 import team.retum.company.viewmodel.CompanyViewModel
@@ -34,15 +35,20 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CompaniesEntity
+
+const val SEARCH_DELAY: Long = 200
 
 @Composable
 internal fun SearchCompanies(
     onBackPressed: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     companyViewModel: CompanyViewModel = hiltViewModel(),
 ) {
     val state by companyViewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(state.name) {
+        delay(SEARCH_DELAY)
         if (state.checkCompany && state.name?.isNotBlank() ?: "".isNotBlank()) {
             companyViewModel.fetchTotalCompanyCount(name = state.name)
             companyViewModel.fetchCompanies(
@@ -56,6 +62,7 @@ internal fun SearchCompanies(
         onNameChange = companyViewModel::setName,
         companies = companyViewModel.companies.value.companies,
         checkCompanies = companyViewModel::setCheckCompany,
+        onCompanyContentClick = onCompanyContentClick,
         state = state,
     )
 }
@@ -66,6 +73,7 @@ private fun SearchCompaniesScreen(
     onNameChange: (String) -> Unit,
     companies: List<CompaniesEntity.CompanyEntity>,
     checkCompanies: (Boolean) -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     state: CompanyState,
 ) {
     checkCompanies(false)
@@ -90,6 +98,7 @@ private fun SearchCompaniesScreen(
             ) {
                 items(companies) {
                     SearchCompanyItem(
+                        onCompanyContentClick = onCompanyContentClick,
                         companyImageUrl = IMAGE_URL + it.logoUrl,
                         companyName = it.name,
                         id = it.id,
@@ -109,6 +118,7 @@ private fun SearchCompaniesScreen(
 
 @Composable
 private fun SearchCompanyItem(
+    onCompanyContentClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     companyImageUrl: String,
     companyName: String,
@@ -120,7 +130,9 @@ private fun SearchCompanyItem(
     val hasRecruitmentColor =
         if (hasRecruitment) JobisTheme.colors.primaryContainer else JobisTheme.colors.onSurface
     Row(
-        modifier = modifier.padding(vertical = 16.dp),
+        modifier = modifier
+            .padding(vertical = 16.dp)
+            .clickable(onClick = { onCompanyContentClick(id) }),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
