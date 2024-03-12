@@ -48,6 +48,9 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 
+private const val INTEREST_MENU_ID = 1
+private const val WITHDRAWAL_MENU_ID = 4
+
 @Composable
 internal fun MyPage(
     onSelectInterestClick: () -> Unit,
@@ -192,6 +195,7 @@ private fun MyPageScreen(
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
+                            menuId = 0,
                             imageResource = painterResource(id = R.drawable.ic_loud_speaker),
                             description = "notice icon",
                             contentTitle = stringResource(id = R.string.notice),
@@ -207,6 +211,7 @@ private fun MyPageScreen(
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
+                            menuId = 1,
                             imageResource = painterResource(id = JobisIcon.Code),
                             description = "interest field icon",
                             contentTitle = stringResource(id = R.string.interest_field),
@@ -214,6 +219,7 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
+                            menuId = 2,
                             imageResource = painterResource(id = JobisIcon.LockReset),
                             description = "password change icon",
                             contentTitle = stringResource(id = R.string.password_change),
@@ -221,6 +227,7 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
+                            menuId = 3,
                             imageResource = painterResource(id = JobisIcon.LogOut),
                             description = "logout icon",
                             contentTitle = stringResource(id = R.string.logout),
@@ -228,6 +235,7 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.error,
                         ),
                         ListItemInfo(
+                            menuId = 4,
                             imageResource = painterResource(id = JobisIcon.PersonRemove),
                             description = "membership withdrawal icon",
                             contentTitle = stringResource(id = R.string.membership_withdrawal),
@@ -243,6 +251,7 @@ private fun MyPageScreen(
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
+                            menuId = 5,
                             imageResource = painterResource(id = JobisIcon.Report),
                             description = "bug report icon",
                             contentTitle = stringResource(id = R.string.to_bug_report),
@@ -379,13 +388,10 @@ private fun ContentListItem(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         contentItemInfo.items.forEach { item ->
-            val isNotImplementedFeature =
-                item.contentTitle == stringResource(id = R.string.interest_field) ||
-                        item.contentTitle == stringResource(id = R.string.membership_withdrawal)
             ListItem(
                 item = item,
                 onItemClick = {
-                    if (isNotImplementedFeature) {
+                    if (item.menuId == INTEREST_MENU_ID || item.menuId == WITHDRAWAL_MENU_ID) {
                         showUpdateLaterToast()
                     } else {
                         item.onClick()
@@ -423,6 +429,7 @@ private fun ListItem(
 }
 
 private data class ListItemInfo(
+    val menuId: Int,
     val imageResource: Painter,
     val description: String,
     val contentTitle: String,
