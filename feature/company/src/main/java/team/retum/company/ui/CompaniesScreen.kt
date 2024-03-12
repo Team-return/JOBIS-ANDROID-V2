@@ -53,7 +53,7 @@ internal fun Companies(
                 CompanySideEffect.ServerDown -> {
                     JobisToast.create(
                         context = context,
-                        message = "서비스 오류",
+                        message = context.getString(R.string.error),
                     ).show()
                 }
             }

@@ -26,15 +26,26 @@ internal class CompanyViewModel @Inject constructor(
 
     internal fun setName(name: String) {
         _companies = mutableStateOf(CompaniesEntity(emptyList()))
-        setState { state.value.copy(name = name, page = 1) }
+        setState {
+            state.value.copy(
+                name = name,
+                page = 1,
+            )
+        }
     }
 
     internal fun setCheckCompany(check: Boolean) =
         setState { state.value.copy(checkCompany = check) }
 
-    internal fun fetchCompanies(page: Int, name: String?) {
+    internal fun fetchCompanies(
+        page: Int,
+        name: String?,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchCompaniesUseCase(page = page, name = name).onSuccess {
+            fetchCompaniesUseCase(
+                page = page,
+                name = name,
+            ).onSuccess {
                 val currentCompanies = _companies.value.companies.toMutableList()
                 currentCompanies.addAll(it.companies)
                 val newCompaniesEntity = _companies.value.copy(companies = currentCompanies)
@@ -43,7 +54,10 @@ internal class CompanyViewModel @Inject constructor(
             }.onFailure {
                 when (it) {
                     is BadRequestException -> {
-                        fetchCompaniesUseCase(page = 1, name = null)
+                        fetchCompaniesUseCase(
+                            page = 1,
+                            name = null,
+                        )
                     }
 
                     is ServerException -> {

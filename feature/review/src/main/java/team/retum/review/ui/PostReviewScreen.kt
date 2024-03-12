@@ -65,6 +65,8 @@ import team.retum.review.viewmodel.ReviewViewModel
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.PostReviewEntity
 
+const val SEARCH_DELAY: Long = 200
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun PostReview(
@@ -92,7 +94,7 @@ internal fun PostReview(
     }
 
     LaunchedEffect(state.keyword) {
-        delay(300)
+        delay(SEARCH_DELAY)
         reviewViewModel.fetchCodes(state.keyword)
     }
 
@@ -408,6 +410,7 @@ private fun ReviewContent(
                 contentDescription = "arrow_down",
                 onClick = { showQuestionDetail = !showQuestionDetail },
                 modifier = Modifier.align(Alignment.CenterVertically),
+                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
             )
         }
     }

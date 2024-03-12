@@ -43,6 +43,8 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CodesEntity
 
+const val SEARCH_DELAY: Long = 200
+
 @Composable
 internal fun RecruitmentFilter(
     onBackPressed: () -> Unit,
@@ -51,7 +53,7 @@ internal fun RecruitmentFilter(
     val state by recruitmentFilterViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.keyword, state.type, state.parentCode) {
-        delay(300)
+        delay(SEARCH_DELAY)
         if (state.type == CodeType.TECH) {
             recruitmentFilterViewModel.fetchCodes()
         }

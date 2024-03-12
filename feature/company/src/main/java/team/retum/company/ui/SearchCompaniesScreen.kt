@@ -38,6 +38,8 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CompaniesEntity
 
+const val SEARCH_DELAY: Long = 200
+
 @Composable
 internal fun SearchCompanies(
     onBackPressed: () -> Unit,
@@ -46,7 +48,7 @@ internal fun SearchCompanies(
 ) {
     val state by companyViewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(state.name) {
-        delay(300)
+        delay(SEARCH_DELAY)
         if (state.checkCompany && state.name?.isNotBlank() ?: "".isNotBlank()) {
             companyViewModel.fetchTotalCompanyCount(name = state.name)
             companyViewModel.fetchCompanies(
