@@ -272,6 +272,7 @@ private fun Position(
                         .replace(",", "/"),
                     majorTask = it.majorTask,
                     tech = exceptBracket(it.tech.toString()),
+                    preferentialTreatment = it.preferentialTreatment,
                 )
             }
         }
@@ -283,6 +284,7 @@ private fun PositionCard(
     job: String,
     majorTask: String,
     tech: String,
+    preferentialTreatment: String?,
 ) {
     var showDetails by remember { mutableStateOf(false) }
 
@@ -325,6 +327,10 @@ private fun PositionCard(
                 PositionDetail(
                     title = stringResource(id = R.string.technology_used),
                     content = tech,
+                )
+                PositionDetail(
+                    title = stringResource(id = R.string.preferential_treatment),
+                    content = preferentialTreatment,
                 )
             }
         }
