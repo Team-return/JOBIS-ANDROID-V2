@@ -101,7 +101,6 @@ private fun RecruitmentFilterScreen(
                 checkedSkills = checkedSkills,
                 onCheckSkill = onCheckSkill,
             )
-
         }
         JobisButton(
             text = stringResource(id = R.string.appliance),
