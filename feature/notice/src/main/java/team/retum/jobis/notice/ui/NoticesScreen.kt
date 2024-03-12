@@ -1,6 +1,5 @@
 package team.retum.jobis.notice.ui
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.jobis.notice.viewmodel.NoticesSideEffect
 import team.retum.jobis.notice.viewmodel.NoticesViewModel
 import team.retum.jobis.notification.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -29,28 +29,37 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.usecase.entity.notice.NoticesEntity
 
 @Composable
 internal fun Notices(
     onBackPressed: () -> Unit,
+    navigateToDetail: (Long) -> Unit,
     noticesViewModel: NoticesViewModel = hiltViewModel(),
 ) {
     val state = noticesViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        //noticesViewModel.fetchNotices()
+        noticesViewModel.fetchNotices()
+        noticesViewModel.sideEffect.collect {
+            when (it) {
+                is NoticesSideEffect.BadRequest -> {}
+            }
+        }
     }
 
     NoticesScreen(
         onBackPressed = onBackPressed,
-        scrollState = rememberScrollState(),
+        navigateToDetail = navigateToDetail,
+        notices = state.value.notices,
     )
 }
 
 @Composable
 private fun NoticesScreen(
     onBackPressed: () -> Unit,
-    scrollState: ScrollState,
+    navigateToDetail: (Long) -> Unit,
+    notices: List<NoticesEntity.NoticeEntity>,
 ) {
     Column(
         modifier = Modifier
@@ -61,17 +70,16 @@ private fun NoticesScreen(
             title = stringResource(id = R.string.announcement),
             onBackPressed = onBackPressed,
         )
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .verticalScroll(scrollState),
+                .padding(horizontal = 24.dp),
         ) {
-            // TODO: viewmodel 추가시 제거
-            for (i in 0..20) {
+            items(notices) {
                 NoticesItem(
-                    noticeTitle = "[중요] 오리엔테이션날 일정 안내",
-                    noticeDate = "2024.01.17",
-                    onClick = { /*TODO 공지사항 상세페이지로 이동*/ },
+                    noticeId = it.noticeId,
+                    noticeTitle = it.title,
+                    noticeDate = it.createdAt,
+                    onClick = { navigateToDetail(it.noticeId) },
                 )
             }
         }
@@ -80,6 +88,7 @@ private fun NoticesScreen(
 
 @Composable
 private fun NoticesItem(
+    noticeId: Long,
     noticeTitle: String,
     noticeDate: String,
     onClick: () -> Unit,
