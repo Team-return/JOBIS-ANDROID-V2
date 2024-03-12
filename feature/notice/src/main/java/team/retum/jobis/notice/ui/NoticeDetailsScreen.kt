@@ -1,6 +1,5 @@
 package team.retum.jobis.notice.ui
 
-import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,13 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +42,7 @@ internal fun NoticeDetails(
         noticeDetailsViewModel.fetchNoticeDetails(noticeId = noticeId)
     }
 
-     NoticeDetailsScreen(
+    NoticeDetailsScreen(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
         state = state,
@@ -74,10 +70,8 @@ private fun NoticeDetailsScreen(
                 .verticalScroll(scrollState),
         ) {
             Notice(noticeDetailsEntity = state.noticeDetailsEntity)
-            LazyColumn {
-                items(state.noticeDetailsEntity.attachments) {
-                    AttachFile(it.url)
-                }
+            state.noticeDetailsEntity.attachments.forEach {
+                // TODO: AttachFile 함수 호출
             }
         }
     }
