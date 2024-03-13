@@ -89,6 +89,7 @@ dependencies {
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.material)
+    api(libs.com.google.android.play)
 
     testApi(libs.junit)
 

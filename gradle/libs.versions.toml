@@ -29,6 +29,8 @@ com-google-android-material = "1.11.0"
 kotlinx-serialization-json = "1.6.3"
 org-jlleitschuh-ktlint-gradle = "11.3.1"
 
+app-update-ktx = "2.1.0"
+
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
@@ -70,6 +72,7 @@ kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", versio
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 com-google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "google-firebase-bom" }
+com-google-android-play = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "app-update-ktx"}
 
 firebase_messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
 
