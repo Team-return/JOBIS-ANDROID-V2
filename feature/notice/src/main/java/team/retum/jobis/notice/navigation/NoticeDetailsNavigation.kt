@@ -14,7 +14,7 @@ fun NavGraphBuilder.noticeDetails(
     onBackPressed: () -> Unit,
 ) {
     composable(
-        route = "NAVIGATION_NOTICE_DETAILS{$NOTICE_ID}",
+        route = "$NAVIGATION_NOTICE_DETAILS{$NOTICE_ID}",
         arguments = listOf(navArgument(NOTICE_ID) { NavType.StringType }),
     ) {
         NoticeDetails(

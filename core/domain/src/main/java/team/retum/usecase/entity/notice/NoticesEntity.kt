@@ -6,7 +6,7 @@ data class NoticesEntity(
     val notices: List<NoticeEntity>,
 ) {
     data class NoticeEntity(
-        val noticeId: Long,
+        val id: Long,
         val title: String,
         val createdAt: String,
     )
@@ -18,7 +18,7 @@ internal fun FetchNoticesResponse.toNoticesEntity() = NoticesEntity(
 
 private fun FetchNoticesResponse.NoticeResponse.toEntity() =
     NoticesEntity.NoticeEntity(
-        noticeId = this.noticeId,
+        id = this.id,
         title = this.title,
         createdAt = this.createdAt,
     )
