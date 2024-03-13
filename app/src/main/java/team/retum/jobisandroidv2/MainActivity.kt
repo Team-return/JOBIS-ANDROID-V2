@@ -1,0 +1,64 @@
+package team.retum.jobisandroidv2
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.setContent
+import androidx.core.view.WindowCompat
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+import dagger.hilt.android.AndroidEntryPoint
+import team.retum.jobisandroidv2.ui.JobisApp
+import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
+import team.retum.jobisdesignsystemv2.toast.JobisToast
+
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+    private var delay = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        checkAppUpdate()
+        setContent {
+            BackHandler {
+                setBackHandler()
+            }
+
+            JobisDesignSystemV2Theme {
+                JobisApp()
+            }
+        }
+    }
+
+    private fun setBackHandler() {
+        if (System.currentTimeMillis() > delay) {
+            delay = System.currentTimeMillis() + 1000
+            JobisToast.create(
+                context = applicationContext,
+                message = getString(R.string.close_app),
+            ).show()
+        } else {
+            finish()
+        }
+    }
+
+    private fun checkAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener {
+            val isUpdateAvailable = it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+
+            if (isUpdateAvailable && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                appUpdateManager.startUpdateFlowForResult(
+                    it,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    0,
+                )
+            }
+        }
+    }
+}

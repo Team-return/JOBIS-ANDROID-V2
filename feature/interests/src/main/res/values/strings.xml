@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="set_interests">관심사 설정</string>
+    <string name="hint_keyword">검색어를 입력해주세요</string>
+</resources>

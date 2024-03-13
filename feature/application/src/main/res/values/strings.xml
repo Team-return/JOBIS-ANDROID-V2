@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apply">지원하기</string>
+    <string name="attachment">첨부 파일</string>
+    <string name="add_attachment">파일 추가하기</string>
+    <string name="url">URL</string>
+    <string name="hint_url">링크를 입력해주세요</string>
+    <string name="add_url">URL 추가하기</string>
+
+    <string name="toast_max_count">최대 3개까지만 등록할 수 있어요</string>
+    <string name="toast_invalid_file_extension">올바르지 않은 파일 확장자에요</string>
+    <string name="toast_success_apply">지원이 완료되었어요!</string>
+    <string name="toast_conflict_apply">이미 지원한 기업이에요</string>
+    <string name="toast_not_found_recruitment">존재하지 않는 모집의뢰서에요</string>
+    <string name="toast_unexpected_grade">3학년만 지원할 수 있어요</string>
+</resources>

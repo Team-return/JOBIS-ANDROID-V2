@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="announcement">공지사항</string>
+    <string name="attachFile">첨부파일</string>
+    <string name="occurred_error">오류가 발생했습니다</string>
+</resources>

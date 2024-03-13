@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="company">기업 탐색</string>
+    <string name="has_recruitment">모집의뢰서 O</string>
+    <string name="has_not_recruitment">모집의뢰서 X</string>
+    <string name="not_found_company">검색어와 관련 된 회사를 못찾았어요</string>
+    <string name="double_check">제대로 입력했는지 다시 한번 확인해주세요</string>
+    <string name="search_hint">검색어를 입력해주세요</string>
+    <string name="error">서비스 오류</string>
+
+    <!--Company Details Screen-->
+    <string name="company_details">기업 상세</string>
+
+    <string name="representative_name">대표자</string>
+    <string name="founded_at">설립일</string>
+    <string name="worker_number">근로자 수</string>
+    <string name="take">연매출</string>
+    <string name="main_address">주소(본사)</string>
+    <string name="sub_address">주소(지점)</string>
+    <string name="manager">담당자1</string>
+    <string name="manager_phone_number">전화번호1</string>
+    <string name="sub_manager">담당자2</string>
+    <string name="sub_manager_phone_number">전화번호2</string>
+    <string name="email">이메일</string>
+    <string name="fax">팩스</string>
+
+    <string name="review">면접 후기</string>
+    <string name="show_more_reviews">더 많은 후기 보기</string>
+</resources>

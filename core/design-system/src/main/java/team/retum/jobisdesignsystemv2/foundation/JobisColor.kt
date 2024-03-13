@@ -1,0 +1,81 @@
+package team.retum.jobisdesignsystemv2.foundation
+
+import androidx.compose.ui.graphics.Color
+
+/**
+ * This object defines the JobisColor used in Jobis.
+ */
+internal sealed class JobisColor(
+    val primary100: Color,
+    val primary200: Color,
+    val primary300: Color,
+    val primary400: Color,
+    val red100: Color,
+    val red200: Color,
+    val yellow100: Color,
+    val yellow200: Color,
+    val green100: Color,
+    val green200: Color,
+    val blue100: Color,
+    val blue200: Color,
+    val gray100: Color,
+    val gray200: Color,
+    val gray300: Color,
+    val gray400: Color,
+    val gray500: Color,
+    val gray600: Color,
+    val gray700: Color,
+    val gray800: Color,
+    val gray900: Color,
+    val transparent: Color,
+) {
+    object Light : JobisColor(
+        primary100 = Color(0xFFF3F3FB),
+        primary200 = Color(0xFF135C9D),
+        primary300 = Color(0xFF0F4C82),
+        primary400 = Color(0xFF002C53),
+        red100 = Color(0xFFFCE9E7),
+        red200 = Color(0xFFE74C3C),
+        yellow100 = Color(0xFFFDF7E2),
+        yellow200 = Color(0xFFF1C40F),
+        green100 = Color(0xFFE5F8EE),
+        green200 = Color(0xFF2ECC71),
+        blue100 = Color(0xFFE0EBF6),
+        blue200 = Color(0xFF237BC9),
+        gray100 = Color(0xFFFFFFFF),
+        gray200 = Color(0xFFFAFAFA),
+        gray300 = Color(0xFFF7F7F7),
+        gray400 = Color(0xFFE5E5E5),
+        gray500 = Color(0xFFCCCCCC),
+        gray600 = Color(0xFF7F7F7F),
+        gray700 = Color(0xFF444444),
+        gray800 = Color(0xFF333333),
+        gray900 = Color(0xFF000000),
+        transparent = Color(0x00000000),
+    )
+
+    object Dark : JobisColor(
+        primary100 = Color(0xFF002559),
+        primary200 = Color(0xFF135C9D),
+        primary300 = Color(0xFF2770B1),
+        primary400 = Color(0xFF4F98D9),
+        red100 = Color(0xFF4C1914),
+        red200 = Color(0xFFE74C3C),
+        yellow100 = Color(0xFF504105),
+        yellow200 = Color(0xFFF1C40F),
+        green100 = Color(0xFF0F4325),
+        green200 = Color(0xFF2ECC71),
+        blue100 = Color(0xFF0C2942),
+        blue200 = Color(0xFF237BC9),
+        gray100 = Color(0xFF000000),
+        gray200 = Color(0xFF060606),
+        gray300 = Color(0xFF191919),
+        gray400 = Color(0xFF333333),
+        gray500 = Color(0xFF545454),
+        gray600 = Color(0xFF8E8E8E),
+        gray700 = Color(0xFFD9D9D9),
+        gray800 = Color(0xFFEEEEEE),
+        gray900 = Color(0xFFFFFFFF),
+        transparent = Color(0x00000000),
+    )
+}
