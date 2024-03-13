@@ -5,6 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import team.retum.jobisandroidv2.ui.JobisApp
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
@@ -17,6 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        checkAppUpdate()
         setContent {
             BackHandler {
                 setBackHandler()
@@ -37,6 +41,24 @@ class MainActivity : ComponentActivity() {
             ).show()
         } else {
             finish()
+        }
+    }
+
+    private fun checkAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener {
+            val isUpdateAvailable = it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+
+            if (isUpdateAvailable && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                appUpdateManager.startUpdateFlowForResult(
+                    it,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    0,
+                )
+            }
         }
     }
 }
