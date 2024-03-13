@@ -57,4 +57,15 @@ class LocalUserDataSourceImpl @Inject constructor(
             this@edit.clear()
         }
     }
+
+    override suspend fun saveDeviceToken(deviceToken: String) {
+        sharedPreferences.edit {
+            this.putString(ResourceKeys.DEVICE_TOKEN, deviceToken)
+        }
+    }
+
+    override suspend fun getDeviceToken(): String {
+        return sharedPreferences.getString(ResourceKeys.DEVICE_TOKEN, "")
+            ?: throw NullPointerException()
+    }
 }

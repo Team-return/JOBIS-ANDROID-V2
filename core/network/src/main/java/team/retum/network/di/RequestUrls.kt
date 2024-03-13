@@ -14,6 +14,7 @@ internal object RequestUrls {
         private const val path = "/users"
 
         const val login = "$path/login"
+        const val token = "$path/token"
     }
 
     data object Auth {

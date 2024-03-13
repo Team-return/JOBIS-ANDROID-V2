@@ -18,6 +18,7 @@ class PostSignUpUseCase @Inject constructor(
         classRoom: Long,
         number: Long,
         profileImageUrl: String,
+        deviceToken: String,
     ) = runCatching {
         studentRepository.postSignUp(
             postSignUpRequest = PostSignUpRequest(
@@ -30,6 +31,7 @@ class PostSignUpUseCase @Inject constructor(
                 number = number,
                 profileImageUrl = profileImageUrl,
                 platformType = PlatformType.ANDROID,
+                deviceToken = deviceToken,
             ),
         )
     }

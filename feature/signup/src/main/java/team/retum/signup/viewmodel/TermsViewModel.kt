@@ -7,12 +7,28 @@ import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.signup.model.SignUpData
 import team.retum.usecase.usecase.student.PostSignUpUseCase
+import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class TermsViewModel @Inject constructor(
     private val postSignUpUseCase: PostSignUpUseCase,
+    private val getDeviceTokenUseCase: GetDeviceTokenUseCase,
 ) : BaseViewModel<TermsState, TermsSideEffect>(TermsState.getInitialState()) {
+
+    private lateinit var deviceToken: String
+
+    init {
+        getDeviceToken()
+    }
+
+    private fun getDeviceToken() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getDeviceTokenUseCase().onSuccess {
+                deviceToken = it
+            }
+        }
+    }
 
     internal fun onReachTheEnded(buttonEnabled: Boolean) = setState {
         state.value.copy(buttonEnabled = buttonEnabled)
@@ -30,6 +46,7 @@ internal class TermsViewModel @Inject constructor(
                     classRoom = classRoom.toLong(),
                     number = number.toLong(),
                     profileImageUrl = profileImageUrl.replace(" ", "/"),
+                    deviceToken = deviceToken,
                 ).onSuccess {
                     postSideEffect(TermsSideEffect.Success)
                 }
