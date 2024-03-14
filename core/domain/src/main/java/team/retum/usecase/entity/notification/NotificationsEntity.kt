@@ -1,6 +1,7 @@
 package team.retum.usecase.entity.notification
 
 import android.annotation.SuppressLint
+import team.retum.common.enums.AlarmType
 import team.retum.network.model.response.notification.FetchNotificationsResponse
 import java.text.SimpleDateFormat
 
@@ -11,7 +12,7 @@ data class NotificationsEntity(
         val notificationId: Long,
         val title: String,
         val content: String,
-        val topic: String,
+        val topic: AlarmType,
         val detailId: Long,
         val createAt: String,
         val new: Boolean,
