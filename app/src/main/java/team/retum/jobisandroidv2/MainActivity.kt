@@ -8,6 +8,7 @@ import androidx.core.view.WindowCompat
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.github.anrwatchdog.ANRWatchDog
 import dagger.hilt.android.AndroidEntryPoint
 import team.retum.jobisandroidv2.ui.JobisApp
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
@@ -19,6 +20,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ANRWatchDog(10000).start()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         checkAppUpdate()
         setContent {
