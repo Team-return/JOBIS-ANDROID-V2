@@ -5,10 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import com.github.anrwatchdog.ANRWatchDog
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.github.anrwatchdog.ANRWatchDog
 import dagger.hilt.android.AndroidEntryPoint
 import team.retum.jobisandroidv2.ui.JobisApp
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
