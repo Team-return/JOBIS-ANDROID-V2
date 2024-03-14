@@ -40,7 +40,7 @@ fun NavGraphBuilder.root(
     }
 }
 
-fun NavController.navigateToRoot() {
+fun NavController.navigateToRoot(applicationId: Long? = 0) {
     navigate(NAVIGATION_ROOT) {
         popUpTo(NAVIGATION_SPLASH) {
             inclusive = true
