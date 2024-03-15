@@ -14,13 +14,15 @@ import team.retum.jobisandroidv2.ui.JobisApp
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 
+private const val ANR_TIME = 10000
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var delay = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ANRWatchDog(10000).start()
+        ANRWatchDog(ANR_TIME).start()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         checkAppUpdate()
         setContent {
