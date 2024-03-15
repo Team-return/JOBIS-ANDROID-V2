@@ -84,12 +84,16 @@ private fun SearchRecruitmentScreen(
             onValueChange = onNameChange,
             leadingIcon = painterResource(id = JobisIcon.Search),
         )
-        RecruitmentsContent(
-            lazyListState = lazyListState,
-            recruitments = recruitments,
-            onRecruitmentClick = onRecruitmentClick,
-            onBookmarkClick = onBookmarkClick,
-        )
+        if (recruitments.isNotEmpty() || state.name.isNullOrEmpty()) {
+            RecruitmentsContent(
+                lazyListState = lazyListState,
+                recruitments = recruitments,
+                onRecruitmentClick = onRecruitmentClick,
+                onBookmarkClick = onBookmarkClick,
+            )
+        } else {
+            EmptyRecruitmentContent()
+        }
     }
 }
 
