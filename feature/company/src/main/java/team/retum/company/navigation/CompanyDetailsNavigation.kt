@@ -14,24 +14,32 @@ fun NavGraphBuilder.companyDetails(
     onBackPressed: () -> Unit,
     navigateToReviewDetails: (String, String) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
-    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigateToRecruitmentDetails: (Long, Boolean) -> Unit,
 ) {
     composable(
-        route = "$NAVIGATION_COMPANY_DETAILS/{${ResourceKeys.COMPANY_ID}}",
-        arguments = listOf(navArgument(ResourceKeys.COMPANY_ID) { NavType.StringType }),
+        route = "$NAVIGATION_COMPANY_DETAILS/{${ResourceKeys.COMPANY_ID}}/{${ResourceKeys.IS_MOVED_RECRUITMENT_DETAILS}}",
+        arguments = listOf(
+            navArgument(ResourceKeys.COMPANY_ID) { type = NavType.LongType },
+            navArgument(ResourceKeys.IS_MOVED_RECRUITMENT_DETAILS) { type = NavType.BoolType },
+        ),
     ) {
-        val companyId =
-            it.arguments?.getString(ResourceKeys.COMPANY_ID) ?: throw NullPointerException()
+        val companyId = it.arguments?.getLong(ResourceKeys.COMPANY_ID) ?: 0L
+        val isMovedRecruitmentDetails =
+            it.arguments?.getBoolean(ResourceKeys.IS_MOVED_RECRUITMENT_DETAILS) ?: false
         CompanyDetails(
-            companyId = companyId.toLong(),
+            companyId = companyId,
             onBackPressed = onBackPressed,
             navigateToReviewDetails = navigateToReviewDetails,
             navigateToReviews = navigateToReviews,
             navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+            isMovedRecruitmentDetails = isMovedRecruitmentDetails,
         )
     }
 }
 
-fun NavController.navigateToCompanyDetails(companyId: Long) {
-    navigate("$NAVIGATION_COMPANY_DETAILS/$companyId")
+fun NavController.navigateToCompanyDetails(
+    companyId: Long,
+    isMovedRecruitmentDetails: Boolean = false,
+) {
+    navigate("$NAVIGATION_COMPANY_DETAILS/$companyId/$isMovedRecruitmentDetails")
 }

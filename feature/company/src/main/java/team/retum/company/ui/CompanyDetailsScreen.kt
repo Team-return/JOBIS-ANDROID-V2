@@ -51,7 +51,8 @@ internal fun CompanyDetails(
     onBackPressed: () -> Unit,
     navigateToReviewDetails: (String, String) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
-    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigateToRecruitmentDetails: (Long, Boolean) -> Unit,
+    isMovedRecruitmentDetails: Boolean,
     companyDetailsViewModel: CompanyDetailsViewModel = hiltViewModel(),
 ) {
     val state by companyDetailsViewModel.state.collectAsStateWithLifecycle()
@@ -75,7 +76,7 @@ internal fun CompanyDetails(
                 }
 
                 is CompanyDetailsSideEffect.MoveToRecruitmentDetails -> {
-                    navigateToRecruitmentDetails(it.recruitmentId)
+                    navigateToRecruitmentDetails(it.recruitmentId, true)
                 }
             }
         }
