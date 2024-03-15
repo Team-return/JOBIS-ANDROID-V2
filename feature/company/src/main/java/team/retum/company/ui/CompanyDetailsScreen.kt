@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -26,13 +29,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.component.ReviewContent
+import team.retum.company.viewmodel.CompanyDetailsSideEffect
 import team.retum.company.viewmodel.CompanyDetailsState
 import team.retum.company.viewmodel.CompanyDetailsViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.FetchReviewsEntity
 import team.retum.usecase.entity.company.CompanyDetailsEntity
@@ -43,15 +51,33 @@ internal fun CompanyDetails(
     onBackPressed: () -> Unit,
     navigateToReviewDetails: (String, String) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
     companyDetailsViewModel: CompanyDetailsViewModel = hiltViewModel(),
 ) {
     val state by companyDetailsViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         with(companyDetailsViewModel) {
             setCompanyId(companyId = companyId)
             fetchCompanyDetails()
             fetchReviews()
+        }
+
+        companyDetailsViewModel.sideEffect.collect {
+            when (it) {
+                is CompanyDetailsSideEffect.FetchCompanyDetailsError -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_error_fetch_recruitment_details),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is CompanyDetailsSideEffect.MoveToRecruitmentDetails -> {
+                    navigateToRecruitmentDetails(it.recruitmentId)
+                }
+            }
         }
     }
 
@@ -60,6 +86,7 @@ internal fun CompanyDetails(
         onBackPressed = onBackPressed,
         navigateToReviewDetails = navigateToReviewDetails,
         navigateToReviews = navigateToReviews,
+        onMoveToRecruitmentButtonClick = companyDetailsViewModel::onMoveToRecruitmentButtonClick,
         state = state,
     )
 }
@@ -70,6 +97,7 @@ private fun CompanyDetailsScreen(
     onBackPressed: () -> Unit,
     navigateToReviewDetails: (String, String) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
+    onMoveToRecruitmentButtonClick: () -> Unit,
     state: CompanyDetailsState,
 ) {
     Column(
@@ -82,24 +110,39 @@ private fun CompanyDetailsScreen(
             title = stringResource(id = R.string.company_details),
             onBackPressed = onBackPressed,
         )
-        CompanyMainInformation(
-            companyLogoUrl = state.companyDetailsEntity.companyProfileUrl,
-            name = state.companyDetailsEntity.companyName,
-            description = state.companyDetailsEntity.companyIntroduce,
-        )
-        CompanyInformations(companyDetailsEntity = state.companyDetailsEntity)
-        if (state.reviews.isNotEmpty()) {
-            Reviews(
-                reviews = state.reviews,
-                navigateToReviewDetails = navigateToReviewDetails,
-                showMoreReviews = state.showMoreReviews,
-                onShowMoreReviewClick = {
-                    navigateToReviews(
-                        companyId,
-                        state.companyDetailsEntity.companyName,
-                    )
-                },
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+        ) {
+            CompanyMainInformation(
+                companyLogoUrl = state.companyDetailsEntity.companyProfileUrl,
+                name = state.companyDetailsEntity.companyName,
+                description = state.companyDetailsEntity.companyIntroduce,
             )
+            CompanyInformations(companyDetailsEntity = state.companyDetailsEntity)
+            if (state.reviews.isNotEmpty()) {
+                Reviews(
+                    reviews = state.reviews,
+                    navigateToReviewDetails = navigateToReviewDetails,
+                    showMoreReviews = state.showMoreReviews,
+                    onShowMoreReviewClick = {
+                        navigateToReviews(
+                            companyId,
+                            state.companyDetailsEntity.companyName,
+                        )
+                    },
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            if (state.showMoveToRecruitmentButton) {
+                JobisButton(
+                    text = stringResource(id = R.string.show_recruitment),
+                    onClick = onMoveToRecruitmentButtonClick,
+                    color = ButtonColor.Primary,
+                    enabled = state.buttonEnabled,
+                )
+            }
         }
     }
 }
