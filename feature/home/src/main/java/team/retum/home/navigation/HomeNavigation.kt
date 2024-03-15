@@ -8,12 +8,14 @@ import team.retum.home.ui.Home
 const val NAVIGATION_HOME = "home"
 
 fun NavGraphBuilder.home(
+    applicationId: Long?,
     onAlarmClick: () -> Unit,
     showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
 ) {
     composable(NAVIGATION_HOME) {
         Home(
+            applicationId = applicationId,
             onAlarmClick = onAlarmClick,
             showRejectionModal = showRejectionModal,
             onCompaniesClick = onCompaniesClick,
