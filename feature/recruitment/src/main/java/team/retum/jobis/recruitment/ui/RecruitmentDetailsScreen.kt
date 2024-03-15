@@ -182,7 +182,7 @@ private fun CompanyInformation(
     JobisButton(
         text = stringResource(id = R.string.show_company_detail_info),
         onClick = onMoveToCompanyDetailsClick,
-        enabled = !isMovedCompanyDetails
+        enabled = !isMovedCompanyDetails,
     )
 }
 
