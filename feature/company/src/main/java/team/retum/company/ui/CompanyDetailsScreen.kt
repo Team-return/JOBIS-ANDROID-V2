@@ -88,6 +88,7 @@ internal fun CompanyDetails(
         navigateToReviewDetails = navigateToReviewDetails,
         navigateToReviews = navigateToReviews,
         onMoveToRecruitmentButtonClick = companyDetailsViewModel::onMoveToRecruitmentButtonClick,
+        isMovedRecruitmentDetails = isMovedRecruitmentDetails,
         state = state,
     )
 }
@@ -99,6 +100,7 @@ private fun CompanyDetailsScreen(
     navigateToReviewDetails: (String, String) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
     onMoveToRecruitmentButtonClick: () -> Unit,
+    isMovedRecruitmentDetails: Boolean,
     state: CompanyDetailsState,
 ) {
     Column(
@@ -141,7 +143,7 @@ private fun CompanyDetailsScreen(
                     text = stringResource(id = R.string.show_recruitment),
                     onClick = onMoveToRecruitmentButtonClick,
                     color = ButtonColor.Primary,
-                    enabled = state.buttonEnabled,
+                    enabled = state.buttonEnabled && !isMovedRecruitmentDetails,
                 )
             }
         }

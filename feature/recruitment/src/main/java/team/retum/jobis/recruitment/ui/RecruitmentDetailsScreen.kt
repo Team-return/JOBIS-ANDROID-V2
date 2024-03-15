@@ -92,6 +92,7 @@ internal fun RecruitmentDetails(
         recruitmentDetail = state.recruitmentDetailsEntity,
         recruitmentId = recruitmentId,
         onMoveToCompanyDetailsClick = recruitmentDetailsViewModel::onMoveToCompanyDetailsClick,
+        isMovedCompanyDetails = isMovedCompanyDetails,
     )
 }
 
@@ -103,6 +104,7 @@ private fun RecruitmentDetailsScreen(
     recruitmentDetail: RecruitmentDetailsEntity,
     recruitmentId: Long,
     onMoveToCompanyDetailsClick: () -> Unit,
+    isMovedCompanyDetails: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -119,6 +121,7 @@ private fun RecruitmentDetailsScreen(
             CompanyInformation(
                 recruitmentDetail = recruitmentDetail,
                 onMoveToCompanyDetailsClick = onMoveToCompanyDetailsClick,
+                isMovedCompanyDetails = isMovedCompanyDetails,
             )
             Divider(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -148,6 +151,7 @@ private fun RecruitmentDetailsScreen(
 private fun CompanyInformation(
     recruitmentDetail: RecruitmentDetailsEntity,
     onMoveToCompanyDetailsClick: () -> Unit,
+    isMovedCompanyDetails: Boolean,
 ) {
     Row(
         modifier = Modifier.padding(
@@ -178,6 +182,7 @@ private fun CompanyInformation(
     JobisButton(
         text = stringResource(id = R.string.show_company_detail_info),
         onClick = onMoveToCompanyDetailsClick,
+        enabled = !isMovedCompanyDetails
     )
 }
 
