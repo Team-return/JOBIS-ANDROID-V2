@@ -14,6 +14,7 @@ const val RECRUITMENT_ID = "recruitment-id"
 fun NavGraphBuilder.recruitmentDetails(
     onBackPressed: () -> Unit,
     onApplyClick: (ReApplyData) -> Unit,
+    navigateToCompanyDetails: (Long) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_RECRUITMENT_DETAILS{$RECRUITMENT_ID}",
@@ -24,6 +25,7 @@ fun NavGraphBuilder.recruitmentDetails(
                 ?: throw NullPointerException(),
             onBackPressed = onBackPressed,
             onApplyClick = onApplyClick,
+            navigateToCompanyDetails = navigateToCompanyDetails,
         )
     }
 }

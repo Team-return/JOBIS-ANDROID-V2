@@ -69,7 +69,7 @@ internal fun CompanyDetails(
                 is CompanyDetailsSideEffect.FetchCompanyDetailsError -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.toast_error_fetch_recruitment_details),
+                        message = context.getString(R.string.toast_error_fetch_company_details),
                         drawable = JobisIcon.Error,
                     ).show()
                 }

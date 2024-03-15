@@ -66,6 +66,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         recruitmentDetails(
             onBackPressed = navController::navigateUp,
             onApplyClick = navController::navigateToApplication,
+            navigateToCompanyDetails = navController::navigateToCompanyDetails,
         )
         reportBug(onBackPressed = navController::popBackStack)
         interests(onBackPressed = navController::popBackStack)

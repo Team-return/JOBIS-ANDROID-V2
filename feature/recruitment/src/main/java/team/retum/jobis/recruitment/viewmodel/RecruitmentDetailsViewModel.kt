@@ -18,23 +18,17 @@ internal class RecruitmentDetailsViewModel @Inject constructor(
 
     internal fun fetchRecruitmentDetails(recruitmentId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchRecruitmentDetailsUseCase(recruitmentId = recruitmentId)
-                .onSuccess { detail ->
-                    setState {
-                        state.value.copy(
-                            recruitmentDetailsEntity = detail.copy(
-                                companyProfileUrl = detail.companyProfileUrl,
-                            ),
-                        )
+            fetchRecruitmentDetailsUseCase(recruitmentId = recruitmentId).onSuccess { detail ->
+                setState {
+                    state.value.copy(recruitmentDetailsEntity = detail)
+                }
+            }.onFailure {
+                when (it) {
+                    is NullPointerException -> {
+                        postSideEffect(RecruitmentDetailsSideEffect.BadRequest)
                     }
                 }
-                .onFailure {
-                    when (it) {
-                        is NullPointerException -> {
-                            postSideEffect(RecruitmentDetailsSideEffect.BadRequest)
-                        }
-                    }
-                }
+            }
         }
     }
 
@@ -46,16 +40,21 @@ internal class RecruitmentDetailsViewModel @Inject constructor(
             bookmarkRecruitmentUseCase(recruitmentId)
         }
     }
+
+    internal fun onMoveToCompanyDetailsClick() = setState {
+        postSideEffect(RecruitmentDetailsSideEffect.MoveToCompanyDetails(companyId = state.value.recruitmentDetailsEntity.companyId))
+        state.value.copy(buttonEnabled = false)
+    }
 }
 
 internal data class RecruitmentDetailsState(
-    val companyId: Long,
     val recruitmentDetailsEntity: RecruitmentDetailsEntity,
+    val buttonEnabled: Boolean,
 ) {
     companion object {
         fun getDefaultState() = RecruitmentDetailsState(
-            companyId = 0,
             recruitmentDetailsEntity = RecruitmentDetailsEntity(
+                companyId = 0L,
                 companyProfileUrl = "",
                 companyName = "",
                 areas = emptyList(),
@@ -74,10 +73,12 @@ internal data class RecruitmentDetailsState(
                 isApplicable = false,
                 bookmarked = false,
             ),
+            buttonEnabled = false,
         )
     }
 }
 
 sealed interface RecruitmentDetailsSideEffect {
     data object BadRequest : RecruitmentDetailsSideEffect
+    data class MoveToCompanyDetails(val companyId: Long) : RecruitmentDetailsSideEffect
 }
