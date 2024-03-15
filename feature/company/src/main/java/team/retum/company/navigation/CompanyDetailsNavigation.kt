@@ -14,6 +14,7 @@ fun NavGraphBuilder.companyDetails(
     onBackPressed: () -> Unit,
     navigateToReviewDetails: (String, String) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_COMPANY_DETAILS/{${ResourceKeys.COMPANY_ID}}",
@@ -26,6 +27,7 @@ fun NavGraphBuilder.companyDetails(
             onBackPressed = onBackPressed,
             navigateToReviewDetails = navigateToReviewDetails,
             navigateToReviews = navigateToReviews,
+            navigateToRecruitmentDetails = navigateToRecruitmentDetails,
         )
     }
 }

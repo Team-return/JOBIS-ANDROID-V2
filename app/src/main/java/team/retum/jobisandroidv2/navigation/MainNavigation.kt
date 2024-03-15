@@ -94,6 +94,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onBackPressed = navController::popBackStack,
             navigateToReviewDetails = navController::navigateToReviewDetails,
             navigateToReviews = navController::navigateToReviews,
+            navigateToRecruitmentDetails = navController::navigateToRecruitmentDetails,
         )
         reviewDetails(navController::popBackStack)
         reviews(
