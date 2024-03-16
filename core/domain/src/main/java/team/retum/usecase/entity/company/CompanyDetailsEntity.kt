@@ -4,6 +4,29 @@ import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.company.FetchCompanyDetailsResponse
 import java.text.DecimalFormat
 
+private const val PHONE_NUMBER_LENGTH_9 = 9
+private const val PHONE_NUMBER_LENGTH_10 = 10
+private const val PHONE_NUMBER_LENGTH_11 = 11
+private const val LOCAL_NUMBER_SEOUL = "02"
+
+private const val LOCAL_NUMBER_START_INDEX = 0
+private const val LOCAL_NUMBER_END_INDEX_SEOUL = 1
+private const val LOCAL_NUMBER_END_INDEX_OTHERS = 2
+
+private const val MIDDLE_NUMBER_START_INDEX_SEOUL = 2
+private const val MIDDLE_NUMBER_START_INDEX_OTHERS = 3
+
+private const val MIDDLE_NUMBER_END_INDEX_SEOUL_4 = 4
+private const val MIDDLE_NUMBER_END_INDEX_SEOUL_5 = 5
+private const val MIDDLE_NUMBER_END_INDEX_OTHERS_5 = 5
+private const val MIDDLE_NUMBER_END_INDEX_OTHERS_6 = 6
+
+private const val END_NUMBER_START_INDEX_SEOUL_5 = 5
+private const val END_NUMBER_START_INDEX_SEOUL_6 = 6
+private const val END_NUMBER_START_INDEX_OTHERS_6 = 6
+private const val END_NUMBER_START_INDEX_OTHERS_7 = 7
+
+
 data class CompanyDetailsEntity(
     val businessNumber: String,
     val companyName: String,
@@ -57,18 +80,45 @@ private fun Double.toTake(): String {
 
 private fun String.toPhoneNumber(): String {
     return when (this.length) {
-        9 -> {
-            this.substring(0..1)
+        PHONE_NUMBER_LENGTH_9 -> {
+            substring(LOCAL_NUMBER_START_INDEX..LOCAL_NUMBER_END_INDEX_SEOUL)
                 .plus("-")
-                .plus(substring(3..5))
+                .plus(substring(MIDDLE_NUMBER_START_INDEX_SEOUL..MIDDLE_NUMBER_END_INDEX_SEOUL_4))
                 .plus("-")
-                .plus(substring(6..9))
+                .plus(substring(END_NUMBER_START_INDEX_SEOUL_5..lastIndex))
         }
 
-        else -> this.substring(0..2)
-            .plus("-")
-            .plus(substring(3..6))
-            .plus("-")
-            .plus(substring(7..10))
+        PHONE_NUMBER_LENGTH_10 -> {
+            if (isSeoulPhoneNumber()) {
+                substring(LOCAL_NUMBER_START_INDEX..LOCAL_NUMBER_END_INDEX_SEOUL)
+                    .plus("-")
+                    .plus(this.substring(MIDDLE_NUMBER_START_INDEX_SEOUL..MIDDLE_NUMBER_END_INDEX_SEOUL_5))
+                    .plus("-")
+                    .plus(this.substring(END_NUMBER_START_INDEX_OTHERS_6..lastIndex))
+            } else {
+                substring(LOCAL_NUMBER_START_INDEX..LOCAL_NUMBER_END_INDEX_OTHERS)
+                    .plus("-")
+                    .plus(this.substring(MIDDLE_NUMBER_START_INDEX_OTHERS..MIDDLE_NUMBER_END_INDEX_OTHERS_5))
+                    .plus("-")
+                    .plus(this.substring(END_NUMBER_START_INDEX_SEOUL_6..lastIndex))
+            }
+        }
+
+        PHONE_NUMBER_LENGTH_11 -> {
+            substring(LOCAL_NUMBER_START_INDEX..LOCAL_NUMBER_END_INDEX_OTHERS)
+                .plus("-")
+                .plus(this.substring(MIDDLE_NUMBER_START_INDEX_OTHERS..MIDDLE_NUMBER_END_INDEX_OTHERS_6))
+                .plus("-")
+                .plus(this.substring(END_NUMBER_START_INDEX_OTHERS_7..lastIndex))
+        }
+
+        else -> {
+            this
+        }
     }
+}
+
+private fun String.isSeoulPhoneNumber(): Boolean {
+    val localNumber = substring(LOCAL_NUMBER_START_INDEX..LOCAL_NUMBER_END_INDEX_SEOUL)
+    return localNumber == LOCAL_NUMBER_SEOUL
 }

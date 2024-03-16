@@ -1,7 +1,6 @@
 package team.retum.jobis.recruitment.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -60,6 +59,8 @@ internal fun RecruitmentDetails(
     recruitmentId: Long,
     onBackPressed: () -> Unit,
     onApplyClick: (ReApplyData) -> Unit,
+    navigateToCompanyDetails: (Long, Boolean) -> Unit,
+    isMovedCompanyDetails: Boolean,
     recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
 ) {
     val state by recruitmentDetailsViewModel.state.collectAsStateWithLifecycle()
@@ -76,6 +77,10 @@ internal fun RecruitmentDetails(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+
+                is RecruitmentDetailsSideEffect.MoveToCompanyDetails -> {
+                    navigateToCompanyDetails(it.companyId, true)
+                }
             }
         }
     }
@@ -86,7 +91,8 @@ internal fun RecruitmentDetails(
         onBookmarkClick = { recruitmentDetailsViewModel.bookmarkRecruitmentDetail(recruitmentId) },
         recruitmentDetail = state.recruitmentDetailsEntity,
         recruitmentId = recruitmentId,
-        scrollState = rememberScrollState(),
+        onMoveToCompanyDetailsClick = recruitmentDetailsViewModel::onMoveToCompanyDetailsClick,
+        isMovedCompanyDetails = isMovedCompanyDetails,
     )
 }
 
@@ -97,7 +103,8 @@ private fun RecruitmentDetailsScreen(
     onBookmarkClick: () -> Unit,
     recruitmentDetail: RecruitmentDetailsEntity,
     recruitmentId: Long,
-    scrollState: ScrollState,
+    onMoveToCompanyDetailsClick: () -> Unit,
+    isMovedCompanyDetails: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -109,9 +116,13 @@ private fun RecruitmentDetailsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .verticalScroll(scrollState),
+                .verticalScroll(rememberScrollState()),
         ) {
-            CompanyInformation(recruitmentDetail = recruitmentDetail)
+            CompanyInformation(
+                recruitmentDetail = recruitmentDetail,
+                onMoveToCompanyDetailsClick = onMoveToCompanyDetailsClick,
+                isMovedCompanyDetails = isMovedCompanyDetails,
+            )
             Divider(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = JobisTheme.colors.inverseSurface,
@@ -139,6 +150,8 @@ private fun RecruitmentDetailsScreen(
 @Composable
 private fun CompanyInformation(
     recruitmentDetail: RecruitmentDetailsEntity,
+    onMoveToCompanyDetailsClick: () -> Unit,
+    isMovedCompanyDetails: Boolean,
 ) {
     Row(
         modifier = Modifier.padding(
@@ -168,7 +181,8 @@ private fun CompanyInformation(
     }
     JobisButton(
         text = stringResource(id = R.string.show_company_detail_info),
-        onClick = { },
+        onClick = onMoveToCompanyDetailsClick,
+        enabled = !isMovedCompanyDetails,
     )
 }
 
