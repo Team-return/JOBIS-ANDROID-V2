@@ -147,7 +147,7 @@ internal fun Home(
                     ).show()
                 }
 
-                is HomeSideEffect.MoveScroll -> {
+                is HomeSideEffect.ScrollToApplication -> {
                     scrollState.animateScrollTo(
                         state.sectionOneCoordinates.roundToInt(),
                     )
@@ -582,17 +582,21 @@ private fun ApplyCompanyItem(
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000),
+            animation = tween(durationMillis = 500),
             repeatMode = RepeatMode.Reverse,
             initialStartOffset = StartOffset(1),
         ),
         label = "",
     )
-    val alpha: Float by animateFloatAsState(if (effectExecuted) animationAlpha else 0f, label = "")
+    val alpha: Float by animateFloatAsState(
+        targetValue = if (effectExecuted) animationAlpha
+        else 0f,
+        label = "",
+    )
 
     if (isFocus) {
         LaunchedEffect(Unit) {
-            delay(2000)
+            delay(1000)
             effectExecuted = false
         }
     }
