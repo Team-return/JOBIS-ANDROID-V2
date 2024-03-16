@@ -1,6 +1,5 @@
 package team.retum.notification.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,13 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.alarm.R
-import team.retum.common.enums.AlarmType
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.notification.model.NotificationDetailData
 import team.retum.notification.viewmodel.NotificationsSideEffect
 import team.retum.notification.viewmodel.NotificationsViewModel
 import team.retum.usecase.entity.notification.NotificationsEntity
@@ -90,7 +89,7 @@ private fun NotificationsScreen(
     selectedTabIndex: Int,
     tabs: List<String>,
     onSelectTab: (Int) -> Unit,
-    onNotificationDetailsClick: (isNew: Boolean, notificationId: Long, detailId: Long, topic: AlarmType) -> Unit,
+    onNotificationDetailsClick: (NotificationDetailData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -132,12 +131,7 @@ private fun NotificationContent(
     content: String,
     date: String,
     isNew: Boolean,
-    onClick: (
-        isNew: Boolean,
-        notificationId: Long,
-        detailId: Long,
-        topic: AlarmType,
-    ) -> Unit,
+    onClick: (NotificationDetailData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -146,10 +140,12 @@ private fun NotificationContent(
                 enabled = true,
                 onClick = {
                     onClick(
-                        notifications.new,
-                        notifications.notificationId,
-                        notifications.detailId,
-                        notifications.topic,
+                        NotificationDetailData(
+                            isNew = notifications.new,
+                            notificationId = notifications.notificationId,
+                            detailId = notifications.detailId,
+                            topic = notifications.topic,
+                        ),
                     )
                 },
             ),

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.AlarmType
+import team.retum.notification.model.NotificationDetailData
 import team.retum.usecase.entity.notification.NotificationsEntity
 import team.retum.usecase.usecase.notification.FetchNotificationsUseCase
 import team.retum.usecase.usecase.notification.ReadNotificationUseCase
@@ -36,21 +37,17 @@ internal class NotificationsViewModel @Inject constructor(
     }
 
     internal fun readNotification(
-        isNew: Boolean,
-        notificationId: Long,
-        detailId: Long,
-        topic: AlarmType,
+        notificationDetailData: NotificationDetailData
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (isNew) readNotificationUseCase(notificationId)
-            when (topic) {
+            if (notificationDetailData.isNew) readNotificationUseCase(notificationDetailData.notificationId)
+            when (notificationDetailData.topic) {
                 AlarmType.APPLICATION_STATUS_CHANGED -> {
-                    postSideEffect(NotificationsSideEffect.MoveToHome(applicationId = detailId))
-
+                    postSideEffect(NotificationsSideEffect.MoveToHome(applicationId = notificationDetailData.detailId))
                 }
 
                 AlarmType.RECRUITMENT_DONE -> {
-                    postSideEffect(NotificationsSideEffect.MoveToRecruitment(recruitmentId = detailId))
+                    postSideEffect(NotificationsSideEffect.MoveToRecruitment(recruitmentId = notificationDetailData.detailId))
                 }
 
                 else -> {
