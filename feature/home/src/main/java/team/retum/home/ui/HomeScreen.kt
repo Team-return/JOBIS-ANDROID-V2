@@ -589,8 +589,11 @@ private fun ApplyCompanyItem(
         label = "",
     )
     val alpha: Float by animateFloatAsState(
-        targetValue = if (effectExecuted) animationAlpha
-        else 0f,
+        targetValue = if (effectExecuted) {
+            animationAlpha
+        } else {
+            0f
+        },
         label = "",
     )
 
