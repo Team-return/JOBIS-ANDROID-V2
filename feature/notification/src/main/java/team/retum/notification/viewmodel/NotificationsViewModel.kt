@@ -51,7 +51,7 @@ internal class NotificationsViewModel @Inject constructor(
                 }
 
                 else -> {
-
+                    // TODO: 현재 처리할 작업 없음 
                 }
             }
         }

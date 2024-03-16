@@ -185,6 +185,5 @@ private fun NotificationContent(
                 )
             }
         }
-
     }
 }
