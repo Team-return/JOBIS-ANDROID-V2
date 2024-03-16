@@ -10,7 +10,7 @@ const val NAVIGATION_NOTIFICATIONS = "notifications"
 fun NavGraphBuilder.notifications(
     onBackPressed: () -> Unit,
     navigateToRecruitment: (Long) -> Unit,
-    navigateToHome: (Long?) -> Unit,
+    navigateToHome: (Long) -> Unit,
 ) {
     composable(NAVIGATION_NOTIFICATIONS) {
         Notifications(
