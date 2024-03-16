@@ -37,7 +37,7 @@ internal class NotificationsViewModel @Inject constructor(
     }
 
     internal fun readNotification(
-        notificationDetailData: NotificationDetailData
+        notificationDetailData: NotificationDetailData,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             if (notificationDetailData.isNew) readNotificationUseCase(notificationDetailData.notificationId)
@@ -51,7 +51,7 @@ internal class NotificationsViewModel @Inject constructor(
                 }
 
                 else -> {
-                    // TODO: 현재 처리할 작업 없음 
+                    // TODO: 현재 처리할 작업 없음
                 }
             }
         }
