@@ -121,7 +121,7 @@ internal class HomeViewModel @Inject constructor(
         position: Float,
     ) {
         if (applicationId != null) {
-            postSideEffect(HomeSideEffect.MoveScroll)
+            postSideEffect(HomeSideEffect.ScrollToApplication)
         }
         setState { state.value.copy(sectionOneCoordinates = position) }
     }
@@ -154,5 +154,5 @@ internal sealed interface HomeSideEffect {
     data class ShowRejectionModal(val reApplyData: ReApplyData) : HomeSideEffect
 
     data object NotFoundApplication : HomeSideEffect
-    data object MoveScroll : HomeSideEffect
+    data object ScrollToApplication : HomeSideEffect
 }
