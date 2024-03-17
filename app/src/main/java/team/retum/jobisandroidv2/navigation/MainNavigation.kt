@@ -27,6 +27,7 @@ import team.retum.jobis.recruitment.navigation.recruitmentDetails
 import team.retum.jobis.recruitment.navigation.recruitmentFilter
 import team.retum.jobis.recruitment.navigation.searchRecruitment
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
+import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.jobisandroidv2.root.root
 import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.navigateToNotification
@@ -61,7 +62,8 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         )
         notifications(
             onBackPressed = navController::popBackStack,
-            navigateToDetail = navController::navigateToRecruitmentDetails,
+            navigateToRecruitment = navController::navigateToRecruitmentDetails,
+            navigateToHome = navController::navigateToRoot,
         )
         recruitmentDetails(
             onBackPressed = navController::navigateUp,

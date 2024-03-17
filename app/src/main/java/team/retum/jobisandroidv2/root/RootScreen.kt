@@ -42,6 +42,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun Root(
+    applicationId: Long?,
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
@@ -66,6 +67,7 @@ internal fun Root(
     RootScreen(
         navController = navController,
         sheetState = sheetState,
+        applicationId = applicationId,
         onAlarmClick = onAlarmClick,
         showRejectionModal = {
             reApplyData = it
@@ -99,6 +101,7 @@ internal fun Root(
 private fun RootScreen(
     navController: NavHostController,
     sheetState: ModalBottomSheetState,
+    applicationId: Long?,
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -136,6 +139,7 @@ private fun RootScreen(
                 modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
             ) {
                 home(
+                    applicationId = applicationId,
                     onAlarmClick = onAlarmClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,

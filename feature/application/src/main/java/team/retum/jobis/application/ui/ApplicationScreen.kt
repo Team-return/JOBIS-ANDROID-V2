@@ -121,7 +121,7 @@ internal fun Application(
                         context = context,
                         message = context.getString(R.string.toast_unexpected_grade),
                         drawable = JobisIcon.Error,
-                    )
+                    ).show()
                 }
             }
         }

@@ -2,10 +2,17 @@ package team.retum.home.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
@@ -36,10 +43,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -51,6 +63,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
 import team.retum.common.enums.ApplyStatus
 import team.retum.common.model.ReApplyData
 import team.retum.home.R
@@ -68,6 +81,7 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.time.LocalDate
+import kotlin.math.roundToInt
 
 private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40
@@ -84,6 +98,7 @@ private data class MenuItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun Home(
+    applicationId: Long?,
     onAlarmClick: () -> Unit,
     showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
@@ -91,6 +106,7 @@ internal fun Home(
 ) {
     val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val currentDate = LocalDate.now()
     val isDecemberOrLater = currentDate.monthValue >= 12
@@ -130,11 +146,18 @@ internal fun Home(
                         message = context.getString(R.string.toast_not_found_application),
                     ).show()
                 }
+
+                is HomeSideEffect.ScrollToApplication -> {
+                    scrollState.animateScrollTo(
+                        state.sectionOneCoordinates.roundToInt(),
+                    )
+                }
             }
         }
     }
 
     HomeScreen(
+        scrollState = scrollState,
         pagerState = pagerState,
         menus = menus,
         onAlarmClick = onAlarmClick,
@@ -142,12 +165,15 @@ internal fun Home(
         state = state,
         studentInformation = state.studentInformation,
         appliedCompanies = homeViewModel.appliedCompanies,
+        applicationId = applicationId,
+        setScroll = homeViewModel::fetchScroll,
     )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeScreen(
+    scrollState: ScrollState,
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
@@ -155,6 +181,8 @@ private fun HomeScreen(
     state: HomeState,
     studentInformation: StudentInformationEntity,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    applicationId: Long?,
+    setScroll: (Long?, Float) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -169,7 +197,7 @@ private fun HomeScreen(
                 onClick = onAlarmClick,
             )
         }
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
             /*Banner(
                 pagerState = pagerState,
                 rate = state.rate,
@@ -203,8 +231,10 @@ private fun HomeScreen(
                     vertical = 12.dp,
                     horizontal = 24.dp,
                 ),
+                applicationId = applicationId,
                 appliedCompanies = appliedCompanies,
                 onClick = onRejectionReasonClick,
+                setScroll = setScroll,
             )
         }
     }
@@ -456,10 +486,17 @@ private fun Menu(
 @Composable
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
+    applicationId: Long?,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
     onClick: (applicationId: Long, ReApplyData) -> Unit,
+    setScroll: (applicationId: Long?, position: Float) -> Unit,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .onGloballyPositioned { layoutCoordinates ->
+                setScroll(applicationId, layoutCoordinates.positionInRoot().y)
+            },
+    ) {
         Row(
             modifier = Modifier
                 .align(Alignment.Start)
@@ -497,6 +534,7 @@ private fun ApplyStatus(
                             )
                         },
                         appliedCompany = it,
+                        isFocus = applicationId == it.applicationId,
                     )
                 }
             } else {
@@ -528,14 +566,44 @@ private fun ApplyStatus(
 private fun ApplyCompanyItem(
     onClick: () -> Unit,
     appliedCompany: AppliedCompaniesEntity.ApplicationEntity,
+    isFocus: Boolean,
 ) {
-    val applicationStatus = appliedCompany.applicationStatus
-    val color = when (applicationStatus) {
-        ApplyStatus.FAILED, ApplyStatus.REJECTED -> JobisTheme.colors.error
-        ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
-        ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
-        else -> JobisTheme.colors.onPrimary
+    val applicationStatus = remember { appliedCompany.applicationStatus }
+    val color =
+        when (applicationStatus) {
+            ApplyStatus.FAILED, ApplyStatus.REJECTED -> JobisTheme.colors.error
+            ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
+            ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
+            else -> JobisTheme.colors.onPrimary
+        }
+
+    var effectExecuted by remember { mutableStateOf(isFocus) }
+    val animationAlpha by rememberInfiniteTransition(label = "").animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 500),
+            repeatMode = RepeatMode.Reverse,
+            initialStartOffset = StartOffset(1),
+        ),
+        label = "",
+    )
+    val alpha: Float by animateFloatAsState(
+        targetValue = if (effectExecuted) {
+            animationAlpha
+        } else {
+            0f
+        },
+        label = "",
+    )
+
+    if (isFocus) {
+        LaunchedEffect(Unit) {
+            delay(1000)
+            effectExecuted = false
+        }
     }
+
     JobisCard(
         onClick = if (applicationStatus == ApplyStatus.REJECTED) {
             onClick
@@ -544,10 +612,12 @@ private fun ApplyCompanyItem(
         },
     ) {
         Row(
-            modifier = Modifier.padding(
-                vertical = 12.dp,
-                horizontal = 16.dp,
-            ),
+            modifier = Modifier
+                .background(color = JobisTheme.colors.surfaceTint.copy(alpha = alpha))
+                .padding(
+                    vertical = 12.dp,
+                    horizontal = 16.dp,
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(

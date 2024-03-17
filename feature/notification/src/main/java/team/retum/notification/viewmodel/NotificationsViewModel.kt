@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.AlarmType
+import team.retum.notification.model.NotificationDetailData
 import team.retum.usecase.entity.notification.NotificationsEntity
 import team.retum.usecase.usecase.notification.FetchNotificationsUseCase
 import team.retum.usecase.usecase.notification.ReadNotificationUseCase
@@ -18,8 +20,8 @@ internal class NotificationsViewModel @Inject constructor(
     private val readNotificationUseCase: ReadNotificationUseCase,
 ) : BaseViewModel<NotificationsState, NotificationsSideEffect>(NotificationsState.getDefaultState()) {
 
-     private val _notifications: SnapshotStateList<NotificationsEntity.NotificationEntity> =
-         mutableStateListOf()
+    private val _notifications: SnapshotStateList<NotificationsEntity.NotificationEntity> =
+        mutableStateListOf()
     val notifications get() = _notifications
 
     internal fun fetchNotifications() {
@@ -34,10 +36,24 @@ internal class NotificationsViewModel @Inject constructor(
         }
     }
 
-    internal fun readNotification(notificationId: Long) {
+    internal fun readNotification(
+        notificationDetailData: NotificationDetailData,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            readNotificationUseCase(notificationId)
-            postSideEffect(NotificationsSideEffect.MoveToDetail(notificationId = notificationId))
+            if (notificationDetailData.isNew) readNotificationUseCase(notificationDetailData.notificationId)
+            when (notificationDetailData.topic) {
+                AlarmType.APPLICATION_STATUS_CHANGED -> {
+                    postSideEffect(NotificationsSideEffect.MoveToHome(applicationId = notificationDetailData.detailId))
+                }
+
+                AlarmType.RECRUITMENT_DONE -> {
+                    postSideEffect(NotificationsSideEffect.MoveToRecruitment(recruitmentId = notificationDetailData.detailId))
+                }
+
+                else -> {
+                    // TODO: 현재 처리할 작업 없음
+                }
+            }
         }
     }
 
@@ -63,5 +79,6 @@ internal data class NotificationsState(
 }
 
 internal sealed interface NotificationsSideEffect {
-    data class MoveToDetail(val notificationId: Long) : NotificationsSideEffect
+    data class MoveToRecruitment(val recruitmentId: Long) : NotificationsSideEffect
+    data class MoveToHome(val applicationId: Long) : NotificationsSideEffect
 }

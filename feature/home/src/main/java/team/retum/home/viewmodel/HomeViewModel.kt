@@ -115,6 +115,16 @@ internal class HomeViewModel @Inject constructor(
             banners.addAll(it.banners)
         }
     }
+
+    internal fun fetchScroll(
+        applicationId: Long?,
+        position: Float,
+    ) {
+        if (applicationId != null) {
+            postSideEffect(HomeSideEffect.ScrollToApplication)
+        }
+        setState { state.value.copy(sectionOneCoordinates = position) }
+    }
 }
 
 internal data class HomeState(
@@ -122,6 +132,7 @@ internal data class HomeState(
     val rate: Float,
     val totalStudentCount: Long,
     val passCount: Long,
+    val sectionOneCoordinates: Float,
 ) {
     companion object {
         fun getDefaultState() = HomeState(
@@ -134,6 +145,7 @@ internal data class HomeState(
             rate = 0f,
             totalStudentCount = 0,
             passCount = 0,
+            sectionOneCoordinates = 0f,
         )
     }
 }
@@ -142,4 +154,5 @@ internal sealed interface HomeSideEffect {
     data class ShowRejectionModal(val reApplyData: ReApplyData) : HomeSideEffect
 
     data object NotFoundApplication : HomeSideEffect
+    data object ScrollToApplication : HomeSideEffect
 }
