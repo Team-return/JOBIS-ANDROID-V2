@@ -22,16 +22,17 @@ internal class RecruitmentViewModel @Inject constructor(
     private val recruitmentBookmarkUseCase: BookmarkRecruitmentUseCase,
 ) : BaseViewModel<RecruitmentsState, Unit>(RecruitmentsState.getDefaultState()) {
 
-    internal var recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity> =
+    private var _recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity> =
         mutableStateListOf()
-        private set
 
     init {
         fetchTotalRecruitmentCount()
     }
 
+    internal fun getRecruitments() = _recruitments
+
     internal fun clearRecruitment() {
-        recruitments.clear()
+        _recruitments.clear()
     }
 
     internal fun setJobCode(jobCode: Long?) = setState {
@@ -52,7 +53,9 @@ internal class RecruitmentViewModel @Inject constructor(
                     techCode = techCode,
                     winterIntern = false,
                 ).onSuccess {
-                    recruitments.addAll(it.recruitments)
+                    if (!_recruitments.containsAll(it.recruitments)) {
+                        _recruitments.addAll(it.recruitments)
+                    }
                 }
             }
         }
@@ -79,7 +82,7 @@ internal class RecruitmentViewModel @Inject constructor(
             val fetchNextPage = async {
                 collect {
                     it?.run {
-                        if (this == recruitments.lastIndex - 2) {
+                        if (this == _recruitments.lastIndex - 2) {
                             setState { state.value.copy(page = state.value.page + 1) }
                             fetchRecruitments()
                         }
@@ -98,9 +101,9 @@ internal class RecruitmentViewModel @Inject constructor(
     }
 
     internal fun bookmarkRecruitment(recruitmentId: Long) {
-        val index = recruitments.indexOf(recruitments.find { it.id == recruitmentId })
-        val bookmarked = recruitments[index].bookmarked
-        recruitments[index] = recruitments[index].copy(bookmarked = !bookmarked)
+        val index = _recruitments.indexOf(_recruitments.find { it.id == recruitmentId })
+        val bookmarked = _recruitments[index].bookmarked
+        _recruitments[index] = _recruitments[index].copy(bookmarked = !bookmarked)
 
         viewModelScope.launch(Dispatchers.IO) {
             recruitmentBookmarkUseCase(recruitmentId)
