@@ -41,7 +41,10 @@ internal fun RecruitmentsContent(
     onBookmarkClick: (Long) -> Unit,
 ) {
     LazyColumn(state = lazyListState) {
-        items(recruitments) { recruitment ->
+        items(
+            items = recruitments,
+            key = { it.id },
+        ) { recruitment ->
             val (bookmarked, setBookmarked) = remember { mutableStateOf(recruitment.bookmarked) }
             RecruitmentContent(
                 recruitment = recruitment,
