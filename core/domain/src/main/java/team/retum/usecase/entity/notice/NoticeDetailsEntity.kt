@@ -1,7 +1,9 @@
 package team.retum.usecase.entity.notice
 
+import android.annotation.SuppressLint
 import team.retum.common.enums.AttachmentType
 import team.retum.network.model.response.notice.FetchNoticeDetailsResponse
+import java.text.SimpleDateFormat
 
 data class NoticeDetailsEntity(
     val title: String,
@@ -15,10 +17,16 @@ data class NoticeDetailsEntity(
     )
 }
 
+@SuppressLint("SimpleDateFormat")
+private val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+
+@SuppressLint("SimpleDateFormat")
+private val outputFormat = SimpleDateFormat("yyyy-MM-dd")
+
 internal fun FetchNoticeDetailsResponse.toEntity() = NoticeDetailsEntity(
     title = this.title,
     content = this.content,
-    createdAt = this.createdAt,
+    createdAt = outputFormat.format(inputFormat.parse(this.createdAt)!!),
     attachments = this.attachments.map { it.toEntity() },
 )
 
