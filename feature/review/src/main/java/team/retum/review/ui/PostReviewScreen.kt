@@ -111,8 +111,9 @@ internal fun PostReview(
         setAnswer = reviewViewModel::setAnswer,
         setKeyword = reviewViewModel::setKeyword,
         setSelectedTech = reviewViewModel::setSelectedTech,
-        onReviewProcessChange = { reviewProcess = it },
-        reviewProcess = reviewProcess,
+        setChecked = reviewViewModel::setChecked,
+        onReviewProcessChange = reviewViewModel::setReviewProcess,
+        reviewProcess = state.reviewProcess,
         techs = reviewViewModel.techs,
         fetchQuestion = { reviewViewModel.postReview(companyId) },
         reviews = reviewViewModel.reviews,
@@ -134,6 +135,7 @@ private fun PostReviewScreen(
     setAnswer: (String) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedTech: (Long) -> Unit,
+    setChecked: (String) -> Unit,
     onReviewProcessChange: (ReviewProcess) -> Unit,
     reviewProcess: ReviewProcess,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
@@ -160,6 +162,7 @@ private fun PostReviewScreen(
                     setKeyword = setKeyword,
                     setSelectedTech = setSelectedTech,
                     reviewProcess = reviewProcess,
+                    setChecked = setChecked,
                     techs = techs,
                 )
             }
@@ -250,9 +253,9 @@ private fun AddQuestionBottomSheet(
     setAnswer: (String) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedTech: (Long) -> Unit,
+    setChecked: (String) -> Unit,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
 ) {
-    var checked by remember { mutableStateOf("") }
     Column {
         JobisText(
             text = if (reviewProcess == ReviewProcess.QUESTION) {
@@ -286,7 +289,7 @@ private fun AddQuestionBottomSheet(
             )
         } else {
             JobisTextField(
-                value = { state.keyword ?: "" },
+                value = { state.keyword },
                 hint = stringResource(id = R.string.search),
                 leadingIcon = painterResource(id = JobisIcon.Search),
                 onValueChange = setKeyword,
@@ -301,10 +304,9 @@ private fun AddQuestionBottomSheet(
                         ),
                     ) {
                         JobisCheckBox(
-                            checked = checked == codes.keyword,
+                            checked = state.checked == codes.keyword,
                             onClick = {
-                                checked = codes.keyword
-                                setKeyword(codes.keyword)
+                                setChecked(codes.keyword)
                                 setSelectedTech(codes.code)
                             },
                             backgroundColor = JobisTheme.colors.background,
@@ -331,6 +333,7 @@ private fun AddQuestionBottomSheet(
                 )
             },
             color = ButtonColor.Primary,
+            enabled = state.buttonEnabled,
         )
     }
 }

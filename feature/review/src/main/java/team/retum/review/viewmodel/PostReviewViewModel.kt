@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.ReviewProcess
 import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.PostReviewEntity
@@ -36,20 +37,28 @@ internal class ReviewViewModel @Inject constructor(
                 question = "",
                 answer = "",
                 keyword = "",
+                checked = "",
                 selectedTech = 0,
                 tech = null,
+                buttonEnabled = false,
+                reviewProcess = ReviewProcess.QUESTION,
             )
         }
 
-    internal fun setQuestion(question: String) =
+    internal fun setQuestion(question: String) {
         setState { state.value.copy(question = question) }
+        setButtonEnabled()
+    }
 
-    internal fun setAnswer(answer: String) =
+    internal fun setAnswer(answer: String) {
         setState { state.value.copy(answer = answer) }
+        setButtonEnabled()
+    }
 
-    internal fun setKeyword(keyword: String?) {
+    internal fun setKeyword(keyword: String) {
         techs.clear()
         setState { state.value.copy(keyword = keyword) }
+        setButtonEnabled()
     }
 
     internal fun addReview() {
@@ -94,22 +103,58 @@ internal class ReviewViewModel @Inject constructor(
                 techs.addAll(it.codes)
             }
         }
+
+    internal fun setReviewProcess(reviewProcess: ReviewProcess) {
+        setState { state.value.copy(reviewProcess = reviewProcess) }
+        setButtonEnabled()
+    }
+
+    private fun setButtonEnabled() {
+        when (state.value.reviewProcess) {
+            ReviewProcess.QUESTION -> {
+                if (state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) {
+                    setState { state.value.copy(buttonEnabled = true) }
+                } else {
+                    setState { state.value.copy(buttonEnabled = false) }
+                }
+            }
+
+            else -> {
+                if (state.value.checked.isNotEmpty()) {
+                    setState { state.value.copy(buttonEnabled = true) }
+                } else {
+                    setState { state.value.copy(buttonEnabled = false) }
+                }
+            }
+        }
+    }
+
+    internal fun setChecked(checked: String) {
+        setState { state.value.copy(checked = checked) }
+        setButtonEnabled()
+    }
 }
 
 internal data class ReviewState(
     val question: String,
     val answer: String,
-    val keyword: String?,
+    val keyword: String,
+    val checked: String,
     val selectedTech: Long,
     val tech: String?,
+    val buttonEnabled: Boolean,
+    val reviewProcess: ReviewProcess,
 ) {
     companion object {
         fun getDefaultState() = ReviewState(
             question = "",
             answer = "",
             keyword = "",
+            checked = "",
             selectedTech = 0,
             tech = null,
+            buttonEnabled = false,
+            reviewProcess = ReviewProcess.QUESTION,
         )
     }
 }
