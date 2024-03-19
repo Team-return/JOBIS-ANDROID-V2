@@ -50,8 +50,11 @@ internal fun RecruitmentsContent(
                 recruitment = recruitment,
                 onClick = onRecruitmentClick,
                 bookmarkIcon = painterResource(
-                    id = if (bookmarked) JobisIcon.BookmarkOn
-                    else JobisIcon.BookmarkOff,
+                    id = if (bookmarked) {
+                        JobisIcon.BookmarkOn
+                    } else {
+                        JobisIcon.BookmarkOff
+                    },
                 ),
                 onBookmarked = { setBookmarked(!bookmarked) },
             )
