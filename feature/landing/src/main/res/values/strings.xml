@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_message_notificaiton_revoked">알림을 받기 위해선 권한을 허용해주세요</string>
+</resources>
