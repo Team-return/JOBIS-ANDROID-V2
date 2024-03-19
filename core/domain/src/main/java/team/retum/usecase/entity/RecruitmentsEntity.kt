@@ -1,5 +1,6 @@
 package team.retum.usecase.entity
 
+import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchRecruitmentsResponse
 
 data class RecruitmentsEntity(
@@ -24,7 +25,7 @@ private fun FetchRecruitmentsResponse.RecruitmentResponse.toEntity() =
     RecruitmentsEntity.RecruitmentEntity(
         id = this.id,
         companyName = this.companyName,
-        companyProfileUrl = this.companyProfileUrl,
+        companyProfileUrl = ResourceKeys.IMAGE_URL + this.companyProfileUrl,
         trainPay = this.trainPay,
         militarySupport = this.militarySupport,
         hiringJobs = this.hiringJobs,

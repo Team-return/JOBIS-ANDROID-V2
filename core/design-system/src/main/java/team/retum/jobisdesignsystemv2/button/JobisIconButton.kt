@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,7 +29,7 @@ private fun BasicIconButton(
     enabled: Boolean,
     onClick: () -> Unit,
 ) {
-    var pressed by remember { mutableStateOf(false) }
+    val (pressed, setPressed) = remember { mutableStateOf(false) }
     val background by animateColorAsState(
         targetValue = if (pressed) {
             JobisTheme.colors.surfaceVariant
@@ -48,7 +47,7 @@ private fun BasicIconButton(
                 enabled = enabled,
                 onClick = onClick,
                 pressDepth = 0.93f,
-                onPressed = { pressed = it },
+                onPressed = setPressed,
             )
             .background(
                 color = background,
