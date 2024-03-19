@@ -19,15 +19,11 @@ internal class BookmarkViewModel @Inject constructor(
     private val recruitmentBookmarkUseCase: BookmarkRecruitmentUseCase,
 ) : BaseViewModel<Unit, BookmarkSideEffect>(Unit) {
 
-    init {
-        fetchBookmarks()
-    }
-
     private val _bookmarks: MutableState<BookmarksEntity> =
         mutableStateOf(BookmarksEntity(emptyList()))
-    val bookmarks: MutableState<BookmarksEntity> get() = _bookmarks
+    internal val bookmarks: MutableState<BookmarksEntity> get() = _bookmarks
 
-    private fun fetchBookmarks() {
+    internal fun fetchBookmarks() {
         viewModelScope.launch(Dispatchers.IO) {
             bookmarkUseCase().onSuccess {
                 _bookmarks.value = it

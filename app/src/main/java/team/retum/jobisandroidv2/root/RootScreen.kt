@@ -149,7 +149,10 @@ private fun RootScreen(
                     onRecruitmentFilterClick = onRecruitmentFilterClick,
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
-                bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
+                bookmarks(
+                    onRecruitmentsClick = navController::navigateToRecruitments,
+                    onRecruitmentDetailClick = onRecruitmentDetailsClick,
+                )
                 myPage(
                     onSelectInterestClick = onSelectInterestClick,
                     onChangePasswordClick = onChangePasswordClick,

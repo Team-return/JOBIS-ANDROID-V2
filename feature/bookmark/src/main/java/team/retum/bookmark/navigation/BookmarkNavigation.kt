@@ -7,9 +7,15 @@ import team.retum.bookmark.ui.Bookmarks
 
 const val NAVIGATION_BOOKMARK = "bookmark"
 
-fun NavGraphBuilder.bookmarks(onRecruitmentsClick: () -> Unit) {
+fun NavGraphBuilder.bookmarks(
+    onRecruitmentsClick: () -> Unit,
+    onRecruitmentDetailClick: (Long) -> Unit,
+) {
     composable(NAVIGATION_BOOKMARK) {
-        Bookmarks(onRecruitmentsClick = onRecruitmentsClick)
+        Bookmarks(
+            onRecruitmentsClick = onRecruitmentsClick,
+            onRecruitmentDetailClick = onRecruitmentDetailClick,
+        )
     }
 }
 

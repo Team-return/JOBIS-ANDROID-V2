@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,11 +42,16 @@ import team.retum.usecase.entity.BookmarksEntity
 internal fun Bookmarks(
     bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
     onRecruitmentsClick: () -> Unit,
+    onRecruitmentDetailClick: (Long) -> Unit,
 ) {
+    LaunchedEffect(Unit) {
+        bookmarkViewModel.fetchBookmarks()
+    }
     BookmarkScreen(
         bookmarks = bookmarkViewModel.bookmarks.value.bookmarks,
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
+        onRecruitmentDetailClick = onRecruitmentDetailClick,
     )
 }
 
@@ -54,6 +60,7 @@ private fun BookmarkScreen(
     bookmarks: List<BookmarksEntity.BookmarkEntity>,
     onDeleteClick: (Long) -> Unit,
     onRecruitmentsClick: () -> Unit,
+    onRecruitmentDetailClick: (Long) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -79,6 +86,7 @@ private fun BookmarkScreen(
                         date = it.createdAt.substring(0..9),
                         recruitmentId = it.recruitmentId,
                         onDeleteClick = onDeleteClick,
+                        onRecruitmentDetailClick = onRecruitmentDetailClick,
                     )
                 }
             }
@@ -129,9 +137,12 @@ private fun BookmarkItem(
     recruitmentId: Long,
     date: String,
     onDeleteClick: (Long) -> Unit,
+    onRecruitmentDetailClick: (Long) -> Unit,
 ) {
     Row(
-        modifier = modifier.padding(vertical = 16.dp),
+        modifier = modifier
+            .padding(vertical = 16.dp)
+            .clickable { onRecruitmentDetailClick(recruitmentId) },
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -157,7 +168,7 @@ private fun BookmarkItem(
         Image(
             painter = painterResource(id = JobisIcon.Delete),
             contentDescription = "delete",
-            modifier = Modifier.clickable { onDeleteClick(recruitmentId) },
+            modifier = Modifier.clickable(onClick = { onDeleteClick(recruitmentId) }),
         )
     }
 }
