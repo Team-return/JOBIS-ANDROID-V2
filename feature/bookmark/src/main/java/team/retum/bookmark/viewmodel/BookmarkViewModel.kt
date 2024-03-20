@@ -36,7 +36,11 @@ internal class BookmarkViewModel @Inject constructor(
         }
     }
 
-    fun bookmarkRecruitment(recruitmentId: Long) {
+    internal fun clearBookmarks() {
+        _bookmarks.clear()
+    }
+
+    internal fun bookmarkRecruitment(recruitmentId: Long) {
         _bookmarks.removeAt(_bookmarks.indexOf(_bookmarks.find { it.recruitmentId == recruitmentId }))
         viewModelScope.launch(Dispatchers.IO) {
             recruitmentBookmarkUseCase(recruitmentId).onFailure {

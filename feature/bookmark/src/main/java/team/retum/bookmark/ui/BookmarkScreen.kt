@@ -2,7 +2,6 @@ package team.retum.bookmark.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +39,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.BookmarksEntity
 
 @Composable
@@ -52,6 +52,7 @@ internal fun Bookmarks(
 
     LaunchedEffect(Unit) {
         with(bookmarkViewModel) {
+            clearBookmarks()
             fetchBookmarks()
             sideEffect.collect {
                 when (it) {
@@ -162,7 +163,7 @@ private fun BookmarkItem(
     Row(
         modifier = modifier
             .padding(vertical = 16.dp)
-            .clickable { onRecruitmentDetailClick(recruitmentId) },
+            .clickable(onClick = { onRecruitmentDetailClick(recruitmentId) }),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
