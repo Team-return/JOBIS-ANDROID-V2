@@ -160,32 +160,34 @@ private fun BookmarkItem(
     onDeleteClick: (Long) -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
 ) {
-    Row(
-        modifier = modifier
-            .padding(vertical = 16.dp)
-            .clickable(onClick = { onRecruitmentDetailClick(recruitmentId) }),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        AsyncImage(
-            model = companyImageUrl,
-            modifier = Modifier
-                .size(56.dp)
-                .clip(CircleShape),
-            contentDescription = "company image",
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            JobisText(
-                text = companyName,
-                style = JobisTypography.SubHeadLine,
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = modifier
+                .weight(1f)
+                .padding(vertical = 16.dp)
+                .clickable(onClick = { onRecruitmentDetailClick(recruitmentId) }),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage(
+                model = companyImageUrl,
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape),
+                contentDescription = "company image",
             )
-            JobisText(
-                text = date,
-                style = JobisTypography.Description,
-                color = JobisTheme.colors.inverseOnSurface,
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                JobisText(
+                    text = companyName,
+                    style = JobisTypography.SubHeadLine,
+                )
+                JobisText(
+                    text = date,
+                    style = JobisTypography.Description,
+                    color = JobisTheme.colors.inverseOnSurface,
+                )
+            }
         }
-        Spacer(modifier = Modifier.weight(1f))
         JobisIconButton(
             painter = painterResource(id = JobisIcon.Delete),
             contentDescription = "delete",
