@@ -112,19 +112,11 @@ internal class ReviewViewModel @Inject constructor(
     private fun setButtonEnabled() {
         when (state.value.reviewProcess) {
             ReviewProcess.QUESTION -> {
-                if (state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) {
-                    setState { state.value.copy(buttonEnabled = true) }
-                } else {
-                    setState { state.value.copy(buttonEnabled = false) }
-                }
+                setState { state.value.copy(buttonEnabled = state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) }
             }
 
             else -> {
-                if (state.value.checked.isNotEmpty()) {
-                    setState { state.value.copy(buttonEnabled = true) }
-                } else {
-                    setState { state.value.copy(buttonEnabled = false) }
-                }
+                setState { state.value.copy(buttonEnabled = state.value.checked.isNotEmpty()) }
             }
         }
     }
