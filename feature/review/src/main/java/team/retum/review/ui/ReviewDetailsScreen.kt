@@ -90,8 +90,8 @@ private fun ReviewDetailsScreen(
                     val (showAnswer, setShowAnswer) = remember { mutableStateOf(false) }
                     ReviewQuestionContent(
                         question = it.question,
-                        area = it.answer,
-                        answer = it.area,
+                        area = it.area,
+                        answer = it.answer,
                         showAnswer = showAnswer,
                         onShowAnswerClick = setShowAnswer,
                     )

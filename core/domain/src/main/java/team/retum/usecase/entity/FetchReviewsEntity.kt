@@ -20,6 +20,6 @@ internal fun FetchReviewsResponse.toEntity() = FetchReviewsEntity(
 private fun FetchReviewsResponse.Review.toEntity() = FetchReviewsEntity.Review(
     reviewId = this.reviewId,
     year = this.year.toString(),
-    writer = this.writer,
+    writer = "${this.writer}님의 후기",
     date = this.date,
 )
