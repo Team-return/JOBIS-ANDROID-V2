@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,28 +28,47 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import team.retum.bookmark.R
+import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
 import team.retum.common.utils.ResourceKeys.IMAGE_URL
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.BookmarksEntity
 
 @Composable
 internal fun Bookmarks(
-    bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
+    bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        bookmarkViewModel.fetchBookmarks()
+        with(bookmarkViewModel) {
+            fetchBookmarks()
+            sideEffect.collect {
+                when (it) {
+                    is BookmarkSideEffect.BadRequest -> {
+                        JobisToast.create(
+                            context = context,
+                            message = context.getString(R.string.toast_fetch_bookmark_bad_request),
+                            drawable = JobisIcon.Error,
+                        ).show()
+                    }
+                }
+            }
+        }
     }
+
     BookmarkScreen(
-        bookmarks = bookmarkViewModel.bookmarks.value.bookmarks,
+        bookmarks = bookmarkViewModel.bookmarks,
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
         onRecruitmentDetailClick = onRecruitmentDetailClick,
@@ -165,10 +185,10 @@ private fun BookmarkItem(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        Image(
+        JobisIconButton(
             painter = painterResource(id = JobisIcon.Delete),
             contentDescription = "delete",
-            modifier = Modifier.clickable(onClick = { onDeleteClick(recruitmentId) }),
+            onClick = { onDeleteClick(recruitmentId) },
         )
     }
 }
