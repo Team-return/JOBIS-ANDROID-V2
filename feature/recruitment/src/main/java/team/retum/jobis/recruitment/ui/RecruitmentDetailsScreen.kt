@@ -307,7 +307,10 @@ private fun PositionCard(
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(JobisTheme.colors.inverseSurface),
+            .background(JobisTheme.colors.inverseSurface)
+            .clickable(
+                onClick = { showDetails = !showDetails },
+            ),
     ) {
         Row(
             modifier = Modifier.padding(all = 16.dp),
