@@ -309,7 +309,7 @@ private fun PositionCard(
             .clip(RoundedCornerShape(12.dp))
             .background(JobisTheme.colors.inverseSurface)
             .clickable(
-                onClick = { showDetails = !showDetails }
+                onClick = { showDetails = !showDetails },
             ),
     ) {
         Row(
