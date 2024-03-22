@@ -4,6 +4,8 @@ import team.retum.common.enums.HiringProgress
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.Areas
 import team.retum.network.model.response.FetchRecruitmentDetailsResponse
+import team.retum.network.model.response.Job
+import team.retum.network.model.response.Tech
 
 data class RecruitmentDetailsEntity(
     val companyId: Long,
@@ -28,11 +30,21 @@ data class RecruitmentDetailsEntity(
 
 data class AreasEntity(
     val id: Long,
-    val job: List<String>,
-    val tech: List<String>,
+    val job: List<JobEntity>,
+    val tech: List<TechEntity>,
     val hiring: Long,
     val majorTask: String,
     val preferentialTreatment: String?,
+)
+
+data class JobEntity(
+    val id: Long,
+    val name: String,
+)
+
+data class TechEntity(
+    val id: Long,
+    val name: String,
 )
 
 internal fun FetchRecruitmentDetailsResponse.toEntity() = RecruitmentDetailsEntity(
@@ -58,9 +70,19 @@ internal fun FetchRecruitmentDetailsResponse.toEntity() = RecruitmentDetailsEnti
 
 private fun Areas.toEntity() = AreasEntity(
     id = this.id,
-    job = this.job,
-    tech = this.tech,
+    job = this.job.map { it.toEntity() },
+    tech = this.tech.map { it.toEntity() },
     hiring = this.hiring,
     majorTask = this.majorTask,
     preferentialTreatment = this.preferentialTreatment,
+)
+
+private fun Job.toEntity() = JobEntity(
+    id = this.id,
+    name = this.name,
+)
+
+private fun Tech.toEntity() = TechEntity(
+    id = this.id,
+    name = this.name
 )
