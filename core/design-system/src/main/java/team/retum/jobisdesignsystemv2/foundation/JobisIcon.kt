@@ -29,4 +29,5 @@ object JobisIcon {
     val Information = R.drawable.ic_information
     val Check = R.drawable.ic_check
     val AppLogo = R.drawable.app_logo
+    val Notice = R.drawable.ic_notice
 }
