@@ -56,7 +56,10 @@ internal fun RecruitmentsContent(
                         JobisIcon.BookmarkOff
                     },
                 ),
-                onBookmarked = { setBookmarked(!bookmarked) },
+                onBookmarked = {
+                    onBookmarkClick(it) 
+                    setBookmarked(!bookmarked)
+                },
             )
         }
     }
