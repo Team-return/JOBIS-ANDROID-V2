@@ -32,7 +32,9 @@ internal class RecruitmentViewModel @Inject constructor(
     internal fun getRecruitments() = _recruitments
 
     internal fun clearRecruitment() {
-        _recruitments.clear()
+        if (state.value.jobCode != null || state.value.techCode != null) {
+            _recruitments.clear()
+        }
     }
 
     internal fun setJobCode(jobCode: Long?) = setState {
