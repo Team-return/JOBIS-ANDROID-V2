@@ -282,10 +282,9 @@ private fun Position(
         if (areas.isNotEmpty()) {
             areas.forEach {
                 PositionCard(
-                    job = exceptBracket(it.job.toString()).replace(",", "/")
-                        .replace(",", "/"),
+                    job = it.job.map { it.name },
                     majorTask = it.majorTask,
-                    tech = exceptBracket(it.tech.toString()),
+                    tech = it.tech.map { it.name },
                     preferentialTreatment = it.preferentialTreatment,
                 )
             }
@@ -295,9 +294,9 @@ private fun Position(
 
 @Composable
 private fun PositionCard(
-    job: String,
+    job: List<String>,
     majorTask: String,
-    tech: String,
+    tech: List<String>,
     preferentialTreatment: String?,
 ) {
     var showDetails by remember { mutableStateOf(false) }
@@ -319,7 +318,7 @@ private fun PositionCard(
         ) {
             JobisText(
                 modifier = Modifier.weight(1f),
-                text = job,
+                text = exceptBracket(job.toString()),
                 style = JobisTypography.SubHeadLine,
             )
             JobisIconButton(
@@ -343,7 +342,7 @@ private fun PositionCard(
                 )
                 PositionDetail(
                     title = stringResource(id = R.string.technology_used),
-                    content = tech,
+                    content = exceptBracket(tech.toString()),
                 )
                 PositionDetail(
                     title = stringResource(id = R.string.preferential_treatment),
