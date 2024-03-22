@@ -12,6 +12,7 @@ fun NavGraphBuilder.home(
     onAlarmClick: () -> Unit,
     showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     composable(NAVIGATION_HOME) {
         Home(
@@ -19,6 +20,7 @@ fun NavGraphBuilder.home(
             onAlarmClick = onAlarmClick,
             showRejectionModal = showRejectionModal,
             onCompaniesClick = onCompaniesClick,
+            navigateToRecruitmentDetails = navigateToRecruitmentDetails,
         )
     }
 }

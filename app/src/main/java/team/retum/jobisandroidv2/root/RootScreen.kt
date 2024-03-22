@@ -55,6 +55,7 @@ internal fun Root(
     onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ReApplyData) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -86,12 +87,13 @@ internal fun Root(
         rejectionReason = reApplyData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
-        navigateToRecruitmentDetails = {
+        navigateToRecruitmentDetailsByRejectionBottomSheet = {
             coroutineScope.launch {
                 sheetState.hide()
             }
             navigateToApplication(reApplyData)
         },
+        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
     )
 }
 
@@ -115,14 +117,15 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
-    navigateToRecruitmentDetails: () -> Unit,
+    navigateToRecruitmentDetailsByRejectionBottomSheet: () -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
             RejectionBottomSheet(
                 reason = rejectionReason,
-                onReApplyClick = navigateToRecruitmentDetails,
+                onReApplyClick = navigateToRecruitmentDetailsByRejectionBottomSheet,
             )
         },
         sheetShape = RoundedCornerShape(
@@ -143,6 +146,7 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
+                    navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                 )
                 recruitments(
                     onRecruitmentDetailsClick = onRecruitmentDetailsClick,

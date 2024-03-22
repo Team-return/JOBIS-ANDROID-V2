@@ -15,6 +15,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -102,6 +103,7 @@ internal fun Home(
     onAlarmClick: () -> Unit,
     showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -167,6 +169,7 @@ internal fun Home(
         appliedCompanies = homeViewModel.appliedCompanies,
         applicationId = applicationId,
         setScroll = homeViewModel::fetchScroll,
+        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
     )
 }
 
@@ -183,6 +186,7 @@ private fun HomeScreen(
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
     applicationId: Long?,
     setScroll: (Long?, Float) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -233,8 +237,9 @@ private fun HomeScreen(
                 ),
                 applicationId = applicationId,
                 appliedCompanies = appliedCompanies,
-                onClick = onRejectionReasonClick,
+                onShowRejectionReasonClick = onRejectionReasonClick,
                 setScroll = setScroll,
+                navigateToRecruitmentDetails = navigateToRecruitmentDetails,
             )
         }
     }
@@ -488,8 +493,9 @@ private fun ApplyStatus(
     modifier: Modifier = Modifier,
     applicationId: Long?,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
-    onClick: (applicationId: Long, ReApplyData) -> Unit,
+    onShowRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
     setScroll: (applicationId: Long?, position: Float) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -523,8 +529,8 @@ private fun ApplyStatus(
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
                     ApplyCompanyItem(
-                        onClick = {
-                            onClick(
+                        onShowRejectionReasonClick = {
+                            onShowRejectionReasonClick(
                                 it.applicationId,
                                 ReApplyData(
                                     recruitmentId = it.recruitmentId,
@@ -535,6 +541,7 @@ private fun ApplyStatus(
                         },
                         appliedCompany = it,
                         isFocus = applicationId == it.applicationId,
+                        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                     )
                 }
             } else {
@@ -564,9 +571,10 @@ private fun ApplyStatus(
 
 @Composable
 private fun ApplyCompanyItem(
-    onClick: () -> Unit,
+    onShowRejectionReasonClick: () -> Unit,
     appliedCompany: AppliedCompaniesEntity.ApplicationEntity,
     isFocus: Boolean,
+    navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     val applicationStatus = remember { appliedCompany.applicationStatus }
     val color =
@@ -604,13 +612,7 @@ private fun ApplyCompanyItem(
         }
     }
 
-    JobisCard(
-        onClick = if (applicationStatus == ApplyStatus.REJECTED) {
-            onClick
-        } else {
-            null
-        },
-    ) {
+    JobisCard(onClick = { navigateToRecruitmentDetails(appliedCompany.recruitmentId) }) {
         Row(
             modifier = Modifier
                 .background(color = JobisTheme.colors.surfaceTint.copy(alpha = alpha))
@@ -639,9 +641,11 @@ private fun ApplyCompanyItem(
                 style = JobisTypography.SubBody,
                 color = color,
             )
-            if (applicationStatus == ApplyStatus.REJECTED) {
+            if (applicationStatus != ApplyStatus.REJECTED) {
                 JobisText(
-                    modifier = Modifier.padding(start = 8.dp),
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable(onClick = onShowRejectionReasonClick),
                     text = stringResource(id = R.string.reason),
                     style = JobisTypography.SubBody,
                     color = color,
