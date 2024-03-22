@@ -57,7 +57,7 @@ internal fun RecruitmentsContent(
                     },
                 ),
                 onBookmarked = {
-                    onBookmarkClick(it) 
+                    onBookmarkClick(it)
                     setBookmarked(!bookmarked)
                 },
             )
