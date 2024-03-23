@@ -15,7 +15,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,7 +57,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -146,6 +144,7 @@ internal fun Home(
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.toast_not_found_application),
+                        drawable = JobisIcon.Error,
                     ).show()
                 }
 
@@ -612,7 +611,14 @@ private fun ApplyCompanyItem(
         }
     }
 
-    JobisCard(onClick = { navigateToRecruitmentDetails(appliedCompany.recruitmentId) }) {
+    JobisCard(
+        onClick = {
+            when (applicationStatus) {
+                ApplyStatus.REJECTED -> onShowRejectionReasonClick()
+                else -> navigateToRecruitmentDetails(appliedCompany.recruitmentId)
+            }
+        },
+    ) {
         Row(
             modifier = Modifier
                 .background(color = JobisTheme.colors.surfaceTint.copy(alpha = alpha))
@@ -641,17 +647,6 @@ private fun ApplyCompanyItem(
                 style = JobisTypography.SubBody,
                 color = color,
             )
-            if (applicationStatus != ApplyStatus.REJECTED) {
-                JobisText(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .clickable(onClick = onShowRejectionReasonClick),
-                    text = stringResource(id = R.string.reason),
-                    style = JobisTypography.SubBody,
-                    color = color,
-                    textDecoration = TextDecoration.Underline,
-                )
-            }
         }
     }
 }
