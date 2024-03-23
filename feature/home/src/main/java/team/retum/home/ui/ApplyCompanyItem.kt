@@ -29,9 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 import team.retum.common.enums.ApplyStatus
-import team.retum.common.model.ReApplyData
 import team.retum.home.R
-import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography

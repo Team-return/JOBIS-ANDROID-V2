@@ -414,7 +414,7 @@ private fun ApplyStatus(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
-                    val reApplyData  = ReApplyData(
+                    val reApplyData = ReApplyData(
                         recruitmentId = it.recruitmentId,
                         companyLogoUrl = it.companyLogoUrl,
                         companyName = it.company,
