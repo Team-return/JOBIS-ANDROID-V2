@@ -55,6 +55,8 @@ internal fun Root(
     onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ReApplyData) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigatedFromNotifications: Boolean,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -86,12 +88,15 @@ internal fun Root(
         rejectionReason = reApplyData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
-        navigateToRecruitmentDetails = {
+        navigateToApplicationByRejectionBottomSheet = {
             coroutineScope.launch {
                 sheetState.hide()
             }
             navigateToApplication(reApplyData)
         },
+        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+        navigatedFromNotifications = navigatedFromNotifications,
+        navigateToApplication = navigateToApplication,
     )
 }
 
@@ -115,14 +120,17 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
-    navigateToRecruitmentDetails: () -> Unit,
+    navigateToApplicationByRejectionBottomSheet: () -> Unit,
+    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigatedFromNotifications: Boolean,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
             RejectionBottomSheet(
                 reason = rejectionReason,
-                onReApplyClick = navigateToRecruitmentDetails,
+                onReApplyClick = navigateToApplicationByRejectionBottomSheet,
             )
         },
         sheetShape = RoundedCornerShape(
@@ -143,6 +151,9 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
+                    navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+                    navigatedFromNotifications = navigatedFromNotifications,
+                    navigateToApplication = navigateToApplication,
                 )
                 recruitments(
                     onRecruitmentDetailsClick = onRecruitmentDetailsClick,
