@@ -1,10 +1,8 @@
 package team.retum.home.ui
 
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.StartOffset
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
@@ -19,18 +17,14 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -81,13 +75,9 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.time.LocalDate
-import kotlin.math.roundToInt
 
-private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40
 private const val MAX_PAGE = 100
-private const val INDICATOR_DURATION = 500
-private val bannerResources = listOf<Int>()
 
 private data class MenuItem(
     val title: String,
@@ -103,6 +93,7 @@ internal fun Home(
     showRejectionModal: (ReApplyData) -> Unit,
     onCompaniesClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    navigatedFromNotifications: Boolean,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -150,9 +141,7 @@ internal fun Home(
                 }
 
                 is HomeSideEffect.ScrollToApplication -> {
-                    scrollState.animateScrollTo(
-                        state.sectionOneCoordinates.roundToInt(),
-                    )
+                    scrollState.animateScrollTo(it.sectionOneCoordinates)
                 }
             }
         }
@@ -168,7 +157,13 @@ internal fun Home(
         studentInformation = state.studentInformation,
         appliedCompanies = homeViewModel.appliedCompanies,
         applicationId = applicationId,
-        setScroll = homeViewModel::fetchScroll,
+        setScroll = { position ->
+            homeViewModel.fetchScroll(
+                applicationId = applicationId,
+                position = position,
+                enabled = navigatedFromNotifications,
+            )
+        },
         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
     )
 }
@@ -185,7 +180,7 @@ private fun HomeScreen(
     studentInformation: StudentInformationEntity,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
     applicationId: Long?,
-    setScroll: (Long?, Float) -> Unit,
+    setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     Column(
@@ -202,12 +197,6 @@ private fun HomeScreen(
             )
         }
         Column(modifier = Modifier.verticalScroll(scrollState)) {
-            /*Banner(
-                pagerState = pagerState,
-                rate = state.rate,
-                passCount = state.passCount,
-                totalStudentCount = state.totalStudentCount,
-            )*/
             EmploymentRate(
                 rate = state.rate,
                 passCount = state.passCount,
@@ -243,52 +232,6 @@ private fun HomeScreen(
             )
         }
     }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun ColumnScope.Banner(
-    pagerState: PagerState,
-    rate: Float,
-    passCount: Long,
-    totalStudentCount: Long,
-) {
-    HorizontalPager(
-        state = pagerState,
-        contentPadding = PaddingValues(
-            start = 24.dp,
-            end = 24.dp,
-            top = 16.dp,
-            bottom = 10.dp,
-        ),
-        pageSpacing = 12.dp,
-    ) {
-        when (it % PAGE_COUNT) {
-            0 -> {
-                EmploymentRate(
-                    rate = rate,
-                    passCount = passCount,
-                    totalStudentCount = totalStudentCount,
-                )
-            }
-
-            else -> {
-                Image(
-                    modifier = Modifier
-                        .padding(end = 12.dp)
-                        .aspectRatio(2f)
-                        .clip(RoundedCornerShape(16.dp)),
-                    painter = painterResource(id = JobisIcon.Information),
-                    contentDescription = "banner",
-                    contentScale = ContentScale.Crop,
-                )
-            }
-        }
-    }
-    BannerIndicator(
-        pageCount = PAGE_COUNT,
-        currentPage = pagerState.currentPage,
-    )
 }
 
 @Composable
@@ -335,50 +278,6 @@ private fun EmploymentRate(
             Image(
                 painter = painterResource(id = R.drawable.ic_file),
                 contentDescription = "file",
-            )
-        }
-    }
-}
-
-@Composable
-private fun ColumnScope.BannerIndicator(
-    pageCount: Int,
-    currentPage: Int,
-) {
-    Row(
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .align(Alignment.CenterHorizontally),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        repeat(pageCount) {
-            val color by animateColorAsState(
-                targetValue = if (it == currentPage % PAGE_COUNT) {
-                    JobisTheme.colors.onPrimary
-                } else {
-                    JobisTheme.colors.surfaceVariant
-                },
-                label = "",
-                animationSpec = tween(INDICATOR_DURATION),
-            )
-            val width by animateDpAsState(
-                targetValue = if (it == currentPage % PAGE_COUNT) {
-                    12.dp
-                } else {
-                    6.dp
-                },
-                label = "",
-                animationSpec = tween(INDICATOR_DURATION),
-            )
-
-            Box(
-                modifier = Modifier
-                    .size(
-                        height = 6.dp,
-                        width = width,
-                    )
-                    .clip(CircleShape)
-                    .background(color),
             )
         }
     }
@@ -494,13 +393,13 @@ private fun ApplyStatus(
     applicationId: Long?,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
     onShowRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
-    setScroll: (applicationId: Long?, position: Float) -> Unit,
+    setScroll: (position: Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
 ) {
     Column(
         modifier = modifier
             .onGloballyPositioned { layoutCoordinates ->
-                setScroll(applicationId, layoutCoordinates.positionInRoot().y)
+                setScroll(layoutCoordinates.positionInRoot().y)
             },
     ) {
         Row(
