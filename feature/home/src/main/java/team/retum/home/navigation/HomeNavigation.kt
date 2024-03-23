@@ -14,6 +14,7 @@ fun NavGraphBuilder.home(
     onCompaniesClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
+    navigateToApplication: (ReApplyData) -> Unit,
 ) {
     composable(NAVIGATION_HOME) {
         Home(
@@ -23,6 +24,7 @@ fun NavGraphBuilder.home(
             onCompaniesClick = onCompaniesClick,
             navigateToRecruitmentDetails = navigateToRecruitmentDetails,
             navigatedFromNotifications = navigatedFromNotifications,
+            navigateToApplication = navigateToApplication,
         )
     }
 }

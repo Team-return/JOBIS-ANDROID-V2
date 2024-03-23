@@ -80,6 +80,7 @@ internal fun Home(
     onCompaniesClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
+    navigateToApplication: (ReApplyData) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -143,6 +144,7 @@ internal fun Home(
             )
         },
         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+        navigateToApplication = navigateToApplication,
     )
 }
 
@@ -164,6 +166,7 @@ private fun HomeScreen(
     applicationId: Long?,
     setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    navigateToApplication: (ReApplyData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -211,6 +214,7 @@ private fun HomeScreen(
                 onShowRejectionReasonClick = onRejectionReasonClick,
                 setScroll = setScroll,
                 navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+                navigateToApplication = navigateToApplication,
             )
         }
     }
@@ -377,6 +381,7 @@ private fun ApplyStatus(
     onShowRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
     setScroll: (position: Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    navigateToApplication: (ReApplyData) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -409,20 +414,22 @@ private fun ApplyStatus(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
+                    val reApplyData  = ReApplyData(
+                        recruitmentId = it.recruitmentId,
+                        companyLogoUrl = it.companyLogoUrl,
+                        companyName = it.company,
+                    )
                     ApplyCompanyItem(
                         onShowRejectionReasonClick = {
                             onShowRejectionReasonClick(
                                 it.applicationId,
-                                ReApplyData(
-                                    recruitmentId = it.recruitmentId,
-                                    companyLogoUrl = it.companyLogoUrl,
-                                    companyName = it.company,
-                                ),
+                                reApplyData,
                             )
                         },
                         appliedCompany = it,
                         isFocus = applicationId == it.applicationId,
                         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+                        navigateToApplication = { navigateToApplication(reApplyData) },
                     )
                 }
             } else {

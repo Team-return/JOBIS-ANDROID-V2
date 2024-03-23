@@ -88,7 +88,7 @@ internal fun Root(
         rejectionReason = reApplyData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
-        navigateToRecruitmentDetailsByRejectionBottomSheet = {
+        navigateToApplicationByRejectionBottomSheet = {
             coroutineScope.launch {
                 sheetState.hide()
             }
@@ -96,6 +96,7 @@ internal fun Root(
         },
         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
         navigatedFromNotifications = navigatedFromNotifications,
+        navigateToApplication = navigateToApplication,
     )
 }
 
@@ -119,7 +120,8 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
-    navigateToRecruitmentDetailsByRejectionBottomSheet: () -> Unit,
+    navigateToApplicationByRejectionBottomSheet: () -> Unit,
+    navigateToApplication: (ReApplyData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
@@ -128,7 +130,7 @@ private fun RootScreen(
         sheetContent = {
             RejectionBottomSheet(
                 reason = rejectionReason,
-                onReApplyClick = navigateToRecruitmentDetailsByRejectionBottomSheet,
+                onReApplyClick = navigateToApplicationByRejectionBottomSheet,
             )
         },
         sheetShape = RoundedCornerShape(
@@ -151,6 +153,7 @@ private fun RootScreen(
                     onCompaniesClick = onCompaniesClick,
                     navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                     navigatedFromNotifications = navigatedFromNotifications,
+                    navigateToApplication = navigateToApplication,
                 )
                 recruitments(
                     onRecruitmentDetailsClick = onRecruitmentDetailsClick,
