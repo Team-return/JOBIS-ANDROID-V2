@@ -14,8 +14,8 @@
     <string name="empty_apply_companies">현재 지원한 기업이 없어요</string>
 
     <string name="reason">사유 보기</string>
-    <string name="reason_rejection">반려 사유</string>
-    <string name="re_apply">재지원 하기</string>
+    <string name="reason_rejection">반려 사유 -></string>
+    <string name="re_apply">재지원 하기 -></string>
 
     <string name="toast_not_found_application">존재하지 않는 지원 내역이에요</string>
 </resources>

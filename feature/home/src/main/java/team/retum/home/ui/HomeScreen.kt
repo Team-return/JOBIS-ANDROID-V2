@@ -57,6 +57,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -647,6 +648,20 @@ private fun ApplyCompanyItem(
                 style = JobisTypography.SubBody,
                 color = color,
             )
+            if (applicationStatus == ApplyStatus.REJECTED || applicationStatus == ApplyStatus.REQUESTED) {
+                JobisText(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = stringResource(
+                        id = when (applicationStatus) {
+                            ApplyStatus.REJECTED -> R.string.reason_rejection
+                            else -> R.string.re_apply
+                        },
+                    ),
+                    style = JobisTypography.SubBody,
+                    color = color,
+                    textDecoration = TextDecoration.Underline,
+                )
+            }
         }
     }
 }
