@@ -54,7 +54,7 @@ internal fun Root(
     onReportBugClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
-    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToApplication: (ReApplyData, Boolean) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
@@ -92,11 +92,11 @@ internal fun Root(
             coroutineScope.launch {
                 sheetState.hide()
             }
-            navigateToApplication(reApplyData)
+            navigateToApplication(reApplyData, true)
         },
         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
         navigatedFromNotifications = navigatedFromNotifications,
-        navigateToApplication = navigateToApplication,
+        navigateToApplication = { navigateToApplication(it, true) },
     )
 }
 

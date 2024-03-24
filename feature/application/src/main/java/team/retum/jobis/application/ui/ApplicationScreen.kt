@@ -57,6 +57,7 @@ internal fun Application(
     onBackPressed: () -> Unit,
     companyInfo: CompanyInfo,
     recruitmentId: String,
+    isReApply: Boolean,
     applicationViewModel: ApplicationViewModel = hiltViewModel(),
 ) {
     val state by applicationViewModel.state.collectAsStateWithLifecycle()

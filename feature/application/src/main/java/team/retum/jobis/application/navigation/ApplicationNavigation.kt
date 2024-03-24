@@ -14,36 +14,41 @@ import team.retum.jobis.application.ui.Application
 const val NAVIGATION_APPLICATION = "application"
 private const val COMPANY_INFORMATION = "companyInformation"
 private const val RECRUITMENT_ID = "recruitmentId"
+private const val IS_RE_APPLY = "isReApply"
 
 fun NavGraphBuilder.application(
     onBackPressed: () -> Unit,
 ) {
     composable(
-        route = "$NAVIGATION_APPLICATION/{$RECRUITMENT_ID}/{$COMPANY_INFORMATION}",
+        route = "$NAVIGATION_APPLICATION/{$RECRUITMENT_ID}/{$COMPANY_INFORMATION}/{$IS_RE_APPLY}",
         arguments = listOf(
             navArgument(COMPANY_INFORMATION) { NavType.StringType },
             navArgument(RECRUITMENT_ID) { NavType.StringType },
+            navArgument(IS_RE_APPLY) { type = NavType.BoolType },
         ),
     ) {
         val jsonString =
             it.arguments?.getString(COMPANY_INFORMATION) ?: throw NullPointerException()
         val companyInfo = Json.decodeFromString<CompanyInfo>(jsonString)
         val recruitmentId = it.arguments?.getString(RECRUITMENT_ID) ?: throw NullPointerException()
+        val isReApply = it.arguments?.getBoolean(IS_RE_APPLY) ?: false
         Application(
             onBackPressed = onBackPressed,
             companyInfo = companyInfo,
             recruitmentId = recruitmentId,
+            isReApply = isReApply,
         )
     }
 }
 
 fun NavController.navigateToApplication(
     reApplyData: ReApplyData,
+    isReApply: Boolean = false,
 ) {
     val companyInfo = CompanyInfo(
         companyProfileUrl = reApplyData.companyLogoUrl.replace("/", " "),
         companyName = reApplyData.companyName,
     )
     val jsonString = Json.encodeToString(companyInfo)
-    navigate("$NAVIGATION_APPLICATION/${reApplyData.recruitmentId}/$jsonString")
+    navigate("$NAVIGATION_APPLICATION/${reApplyData.recruitmentId}/$jsonString/$isReApply")
 }

@@ -23,7 +23,7 @@ fun NavGraphBuilder.root(
     onReportBugClick: () -> Unit,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
-    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToApplication: (ReApplyData, Boolean) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
