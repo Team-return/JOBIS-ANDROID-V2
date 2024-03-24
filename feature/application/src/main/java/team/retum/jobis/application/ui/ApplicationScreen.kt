@@ -121,6 +121,7 @@ private suspend fun ApplicationViewModel.handleApplicationSideEffect(
                     context = context,
                     message = context.getString(R.string.toast_success_re_apply),
                 ).show()
+                onBackPressed()
             }
 
             is ApplicationSideEffect.ExceedFileCount -> {

@@ -143,7 +143,7 @@ internal class ApplicationViewModel @Inject constructor(
             attachments = attachments,
         ).onSuccess {
             postSideEffect(ApplicationSideEffect.SuccessApply)
-        }.onApplyCompanyFailure()
+        }.onApplyCompanyFailure(isReApply = false)
     }
 
     private suspend fun reApplyCompany() {
@@ -152,12 +152,21 @@ internal class ApplicationViewModel @Inject constructor(
             attachments = attachments,
         ).onSuccess {
             postSideEffect(ApplicationSideEffect.SuccessReApply)
-        }.onApplyCompanyFailure()
+        }.onApplyCompanyFailure(isReApply = true)
     }
 
-    private fun Result<Unit>.onApplyCompanyFailure() {
+    private fun Result<Unit>.onApplyCompanyFailure(isReApply: Boolean) {
         onFailure {
             when (it) {
+                is KotlinNullPointerException -> {
+                    postSideEffect(
+                        sideEffect = when (isReApply) {
+                            true -> ApplicationSideEffect.SuccessReApply
+                            else -> ApplicationSideEffect.SuccessApply
+                        },
+                    )
+                }
+
                 is UnAuthorizedException -> {
                     postSideEffect(ApplicationSideEffect.UnexpectedGrade)
                 }
