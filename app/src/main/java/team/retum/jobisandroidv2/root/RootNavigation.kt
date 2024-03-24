@@ -24,6 +24,8 @@ fun NavGraphBuilder.root(
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
     navigateToApplication: (ReApplyData) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigatedFromNotifications: Boolean,
 ) {
     composable(
         route = "$NAVIGATION_ROOT{$APPLICATION_ID}",
@@ -43,6 +45,8 @@ fun NavGraphBuilder.root(
             navigateToLanding = navigateToLanding,
             onPostReviewClick = onPostReviewClick,
             navigateToApplication = navigateToApplication,
+            navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+            navigatedFromNotifications = navigatedFromNotifications,
         )
     }
 }
