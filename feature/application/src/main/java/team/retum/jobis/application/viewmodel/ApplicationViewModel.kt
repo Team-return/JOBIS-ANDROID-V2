@@ -49,6 +49,14 @@ internal class ApplicationViewModel @Inject constructor(
         state.value.copy(recruitmentId = recruitmentId)
     }
 
+    internal fun setApplicationId(applicationId: Long) = setState {
+        state.value.copy(applicationId = applicationId)
+    }
+
+    internal fun setIsReApply(isReApply: Boolean) = setState {
+        state.value.copy(isReApply = isReApply)
+    }
+
     internal fun addFile(
         activityResult: ActivityResult,
         context: Context,

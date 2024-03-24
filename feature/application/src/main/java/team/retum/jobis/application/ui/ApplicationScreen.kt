@@ -1,5 +1,6 @@
 package team.retum.jobis.application.ui
 
+import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,6 +59,7 @@ internal fun Application(
     companyInfo: CompanyInfo,
     recruitmentId: String,
     isReApply: Boolean,
+    applicationId: Long,
     applicationViewModel: ApplicationViewModel = hiltViewModel(),
 ) {
     val state by applicationViewModel.state.collectAsStateWithLifecycle()
@@ -74,64 +76,14 @@ internal fun Application(
     )
 
     LaunchedEffect(Unit) {
-        applicationViewModel.setRecruitmentId(recruitmentId = recruitmentId.toLong())
-        applicationViewModel.sideEffect.collect {
-            when (it) {
-                is ApplicationSideEffect.SuccessReApply -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_success_re_apply),
-                    ).show()
-                }
-
-                is ApplicationSideEffect.ExceedFileCount -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_max_count),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
-
-                is ApplicationSideEffect.InvalidFileExtension -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_invalid_file_extension),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
-
-                is ApplicationSideEffect.SuccessApply -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_success_apply),
-                    ).show()
-                    onBackPressed()
-                }
-
-                is ApplicationSideEffect.ConflictApply -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_conflict_apply),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
-
-                is ApplicationSideEffect.NotFoundRecruitment -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_not_found_recruitment),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
-
-                is ApplicationSideEffect.UnexpectedGrade -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_unexpected_grade),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
-            }
+        with(applicationViewModel) {
+            setApplicationId(applicationId = applicationId)
+            setRecruitmentId(recruitmentId = recruitmentId.toLong())
+            setIsReApply(isReApply = isReApply)
+            handleApplicationSideEffect(
+                context = context,
+                onBackPressed = onBackPressed,
+            )
         }
     }
 
@@ -156,6 +108,70 @@ internal fun Application(
         attachments = applicationViewModel.getFiles(),
         onApplyClick = applicationViewModel::createPresignedUrl,
     )
+}
+
+private suspend fun ApplicationViewModel.handleApplicationSideEffect(
+    context: Context,
+    onBackPressed: () -> Unit,
+) {
+    sideEffect.collect {
+        when (it) {
+            is ApplicationSideEffect.SuccessReApply -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_success_re_apply),
+                ).show()
+            }
+
+            is ApplicationSideEffect.ExceedFileCount -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_max_count),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+
+            is ApplicationSideEffect.InvalidFileExtension -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_invalid_file_extension),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+
+            is ApplicationSideEffect.SuccessApply -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_success_apply),
+                ).show()
+                onBackPressed()
+            }
+
+            is ApplicationSideEffect.ConflictApply -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_conflict_apply),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+
+            is ApplicationSideEffect.NotFoundRecruitment -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_not_found_recruitment),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+
+            is ApplicationSideEffect.UnexpectedGrade -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_unexpected_grade),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+        }
+    }
 }
 
 @Composable

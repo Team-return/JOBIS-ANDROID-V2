@@ -98,6 +98,7 @@ internal class HomeViewModel @Inject constructor(
                     HomeSideEffect.ShowRejectionModal(
                         reApplyData = reApplyData.copy(
                             rejectionReason = it.rejectionReason,
+                            applicationId = applicationId,
                         ),
                     ),
                 )

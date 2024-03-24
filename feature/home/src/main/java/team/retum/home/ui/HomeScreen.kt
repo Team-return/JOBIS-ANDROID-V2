@@ -418,6 +418,7 @@ private fun ApplyStatus(
                         recruitmentId = it.recruitmentId,
                         companyLogoUrl = it.companyLogoUrl,
                         companyName = it.company,
+                        applicationId = it.applicationId,
                     )
                     ApplyCompanyItem(
                         onShowRejectionReasonClick = {
