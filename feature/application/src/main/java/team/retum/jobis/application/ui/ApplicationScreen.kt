@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import team.retum.common.model.ApplicationData
 import team.retum.jobis.application.R
-import team.retum.jobis.application.model.CompanyInfo
 import team.retum.jobis.application.viewmodel.ApplicationSideEffect
 import team.retum.jobis.application.viewmodel.ApplicationState
 import team.retum.jobis.application.viewmodel.ApplicationViewModel
@@ -56,10 +56,7 @@ import java.io.File
 @Composable
 internal fun Application(
     onBackPressed: () -> Unit,
-    companyInfo: CompanyInfo,
-    recruitmentId: String,
-    isReApply: Boolean,
-    applicationId: Long,
+    applicationData: ApplicationData,
     applicationViewModel: ApplicationViewModel = hiltViewModel(),
 ) {
     val state by applicationViewModel.state.collectAsStateWithLifecycle()
@@ -77,9 +74,9 @@ internal fun Application(
 
     LaunchedEffect(Unit) {
         with(applicationViewModel) {
-            setApplicationId(applicationId = applicationId)
-            setRecruitmentId(recruitmentId = recruitmentId.toLong())
-            setIsReApply(isReApply = isReApply)
+            setApplicationId(applicationId = applicationData.applicationId)
+            setRecruitmentId(recruitmentId = applicationData.recruitmentId)
+            setIsReApply(isReApply = applicationData.isReApply)
             handleApplicationSideEffect(
                 context = context,
                 onBackPressed = onBackPressed,
@@ -95,7 +92,8 @@ internal fun Application(
         onUrlChange = applicationViewModel::onUrlChange,
         onAddUrlClick = applicationViewModel::addUrl,
         onRemoveUrlClick = applicationViewModel::removeUrl,
-        companyInfo = companyInfo,
+        companyProfileUrl = applicationData.companyLogoUrl,
+        companyName = applicationData.companyName,
         onAddAttachmentClick = {
             Intent(Intent.ACTION_GET_CONTENT).apply {
                 type = "*/*"
@@ -184,7 +182,8 @@ private fun ApplicationScreen(
     onUrlChange: (Int, String) -> Unit,
     onAddUrlClick: () -> Unit,
     onRemoveUrlClick: (Int) -> Unit,
-    companyInfo: CompanyInfo,
+    companyProfileUrl: String,
+    companyName: String,
     onAddAttachmentClick: () -> Unit,
     removeAttachmentClick: (Int) -> Unit,
     attachments: SnapshotStateList<File>,
@@ -205,8 +204,8 @@ private fun ApplicationScreen(
                 .verticalScroll(scrollState),
         ) {
             CompanyInformation(
-                companyProfileUrl = companyInfo.companyProfileUrl.replace(" ", "/"),
-                companyName = companyInfo.companyName,
+                companyProfileUrl = companyProfileUrl.replace(" ", "/"),
+                companyName = companyName,
             )
             Attachments(
                 attachments = attachments,

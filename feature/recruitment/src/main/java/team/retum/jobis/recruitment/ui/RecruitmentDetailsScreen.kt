@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
@@ -58,7 +58,7 @@ import team.retum.usecase.entity.RecruitmentDetailsEntity
 internal fun RecruitmentDetails(
     recruitmentId: Long,
     onBackPressed: () -> Unit,
-    onApplyClick: (ReApplyData) -> Unit,
+    onApplyClick: (ApplicationData) -> Unit,
     navigateToCompanyDetails: (Long, Boolean) -> Unit,
     isMovedCompanyDetails: Boolean,
     recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
@@ -99,7 +99,7 @@ internal fun RecruitmentDetails(
 @Composable
 private fun RecruitmentDetailsScreen(
     onBackPressed: () -> Unit,
-    onApplyClick: (ReApplyData) -> Unit,
+    onApplyClick: (ApplicationData) -> Unit,
     onBookmarkClick: () -> Unit,
     recruitmentDetail: RecruitmentDetailsEntity,
     recruitmentId: Long,
@@ -133,10 +133,13 @@ private fun RecruitmentDetailsScreen(
         BottomBar(
             onApplyClick = {
                 onApplyClick(
-                    ReApplyData(
+                    ApplicationData(
+                        applicationId = 0,
                         recruitmentId = recruitmentId,
+                        rejectionReason = "",
                         companyLogoUrl = recruitmentDetail.companyProfileUrl.replace("/", " "),
                         companyName = recruitmentDetail.companyName,
+                        isReApply = false,
                     ),
                 )
             },

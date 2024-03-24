@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.common.utils.ResourceKeys
 import team.retum.jobis.recruitment.ui.RecruitmentDetails
 
@@ -14,7 +14,7 @@ private const val RECRUITMENT_ID = "recruitment-id"
 
 fun NavGraphBuilder.recruitmentDetails(
     onBackPressed: () -> Unit,
-    onApplyClick: (ReApplyData) -> Unit,
+    onApplyClick: (ApplicationData) -> Unit,
     navigateToCompanyDetails: (Long, Boolean) -> Unit,
 ) {
     composable(
