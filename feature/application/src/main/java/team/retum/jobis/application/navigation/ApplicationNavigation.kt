@@ -7,43 +7,31 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import team.retum.common.model.ReApplyData
-import team.retum.jobis.application.model.CompanyInfo
+import team.retum.common.model.ApplicationData
 import team.retum.jobis.application.ui.Application
 
 const val NAVIGATION_APPLICATION = "application"
-private const val COMPANY_INFORMATION = "companyInformation"
-private const val RECRUITMENT_ID = "recruitmentId"
+private const val APPLICATION_DATA = "companyInformation"
 
 fun NavGraphBuilder.application(
     onBackPressed: () -> Unit,
 ) {
     composable(
-        route = "$NAVIGATION_APPLICATION/{$RECRUITMENT_ID}/{$COMPANY_INFORMATION}",
-        arguments = listOf(
-            navArgument(COMPANY_INFORMATION) { NavType.StringType },
-            navArgument(RECRUITMENT_ID) { NavType.StringType },
-        ),
+        route = "$NAVIGATION_APPLICATION/{$APPLICATION_DATA}",
+        arguments = listOf(navArgument(APPLICATION_DATA) { type = NavType.StringType }),
     ) {
         val jsonString =
-            it.arguments?.getString(COMPANY_INFORMATION) ?: throw NullPointerException()
-        val companyInfo = Json.decodeFromString<CompanyInfo>(jsonString)
-        val recruitmentId = it.arguments?.getString(RECRUITMENT_ID) ?: throw NullPointerException()
+            it.arguments?.getString(APPLICATION_DATA) ?: ApplicationData.getDefaultApplicationData()
+                .toString()
+        val applicationData = Json.decodeFromString<ApplicationData>(jsonString)
         Application(
             onBackPressed = onBackPressed,
-            companyInfo = companyInfo,
-            recruitmentId = recruitmentId,
+            applicationData = applicationData,
         )
     }
 }
 
-fun NavController.navigateToApplication(
-    reApplyData: ReApplyData,
-) {
-    val companyInfo = CompanyInfo(
-        companyProfileUrl = reApplyData.companyLogoUrl.replace("/", " "),
-        companyName = reApplyData.companyName,
-    )
-    val jsonString = Json.encodeToString(companyInfo)
-    navigate("$NAVIGATION_APPLICATION/${reApplyData.recruitmentId}/$jsonString")
+fun NavController.navigateToApplication(applicationData: ApplicationData) {
+    val jsonString = Json.encodeToString(applicationData)
+    navigate("$NAVIGATION_APPLICATION/$jsonString")
 }

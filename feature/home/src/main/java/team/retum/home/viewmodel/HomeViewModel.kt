@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.Department
 import team.retum.common.exception.NotFoundException
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.common.utils.ResourceKeys
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
@@ -88,17 +88,12 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
-    internal fun onRejectionReasonClick(
-        applicationId: Long,
-        reApplyData: ReApplyData,
-    ) {
+    internal fun onRejectionReasonClick(applicationData: ApplicationData) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchRejectionReasonUseCase(applicationId = applicationId).onSuccess {
+            fetchRejectionReasonUseCase(applicationId = applicationData.applicationId).onSuccess {
                 postSideEffect(
                     HomeSideEffect.ShowRejectionModal(
-                        reApplyData = reApplyData.copy(
-                            rejectionReason = it.rejectionReason,
-                        ),
+                        applicationData = applicationData.copy(rejectionReason = it.rejectionReason),
                     ),
                 )
             }.onFailure {
@@ -150,7 +145,7 @@ internal data class HomeState(
 }
 
 internal sealed interface HomeSideEffect {
-    data class ShowRejectionModal(val reApplyData: ReApplyData) : HomeSideEffect
+    data class ShowRejectionModal(val applicationData: ApplicationData) : HomeSideEffect
 
     data object NotFoundApplication : HomeSideEffect
     data class ScrollToApplication(val sectionOneCoordinates: Int) : HomeSideEffect

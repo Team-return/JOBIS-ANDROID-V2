@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.jobis.splash.navigation.NAVIGATION_SPLASH
 
 const val NAVIGATION_ROOT = "root"
@@ -23,7 +23,7 @@ fun NavGraphBuilder.root(
     onReportBugClick: () -> Unit,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
-    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {

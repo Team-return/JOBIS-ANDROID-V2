@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.home.R
 import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
@@ -76,11 +76,11 @@ private data class MenuItem(
 internal fun Home(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
-    showRejectionModal: (ReApplyData) -> Unit,
+    showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
-    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -89,7 +89,7 @@ internal fun Home(
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = mutableListOf(
         MenuItem(
-            title = stringResource(id = R.string.search_other_companies),
+            title = stringResource(id = R.string.how_about_other_companies),
             onClick = onCompaniesClick,
             icon = R.drawable.ic_building,
         ),
@@ -108,7 +108,7 @@ internal fun Home(
         homeViewModel.sideEffect.collect {
             when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
-                    showRejectionModal(it.reApplyData)
+                    showRejectionModal(it.applicationData)
                 }
 
                 is HomeSideEffect.NotFoundApplication -> {
@@ -159,14 +159,14 @@ private fun HomeScreen(
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
+    onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
     studentInformation: StudentInformationEntity,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
     applicationId: Long?,
     setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
-    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -378,10 +378,10 @@ private fun ApplyStatus(
     modifier: Modifier = Modifier,
     applicationId: Long?,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
-    onShowRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
+    onShowRejectionReasonClick: (ApplicationData) -> Unit,
     setScroll: (position: Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
-    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -414,22 +414,20 @@ private fun ApplyStatus(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
-                    val reApplyData = ReApplyData(
+                    val applicationData = ApplicationData(
+                        applicationId = it.applicationId,
                         recruitmentId = it.recruitmentId,
-                        companyLogoUrl = it.companyLogoUrl,
+                        rejectionReason = "",
+                        companyLogoUrl = it.companyLogoUrl.replace("/", " "),
                         companyName = it.company,
+                        isReApply = true,
                     )
                     ApplyCompanyItem(
-                        onShowRejectionReasonClick = {
-                            onShowRejectionReasonClick(
-                                it.applicationId,
-                                reApplyData,
-                            )
-                        },
+                        onShowRejectionReasonClick = { onShowRejectionReasonClick(applicationData) },
                         appliedCompany = it,
                         isFocus = applicationId == it.applicationId,
                         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
-                        navigateToApplication = { navigateToApplication(reApplyData) },
+                        navigateToApplication = { navigateToApplication(applicationData) },
                     )
                 }
             } else {
