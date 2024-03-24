@@ -2,6 +2,7 @@ package team.retum.network.util
 
 import retrofit2.HttpException
 import team.retum.common.exception.BadRequestException
+import team.retum.common.exception.CheckServerException
 import team.retum.common.exception.ConflictException
 import team.retum.common.exception.ForbiddenException
 import team.retum.common.exception.MethodNotAllowedException
@@ -23,6 +24,7 @@ class RequestHandler<T> {
                 405 -> MethodNotAllowedException
                 409 -> ConflictException
                 429 -> TooManyRequestException
+                502 -> CheckServerException
                 in 500..599 -> ServerException
                 else -> e
             }
