@@ -37,7 +37,7 @@ internal class SplashViewModel @Inject constructor(
                     }
 
                     is CheckServerException -> {
-                        postSideEffect(SplashSideEffect.CheckServer)
+                        postSideEffect(SplashSideEffect.ShowCheckServerDialog)
                     }
                 }
             }
@@ -103,5 +103,5 @@ internal data class SplashState(
 internal sealed interface SplashSideEffect {
     data object MoveToLanding : SplashSideEffect
     data object MoveToMain : SplashSideEffect
-    data object CheckServer : SplashSideEffect
+    data object ShowCheckServerDialog : SplashSideEffect
 }

@@ -6,13 +6,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,8 +26,7 @@ internal fun Splash(
     navigateToLanding: () -> Unit,
     navigateToRoot: () -> Unit,
 ) {
-    var showShowDialog by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+    val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         with(splashViewModel) {
@@ -45,21 +41,21 @@ internal fun Splash(
                         navigateToRoot()
                     }
 
-                    is SplashSideEffect.CheckServer -> {
-                        showShowDialog = true
+                    is SplashSideEffect.ShowCheckServerDialog -> {
+                        setShowDialog(true)
                     }
                 }
             }
         }
     }
 
-    if (showShowDialog) {
+    if (showDialog) {
         JobisDialog(
-            onDismissRequest = { },
+            onDismissRequest = { setShowDialog(false) },
             title = stringResource(id = R.string.check_server_title),
             description = stringResource(id = R.string.check_server),
             mainButtonText = stringResource(id = R.string.ok),
-            onMainButtonClick = { },
+            onMainButtonClick = { setShowDialog(false) },
             mainButtonColor = ButtonColor.Primary,
         )
     }
