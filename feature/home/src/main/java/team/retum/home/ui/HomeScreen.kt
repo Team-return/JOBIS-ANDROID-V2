@@ -89,7 +89,7 @@ internal fun Home(
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = mutableListOf(
         MenuItem(
-            title = stringResource(id = R.string.search_other_companies),
+            title = stringResource(id = R.string.how_about_other_companies),
             onClick = onCompaniesClick,
             icon = R.drawable.ic_building,
         ),
