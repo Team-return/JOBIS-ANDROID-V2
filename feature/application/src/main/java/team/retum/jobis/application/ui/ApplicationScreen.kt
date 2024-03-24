@@ -76,6 +76,13 @@ internal fun Application(
         applicationViewModel.setRecruitmentId(recruitmentId = recruitmentId.toLong())
         applicationViewModel.sideEffect.collect {
             when (it) {
+                is ApplicationSideEffect.SuccessReApply -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_success_re_apply),
+                    ).show()
+                }
+
                 is ApplicationSideEffect.ExceedFileCount -> {
                     JobisToast.create(
                         context = context,
