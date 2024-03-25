@@ -325,20 +325,18 @@ private fun PositionCard(
                 )
             }
             AnimatedVisibility(visible = showDetails) {
-                Column {
-                    PositionDetail(
-                        title = stringResource(id = R.string.major_task),
-                        content = majorTask,
-                    )
-                    PositionDetail(
-                        title = stringResource(id = R.string.technology_used),
-                        content = exceptBracket(tech.toString()),
-                    )
-                    PositionDetail(
-                        title = stringResource(id = R.string.preferential_treatment),
-                        content = preferentialTreatment,
-                    )
-                }
+                PositionDetail(
+                    title = stringResource(id = R.string.major_task),
+                    content = majorTask,
+                )
+                PositionDetail(
+                    title = stringResource(id = R.string.technology_used),
+                    content = exceptBracket(tech.toString()),
+                )
+                PositionDetail(
+                    title = stringResource(id = R.string.preferential_treatment),
+                    content = preferentialTreatment,
+                )
             }
         }
     }
