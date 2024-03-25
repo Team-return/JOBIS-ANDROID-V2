@@ -300,8 +300,11 @@ private fun PositionCard(
 ) {
     var showDetails by remember { mutableStateOf(false) }
     val iconRotate by animateFloatAsState(
-        targetValue = if (showDetails) 180f
-        else 0f,
+        targetValue = if (showDetails) {
+            180f
+        } else {
+            0f
+        },
         label = "",
     )
 
@@ -407,11 +410,10 @@ private fun BottomBar(
             onClick = onApplyClick,
         ) {
             JobisText(
-                text = if (isApplicable) {
-                    stringResource(id = R.string.apply)
-                } else {
-                    stringResource(id = R.string.can_do_apply_third)
-                },
+                text = stringResource(
+                    id = if (isApplicable) R.string.apply
+                    else R.string.can_do_apply_third,
+                ),
                 style = JobisTypography.SubHeadLine,
                 color = JobisTheme.colors.background,
             )
@@ -431,8 +433,11 @@ private fun BottomBar(
                 .clip(RectangleShape)
                 .padding(16.dp),
             painter = painterResource(
-                if (isBookmark) JobisIcon.BookmarkOn
-                else JobisIcon.BookmarkOff,
+                if (isBookmark) {
+                    JobisIcon.BookmarkOn
+                } else {
+                    JobisIcon.BookmarkOff
+                },
             ),
             contentDescription = "bookmark",
             tint = JobisTheme.colors.onPrimary,
