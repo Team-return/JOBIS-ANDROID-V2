@@ -1,6 +1,7 @@
 package team.retum.jobis.recruitment.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -44,7 +46,7 @@ import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisButton
-import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -275,13 +277,15 @@ private fun Position(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         if (areas.isNotEmpty()) {
-            areas.forEach {
-                PositionCard(
-                    job = it.job.map { it.name },
-                    majorTask = it.majorTask,
-                    tech = it.tech.map { it.name },
-                    preferentialTreatment = it.preferentialTreatment,
-                )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                areas.forEach {
+                    PositionCard(
+                        job = it.job.map { it.name },
+                        majorTask = it.majorTask,
+                        tech = it.tech.map { it.name },
+                        preferentialTreatment = it.preferentialTreatment,
+                    )
+                }
             }
         }
     }
@@ -295,42 +299,38 @@ private fun PositionCard(
     preferentialTreatment: String?,
 ) {
     var showDetails by remember { mutableStateOf(false) }
+    val iconRotate by animateFloatAsState(
+        targetValue = if (showDetails) {
+            180f
+        } else {
+            0f
+        },
+        label = "",
+    )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(JobisTheme.colors.inverseSurface)
-            .clickable(
-                onClick = { showDetails = !showDetails },
-            ),
-    ) {
-        Row(
-            modifier = Modifier.padding(all = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
-        ) {
-            JobisText(
-                modifier = Modifier.weight(1f),
-                text = exceptBracket(job.toString()),
-                style = JobisTypography.SubHeadLine,
-            )
-            JobisIconButton(
-                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
-                painter = painterResource(
-                    id = if (showDetails) {
-                        R.drawable.ic_arrow_up
-                    } else {
-                        R.drawable.ic_arrow_down
-                    },
+    JobisCard(onClick = { showDetails = !showDetails }) {
+        Column {
+            Row(
+                modifier = Modifier.padding(all = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 4.dp,
+                    alignment = Alignment.Start,
                 ),
-                onClick = { showDetails = !showDetails },
-                contentDescription = "detail",
-            )
-        }
-        AnimatedVisibility(visible = showDetails) {
-            Column {
+            ) {
+                JobisText(
+                    modifier = Modifier.weight(1f),
+                    text = exceptBracket(job.toString()),
+                    style = JobisTypography.SubHeadLine,
+                )
+                Icon(
+                    modifier = Modifier.rotate(iconRotate),
+                    painter = painterResource(id = R.drawable.ic_arrow_down),
+                    tint = JobisTheme.colors.onSurfaceVariant,
+                    contentDescription = "detail",
+                )
+            }
+            AnimatedVisibility(visible = showDetails) {
                 PositionDetail(
                     title = stringResource(id = R.string.major_task),
                     content = majorTask,
@@ -413,11 +413,13 @@ private fun BottomBar(
             onClick = onApplyClick,
         ) {
             JobisText(
-                text = if (isApplicable) {
-                    stringResource(id = R.string.apply)
-                } else {
-                    stringResource(id = R.string.can_do_apply_third)
-                },
+                text = stringResource(
+                    id = if (isApplicable) {
+                        R.string.apply
+                    } else {
+                        R.string.can_do_apply_third
+                    },
+                ),
                 style = JobisTypography.SubHeadLine,
                 color = JobisTheme.colors.background,
             )
@@ -429,20 +431,22 @@ private fun BottomBar(
         }
         Icon(
             modifier = Modifier
+                .clickable(onClick = onBookmarkClick)
                 .background(
                     color = JobisTheme.colors.inverseSurface,
                     shape = RoundedCornerShape(12.dp),
                 )
                 .clip(RectangleShape)
-                .padding(16.dp)
-                .clickable(
-                    enabled = true,
-                    onClick = onBookmarkClick,
-                ),
+                .padding(16.dp),
             painter = painterResource(
-                if (isBookmark) JobisIcon.BookmarkOn else JobisIcon.BookmarkOff,
+                if (isBookmark) {
+                    JobisIcon.BookmarkOn
+                } else {
+                    JobisIcon.BookmarkOff
+                },
             ),
             contentDescription = "bookmark",
+            tint = JobisTheme.colors.onPrimary,
         )
     }
 }
