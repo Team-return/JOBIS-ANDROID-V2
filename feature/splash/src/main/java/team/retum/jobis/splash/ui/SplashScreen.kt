@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -18,14 +19,17 @@ import team.retum.jobis.splash.viewmodel.SplashSideEffect
 import team.retum.jobis.splash.viewmodel.SplashViewModel
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.dialog.JobisDialog
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 
 @Composable
 internal fun Splash(
-    splashViewModel: SplashViewModel = hiltViewModel(),
     navigateToLanding: () -> Unit,
     navigateToRoot: () -> Unit,
+    splashViewModel: SplashViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -43,6 +47,14 @@ internal fun Splash(
 
                     is SplashSideEffect.ShowCheckServerDialog -> {
                         setShowDialog(true)
+                    }
+
+                    is SplashSideEffect.ShowOfflineToast -> {
+                        JobisToast.create(
+                            context = context,
+                            message = context.getString(R.string.toast_check_internet_connection),
+                            drawable = JobisIcon.Error,
+                        ).show()
                     }
                 }
             }
