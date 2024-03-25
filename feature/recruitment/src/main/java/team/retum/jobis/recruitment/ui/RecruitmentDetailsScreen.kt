@@ -228,14 +228,6 @@ private fun RecruitmentDetailInfo(
                 content = workingHours,
             )
             Detail(
-                title = stringResource(id = R.string.train_pay),
-                content = "$trainPay 만원/월",
-            )
-            Detail(
-                title = stringResource(id = R.string.convert_to_full_time_job),
-                content = "$pay 만원/년",
-            )
-            Detail(
                 title = stringResource(id = R.string.wage_and_benefits),
                 content = benefits,
             )
@@ -265,7 +257,7 @@ internal fun Detail(
         )
         JobisText(
             modifier = Modifier.padding(vertical = 4.dp),
-            text = if (content.isNullOrEmpty()) "-" else content,
+            text = if (content.isNullOrEmpty() || content == "null") "없음" else content,
             style = JobisTypography.Body,
         )
     }
