@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 setBackHandler()
             }
 
-            JobisDesignSystemV2Theme {
+            JobisDesignSystemV2Theme(darkTheme = false) {
                 JobisApp()
             }
         }
