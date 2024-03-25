@@ -276,8 +276,8 @@ private fun Position(
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
         )
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (areas.isNotEmpty()) {
+        if (areas.isNotEmpty()) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 areas.forEach {
                     PositionCard(
                         job = it.job.map { it.name },
@@ -313,7 +313,10 @@ private fun PositionCard(
             Row(
                 modifier = Modifier.padding(all = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 4.dp,
+                    alignment = Alignment.Start,
+                ),
             ) {
                 JobisText(
                     modifier = Modifier.weight(1f),
