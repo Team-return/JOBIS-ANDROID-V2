@@ -31,7 +31,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.RecruitmentsEntity
-import java.text.DecimalFormat
 
 @Composable
 internal fun RecruitmentsContent(
