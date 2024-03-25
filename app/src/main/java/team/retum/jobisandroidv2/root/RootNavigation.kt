@@ -6,7 +6,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import team.retum.common.model.ApplicationData
-import team.retum.jobis.splash.navigation.NAVIGATION_SPLASH
 
 const val NAVIGATION_ROOT = "root"
 const val APPLICATION_ID = "applicationId"
