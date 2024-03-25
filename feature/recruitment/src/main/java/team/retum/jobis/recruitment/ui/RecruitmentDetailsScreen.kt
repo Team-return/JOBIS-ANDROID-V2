@@ -414,8 +414,11 @@ private fun BottomBar(
         ) {
             JobisText(
                 text = stringResource(
-                    id = if (isApplicable) R.string.apply
-                    else R.string.can_do_apply_third,
+                    id = if (isApplicable) {
+                        R.string.apply
+                    } else {
+                        R.string.can_do_apply_third
+                    },
                 ),
                 style = JobisTypography.SubHeadLine,
                 color = JobisTheme.colors.background,
