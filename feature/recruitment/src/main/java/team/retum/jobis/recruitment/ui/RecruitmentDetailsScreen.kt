@@ -1,6 +1,7 @@
 package team.retum.jobis.recruitment.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -44,7 +46,7 @@ import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisButton
-import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -274,14 +276,16 @@ private fun Position(
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
         )
-        if (areas.isNotEmpty()) {
-            areas.forEach {
-                PositionCard(
-                    job = it.job.map { it.name },
-                    majorTask = it.majorTask,
-                    tech = it.tech.map { it.name },
-                    preferentialTreatment = it.preferentialTreatment,
-                )
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (areas.isNotEmpty()) {
+                areas.forEach {
+                    PositionCard(
+                        job = it.job.map { it.name },
+                        majorTask = it.majorTask,
+                        tech = it.tech.map { it.name },
+                        preferentialTreatment = it.preferentialTreatment,
+                    )
+                }
             }
         }
     }
@@ -295,54 +299,46 @@ private fun PositionCard(
     preferentialTreatment: String?,
 ) {
     var showDetails by remember { mutableStateOf(false) }
+    val iconRotate by animateFloatAsState(
+        targetValue = if (showDetails) 180f
+        else 0f,
+        label = "",
+    )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(JobisTheme.colors.inverseSurface)
-            .clickable(
-                onClick = { showDetails = !showDetails },
-            ),
-    ) {
-        Row(
-            modifier = Modifier.padding(all = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
-        ) {
-            JobisText(
-                modifier = Modifier.weight(1f),
-                text = exceptBracket(job.toString()),
-                style = JobisTypography.SubHeadLine,
-            )
-            JobisIconButton(
-                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
-                painter = painterResource(
-                    id = if (showDetails) {
-                        R.drawable.ic_arrow_up
-                    } else {
-                        R.drawable.ic_arrow_down
-                    },
-                ),
-                onClick = { showDetails = !showDetails },
-                contentDescription = "detail",
-            )
-        }
-        AnimatedVisibility(visible = showDetails) {
-            Column {
-                PositionDetail(
-                    title = stringResource(id = R.string.major_task),
-                    content = majorTask,
+    JobisCard(onClick = { showDetails = !showDetails }) {
+        Column {
+            Row(
+                modifier = Modifier.padding(all = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
+            ) {
+                JobisText(
+                    modifier = Modifier.weight(1f),
+                    text = exceptBracket(job.toString()),
+                    style = JobisTypography.SubHeadLine,
                 )
-                PositionDetail(
-                    title = stringResource(id = R.string.technology_used),
-                    content = exceptBracket(tech.toString()),
+                Icon(
+                    modifier = Modifier.rotate(iconRotate),
+                    painter = painterResource(id = R.drawable.ic_arrow_down),
+                    tint = JobisTheme.colors.onSurfaceVariant,
+                    contentDescription = "detail",
                 )
-                PositionDetail(
-                    title = stringResource(id = R.string.preferential_treatment),
-                    content = preferentialTreatment,
-                )
+            }
+            AnimatedVisibility(visible = showDetails) {
+                Column {
+                    PositionDetail(
+                        title = stringResource(id = R.string.major_task),
+                        content = majorTask,
+                    )
+                    PositionDetail(
+                        title = stringResource(id = R.string.technology_used),
+                        content = exceptBracket(tech.toString()),
+                    )
+                    PositionDetail(
+                        title = stringResource(id = R.string.preferential_treatment),
+                        content = preferentialTreatment,
+                    )
+                }
             }
         }
     }
