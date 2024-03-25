@@ -77,10 +77,6 @@ private fun RecruitmentContent(
         StringBuilder().apply {
             append(context.getString(R.string.military))
             append(if (recruitment.militarySupport) " O " else " X ")
-            append(" · ")
-            append(context.getString(R.string.train_pay))
-            append(" ")
-            append(DecimalFormat().format(recruitment.trainPay) + "만원")
         }.toString()
     }
 

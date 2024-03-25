@@ -53,6 +53,7 @@ fun BottomNavigationBar(navController: NavController) {
                     selected = selected,
                     onClick = {
                         navController.navigate(it.route) {
+                            popUpTo(0)
                             launchSingleTop = true
                         }
                     },
