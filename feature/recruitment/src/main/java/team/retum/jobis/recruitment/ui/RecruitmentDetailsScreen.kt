@@ -425,20 +425,19 @@ private fun BottomBar(
         }
         Icon(
             modifier = Modifier
+                .clickable(onClick = onBookmarkClick)
                 .background(
                     color = JobisTheme.colors.inverseSurface,
                     shape = RoundedCornerShape(12.dp),
                 )
                 .clip(RectangleShape)
-                .padding(16.dp)
-                .clickable(
-                    enabled = true,
-                    onClick = onBookmarkClick,
-                ),
+                .padding(16.dp),
             painter = painterResource(
-                if (isBookmark) JobisIcon.BookmarkOn else JobisIcon.BookmarkOff,
+                if (isBookmark) JobisIcon.BookmarkOn
+                else JobisIcon.BookmarkOff,
             ),
             contentDescription = "bookmark",
+            tint = JobisTheme.colors.onPrimary,
         )
     }
 }
