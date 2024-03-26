@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import team.retum.jobis.recruitment.R
@@ -107,6 +108,8 @@ private fun RecruitmentContent(
                 JobisText(
                     text = recruitment.companyName,
                     style = JobisTypography.SubHeadLine,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 JobisText(
                     text = middleText,
