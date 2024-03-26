@@ -199,7 +199,10 @@ private fun RecruitmentDetailInfo(
         recruitmentDetail.apply {
             Detail(
                 title = stringResource(id = R.string.recruitment_period),
-                content = "$startDate${if (startDate.isNotBlank()) " ~ " else ""}$endDate",
+                content = getRecruitmentPeriod(
+                    startDate = startDate,
+                    endDate = endDate,
+                ),
             )
             Detail(
                 title = stringResource(id = R.string.special_military_service_whether),
@@ -331,18 +334,20 @@ private fun PositionCard(
                 )
             }
             AnimatedVisibility(visible = showDetails) {
-                PositionDetail(
-                    title = stringResource(id = R.string.major_task),
-                    content = majorTask,
-                )
-                PositionDetail(
-                    title = stringResource(id = R.string.technology_used),
-                    content = exceptBracket(tech.toString()),
-                )
-                PositionDetail(
-                    title = stringResource(id = R.string.preferential_treatment),
-                    content = preferentialTreatment,
-                )
+                Column {
+                    PositionDetail(
+                        title = stringResource(id = R.string.major_task),
+                        content = majorTask,
+                    )
+                    PositionDetail(
+                        title = stringResource(id = R.string.technology_used),
+                        content = exceptBracket(tech.toString()),
+                    )
+                    PositionDetail(
+                        title = stringResource(id = R.string.preferential_treatment),
+                        content = preferentialTreatment,
+                    )
+                }
             }
         }
     }
@@ -368,7 +373,7 @@ internal fun PositionDetail(
         )
         JobisText(
             modifier = Modifier.padding(top = 4.dp),
-            text = if (content.isNullOrEmpty()) "-" else content,
+            text = if (content.isNullOrEmpty()) "없음" else content,
             style = JobisTypography.Body,
         )
     }
@@ -449,4 +454,14 @@ private fun BottomBar(
             tint = JobisTheme.colors.onPrimary,
         )
     }
+}
+
+private fun getRecruitmentPeriod(
+    startDate: String?,
+    endDate: String?,
+): String {
+    if (startDate == null && endDate == null) {
+        return "상시 모집"
+    }
+    return "$startDate ~ $endDate"
 }
