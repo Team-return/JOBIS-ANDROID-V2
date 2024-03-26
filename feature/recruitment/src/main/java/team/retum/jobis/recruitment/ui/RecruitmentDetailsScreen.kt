@@ -373,7 +373,7 @@ internal fun PositionDetail(
         )
         JobisText(
             modifier = Modifier.padding(top = 4.dp),
-            text = if (content.isNullOrEmpty()) "-" else content,
+            text = if (content.isNullOrEmpty()) "없음" else content,
             style = JobisTypography.Body,
         )
     }
