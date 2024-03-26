@@ -199,7 +199,10 @@ private fun RecruitmentDetailInfo(
         recruitmentDetail.apply {
             Detail(
                 title = stringResource(id = R.string.recruitment_period),
-                content = "$startDate${if (startDate.isNotBlank()) " ~ " else ""}$endDate",
+                content = getRecruitmentPeriod(
+                    startDate = startDate,
+                    endDate = endDate,
+                ),
             )
             Detail(
                 title = stringResource(id = R.string.special_military_service_whether),
@@ -449,4 +452,14 @@ private fun BottomBar(
             tint = JobisTheme.colors.onPrimary,
         )
     }
+}
+
+private fun getRecruitmentPeriod(
+    startDate: String?,
+    endDate: String?,
+): String {
+    if (startDate == null && endDate == null) {
+        return "상시 모집"
+    }
+    return "$startDate ~ $endDate"
 }
