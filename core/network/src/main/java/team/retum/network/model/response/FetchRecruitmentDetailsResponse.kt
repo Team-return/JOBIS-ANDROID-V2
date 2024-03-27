@@ -17,8 +17,8 @@ data class FetchRecruitmentDetailsResponse(
     @SerializedName("benefits") val benefits: String?,
     @SerializedName("military") val military: Boolean,
     @SerializedName("submit_document") val submitDocument: String,
-    @SerializedName("start_date") val startDate: String,
-    @SerializedName("end_date") val endDate: String,
+    @SerializedName("start_date") val startDate: String?,
+    @SerializedName("end_date") val endDate: String?,
     @SerializedName("etc") val etc: String?,
     @SerializedName("is_applicable") val isApplicable: Boolean,
     @SerializedName("bookmarked") val bookmarked: Boolean,
@@ -26,9 +26,19 @@ data class FetchRecruitmentDetailsResponse(
 
 data class Areas(
     @SerializedName("id") val id: Long,
-    @SerializedName("job") val job: List<String>,
-    @SerializedName("tech") val tech: List<String>,
+    @SerializedName("job") val job: List<Job>,
+    @SerializedName("tech") val tech: List<Tech>,
     @SerializedName("hiring") val hiring: Long,
     @SerializedName("major_task") val majorTask: String,
     @SerializedName("preferential_treatment") val preferentialTreatment: String?,
+)
+
+data class Job(
+    @SerializedName("id") val id: Long,
+    @SerializedName("name") val name: String,
+)
+
+data class Tech(
+    @SerializedName("id") val id: Long,
+    @SerializedName("name") val name: String,
 )

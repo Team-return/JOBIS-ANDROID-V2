@@ -100,6 +100,8 @@ dependencies {
 
     debugApi(libs.androidx.compose.ui.tooling)
     debugApi(libs.androidx.compose.ui.test.manifest)
+
+    implementation(libs.anrwatchdog)
 }
 
 kapt {

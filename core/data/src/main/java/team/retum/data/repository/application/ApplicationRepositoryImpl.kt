@@ -31,4 +31,14 @@ class ApplicationRepositoryImpl @Inject constructor(
             applyCompanyRequest = applyCompanyRequest,
         )
     }
+
+    override suspend fun reApplyCompany(
+        applicationId: Long,
+        applyCompanyRequest: ApplyCompanyRequest,
+    ) {
+        remoteApplicationDataSource.reApplyCompany(
+            applicationId = applicationId,
+            applyCompanyRequest = applyCompanyRequest,
+        )
+    }
 }

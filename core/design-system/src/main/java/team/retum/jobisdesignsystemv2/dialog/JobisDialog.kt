@@ -23,11 +23,11 @@ fun JobisDialog(
     onDismissRequest: () -> Unit,
     title: String,
     description: String,
-    subButtonText: String,
+    subButtonText: String = "",
     mainButtonText: String,
     subButtonColor: ButtonColor = ButtonColor.Default,
     mainButtonColor: ButtonColor = ButtonColor.Error,
-    onSubButtonClick: () -> Unit,
+    onSubButtonClick: () -> Unit = { },
     onMainButtonClick: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
@@ -61,12 +61,14 @@ fun JobisDialog(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                JobisDialogButton(
-                    modifier = Modifier.weight(1f),
-                    text = subButtonText,
-                    color = subButtonColor,
-                    onClick = onSubButtonClick,
-                )
+                if (subButtonText.isNotEmpty()) {
+                    JobisDialogButton(
+                        modifier = Modifier.weight(1f),
+                        text = subButtonText,
+                        color = subButtonColor,
+                        onClick = onSubButtonClick,
+                    )
+                }
                 JobisDialogButton(
                     modifier = Modifier.weight(1f),
                     text = mainButtonText,

@@ -196,7 +196,7 @@ private fun MyPageScreen(
                     items = listOf(
                         ListItemInfo(
                             menuId = 0,
-                            imageResource = painterResource(id = R.drawable.ic_loud_speaker),
+                            imageResource = painterResource(id = JobisIcon.Notice),
                             description = "notice icon",
                             contentTitle = stringResource(id = R.string.notice),
                             onClick = onNoticeClick,

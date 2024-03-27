@@ -3,6 +3,7 @@ package team.retum.network.api
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import team.retum.network.di.RequestUrls
 import team.retum.network.model.request.application.ApplyCompanyRequest
@@ -25,6 +26,12 @@ interface ApplicationApi {
     @POST(RequestUrls.Applications.apply)
     suspend fun applyCompany(
         @Path(RequestUrls.PATH.recruitmentId) recruitmentId: Long,
+        @Body applyCompanyRequest: ApplyCompanyRequest,
+    )
+
+    @PUT(RequestUrls.Applications.reApply)
+    suspend fun reApplyCompany(
+        @Path(RequestUrls.PATH.applicationId) applicationId: Long,
         @Body applyCompanyRequest: ApplyCompanyRequest,
     )
 }

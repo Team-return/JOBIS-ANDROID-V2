@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,7 +18,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.signup.R
 import team.retum.signup.model.SignUpData
 import team.retum.signup.viewmodel.TermsSideEffect
@@ -34,6 +37,7 @@ internal fun Terms(
     signUpData: SignUpData,
     termsViewModel: TermsViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val state by termsViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -41,6 +45,22 @@ internal fun Terms(
             when (it) {
                 is TermsSideEffect.Success -> {
                     navigateToRoot()
+                }
+
+                is TermsSideEffect.CheckInternetConnection -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_check_internet_connection),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is TermsSideEffect.UnknownException -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_unknown_exception),
+                        drawable = JobisIcon.Error,
+                    ).show()
                 }
             }
         }

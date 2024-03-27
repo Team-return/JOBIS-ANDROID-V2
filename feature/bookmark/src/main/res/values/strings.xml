@@ -4,4 +4,5 @@
     <string name="empty_bookmark">현재 등록해 둔 북마크가 없어요</string>
     <string name="empty_bookmark_description">현재 북마크가 되어있는 모집의뢰서가 없어요.\n 모집의뢰서를 보고 맘에든다면\n 우측 하단의 북마크 버튼을 눌러주세요!</string>
     <string name="watch_recruit">모집의뢰서 보러 가기</string>
+    <string name="toast_fetch_bookmark_bad_request">북마크 목록을 가져오는중 오류가 발생했어요</string>
 </resources>

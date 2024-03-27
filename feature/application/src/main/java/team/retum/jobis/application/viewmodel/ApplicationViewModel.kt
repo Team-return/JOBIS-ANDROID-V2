@@ -19,6 +19,7 @@ import team.retum.common.exception.UnAuthorizedException
 import team.retum.common.utils.FileUtil
 import team.retum.usecase.entity.file.PresignedUrlEntity
 import team.retum.usecase.usecase.application.ApplyCompanyUseCase
+import team.retum.usecase.usecase.application.ReApplyCompanyUseCase
 import team.retum.usecase.usecase.file.CreatePresignedUrlUseCase
 import team.retum.usecase.usecase.file.UploadFileUseCase
 import java.io.File
@@ -29,6 +30,7 @@ internal const val MAX_ATTACHMENT_COUNT = 3
 @HiltViewModel
 internal class ApplicationViewModel @Inject constructor(
     private val applyCompanyUseCase: ApplyCompanyUseCase,
+    private val reApplyCompanyUseCase: ReApplyCompanyUseCase,
     private val createPresignedUseCase: CreatePresignedUrlUseCase,
     private val uploadFileUseCase: UploadFileUseCase,
 ) : BaseViewModel<ApplicationState, ApplicationSideEffect>(ApplicationState.getInitialState()) {
@@ -45,6 +47,14 @@ internal class ApplicationViewModel @Inject constructor(
 
     internal fun setRecruitmentId(recruitmentId: Long) = setState {
         state.value.copy(recruitmentId = recruitmentId)
+    }
+
+    internal fun setApplicationId(applicationId: Long) = setState {
+        state.value.copy(applicationId = applicationId)
+    }
+
+    internal fun setIsReApply(isReApply: Boolean) = setState {
+        state.value.copy(isReApply = isReApply)
     }
 
     internal fun addFile(
@@ -133,8 +143,30 @@ internal class ApplicationViewModel @Inject constructor(
             attachments = attachments,
         ).onSuccess {
             postSideEffect(ApplicationSideEffect.SuccessApply)
-        }.onFailure {
+        }.onApplyCompanyFailure(isReApply = false)
+    }
+
+    private suspend fun reApplyCompany() {
+        reApplyCompanyUseCase(
+            applicationId = state.value.applicationId,
+            attachments = attachments,
+        ).onSuccess {
+            postSideEffect(ApplicationSideEffect.SuccessReApply)
+        }.onApplyCompanyFailure(isReApply = true)
+    }
+
+    private fun Result<Unit>.onApplyCompanyFailure(isReApply: Boolean) {
+        onFailure {
             when (it) {
+                is KotlinNullPointerException -> {
+                    postSideEffect(
+                        sideEffect = when (isReApply) {
+                            true -> ApplicationSideEffect.SuccessReApply
+                            else -> ApplicationSideEffect.SuccessApply
+                        },
+                    )
+                }
+
                 is UnAuthorizedException -> {
                     postSideEffect(ApplicationSideEffect.UnexpectedGrade)
                 }
@@ -156,7 +188,11 @@ internal class ApplicationViewModel @Inject constructor(
             createPresignedUseCase(files = files.toFileNames()).onSuccess {
                 addPresignedUrlOrUrlToAttachments(urls = it.urls.toFileTypeAttachments())
                 addPresignedUrlOrUrlToAttachments(urls = urls.toUrlTypeAttachments())
-                applyCompany()
+                if (state.value.isReApply) {
+                    reApplyCompany()
+                } else {
+                    applyCompany()
+                }
                 uploadFile(presignedUrls = it.urls.toPresignedUrls())
             }.onFailure {
                 when (it) {
@@ -196,11 +232,15 @@ internal class ApplicationViewModel @Inject constructor(
 internal data class ApplicationState(
     val recruitmentId: Long,
     val buttonEnabled: Boolean,
+    val isReApply: Boolean,
+    val applicationId: Long,
 ) {
     companion object {
         fun getInitialState() = ApplicationState(
             recruitmentId = 0,
             buttonEnabled = false,
+            isReApply = false,
+            applicationId = 0L,
         )
     }
 }
@@ -209,6 +249,7 @@ internal sealed interface ApplicationSideEffect {
     data object ExceedFileCount : ApplicationSideEffect
     data object InvalidFileExtension : ApplicationSideEffect
     data object SuccessApply : ApplicationSideEffect
+    data object SuccessReApply : ApplicationSideEffect
     data object ConflictApply : ApplicationSideEffect
     data object NotFoundRecruitment : ApplicationSideEffect
     data object UnexpectedGrade : ApplicationSideEffect

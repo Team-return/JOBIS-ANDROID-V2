@@ -40,4 +40,16 @@ class RemoteApplicationDataSourceImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun reApplyCompany(
+        applicationId: Long,
+        applyCompanyRequest: ApplyCompanyRequest,
+    ) {
+        RequestHandler<Unit>().request {
+            applicationApi.reApplyCompany(
+                applicationId = applicationId,
+                applyCompanyRequest = applyCompanyRequest,
+            )
+        }
+    }
 }

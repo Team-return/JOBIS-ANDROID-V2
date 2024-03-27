@@ -1,29 +1,22 @@
 package team.retum.home.ui
 
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -40,19 +33,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import team.retum.common.enums.ApplyStatus
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.home.R
 import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
@@ -69,11 +62,8 @@ import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.time.LocalDate
 
-private const val PAGE_COUNT = 4
 private const val INITIAL_PAGE = 40
 private const val MAX_PAGE = 100
-private const val INDICATOR_DURATION = 500
-private val bannerResources = listOf<Int>()
 
 private data class MenuItem(
     val title: String,
@@ -84,57 +74,60 @@ private data class MenuItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun Home(
+    applicationId: Long?,
     onAlarmClick: () -> Unit,
-    showRejectionModal: (ReApplyData) -> Unit,
+    showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigatedFromNotifications: Boolean,
+    navigateToApplication: (ApplicationData) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
     val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
-    val currentDate = LocalDate.now()
-    val isDecemberOrLater = currentDate.monthValue >= 12
-    val menus = if (isDecemberOrLater) {
-        listOf(
-            MenuItem(
-                title = stringResource(id = R.string.search_other_companies),
-                onClick = onCompaniesClick,
-                icon = R.drawable.ic_building,
-            ),
-            MenuItem(
-                title = stringResource(id = R.string.experiential_field_training),
-                onClick = {},
-                icon = R.drawable.ic_snowman,
-            ),
-        )
-    } else {
-        listOf(
-            MenuItem(
-                title = stringResource(id = R.string.how_about_other_companies),
-                onClick = onCompaniesClick,
-                icon = R.drawable.ic_building,
-            ),
-        )
-    }
+    val menus = mutableListOf(
+        MenuItem(
+            title = stringResource(id = R.string.how_about_other_companies),
+            onClick = onCompaniesClick,
+            icon = R.drawable.ic_building,
+        ),
+    )
 
     LaunchedEffect(Unit) {
+        if (isDecemberOrLater()) {
+            menus.add(
+                MenuItem(
+                    title = context.getString(R.string.experiential_field_training),
+                    onClick = {},
+                    icon = R.drawable.ic_snowman,
+                ),
+            )
+        }
         homeViewModel.sideEffect.collect {
             when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
-                    showRejectionModal(it.reApplyData)
+                    showRejectionModal(it.applicationData)
                 }
 
                 is HomeSideEffect.NotFoundApplication -> {
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.toast_not_found_application),
+                        drawable = JobisIcon.Error,
                     ).show()
+                }
+
+                is HomeSideEffect.ScrollToApplication -> {
+                    scrollState.animateScrollTo(it.sectionOneCoordinates)
                 }
             }
         }
     }
 
     HomeScreen(
+        scrollState = scrollState,
         pagerState = pagerState,
         menus = menus,
         onAlarmClick = onAlarmClick,
@@ -142,19 +135,38 @@ internal fun Home(
         state = state,
         studentInformation = state.studentInformation,
         appliedCompanies = homeViewModel.appliedCompanies,
+        applicationId = applicationId,
+        setScroll = { position ->
+            homeViewModel.fetchScroll(
+                applicationId = applicationId,
+                position = position,
+                enabled = navigatedFromNotifications,
+            )
+        },
+        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+        navigateToApplication = navigateToApplication,
     )
+}
+
+private fun isDecemberOrLater(): Boolean {
+    return LocalDate.now().monthValue >= 12
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeScreen(
+    scrollState: ScrollState,
     pagerState: PagerState,
     menus: List<MenuItem>,
     onAlarmClick: () -> Unit,
-    onRejectionReasonClick: (applicationId: Long, ReApplyData) -> Unit,
+    onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
     studentInformation: StudentInformationEntity,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    applicationId: Long?,
+    setScroll: (Float) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -169,17 +181,12 @@ private fun HomeScreen(
                 onClick = onAlarmClick,
             )
         }
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            /*Banner(
-                pagerState = pagerState,
-                rate = state.rate,
-                passCount = state.passCount,
-                totalStudentCount = state.totalStudentCount,
-            )*/
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
             EmploymentRate(
                 rate = state.rate,
                 passCount = state.passCount,
                 totalStudentCount = state.totalStudentCount,
+                term = state.term,
             )
             StudentInformation(
                 modifier = Modifier.padding(
@@ -203,62 +210,21 @@ private fun HomeScreen(
                     vertical = 12.dp,
                     horizontal = 24.dp,
                 ),
+                applicationId = applicationId,
                 appliedCompanies = appliedCompanies,
-                onClick = onRejectionReasonClick,
+                onShowRejectionReasonClick = onRejectionReasonClick,
+                setScroll = setScroll,
+                navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+                navigateToApplication = navigateToApplication,
             )
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun ColumnScope.Banner(
-    pagerState: PagerState,
-    rate: Float,
-    passCount: Long,
-    totalStudentCount: Long,
-) {
-    HorizontalPager(
-        state = pagerState,
-        contentPadding = PaddingValues(
-            start = 24.dp,
-            end = 24.dp,
-            top = 16.dp,
-            bottom = 10.dp,
-        ),
-        pageSpacing = 12.dp,
-    ) {
-        when (it % PAGE_COUNT) {
-            0 -> {
-                EmploymentRate(
-                    rate = rate,
-                    passCount = passCount,
-                    totalStudentCount = totalStudentCount,
-                )
-            }
-
-            else -> {
-                Image(
-                    modifier = Modifier
-                        .padding(end = 12.dp)
-                        .aspectRatio(2f)
-                        .clip(RoundedCornerShape(16.dp)),
-                    painter = painterResource(id = JobisIcon.Information),
-                    contentDescription = "banner",
-                    contentScale = ContentScale.Crop,
-                )
-            }
-        }
-    }
-    BannerIndicator(
-        pageCount = PAGE_COUNT,
-        currentPage = pagerState.currentPage,
-    )
-}
-
 @Composable
 private fun EmploymentRate(
-    rate: Float,
+    term: Int,
+    rate: String,
     passCount: Long,
     totalStudentCount: Long,
 ) {
@@ -273,7 +239,7 @@ private fun EmploymentRate(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.padding(24.dp)) {
                 JobisText(
-                    text = stringResource(id = R.string.employment_rate, 6),
+                    text = stringResource(id = R.string.employment_rate, term),
                     style = JobisTypography.HeadLine,
                 )
                 JobisText(
@@ -300,50 +266,6 @@ private fun EmploymentRate(
             Image(
                 painter = painterResource(id = R.drawable.ic_file),
                 contentDescription = "file",
-            )
-        }
-    }
-}
-
-@Composable
-private fun ColumnScope.BannerIndicator(
-    pageCount: Int,
-    currentPage: Int,
-) {
-    Row(
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .align(Alignment.CenterHorizontally),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        repeat(pageCount) {
-            val color by animateColorAsState(
-                targetValue = if (it == currentPage % PAGE_COUNT) {
-                    JobisTheme.colors.onPrimary
-                } else {
-                    JobisTheme.colors.surfaceVariant
-                },
-                label = "",
-                animationSpec = tween(INDICATOR_DURATION),
-            )
-            val width by animateDpAsState(
-                targetValue = if (it == currentPage % PAGE_COUNT) {
-                    12.dp
-                } else {
-                    6.dp
-                },
-                label = "",
-                animationSpec = tween(INDICATOR_DURATION),
-            )
-
-            Box(
-                modifier = Modifier
-                    .size(
-                        height = 6.dp,
-                        width = width,
-                    )
-                    .clip(CircleShape)
-                    .background(color),
             )
         }
     }
@@ -456,10 +378,19 @@ private fun Menu(
 @Composable
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
+    applicationId: Long?,
     appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
-    onClick: (applicationId: Long, ReApplyData) -> Unit,
+    onShowRejectionReasonClick: (ApplicationData) -> Unit,
+    setScroll: (position: Float) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .onGloballyPositioned { layoutCoordinates ->
+                setScroll(layoutCoordinates.positionInRoot().y)
+            },
+    ) {
         Row(
             modifier = Modifier
                 .align(Alignment.Start)
@@ -485,18 +416,20 @@ private fun ApplyStatus(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
+                    val applicationData = ApplicationData(
+                        applicationId = it.applicationId,
+                        recruitmentId = it.recruitmentId,
+                        rejectionReason = "",
+                        companyLogoUrl = it.companyLogoUrl.replace("/", " "),
+                        companyName = it.company,
+                        isReApply = true,
+                    )
                     ApplyCompanyItem(
-                        onClick = {
-                            onClick(
-                                it.applicationId,
-                                ReApplyData(
-                                    recruitmentId = it.recruitmentId,
-                                    companyLogoUrl = it.companyLogoUrl,
-                                    companyName = it.company,
-                                ),
-                            )
-                        },
+                        onShowRejectionReasonClick = { onShowRejectionReasonClick(applicationData) },
                         appliedCompany = it,
+                        isFocus = applicationId == it.applicationId,
+                        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+                        navigateToApplication = { navigateToApplication(applicationData) },
                     )
                 }
             } else {
@@ -519,64 +452,6 @@ private fun ApplyStatus(
                         color = JobisTheme.colors.onSurfaceVariant,
                     )
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ApplyCompanyItem(
-    onClick: () -> Unit,
-    appliedCompany: AppliedCompaniesEntity.ApplicationEntity,
-) {
-    val applicationStatus = appliedCompany.applicationStatus
-    val color = when (applicationStatus) {
-        ApplyStatus.FAILED, ApplyStatus.REJECTED -> JobisTheme.colors.error
-        ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
-        ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
-        else -> JobisTheme.colors.onPrimary
-    }
-    JobisCard(
-        onClick = if (applicationStatus == ApplyStatus.REJECTED) {
-            onClick
-        } else {
-            null
-        },
-    ) {
-        Row(
-            modifier = Modifier.padding(
-                vertical = 12.dp,
-                horizontal = 16.dp,
-            ),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            AsyncImage(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(JobisTheme.colors.background),
-                model = appliedCompany.companyLogoUrl,
-                contentDescription = "company profile url",
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            JobisText(
-                modifier = Modifier.weight(1f),
-                text = appliedCompany.company,
-                style = JobisTypography.Body,
-            )
-            JobisText(
-                text = applicationStatus.value,
-                style = JobisTypography.SubBody,
-                color = color,
-            )
-            if (applicationStatus == ApplyStatus.REJECTED) {
-                JobisText(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = stringResource(id = R.string.reason),
-                    style = JobisTypography.SubBody,
-                    color = color,
-                    textDecoration = TextDecoration.Underline,
-                )
             }
         }
     }

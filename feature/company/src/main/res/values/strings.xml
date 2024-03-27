@@ -26,4 +26,8 @@
 
     <string name="review">면접 후기</string>
     <string name="show_more_reviews">더 많은 후기 보기</string>
+
+    <string name="show_recruitment">모집의뢰서 보기</string>
+
+    <string name="toast_error_fetch_company_details">기업 정보 조회 중 오류가 발생했어요</string>
 </resources>

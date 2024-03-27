@@ -17,4 +17,6 @@
     <string name="toast_success">로그인 되었습니다</string>
 
     <string name="forgot_password">비밀번호를 잊으셨나요?</string>
+
+    <string name="toast_check_internet_connection">인터넷 연결을 확인해주세요</string>
 </resources>

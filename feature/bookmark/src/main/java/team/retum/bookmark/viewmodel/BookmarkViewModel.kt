@@ -1,7 +1,7 @@
 package team.retum.bookmark.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,18 +19,13 @@ internal class BookmarkViewModel @Inject constructor(
     private val recruitmentBookmarkUseCase: BookmarkRecruitmentUseCase,
 ) : BaseViewModel<Unit, BookmarkSideEffect>(Unit) {
 
-    init {
-        fetchBookmarks()
-    }
+    private val _bookmarks: SnapshotStateList<BookmarksEntity.BookmarkEntity> = mutableStateListOf()
+    internal val bookmarks: List<BookmarksEntity.BookmarkEntity> = _bookmarks
 
-    private val _bookmarks: MutableState<BookmarksEntity> =
-        mutableStateOf(BookmarksEntity(emptyList()))
-    val bookmarks: MutableState<BookmarksEntity> get() = _bookmarks
-
-    private fun fetchBookmarks() {
+    internal fun fetchBookmarks() {
         viewModelScope.launch(Dispatchers.IO) {
             bookmarkUseCase().onSuccess {
-                _bookmarks.value = it
+                _bookmarks.addAll(it.bookmarks)
             }.onFailure {
                 when (it) {
                     is BadRequestException -> {
@@ -41,7 +36,12 @@ internal class BookmarkViewModel @Inject constructor(
         }
     }
 
-    fun bookmarkRecruitment(recruitmentId: Long) {
+    internal fun clearBookmarks() {
+        _bookmarks.clear()
+    }
+
+    internal fun bookmarkRecruitment(recruitmentId: Long) {
+        _bookmarks.removeAt(_bookmarks.indexOf(_bookmarks.find { it.recruitmentId == recruitmentId }))
         viewModelScope.launch(Dispatchers.IO) {
             recruitmentBookmarkUseCase(recruitmentId).onFailure {
                 when (it) {
@@ -50,7 +50,6 @@ internal class BookmarkViewModel @Inject constructor(
                     }
                 }
             }
-            fetchBookmarks()
         }
     }
 }

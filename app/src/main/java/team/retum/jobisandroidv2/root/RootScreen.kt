@@ -25,7 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.bookmarks
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
@@ -42,6 +42,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun Root(
+    applicationId: Long?,
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
@@ -53,7 +54,9 @@ internal fun Root(
     onReportBugClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
-    navigateToApplication: (ReApplyData) -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigatedFromNotifications: Boolean,
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -61,14 +64,15 @@ internal fun Root(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
     )
-    var reApplyData by remember { mutableStateOf(ReApplyData()) }
+    var applicationData by remember { mutableStateOf(ApplicationData.getDefaultApplicationData()) }
 
     RootScreen(
         navController = navController,
         sheetState = sheetState,
+        applicationId = applicationId,
         onAlarmClick = onAlarmClick,
         showRejectionModal = {
-            reApplyData = it
+            applicationData = it
             coroutineScope.launch {
                 sheetState.show()
             }
@@ -81,15 +85,18 @@ internal fun Root(
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
-        rejectionReason = reApplyData.rejectionReason,
+        rejectionReason = applicationData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
-        navigateToRecruitmentDetails = {
+        navigateToApplicationByRejectionBottomSheet = {
             coroutineScope.launch {
                 sheetState.hide()
             }
-            navigateToApplication(reApplyData)
+            navigateToApplication(applicationData)
         },
+        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+        navigatedFromNotifications = navigatedFromNotifications,
+        navigateToApplication = { navigateToApplication(it) },
     )
 }
 
@@ -99,11 +106,12 @@ internal fun Root(
 private fun RootScreen(
     navController: NavHostController,
     sheetState: ModalBottomSheetState,
+    applicationId: Long?,
     onAlarmClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
-    showRejectionModal: (ReApplyData) -> Unit,
+    showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
@@ -112,14 +120,17 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
-    navigateToRecruitmentDetails: () -> Unit,
+    navigateToApplicationByRejectionBottomSheet: () -> Unit,
+    navigateToApplication: (ApplicationData) -> Unit,
+    navigateToRecruitmentDetails: (Long) -> Unit,
+    navigatedFromNotifications: Boolean,
 ) {
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
             RejectionBottomSheet(
                 reason = rejectionReason,
-                onReApplyClick = navigateToRecruitmentDetails,
+                onReApplyClick = navigateToApplicationByRejectionBottomSheet,
             )
         },
         sheetShape = RoundedCornerShape(
@@ -136,16 +147,23 @@ private fun RootScreen(
                 modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
             ) {
                 home(
+                    applicationId = applicationId,
                     onAlarmClick = onAlarmClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
+                    navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+                    navigatedFromNotifications = navigatedFromNotifications,
+                    navigateToApplication = navigateToApplication,
                 )
                 recruitments(
                     onRecruitmentDetailsClick = onRecruitmentDetailsClick,
                     onRecruitmentFilterClick = onRecruitmentFilterClick,
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
-                bookmarks(onRecruitmentsClick = navController::navigateToRecruitments)
+                bookmarks(
+                    onRecruitmentsClick = navController::navigateToRecruitments,
+                    onRecruitmentDetailClick = onRecruitmentDetailsClick,
+                )
                 myPage(
                     onSelectInterestClick = onSelectInterestClick,
                     onChangePasswordClick = onChangePasswordClick,

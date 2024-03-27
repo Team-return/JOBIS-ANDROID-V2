@@ -17,7 +17,7 @@ private const val MAX_REVIEW_COUNT = 3
 internal class CompanyDetailsViewModel @Inject constructor(
     private val fetchCompanyDetailsUseCase: FetchCompanyDetailsUseCase,
     private val fetchReviewsUseCase: FetchReviewsUseCase,
-) : BaseViewModel<CompanyDetailsState, Unit>(CompanyDetailsState.getInitialState()) {
+) : BaseViewModel<CompanyDetailsState, CompanyDetailsSideEffect>(CompanyDetailsState.getInitialState()) {
 
     internal fun setCompanyId(companyId: Long) = setState {
         state.value.copy(companyId = companyId)
@@ -26,7 +26,15 @@ internal class CompanyDetailsViewModel @Inject constructor(
     internal fun fetchCompanyDetails() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCompanyDetailsUseCase(companyId = state.value.companyId).onSuccess {
-                setState { state.value.copy(companyDetailsEntity = it) }
+                setState {
+                    state.value.copy(
+                        companyDetailsEntity = it,
+                        buttonEnabled = it.recruitmentId != null,
+                    )
+                }
+            }.onFailure {
+                // TODO 스켈레톤 처리
+                postSideEffect(CompanyDetailsSideEffect.FetchCompanyDetailsError)
             }
         }
     }
@@ -39,10 +47,19 @@ internal class CompanyDetailsViewModel @Inject constructor(
                     state.value.copy(
                         reviews = reviews.take(MAX_REVIEW_COUNT),
                         showMoreReviews = reviews.size > MAX_REVIEW_COUNT,
+                        showMoveToRecruitmentButton = true,
                     )
                 }
             }
         }
+    }
+
+    internal fun onMoveToRecruitmentButtonClick() = setState {
+        val recruitmentId = state.value.companyDetailsEntity.recruitmentId
+        recruitmentId?.run {
+            postSideEffect(CompanyDetailsSideEffect.MoveToRecruitmentDetails(recruitmentId = recruitmentId))
+        }
+        state.value.copy(buttonEnabled = false)
     }
 }
 
@@ -51,6 +68,8 @@ internal data class CompanyDetailsState(
     val companyDetailsEntity: CompanyDetailsEntity,
     val reviews: List<FetchReviewsEntity.Review>,
     val showMoreReviews: Boolean,
+    val showMoveToRecruitmentButton: Boolean,
+    val buttonEnabled: Boolean,
 ) {
     companion object {
         fun getInitialState() = CompanyDetailsState(
@@ -79,6 +98,13 @@ internal data class CompanyDetailsState(
             ),
             reviews = emptyList(),
             showMoreReviews = false,
+            showMoveToRecruitmentButton = false,
+            buttonEnabled = true,
         )
     }
+}
+
+internal sealed interface CompanyDetailsSideEffect {
+    data object FetchCompanyDetailsError : CompanyDetailsSideEffect
+    data class MoveToRecruitmentDetails(val recruitmentId: Long) : CompanyDetailsSideEffect
 }

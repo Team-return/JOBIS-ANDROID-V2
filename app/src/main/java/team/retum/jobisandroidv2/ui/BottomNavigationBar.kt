@@ -39,10 +39,7 @@ fun BottomNavigationBar(navController: NavController) {
             containerColor = JobisTheme.colors.background,
         ) {
             bottomMenus.forEach {
-                val selected = isCurrentRoute(
-                    currentDestination = selectedRoute,
-                    route = it.route,
-                )
+                val selected = selectedRoute == it.route
                 val color by animateColorAsState(
                     targetValue = if (selected) {
                         JobisTheme.colors.onBackground
@@ -54,7 +51,14 @@ fun BottomNavigationBar(navController: NavController) {
 
                 NavigationBarItem(
                     selected = selected,
-                    onClick = { navController.navigate(it.route) },
+                    onClick = {
+                        if (!selected) {
+                            navController.navigate(it.route) {
+                                popUpTo(0)
+                                launchSingleTop = true
+                            }
+                        }
+                    },
                     icon = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(
@@ -74,11 +78,4 @@ fun BottomNavigationBar(navController: NavController) {
             }
         }
     }
-}
-
-private fun isCurrentRoute(
-    currentDestination: String?,
-    route: String,
-): Boolean {
-    return currentDestination == route
 }

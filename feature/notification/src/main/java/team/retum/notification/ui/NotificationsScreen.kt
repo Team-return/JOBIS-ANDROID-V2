@@ -31,6 +31,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.notification.model.NotificationDetailData
 import team.retum.notification.viewmodel.NotificationsSideEffect
 import team.retum.notification.viewmodel.NotificationsViewModel
 import team.retum.usecase.entity.notification.NotificationsEntity
@@ -38,7 +39,8 @@ import team.retum.usecase.entity.notification.NotificationsEntity
 @Composable
 internal fun Notifications(
     onBackPressed: () -> Unit,
-    navigateToDetail: (Long) -> Unit,
+    navigateToRecruitment: (Long) -> Unit,
+    navigateToHome: (Long) -> Unit,
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val state by notificationsViewModel.state.collectAsStateWithLifecycle()
@@ -48,11 +50,15 @@ internal fun Notifications(
         stringResource(id = R.string.not_read),
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(notificationsViewModel.sideEffect) {
         notificationsViewModel.sideEffect.collect {
             when (it) {
-                is NotificationsSideEffect.MoveToDetail -> {
-                    navigateToDetail(it.notificationId)
+                is NotificationsSideEffect.MoveToRecruitment -> {
+                    navigateToRecruitment(it.recruitmentId)
+                }
+
+                is NotificationsSideEffect.MoveToHome -> {
+                    navigateToHome(it.applicationId)
                 }
             }
         }
@@ -83,7 +89,7 @@ private fun NotificationsScreen(
     selectedTabIndex: Int,
     tabs: List<String>,
     onSelectTab: (Int) -> Unit,
-    onNotificationDetailsClick: (Long) -> Unit,
+    onNotificationDetailsClick: (NotificationDetailData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -125,14 +131,23 @@ private fun NotificationContent(
     content: String,
     date: String,
     isNew: Boolean,
-    onClick: (notificationId: Long) -> Unit,
+    onClick: (NotificationDetailData) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .padding(vertical = 16.dp)
             .clickable(
                 enabled = true,
-                onClick = { onClick(notifications.notificationId) },
+                onClick = {
+                    onClick(
+                        NotificationDetailData(
+                            isNew = notifications.new,
+                            notificationId = notifications.notificationId,
+                            detailId = notifications.detailId,
+                            topic = notifications.topic,
+                        ),
+                    )
+                },
             ),
     ) {
         JobisText(
@@ -170,6 +185,5 @@ private fun NotificationContent(
                 )
             }
         }
-
     }
 }

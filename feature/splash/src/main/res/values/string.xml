@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="check_server_title">현재 JOBIS 서버가 점검중이에요</string>
+    <string name="check_server">더욱 원활한 서비스 이용을 위해\n노력중이니 조금만 기다려주세요!</string>
+    <string name="ok">확인</string>
+    <string name="toast_check_internet_connection">인터넷 연결을 확인해주세요</string>
+</resources>

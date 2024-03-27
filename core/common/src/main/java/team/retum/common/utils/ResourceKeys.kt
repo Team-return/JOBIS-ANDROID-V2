@@ -15,4 +15,6 @@ object ResourceKeys {
     const val VALUE = "value"
     const val REVIEW_ID = "reviewId"
     const val COMPANY_NAME = "companyName"
+    const val IS_MOVED_RECRUITMENT_DETAILS = "isMovedRecruitmentDetails"
+    const val IS_MOVED_COMPANY_DETAILS = "isMovedCompanyDetails"
 }

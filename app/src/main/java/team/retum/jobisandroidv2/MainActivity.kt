@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import com.github.anrwatchdog.ANRWatchDog
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -13,12 +14,15 @@ import team.retum.jobisandroidv2.ui.JobisApp
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 
+private const val ANR_TIME = 10000
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var delay = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ANRWatchDog(ANR_TIME).start()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         checkAppUpdate()
         setContent {
@@ -26,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 setBackHandler()
             }
 
-            JobisDesignSystemV2Theme {
+            JobisDesignSystemV2Theme(darkTheme = false) {
                 JobisApp()
             }
         }

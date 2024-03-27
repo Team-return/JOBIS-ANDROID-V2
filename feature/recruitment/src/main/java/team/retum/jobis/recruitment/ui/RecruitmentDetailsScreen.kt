@@ -1,7 +1,7 @@
 package team.retum.jobis.recruitment.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ScrollState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,13 +40,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import team.retum.common.model.ReApplyData
+import team.retum.common.model.ApplicationData
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisButton
-import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -59,7 +60,9 @@ import team.retum.usecase.entity.RecruitmentDetailsEntity
 internal fun RecruitmentDetails(
     recruitmentId: Long,
     onBackPressed: () -> Unit,
-    onApplyClick: (ReApplyData) -> Unit,
+    onApplyClick: (ApplicationData) -> Unit,
+    navigateToCompanyDetails: (Long, Boolean) -> Unit,
+    isMovedCompanyDetails: Boolean,
     recruitmentDetailsViewModel: RecruitmentDetailsViewModel = hiltViewModel(),
 ) {
     val state by recruitmentDetailsViewModel.state.collectAsStateWithLifecycle()
@@ -76,6 +79,10 @@ internal fun RecruitmentDetails(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+
+                is RecruitmentDetailsSideEffect.MoveToCompanyDetails -> {
+                    navigateToCompanyDetails(it.companyId, true)
+                }
             }
         }
     }
@@ -86,18 +93,20 @@ internal fun RecruitmentDetails(
         onBookmarkClick = { recruitmentDetailsViewModel.bookmarkRecruitmentDetail(recruitmentId) },
         recruitmentDetail = state.recruitmentDetailsEntity,
         recruitmentId = recruitmentId,
-        scrollState = rememberScrollState(),
+        onMoveToCompanyDetailsClick = recruitmentDetailsViewModel::onMoveToCompanyDetailsClick,
+        isMovedCompanyDetails = isMovedCompanyDetails,
     )
 }
 
 @Composable
 private fun RecruitmentDetailsScreen(
     onBackPressed: () -> Unit,
-    onApplyClick: (ReApplyData) -> Unit,
+    onApplyClick: (ApplicationData) -> Unit,
     onBookmarkClick: () -> Unit,
     recruitmentDetail: RecruitmentDetailsEntity,
     recruitmentId: Long,
-    scrollState: ScrollState,
+    onMoveToCompanyDetailsClick: () -> Unit,
+    isMovedCompanyDetails: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -109,9 +118,13 @@ private fun RecruitmentDetailsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .verticalScroll(scrollState),
+                .verticalScroll(rememberScrollState()),
         ) {
-            CompanyInformation(recruitmentDetail = recruitmentDetail)
+            CompanyInformation(
+                recruitmentDetail = recruitmentDetail,
+                onMoveToCompanyDetailsClick = onMoveToCompanyDetailsClick,
+                isMovedCompanyDetails = isMovedCompanyDetails,
+            )
             Divider(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = JobisTheme.colors.inverseSurface,
@@ -122,10 +135,13 @@ private fun RecruitmentDetailsScreen(
         BottomBar(
             onApplyClick = {
                 onApplyClick(
-                    ReApplyData(
+                    ApplicationData(
+                        applicationId = 0,
                         recruitmentId = recruitmentId,
+                        rejectionReason = "",
                         companyLogoUrl = recruitmentDetail.companyProfileUrl.replace("/", " "),
                         companyName = recruitmentDetail.companyName,
+                        isReApply = false,
                     ),
                 )
             },
@@ -139,6 +155,8 @@ private fun RecruitmentDetailsScreen(
 @Composable
 private fun CompanyInformation(
     recruitmentDetail: RecruitmentDetailsEntity,
+    onMoveToCompanyDetailsClick: () -> Unit,
+    isMovedCompanyDetails: Boolean,
 ) {
     Row(
         modifier = Modifier.padding(
@@ -168,7 +186,8 @@ private fun CompanyInformation(
     }
     JobisButton(
         text = stringResource(id = R.string.show_company_detail_info),
-        onClick = { },
+        onClick = onMoveToCompanyDetailsClick,
+        enabled = !isMovedCompanyDetails,
     )
 }
 
@@ -180,7 +199,10 @@ private fun RecruitmentDetailInfo(
         recruitmentDetail.apply {
             Detail(
                 title = stringResource(id = R.string.recruitment_period),
-                content = "$startDate${if (startDate.isNotBlank()) " ~ " else ""}$endDate",
+                content = getRecruitmentPeriod(
+                    startDate = startDate,
+                    endDate = endDate,
+                ),
             )
             Detail(
                 title = stringResource(id = R.string.special_military_service_whether),
@@ -209,14 +231,6 @@ private fun RecruitmentDetailInfo(
             Detail(
                 title = stringResource(id = R.string.work_hours),
                 content = workingHours,
-            )
-            Detail(
-                title = stringResource(id = R.string.train_pay),
-                content = "$trainPay 만원/월",
-            )
-            Detail(
-                title = stringResource(id = R.string.convert_to_full_time_job),
-                content = "$pay 만원/년",
             )
             Detail(
                 title = stringResource(id = R.string.wage_and_benefits),
@@ -248,7 +262,7 @@ internal fun Detail(
         )
         JobisText(
             modifier = Modifier.padding(vertical = 4.dp),
-            text = if (content.isNullOrEmpty()) "-" else content,
+            text = if (content.isNullOrEmpty() || content == "null") "없음" else content,
             style = JobisTypography.Body,
         )
     }
@@ -266,14 +280,15 @@ private fun Position(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         if (areas.isNotEmpty()) {
-            areas.forEach {
-                PositionCard(
-                    job = exceptBracket(it.job.toString()).replace(",", "/")
-                        .replace(",", "/"),
-                    majorTask = it.majorTask,
-                    tech = exceptBracket(it.tech.toString()),
-                    preferentialTreatment = it.preferentialTreatment,
-                )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                areas.forEach {
+                    PositionCard(
+                        job = it.job.map { it.name },
+                        majorTask = it.majorTask,
+                        tech = it.tech.map { it.name },
+                        preferentialTreatment = it.preferentialTreatment,
+                    )
+                }
             }
         }
     }
@@ -281,57 +296,58 @@ private fun Position(
 
 @Composable
 private fun PositionCard(
-    job: String,
+    job: List<String>,
     majorTask: String,
-    tech: String,
+    tech: List<String>,
     preferentialTreatment: String?,
 ) {
     var showDetails by remember { mutableStateOf(false) }
+    val iconRotate by animateFloatAsState(
+        targetValue = if (showDetails) {
+            180f
+        } else {
+            0f
+        },
+        label = "",
+    )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(JobisTheme.colors.inverseSurface),
-    ) {
-        Row(
-            modifier = Modifier.padding(all = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
-        ) {
-            JobisText(
-                modifier = Modifier.weight(1f),
-                text = job,
-                style = JobisTypography.SubHeadLine,
-            )
-            JobisIconButton(
-                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
-                painter = painterResource(
-                    id = if (showDetails) {
-                        R.drawable.ic_arrow_up
-                    } else {
-                        R.drawable.ic_arrow_down
-                    },
+    JobisCard(onClick = { showDetails = !showDetails }) {
+        Column {
+            Row(
+                modifier = Modifier.padding(all = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 4.dp,
+                    alignment = Alignment.Start,
                 ),
-                onClick = { showDetails = !showDetails },
-                contentDescription = "detail",
-            )
-        }
-        AnimatedVisibility(visible = showDetails) {
-            Column {
-                PositionDetail(
-                    title = stringResource(id = R.string.major_task),
-                    content = majorTask,
+            ) {
+                JobisText(
+                    modifier = Modifier.weight(1f),
+                    text = exceptBracket(job.toString()),
+                    style = JobisTypography.SubHeadLine,
                 )
-                PositionDetail(
-                    title = stringResource(id = R.string.technology_used),
-                    content = tech,
+                Icon(
+                    modifier = Modifier.rotate(iconRotate),
+                    painter = painterResource(id = R.drawable.ic_arrow_down),
+                    tint = JobisTheme.colors.onSurfaceVariant,
+                    contentDescription = "detail",
                 )
-                PositionDetail(
-                    title = stringResource(id = R.string.preferential_treatment),
-                    content = preferentialTreatment,
-                )
+            }
+            AnimatedVisibility(visible = showDetails) {
+                Column {
+                    PositionDetail(
+                        title = stringResource(id = R.string.major_task),
+                        content = majorTask,
+                    )
+                    PositionDetail(
+                        title = stringResource(id = R.string.technology_used),
+                        content = exceptBracket(tech.toString()),
+                    )
+                    PositionDetail(
+                        title = stringResource(id = R.string.preferential_treatment),
+                        content = preferentialTreatment,
+                    )
+                }
             }
         }
     }
@@ -357,7 +373,7 @@ internal fun PositionDetail(
         )
         JobisText(
             modifier = Modifier.padding(top = 4.dp),
-            text = if (content.isNullOrEmpty()) "-" else content,
+            text = if (content.isNullOrEmpty()) "없음" else content,
             style = JobisTypography.Body,
         )
     }
@@ -402,11 +418,13 @@ private fun BottomBar(
             onClick = onApplyClick,
         ) {
             JobisText(
-                text = if (isApplicable) {
-                    stringResource(id = R.string.apply)
-                } else {
-                    stringResource(id = R.string.can_do_apply_third)
-                },
+                text = stringResource(
+                    id = if (isApplicable) {
+                        R.string.apply
+                    } else {
+                        R.string.can_do_apply_third
+                    },
+                ),
                 style = JobisTypography.SubHeadLine,
                 color = JobisTheme.colors.background,
             )
@@ -418,20 +436,32 @@ private fun BottomBar(
         }
         Icon(
             modifier = Modifier
+                .clickable(onClick = onBookmarkClick)
                 .background(
                     color = JobisTheme.colors.inverseSurface,
                     shape = RoundedCornerShape(12.dp),
                 )
                 .clip(RectangleShape)
-                .padding(16.dp)
-                .clickable(
-                    enabled = true,
-                    onClick = onBookmarkClick,
-                ),
+                .padding(16.dp),
             painter = painterResource(
-                if (isBookmark) JobisIcon.BookmarkOn else JobisIcon.BookmarkOff,
+                if (isBookmark) {
+                    JobisIcon.BookmarkOn
+                } else {
+                    JobisIcon.BookmarkOff
+                },
             ),
             contentDescription = "bookmark",
+            tint = JobisTheme.colors.onPrimary,
         )
     }
+}
+
+private fun getRecruitmentPeriod(
+    startDate: String?,
+    endDate: String?,
+): String {
+    if (startDate == null && endDate == null) {
+        return "상시 모집"
+    }
+    return "$startDate ~ $endDate"
 }

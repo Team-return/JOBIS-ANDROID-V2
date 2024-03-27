@@ -2,7 +2,6 @@ package team.retum.bookmark.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,36 +15,65 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import team.retum.bookmark.R
+import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
 import team.retum.common.utils.ResourceKeys.IMAGE_URL
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.BookmarksEntity
 
 @Composable
 internal fun Bookmarks(
-    bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
     onRecruitmentsClick: () -> Unit,
+    onRecruitmentDetailClick: (Long) -> Unit,
+    bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        with(bookmarkViewModel) {
+            clearBookmarks()
+            fetchBookmarks()
+            sideEffect.collect {
+                when (it) {
+                    is BookmarkSideEffect.BadRequest -> {
+                        JobisToast.create(
+                            context = context,
+                            message = context.getString(R.string.toast_fetch_bookmark_bad_request),
+                            drawable = JobisIcon.Error,
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
     BookmarkScreen(
-        bookmarks = bookmarkViewModel.bookmarks.value.bookmarks,
+        bookmarks = bookmarkViewModel.bookmarks,
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
+        onRecruitmentDetailClick = onRecruitmentDetailClick,
     )
 }
 
@@ -54,6 +82,7 @@ private fun BookmarkScreen(
     bookmarks: List<BookmarksEntity.BookmarkEntity>,
     onDeleteClick: (Long) -> Unit,
     onRecruitmentsClick: () -> Unit,
+    onRecruitmentDetailClick: (Long) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -79,6 +108,7 @@ private fun BookmarkScreen(
                         date = it.createdAt.substring(0..9),
                         recruitmentId = it.recruitmentId,
                         onDeleteClick = onDeleteClick,
+                        onRecruitmentDetailClick = onRecruitmentDetailClick,
                     )
                 }
             }
@@ -129,35 +159,42 @@ private fun BookmarkItem(
     recruitmentId: Long,
     date: String,
     onDeleteClick: (Long) -> Unit,
+    onRecruitmentDetailClick: (Long) -> Unit,
 ) {
-    Row(
-        modifier = modifier.padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        AsyncImage(
-            model = companyImageUrl,
-            modifier = Modifier
-                .size(56.dp)
-                .clip(CircleShape),
-            contentDescription = "company image",
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            JobisText(
-                text = companyName,
-                style = JobisTypography.SubHeadLine,
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = modifier
+                .weight(1f)
+                .padding(vertical = 16.dp)
+                .clickable(onClick = { onRecruitmentDetailClick(recruitmentId) }),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage(
+                model = companyImageUrl,
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape),
+                contentDescription = "company image",
             )
-            JobisText(
-                text = date,
-                style = JobisTypography.Description,
-                color = JobisTheme.colors.inverseOnSurface,
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                JobisText(
+                    text = companyName,
+                    style = JobisTypography.SubHeadLine,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                JobisText(
+                    text = date,
+                    style = JobisTypography.Description,
+                    color = JobisTheme.colors.inverseOnSurface,
+                )
+            }
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Image(
+        JobisIconButton(
             painter = painterResource(id = JobisIcon.Delete),
             contentDescription = "delete",
-            modifier = Modifier.clickable { onDeleteClick(recruitmentId) },
+            onClick = { onDeleteClick(recruitmentId) },
         )
     }
 }

@@ -43,7 +43,7 @@ internal fun Recruitments(
     }
 
     RecruitmentsScreen(
-        recruitments = recruitmentViewModel.recruitments,
+        recruitments = recruitmentViewModel.getRecruitments(),
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
