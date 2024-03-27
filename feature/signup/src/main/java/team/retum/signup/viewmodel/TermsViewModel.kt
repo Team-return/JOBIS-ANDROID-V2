@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.OfflineException
 import team.retum.signup.model.SignUpData
 import team.retum.usecase.usecase.student.PostSignUpUseCase
@@ -51,15 +52,22 @@ internal class TermsViewModel @Inject constructor(
                 ).onSuccess {
                     postSideEffect(TermsSideEffect.Success)
                 }.onFailure {
-                    when (it) {
-                        is OfflineException -> {
-                            postSideEffect(TermsSideEffect.CheckInternetConnection)
-                        }
+                    postSideEffect(
+                        sideEffect = when (it) {
+                            is OfflineException -> {
+                                TermsSideEffect.CheckInternetConnection
+                            }
 
-                        else -> {
-                            postSideEffect(TermsSideEffect.UnknownException)
-                        }
-                    }
+                            is ConnectionTimeOutException -> {
+                                TermsSideEffect.ServerTimeOut
+                            }
+
+                            else -> {
+                                TermsSideEffect.UnknownException
+                            }
+                        },
+                    )
+
                 }
             }
         }
@@ -80,4 +88,5 @@ internal sealed interface TermsSideEffect {
     data object Success : TermsSideEffect
     data object CheckInternetConnection : TermsSideEffect
     data object UnknownException : TermsSideEffect
+    data object ServerTimeOut : TermsSideEffect
 }
