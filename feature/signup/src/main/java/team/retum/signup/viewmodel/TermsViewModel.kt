@@ -67,7 +67,6 @@ internal class TermsViewModel @Inject constructor(
                             }
                         },
                     )
-
                 }
             }
         }
