@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.CheckServerException
+import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.OfflineException
 import team.retum.usecase.usecase.auth.ReissueTokenUseCase
@@ -74,6 +75,10 @@ internal class SplashViewModel @Inject constructor(
 
                     is OfflineException -> {
                         postSideEffect(SplashSideEffect.ShowOfflineToast)
+                    }
+
+                    is ConnectionTimeOutException -> {
+                        postSideEffect(SplashSideEffect.ShowCheckServerDialog)
                     }
                 }
             }

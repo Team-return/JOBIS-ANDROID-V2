@@ -63,5 +63,7 @@
 
     <string name="toast_check_internet_connection">인터넷 연결을 확인해주세요</string>
 
+    <string name="toast_connection_time_out">서버 에러가 발생했습니다</string>
+
     <string name="toast_unknown_exception">알 수 없는 오류가 발생했습니다. 개발자에게 문의해주세요</string>
 </resources>

@@ -19,4 +19,5 @@
     <string name="forgot_password">비밀번호를 잊으셨나요?</string>
 
     <string name="toast_check_internet_connection">인터넷 연결을 확인해주세요</string>
+    <string name="toast_connection_time_out">서버 에러가 발생했습니다</string>
 </resources>

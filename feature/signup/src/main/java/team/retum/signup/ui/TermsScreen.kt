@@ -62,6 +62,14 @@ internal fun Terms(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+
+                is TermsSideEffect.ServerTimeOut -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_connection_time_out),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
             }
         }
     }
