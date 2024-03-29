@@ -281,12 +281,12 @@ private fun Position(
         )
         if (areas.isNotEmpty()) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                areas.forEach {
+                areas.forEach { areas ->
                     PositionCard(
-                        job = it.job.map { it.name },
-                        majorTask = it.majorTask,
-                        tech = it.tech.map { it.name },
-                        preferentialTreatment = it.preferentialTreatment,
+                        job = areas.job.map { it.name },
+                        majorTask = areas.majorTask,
+                        tech = areas.tech.map { it.name },
+                        preferentialTreatment = areas.preferentialTreatment,
                     )
                 }
             }

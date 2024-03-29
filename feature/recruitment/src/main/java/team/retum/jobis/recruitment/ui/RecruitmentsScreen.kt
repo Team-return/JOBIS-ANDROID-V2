@@ -36,6 +36,7 @@ internal fun Recruitments(
         with(recruitmentViewModel) {
             setJobCode(RecruitmentFilterViewModel.jobCode)
             setTechCode(RecruitmentFilterViewModel.techCode)
+            recruitmentViewModel.setPage(1)
             recruitmentViewModel.clearRecruitment()
             recruitmentViewModel.fetchRecruitments()
             snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.callNextPageByPosition()
