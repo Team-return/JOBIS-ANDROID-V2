@@ -43,6 +43,7 @@ import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -451,6 +452,7 @@ private fun BottomBar(
                 if (isBookmark) JobisIcon.BookmarkOn else JobisIcon.BookmarkOff,
             ),
             contentDescription = "bookmark",
+            tint = JobisTheme.colors.onSurfaceVariant,
         )
     }
 }
