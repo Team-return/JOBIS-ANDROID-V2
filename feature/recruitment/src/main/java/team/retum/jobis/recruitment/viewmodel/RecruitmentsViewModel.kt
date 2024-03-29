@@ -45,6 +45,10 @@ internal class RecruitmentViewModel @Inject constructor(
         state.value.copy(techCode = techCode)
     }
 
+    internal fun setPage(page: Long) = setState {
+        state.value.copy(page = page)
+    }
+
     internal fun fetchRecruitments() {
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
