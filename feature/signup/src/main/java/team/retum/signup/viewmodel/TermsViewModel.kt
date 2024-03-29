@@ -5,6 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.exception.ConnectionTimeOutException
+import team.retum.common.exception.OfflineException
 import team.retum.signup.model.SignUpData
 import team.retum.usecase.usecase.student.PostSignUpUseCase
 import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
@@ -49,6 +51,22 @@ internal class TermsViewModel @Inject constructor(
                     deviceToken = deviceToken,
                 ).onSuccess {
                     postSideEffect(TermsSideEffect.Success)
+                }.onFailure {
+                    postSideEffect(
+                        sideEffect = when (it) {
+                            is OfflineException -> {
+                                TermsSideEffect.CheckInternetConnection
+                            }
+
+                            is ConnectionTimeOutException -> {
+                                TermsSideEffect.ServerTimeOut
+                            }
+
+                            else -> {
+                                TermsSideEffect.UnknownException
+                            }
+                        },
+                    )
                 }
             }
         }
@@ -67,4 +85,7 @@ internal data class TermsState(
 
 internal sealed interface TermsSideEffect {
     data object Success : TermsSideEffect
+    data object CheckInternetConnection : TermsSideEffect
+    data object UnknownException : TermsSideEffect
+    data object ServerTimeOut : TermsSideEffect
 }

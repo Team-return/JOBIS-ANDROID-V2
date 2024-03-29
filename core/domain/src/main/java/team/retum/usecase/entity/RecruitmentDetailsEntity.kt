@@ -21,8 +21,8 @@ data class RecruitmentDetailsEntity(
     val benefits: String?,
     val military: Boolean,
     val submitDocument: String,
-    val startDate: String,
-    val endDate: String,
+    val startDate: String?,
+    val endDate: String?,
     val etc: String?,
     val isApplicable: Boolean,
     val bookmarked: Boolean,
@@ -84,5 +84,5 @@ private fun Job.toEntity() = JobEntity(
 
 private fun Tech.toEntity() = TechEntity(
     id = this.id,
-    name = this.name
+    name = this.name,
 )

@@ -186,6 +186,7 @@ private fun HomeScreen(
                 rate = state.rate,
                 passCount = state.passCount,
                 totalStudentCount = state.totalStudentCount,
+                term = state.term,
             )
             StudentInformation(
                 modifier = Modifier.padding(
@@ -222,7 +223,8 @@ private fun HomeScreen(
 
 @Composable
 private fun EmploymentRate(
-    rate: Float,
+    term: Int,
+    rate: String,
     passCount: Long,
     totalStudentCount: Long,
 ) {
@@ -237,7 +239,7 @@ private fun EmploymentRate(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.padding(24.dp)) {
                 JobisText(
-                    text = stringResource(id = R.string.employment_rate, 6),
+                    text = stringResource(id = R.string.employment_rate, term),
                     style = JobisTypography.HeadLine,
                 )
                 JobisText(

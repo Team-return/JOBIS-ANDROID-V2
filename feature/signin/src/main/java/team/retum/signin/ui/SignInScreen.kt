@@ -68,6 +68,22 @@ internal fun SignIn(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+
+                is SignInSideEffect.CheckInternetConnection -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_check_internet_connection),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is SignInSideEffect.ServerTimeOut -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_connection_time_out),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
             }
         }
     }

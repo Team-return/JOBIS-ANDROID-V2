@@ -6,7 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
+import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.NotFoundException
+import team.retum.common.exception.OfflineException
 import team.retum.common.exception.UnAuthorizedException
 import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
 import team.retum.usecase.usecase.user.SignInUseCase
@@ -73,6 +75,14 @@ class SignInViewModel @Inject constructor(
                         postSideEffect(SignInSideEffect.BadRequest)
                     }
 
+                    is OfflineException -> {
+                        postSideEffect(SignInSideEffect.CheckInternetConnection)
+                    }
+
+                    is ConnectionTimeOutException -> {
+                        postSideEffect(SignInSideEffect.ServerTimeOut)
+                    }
+
                     else -> {
                         setState {
                             state.value.copy(
@@ -108,4 +118,6 @@ data class SignInState(
 sealed interface SignInSideEffect {
     data object BadRequest : SignInSideEffect
     data object Success : SignInSideEffect
+    data object CheckInternetConnection : SignInSideEffect
+    data object ServerTimeOut : SignInSideEffect
 }
