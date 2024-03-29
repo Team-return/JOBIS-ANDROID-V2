@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import team.retum.jobis.recruitment.R
@@ -31,7 +32,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.RecruitmentsEntity
-import java.text.DecimalFormat
 
 @Composable
 internal fun RecruitmentsContent(
@@ -77,10 +77,6 @@ private fun RecruitmentContent(
         StringBuilder().apply {
             append(context.getString(R.string.military))
             append(if (recruitment.militarySupport) " O " else " X ")
-            append(" · ")
-            append(context.getString(R.string.train_pay))
-            append(" ")
-            append(DecimalFormat().format(recruitment.trainPay) + "만원")
         }.toString()
     }
 
@@ -112,6 +108,8 @@ private fun RecruitmentContent(
                 JobisText(
                     text = recruitment.companyName,
                     style = JobisTypography.SubHeadLine,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 JobisText(
                     text = middleText,

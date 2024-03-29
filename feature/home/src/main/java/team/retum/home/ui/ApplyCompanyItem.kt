@@ -36,8 +36,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 
-private const val MAX_LENGTH_COMPANY_NAME = 10
-
 @Composable
 internal fun ApplyCompanyItem(
     onShowRejectionReasonClick: () -> Unit,
@@ -109,8 +107,9 @@ internal fun ApplyCompanyItem(
             Spacer(modifier = Modifier.width(8.dp))
             JobisText(
                 modifier = Modifier.weight(1f),
-                text = appliedCompany.company.toOverFlowText(MAX_LENGTH_COMPANY_NAME),
+                text = appliedCompany.company,
                 style = JobisTypography.Body,
+                maxLines = 1,
             )
             JobisText(
                 text = applicationStatus.value,
@@ -125,22 +124,12 @@ internal fun ApplyCompanyItem(
                             ApplyStatus.REJECTED -> R.string.reason_rejection
                             else -> R.string.re_apply
                         },
-                    ).plus("->"),
+                    ).plus(" ->"),
                     style = JobisTypography.SubBody,
                     color = color,
                     textDecoration = TextDecoration.Underline,
                 )
             }
-        }
-    }
-}
-
-private fun String.toOverFlowText(take: Int): String {
-    return this.take(take).run {
-        if (this@toOverFlowText.length > MAX_LENGTH_COMPANY_NAME) {
-            this@run.plus("...")
-        } else {
-            this
         }
     }
 }

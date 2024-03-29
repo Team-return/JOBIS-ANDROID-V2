@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,7 +28,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
-import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -118,7 +118,7 @@ private fun ReviewQuestionContent(
         label = "",
     )
 
-    JobisCard {
+    JobisCard(onClick = { onShowAnswerClick(!showAnswer) }) {
         Column(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
@@ -134,13 +134,11 @@ private fun ReviewQuestionContent(
                     question = question,
                     area = area,
                 )
-                JobisIconButton(
+                Icon(
                     modifier = Modifier.rotate(rotate),
                     painter = painterResource(id = R.drawable.ic_arrow_down),
                     contentDescription = "down",
-                    onClick = { onShowAnswerClick(!showAnswer) },
                     tint = JobisTheme.colors.onSurfaceVariant,
-                    defaultBackgroundColor = JobisTheme.colors.inverseSurface,
                 )
             }
             AnimatedVisibility(visible = showAnswer) {

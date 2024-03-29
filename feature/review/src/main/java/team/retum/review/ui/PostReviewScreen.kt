@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
@@ -50,7 +51,6 @@ import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
-import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -80,8 +80,6 @@ internal fun PostReview(
     val sheetScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var reviewProcess: ReviewProcess by remember { mutableStateOf(ReviewProcess.QUESTION) }
-
     LaunchedEffect(Unit) {
         reviewViewModel.sideEffect.collect {
             if (it is ReviewSideEffect.Success) {
@@ -104,7 +102,7 @@ internal fun PostReview(
         sheetState = sheetState,
         addQuestion = {
             reviewViewModel.addReview()
-            reviewViewModel.keywords.add(state.keyword ?: "")
+            reviewViewModel.keywords.add(state.keyword)
         },
         state = state,
         setQuestion = reviewViewModel::setQuestion,
@@ -353,6 +351,7 @@ private fun ReviewContent(
             )
             .clip(RoundedCornerShape(12.dp))
             .background(JobisTheme.colors.surfaceVariant),
+        onClick = { showQuestionDetail = !showQuestionDetail },
     ) {
         Row(
             modifier = Modifier
@@ -408,12 +407,10 @@ private fun ReviewContent(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            JobisIconButton(
+            Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_down),
                 contentDescription = "arrow_down",
-                onClick = { showQuestionDetail = !showQuestionDetail },
                 modifier = Modifier.align(Alignment.CenterVertically),
-                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
             )
         }
     }

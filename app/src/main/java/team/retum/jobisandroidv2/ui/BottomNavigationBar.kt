@@ -52,8 +52,11 @@ fun BottomNavigationBar(navController: NavController) {
                 NavigationBarItem(
                     selected = selected,
                     onClick = {
-                        navController.navigate(it.route) {
-                            launchSingleTop = true
+                        if (!selected) {
+                            navController.navigate(it.route) {
+                                popUpTo(0)
+                                launchSingleTop = true
+                            }
                         }
                     },
                     icon = {

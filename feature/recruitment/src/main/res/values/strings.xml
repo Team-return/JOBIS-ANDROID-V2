@@ -24,7 +24,7 @@
     <string name="submission_document">제출 서류</string>
     <string name="etc">기타 사항</string>
     <string name="apply">지원하기</string>
-    <string name="can_do_apply_third">3학년만 지원 수 있어요</string>
+    <string name="can_do_apply_third">3학년만 지원할 수 있어요</string>
     <string name="major_task">주요 업무</string>
 
     <string name="occurred_error">오류가 발생했습니다</string>
