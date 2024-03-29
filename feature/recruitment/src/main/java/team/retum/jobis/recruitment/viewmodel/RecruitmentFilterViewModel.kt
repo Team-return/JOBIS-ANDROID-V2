@@ -17,10 +17,7 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
 ) : BaseViewModel<RecruitmentFilterState, RecruitmentFilterSideEffect>(RecruitmentFilterState.getDefaultState()) {
 
-    companion object {
-        var jobCode: Long? = null
-        var techCode: String? = null
-    }
+    private val stateManager = RecruitmentStateManager
 
     init {
         fetchCodes()
@@ -102,4 +99,9 @@ internal data class RecruitmentFilterState(
 
 internal sealed interface RecruitmentFilterSideEffect {
     data object BadRequest : RecruitmentFilterSideEffect
+}
+
+object RecruitmentStateManager {
+    var jobCode: Long? = null
+    var techCode: String? = null
 }

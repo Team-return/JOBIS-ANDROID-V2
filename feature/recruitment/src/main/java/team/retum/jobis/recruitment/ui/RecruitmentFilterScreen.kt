@@ -30,8 +30,8 @@ import team.retum.common.enums.CodeType
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
-import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.jobCode
-import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.techCode
+import team.retum.jobis.recruitment.viewmodel.RecruitmentStateManager.jobCode
+import team.retum.jobis.recruitment.viewmodel.RecruitmentStateManager.techCode
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -68,6 +68,7 @@ internal fun RecruitmentFilter(
         techs = recruitmentFilterViewModel.techs,
         onCheckSkill = recruitmentFilterViewModel::addSkill,
         checkedSkills = recruitmentFilterViewModel.checkedSkills,
+        recruitmentFilterViewModel = recruitmentFilterViewModel,
     )
 }
 
@@ -81,6 +82,7 @@ private fun RecruitmentFilterScreen(
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
     onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
     checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
+    recruitmentFilterViewModel: RecruitmentFilterViewModel,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(

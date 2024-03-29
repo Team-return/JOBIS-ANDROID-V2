@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentsContent
-import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
+import team.retum.jobis.recruitment.viewmodel.RecruitmentStateManager
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -34,8 +34,8 @@ internal fun Recruitments(
 
     LaunchedEffect(Unit) {
         with(recruitmentViewModel) {
-            setJobCode(RecruitmentFilterViewModel.jobCode)
-            setTechCode(RecruitmentFilterViewModel.techCode)
+            setJobCode(RecruitmentStateManager.jobCode)
+            setTechCode(RecruitmentStateManager.techCode)
             recruitmentViewModel.clearRecruitment()
             recruitmentViewModel.fetchRecruitments()
             snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.callNextPageByPosition()
