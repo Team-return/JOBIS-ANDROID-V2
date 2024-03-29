@@ -65,16 +65,16 @@ internal object ButtonColors {
 
         @Composable
         fun default() = ButtonColorSet(
-            background = JobisColor.Light.gray300,
-            pressed = JobisColor.Light.gray300,
-            text = JobisColor.Dark.green100,
+            background = JobisColor.Dark.gray300,
+            pressed = JobisColor.Dark.gray400,
+            text = JobisColor.Dark.gray900,
         )
 
         @Composable
         fun error() = ButtonColorSet(
-            background = JobisColor.Light.red200,
-            pressed = JobisColor.Light.red200,
-            text = JobisColor.Light.gray100,
+            background = JobisColor.Dark.red200,
+            pressed = JobisColor.Dark.red200,
+            text = JobisColor.Dark.gray100,
         )
     }
 }
