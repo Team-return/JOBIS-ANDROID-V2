@@ -219,6 +219,7 @@ private fun FieldBottomSheet(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(JobisTheme.colors.background)
             .padding(top = 12.dp),
     ) {
         JobisText(
