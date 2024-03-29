@@ -112,7 +112,7 @@ private fun ColoredButton(
 
     val background by animateColorAsState(
         targetValue = if (!enabled) {
-            JobisColor.Light.gray500
+            JobisTheme.colors.surfaceTint
         } else if (pressed()) {
             themeColor.pressed
         } else {
@@ -294,6 +294,7 @@ private fun MediumButton(
         ) {
             Icon(
                 painter = painter,
+                tint = contentColor,
                 contentDescription = "drawable",
             )
             JobisText(
