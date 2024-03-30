@@ -53,7 +53,7 @@ internal object ButtonColors {
         fun primary() = ButtonColorSet(
             background = JobisColor.Dark.primary200,
             pressed = JobisColor.Dark.primary200,
-            text = JobisColor.Dark.gray100,
+            text = JobisColor.Light.gray100,
         )
 
         @Composable
@@ -74,7 +74,7 @@ internal object ButtonColors {
         fun error() = ButtonColorSet(
             background = JobisColor.Dark.red200,
             pressed = JobisColor.Dark.red200,
-            text = JobisColor.Dark.gray100,
+            text = JobisColor.Light.gray100,
         )
     }
 }
