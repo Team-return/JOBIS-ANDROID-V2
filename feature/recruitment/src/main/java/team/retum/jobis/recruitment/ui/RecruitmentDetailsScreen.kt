@@ -453,7 +453,7 @@ private fun BottomBar(
                 },
             ),
             contentDescription = "bookmark",
-            tint = JobisTheme.colors.onSurfaceVariant,
+            tint = JobisTheme.colors.onPrimary,
         )
     }
 }
