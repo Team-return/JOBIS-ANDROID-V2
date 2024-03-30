@@ -27,7 +27,7 @@
         android:fontFamily="@font/pretendard_semi_bold"
         android:lineHeight="24dp"
         android:text=""
-        android:textColor="#FF000000"
+        android:textColor="@color/gray90"
         android:textSize="16sp" />
 
 </LinearLayout>

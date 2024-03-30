@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,7 +55,13 @@ internal fun Landing(
     onSignUpClick: () -> Unit,
 ) {
     val context = LocalContext.current
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
+    val composition by rememberLottieComposition(
+        if (isSystemInDarkTheme()) {
+            LottieCompositionSpec.RawRes(R.raw.splash_black)
+        } else {
+            LottieCompositionSpec.RawRes(R.raw.splash_white)
+        },
+    )
     var showButton by remember { mutableStateOf(false) }
     val settingLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}

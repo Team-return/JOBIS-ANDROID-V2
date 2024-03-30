@@ -2,6 +2,7 @@ package team.retum.jobis.splash.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -83,12 +84,24 @@ private fun SplashScreen() {
     ) {
         Image(
             modifier = Modifier.align(Alignment.Center),
-            painter = painterResource(id = R.drawable.ic_jobis),
+            painter = painterResource(
+                id = if (isSystemInDarkTheme()) {
+                    R.drawable.ic_black_jobis
+                } else {
+                    R.drawable.ic_white_jobis
+                },
+            ),
             contentDescription = "jobis",
         )
         Image(
             modifier = Modifier.align(Alignment.BottomCenter),
-            painter = painterResource(id = R.drawable.ic_team_return),
+            painter = painterResource(
+                id = if (isSystemInDarkTheme()) {
+                    R.drawable.ic_black_team_return
+                } else {
+                    R.drawable.ic_white_team_return
+                },
+            ),
             contentDescription = "team return",
         )
     }

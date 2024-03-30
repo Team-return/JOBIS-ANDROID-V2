@@ -1,5 +1,7 @@
 package team.retum.jobisandroidv2.ui
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
@@ -20,6 +22,12 @@ internal fun JobisApp() {
             .statusBarsPadding(),
         navController = navController,
         startDestination = NAVIGATION_AUTH,
+        enterTransition = {
+            EnterTransition.None
+        },
+        exitTransition = {
+            ExitTransition.None
+        },
     ) {
         authNavigation(navController = navController)
         mainNavigation(navController = navController)

@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -426,12 +427,13 @@ private fun BottomBar(
                     },
                 ),
                 style = JobisTypography.SubHeadLine,
-                color = JobisTheme.colors.background,
+                color = Color.White,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Icon(
                 painter = painterResource(id = JobisIcon.LongArrow),
                 contentDescription = "long arrow",
+                tint = Color.White,
             )
         }
         Icon(

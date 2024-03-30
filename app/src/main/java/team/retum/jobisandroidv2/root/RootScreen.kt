@@ -1,8 +1,12 @@
 package team.retum.jobisandroidv2.root
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -145,6 +149,12 @@ private fun RootScreen(
                 navController = navController,
                 startDestination = NAVIGATION_HOME,
                 modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
+                enterTransition = {
+                    EnterTransition.None
+                },
+                exitTransition = {
+                    ExitTransition.None
+                },
             ) {
                 home(
                     applicationId = applicationId,
@@ -183,12 +193,15 @@ private fun RejectionBottomSheet(
     onReApplyClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(
-            start = 24.dp,
-            end = 24.dp,
-            top = 24.dp,
-            bottom = 16.dp,
-        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(JobisTheme.colors.inverseSurface)
+            .padding(
+                start = 24.dp,
+                end = 24.dp,
+                top = 24.dp,
+                bottom = 16.dp,
+            ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         JobisText(
@@ -202,6 +215,7 @@ private fun RejectionBottomSheet(
         )
     }
     JobisButton(
+        modifier = Modifier.background(JobisTheme.colors.inverseSurface),
         text = stringResource(id = R.string.re_apply),
         onClick = onReApplyClick,
         color = ButtonColor.Primary,
