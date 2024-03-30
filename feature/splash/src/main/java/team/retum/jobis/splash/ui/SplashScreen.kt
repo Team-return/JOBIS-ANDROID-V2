@@ -85,16 +85,22 @@ private fun SplashScreen() {
         Image(
             modifier = Modifier.align(Alignment.Center),
             painter = painterResource(
-                id = if (isSystemInDarkTheme()) R.drawable.ic_black_jobis
-                else R.drawable.ic_white_jobis,
+                id = if (isSystemInDarkTheme()) {
+                    R.drawable.ic_black_jobis
+                } else {
+                    R.drawable.ic_white_jobis
+                },
             ),
             contentDescription = "jobis",
         )
         Image(
             modifier = Modifier.align(Alignment.BottomCenter),
             painter = painterResource(
-                id = if (isSystemInDarkTheme()) R.drawable.ic_black_team_return
-                else R.drawable.ic_white_team_return,
+                id = if (isSystemInDarkTheme()) {
+                    R.drawable.ic_black_team_return
+                } else {
+                    R.drawable.ic_white_team_return
+                },
             ),
             contentDescription = "team return",
         )
