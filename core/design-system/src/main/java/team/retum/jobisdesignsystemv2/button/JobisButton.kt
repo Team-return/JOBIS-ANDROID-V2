@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import team.retum.design_system.R
+import team.retum.jobisdesignsystemv2.foundation.JobisColor
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -122,7 +123,7 @@ private fun ColoredButton(
 
     val contentColor by animateColorAsState(
         targetValue = if (!enabled) {
-            JobisTheme.colors.background
+            JobisColor.Light.gray100
         } else {
             themeColor.text
         },
