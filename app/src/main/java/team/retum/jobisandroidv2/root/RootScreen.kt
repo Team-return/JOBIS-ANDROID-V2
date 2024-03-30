@@ -1,6 +1,8 @@
 package team.retum.jobisandroidv2.root
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -147,6 +149,12 @@ private fun RootScreen(
                 navController = navController,
                 startDestination = NAVIGATION_HOME,
                 modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
+                enterTransition = {
+                    EnterTransition.None
+                },
+                exitTransition = {
+                    ExitTransition.None
+                },
             ) {
                 home(
                     applicationId = applicationId,
