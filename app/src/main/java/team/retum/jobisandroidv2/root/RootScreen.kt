@@ -1,8 +1,6 @@
 package team.retum.jobisandroidv2.root
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -142,19 +140,13 @@ private fun RootScreen(
             topEnd = 24.dp,
         ),
     ) {
-        Scaffold(
-            bottomBar = { BottomNavigationBar(navController = navController) },
-        ) {
+        Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
             NavHost(
                 navController = navController,
                 startDestination = NAVIGATION_HOME,
-                modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
-                enterTransition = {
-                    EnterTransition.None
-                },
-                exitTransition = {
-                    ExitTransition.None
-                },
+                modifier = Modifier
+                    .background(JobisTheme.colors.background)
+                    .padding(bottom = it.calculateBottomPadding()),
             ) {
                 home(
                     applicationId = applicationId,
