@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -281,12 +282,12 @@ private fun Position(
         )
         if (areas.isNotEmpty()) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                areas.forEach {
+                areas.forEach { areas ->
                     PositionCard(
-                        job = it.job.map { it.name },
-                        majorTask = it.majorTask,
-                        tech = it.tech.map { it.name },
-                        preferentialTreatment = it.preferentialTreatment,
+                        job = areas.job.map { it.name },
+                        majorTask = areas.majorTask,
+                        tech = areas.tech.map { it.name },
+                        preferentialTreatment = areas.preferentialTreatment,
                     )
                 }
             }
@@ -426,12 +427,13 @@ private fun BottomBar(
                     },
                 ),
                 style = JobisTypography.SubHeadLine,
-                color = JobisTheme.colors.background,
+                color = Color.White,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Icon(
                 painter = painterResource(id = JobisIcon.LongArrow),
                 contentDescription = "long arrow",
+                tint = Color.White,
             )
         }
         Icon(
