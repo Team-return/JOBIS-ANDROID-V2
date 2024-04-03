@@ -11,6 +11,10 @@ class TokenInterceptor @Inject constructor(
     private val localUserDataSource: LocalUserDataSource,
 ) : Interceptor {
 
+    private val accessToken by lazy {
+        localUserDataSource.getAccessToken()
+    }
+
     private val ignorePaths by lazy {
         listOf(
             RequestUrls.Users.login,
@@ -28,8 +32,6 @@ class TokenInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val path = request.url.encodedPath
-
-        val accessToken = localUserDataSource.getAccessToken()
 
         return chain.proceed(
             if (ignorePaths.contains(path) || checkS3Request(url = request.url.toString())) {
