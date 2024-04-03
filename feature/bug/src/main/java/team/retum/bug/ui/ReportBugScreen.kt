@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -89,6 +90,7 @@ internal fun ReportBug(
     val screenshots = reportBugViewModel.getUris()
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
@@ -138,6 +140,7 @@ internal fun ReportBug(
         scrollState = scrollState,
         sheetState = sheetState,
         coroutineScope = coroutineScope,
+        clearFocus = focusManager::clearFocus,
     )
 }
 
@@ -156,6 +159,7 @@ private fun ReportBugScreen(
     scrollState: ScrollState,
     sheetState: ModalBottomSheetState,
     coroutineScope: CoroutineScope,
+    clearFocus: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetContent = {
@@ -185,6 +189,7 @@ private fun ReportBugScreen(
                 FieldDropDown(
                     selectedField = state.developmentArea,
                     onClick = {
+                        clearFocus()
                         coroutineScope.launch {
                             sheetState.show()
                         }
