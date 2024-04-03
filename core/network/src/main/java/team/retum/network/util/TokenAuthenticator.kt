@@ -6,6 +6,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import team.retum.common.enums.PlatformType
 import team.retum.common.utils.ResourceKeys
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
@@ -28,7 +29,8 @@ class TokenAuthenticator @Inject constructor(
     private var hasException: Boolean = false
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        val retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).build()
+        val retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create()).build()
         val authApi = retrofit.create(AuthApi::class.java)
 
         runBlocking {
