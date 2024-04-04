@@ -81,7 +81,6 @@ private fun SearchCompaniesScreen(
     ) {
         JobisSmallTopAppBar(onBackPressed = onBackPressed)
         JobisTextField(
-            title = "",
             value = { state.name ?: "" },
             hint = stringResource(id = R.string.search_hint),
             onValueChange = onNameChange,
