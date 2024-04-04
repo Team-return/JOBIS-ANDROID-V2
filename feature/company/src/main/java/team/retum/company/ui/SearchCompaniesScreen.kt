@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.company.component.CompanyItem
-import team.retum.company.viewmodel.SearchCompaniesState
-import team.retum.company.viewmodel.SearchCompaniesViewModel
+import team.retum.company.viewmodel.CompaniesState
+import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -36,7 +36,7 @@ import team.retum.usecase.entity.CompaniesEntity
 internal fun SearchCompanies(
     onBackPressed: () -> Unit,
     onCompanyContentClick: (Long) -> Unit,
-    searchCompaniesViewModel: SearchCompaniesViewModel = hiltViewModel(),
+    searchCompaniesViewModel: CompaniesViewModel = hiltViewModel(),
 ) {
     val state by searchCompaniesViewModel.state.collectAsStateWithLifecycle()
 
@@ -57,7 +57,7 @@ private fun SearchCompaniesScreen(
     onNameChange: (String) -> Unit,
     companies: List<CompaniesEntity.CompanyEntity>,
     onCompanyContentClick: (Long) -> Unit,
-    state: SearchCompaniesState,
+    state: CompaniesState,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
 ) {
@@ -94,7 +94,7 @@ private fun SearchCompaniesScreen(
                 }
             }
         }
-        if(state.showCompaniesEmptyContent) {
+        if (state.showCompaniesEmptyContent) {
             EmptySearchContent()
         }
     }

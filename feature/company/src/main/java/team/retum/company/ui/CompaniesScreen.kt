@@ -36,14 +36,18 @@ internal fun Companies(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        companiesViewModel.sideEffect.collect {
-            when (it) {
-                is CompaniesSideEffect.FetchCompaniesError -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_fetch_companies_error),
-                        drawable = JobisIcon.Error,
-                    ).show()
+        with(companiesViewModel) {
+            fetchCompanies()
+            fetchTotalCompanyPageCount()
+            sideEffect.collect {
+                when (it) {
+                    is CompaniesSideEffect.FetchCompaniesError -> {
+                        JobisToast.create(
+                            context = context,
+                            message = context.getString(R.string.toast_fetch_companies_error),
+                            drawable = JobisIcon.Error,
+                        ).show()
+                    }
                 }
             }
         }
