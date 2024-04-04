@@ -2,9 +2,7 @@ package team.retum.company.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,9 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
-import team.retum.common.utils.ResourceKeys.IMAGE_URL
+import team.retum.company.component.CompanyItem
 import team.retum.company.viewmodel.CompanyState
 import team.retum.company.viewmodel.CompanyViewModel
 import team.retum.jobis.company.R
@@ -35,7 +32,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
-import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CompaniesEntity
 
 const val SEARCH_DELAY: Long = 200
@@ -47,6 +43,7 @@ internal fun SearchCompanies(
     companyViewModel: CompanyViewModel = hiltViewModel(),
 ) {
     val state by companyViewModel.state.collectAsStateWithLifecycle()
+
     LaunchedEffect(state.name) {
         delay(SEARCH_DELAY)
         if (state.checkCompany && state.name?.isNotBlank() ?: "".isNotBlank()) {
@@ -97,12 +94,13 @@ private fun SearchCompaniesScreen(
                     .background(JobisTheme.colors.background),
             ) {
                 items(companies) {
-                    SearchCompanyItem(
+                    CompanyItem(
                         onCompanyContentClick = onCompanyContentClick,
-                        companyImageUrl = IMAGE_URL + it.logoUrl,
+                        companyImageUrl = it.logoUrl,
                         companyName = it.name,
                         id = it.id,
                         hasRecruitment = it.hasRecruitment,
+                        take = it.take,
                     )
                     if (it == companies.last() && state.page.toLong() != state.totalPage) {
                         checkCompanies(true)
@@ -112,46 +110,6 @@ private fun SearchCompaniesScreen(
         } else {
             checkCompanies(true)
             EmptySearchContent()
-        }
-    }
-}
-
-@Composable
-private fun SearchCompanyItem(
-    onCompanyContentClick: (Long) -> Unit,
-    modifier: Modifier = Modifier,
-    companyImageUrl: String,
-    companyName: String,
-    id: Long,
-    hasRecruitment: Boolean,
-) {
-    val hasRecruitmentText =
-        stringResource(id = if (hasRecruitment) R.string.has_recruitment else R.string.has_not_recruitment)
-    val hasRecruitmentColor =
-        if (hasRecruitment) JobisTheme.colors.primaryContainer else JobisTheme.colors.onSurface
-    Row(
-        modifier = modifier
-            .padding(vertical = 16.dp)
-            .clickable(onClick = { onCompanyContentClick(id) }),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        AsyncImage(
-            model = companyImageUrl,
-            modifier = Modifier.size(48.dp),
-            contentDescription = "company image",
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            JobisText(
-                text = companyName,
-                style = JobisTypography.SubHeadLine,
-                color = JobisTheme.colors.inverseOnSurface,
-            )
-            JobisText(
-                text = hasRecruitmentText,
-                style = JobisTypography.SubBody,
-                color = hasRecruitmentColor,
-            )
         }
     }
 }
