@@ -10,9 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,10 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.delay
 import team.retum.company.component.CompanyItem
-import team.retum.company.viewmodel.CompanyState
-import team.retum.company.viewmodel.CompanyViewModel
+import team.retum.company.viewmodel.SearchCompaniesState
+import team.retum.company.viewmodel.SearchCompaniesViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -34,33 +32,22 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.usecase.entity.CompaniesEntity
 
-const val SEARCH_DELAY: Long = 200
-
 @Composable
 internal fun SearchCompanies(
     onBackPressed: () -> Unit,
     onCompanyContentClick: (Long) -> Unit,
-    companyViewModel: CompanyViewModel = hiltViewModel(),
+    searchCompaniesViewModel: SearchCompaniesViewModel = hiltViewModel(),
 ) {
-    val state by companyViewModel.state.collectAsStateWithLifecycle()
+    val state by searchCompaniesViewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.name) {
-        delay(SEARCH_DELAY)
-        if (state.checkCompany && state.name?.isNotBlank() ?: "".isNotBlank()) {
-            companyViewModel.fetchTotalCompanyCount(name = state.name)
-            companyViewModel.fetchCompanies(
-                page = state.page,
-                name = state.name,
-            )
-        }
-    }
     SearchCompaniesScreen(
         onBackPressed = onBackPressed,
-        onNameChange = companyViewModel::setName,
-        companies = companyViewModel.companies.value.companies,
-        checkCompanies = companyViewModel::setCheckCompany,
+        onNameChange = searchCompaniesViewModel::setName,
+        companies = searchCompaniesViewModel.companies,
         onCompanyContentClick = onCompanyContentClick,
         state = state,
+        whetherFetchNextPage = searchCompaniesViewModel::whetherFetchNextPage,
+        fetchNextPage = searchCompaniesViewModel::fetchCompanies,
     )
 }
 
@@ -69,11 +56,11 @@ private fun SearchCompaniesScreen(
     onBackPressed: () -> Unit,
     onNameChange: (String) -> Unit,
     companies: List<CompaniesEntity.CompanyEntity>,
-    checkCompanies: (Boolean) -> Unit,
     onCompanyContentClick: (Long) -> Unit,
-    state: CompanyState,
+    state: SearchCompaniesState,
+    whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
-    checkCompanies(false)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,29 +72,29 @@ private fun SearchCompaniesScreen(
             hint = stringResource(id = R.string.search_hint),
             onValueChange = onNameChange,
         )
-        if (companies.isNotEmpty() || state.name.isNullOrEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .background(JobisTheme.colors.background),
-            ) {
-                items(companies) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .background(JobisTheme.colors.background),
+        ) {
+            if (companies.isNotEmpty()) {
+                itemsIndexed(companies) { index, item ->
                     CompanyItem(
                         onCompanyContentClick = onCompanyContentClick,
-                        companyImageUrl = it.logoUrl,
-                        companyName = it.name,
-                        id = it.id,
-                        hasRecruitment = it.hasRecruitment,
-                        take = it.take,
+                        companyImageUrl = item.logoUrl,
+                        companyName = item.name,
+                        id = item.id,
+                        hasRecruitment = item.hasRecruitment,
+                        take = item.take,
                     )
-                    if (it == companies.last() && state.page.toLong() != state.totalPage) {
-                        checkCompanies(true)
+                    if (whetherFetchNextPage(index)) {
+                        fetchNextPage()
                     }
                 }
             }
-        } else {
-            checkCompanies(true)
+        }
+        if(state.showCompaniesEmptyContent) {
             EmptySearchContent()
         }
     }
