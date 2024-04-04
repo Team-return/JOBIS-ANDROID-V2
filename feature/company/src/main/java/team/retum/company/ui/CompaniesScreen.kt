@@ -6,20 +6,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.company.component.CompanyItem
-import team.retum.company.viewmodel.CompanySideEffect
-import team.retum.company.viewmodel.CompanyViewModel
+import team.retum.company.viewmodel.CompaniesSideEffect
+import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -33,31 +31,21 @@ internal fun Companies(
     onBackPressed: () -> Unit,
     onSearchClick: () -> Unit,
     onCompanyContentClick: (Long) -> Unit,
-    companyViewModel: CompanyViewModel = hiltViewModel(),
+    companiesViewModel: CompaniesViewModel = hiltViewModel(),
 ) {
-    val state by companyViewModel.state.collectAsStateWithLifecycle()
-
     val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        companyViewModel.fetchTotalCompanyCount(name = state.name)
-        companyViewModel.sideEffect.collect {
+        companiesViewModel.sideEffect.collect {
             when (it) {
-                CompanySideEffect.ServerDown -> {
+                is CompaniesSideEffect.FetchCompaniesError -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.error),
+                        message = context.getString(R.string.toast_fetch_companies_error),
+                        drawable = JobisIcon.Error,
                     ).show()
                 }
             }
-        }
-    }
-
-    LaunchedEffect(state.checkCompany) {
-        if (state.checkCompany) {
-            companyViewModel.fetchCompanies(
-                page = state.page,
-                name = state.name,
-            )
         }
     }
 
@@ -65,10 +53,9 @@ internal fun Companies(
         onBackPressed = onBackPressed,
         onSearchClick = onSearchClick,
         onCompanyContentClick = onCompanyContentClick,
-        companies = companyViewModel.companies.value.companies,
-        checkCompanies = companyViewModel::setCheckCompany,
-        pageCount = state.page,
-        totalPageCount = state.totalPage,
+        companies = companiesViewModel.companies,
+        whetherFetchNextPage = companiesViewModel::whetherFetchNextPage,
+        fetchNextPage = companiesViewModel::fetchCompanies,
     )
 }
 
@@ -78,9 +65,8 @@ private fun CompaniesScreen(
     onSearchClick: () -> Unit,
     onCompanyContentClick: (Long) -> Unit,
     companies: List<CompaniesEntity.CompanyEntity>,
-    checkCompanies: (Boolean) -> Unit,
-    pageCount: Int,
-    totalPageCount: Long,
+    whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -97,30 +83,25 @@ private fun CompaniesScreen(
                 onClick = onSearchClick,
             )
         }
-        if (companies.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .background(JobisTheme.colors.background),
-            ) {
-                items(companies) {
-                    CompanyItem(
-                        onCompanyContentClick = onCompanyContentClick,
-                        companyImageUrl = it.logoUrl,
-                        companyName = it.name,
-                        id = it.id,
-                        take = it.take,
-                        hasRecruitment = it.hasRecruitment,
-                    )
-                    if (it == companies.last() && pageCount.toLong() != totalPageCount) {
-                        checkCompanies(true)
-                    }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .background(JobisTheme.colors.background),
+        ) {
+            itemsIndexed(companies) { index, item ->
+                CompanyItem(
+                    onCompanyContentClick = onCompanyContentClick,
+                    companyImageUrl = item.logoUrl,
+                    companyName = item.name,
+                    id = item.id,
+                    take = item.take,
+                    hasRecruitment = item.hasRecruitment,
+                )
+                if (whetherFetchNextPage(index)) {
+                    fetchNextPage()
                 }
             }
-        } else {
-            checkCompanies(true)
         }
-        checkCompanies(false)
     }
 }
