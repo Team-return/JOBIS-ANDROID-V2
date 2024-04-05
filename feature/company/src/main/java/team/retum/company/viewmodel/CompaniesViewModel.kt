@@ -1,0 +1,111 @@
+package team.retum.company.viewmodel
+
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import team.retum.common.base.BaseViewModel
+import team.retum.usecase.entity.CompaniesEntity
+import team.retum.usecase.usecase.company.FetchCompaniesUseCase
+import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
+import javax.inject.Inject
+
+private const val SEARCH_DEBOUNCE_MILLIS = 1000L
+
+@HiltViewModel
+internal class CompaniesViewModel @Inject constructor(
+    private val fetchCompaniesUseCase: FetchCompaniesUseCase,
+    private val fetchCompanyCountUseCase: FetchCompanyCountUseCase,
+) : BaseViewModel<CompaniesState, CompaniesSideEffect>(CompaniesState.getDefaultState()) {
+
+    private val _companies: SnapshotStateList<CompaniesEntity.CompanyEntity> = mutableStateListOf()
+    internal val companies: List<CompaniesEntity.CompanyEntity> = _companies
+
+    init {
+        debounceName()
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun debounceName() {
+        viewModelScope.launch {
+            state.map { it.name }.distinctUntilChanged().debounce(SEARCH_DEBOUNCE_MILLIS).collect {
+                setState { state.value.copy(showCompaniesEmptyContent = it?.isNotEmpty() ?: false) }
+                if (!it.isNullOrBlank()) {
+                    fetchTotalCompanyPageCount()
+                    fetchCompanies()
+                }
+            }
+        }
+    }
+
+    internal fun setName(name: String) {
+        val initialState = CompaniesState.getDefaultState()
+        _companies.clear()
+        setState {
+            state.value.copy(
+                name = name,
+                page = initialState.page,
+                totalPage = initialState.totalPage,
+            )
+        }
+    }
+
+    internal fun fetchCompanies() {
+        viewModelScope.launch(Dispatchers.IO) {
+            with(state.value) {
+                fetchCompaniesUseCase(
+                    page = page,
+                    name = name,
+                ).onSuccess {
+                    setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
+                    addPage()
+                    _companies.addAll(it.companies)
+                }.onFailure {
+                    postSideEffect(CompaniesSideEffect.FetchCompaniesError)
+                }
+            }
+        }
+    }
+
+    internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {
+        return lastVisibleItemIndex == companies.lastIndex && page <= totalPage
+    }
+
+    private fun addPage() = with(state.value) {
+        setState { copy(page = page + 1) }
+    }
+
+    internal fun fetchTotalCompanyPageCount() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchCompanyCountUseCase(name = state.value.name).onSuccess {
+                setState { state.value.copy(totalPage = it.totalPageCount) }
+            }
+        }
+    }
+}
+
+internal data class CompaniesState(
+    val totalPage: Long,
+    val page: Int,
+    val name: String?,
+    val showCompaniesEmptyContent: Boolean,
+) {
+    companion object {
+        fun getDefaultState() = CompaniesState(
+            totalPage = 0,
+            page = 1,
+            name = null,
+            showCompaniesEmptyContent = false,
+        )
+    }
+}
+
+internal sealed interface CompaniesSideEffect {
+    data object FetchCompaniesError : CompaniesSideEffect
+}

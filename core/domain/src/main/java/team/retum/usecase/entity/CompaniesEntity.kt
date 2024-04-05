@@ -1,5 +1,6 @@
 package team.retum.usecase.entity
 
+import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchCompaniesResponse
 
 data class CompaniesEntity(
@@ -15,13 +16,13 @@ data class CompaniesEntity(
 }
 
 internal fun FetchCompaniesResponse.toCompaniesEntity() = CompaniesEntity(
-    companies = this.companies.map { it.toEntity() }
+    companies = this.companies.map { it.toEntity() },
 )
 
 private fun FetchCompaniesResponse.CompanyResponse.toEntity() = CompaniesEntity.CompanyEntity(
     id = this.id,
     name = this.name,
-    logoUrl = this.logoUrl,
+    logoUrl = ResourceKeys.IMAGE_URL + this.logoUrl,
     take = this.take,
     hasRecruitment = this.hasRecruitment,
 )
