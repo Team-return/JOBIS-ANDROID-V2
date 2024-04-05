@@ -60,6 +60,7 @@ internal class CompaniesViewModel @Inject constructor(
 
     internal fun fetchCompanies() {
         addCompanyEntities()
+        addPage()
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 fetchCompaniesUseCase(
@@ -67,7 +68,6 @@ internal class CompaniesViewModel @Inject constructor(
                     name = name,
                 ).onSuccess {
                     setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
-                    addPage()
                     replaceCompany(it.companies)
                 }.onFailure {
                     postSideEffect(CompaniesSideEffect.FetchCompaniesError)
@@ -90,7 +90,7 @@ internal class CompaniesViewModel @Inject constructor(
     }
 
     internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {
-        return lastVisibleItemIndex == companies.lastIndex && page <= totalPage
+        return lastVisibleItemIndex == companies.lastIndex && page < totalPage
     }
 
     private fun addPage() = with(state.value) {
@@ -114,8 +114,8 @@ internal data class CompaniesState(
 ) {
     companion object {
         fun getDefaultState() = CompaniesState(
-            totalPage = 0,
-            page = 1,
+            totalPage = 1,
+            page = 0,
             name = null,
             showCompaniesEmptyContent = false,
         )
