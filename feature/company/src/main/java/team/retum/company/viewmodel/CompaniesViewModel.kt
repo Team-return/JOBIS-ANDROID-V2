@@ -17,6 +17,8 @@ import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
 import javax.inject.Inject
 
 private const val SEARCH_DEBOUNCE_MILLIS = 1000L
+private const val NUMBER_OF_ITEM_ON_PAGE = 12
+private const val LAST_INDEX_OF_PAGE = 11
 
 @HiltViewModel
 internal class CompaniesViewModel @Inject constructor(
@@ -57,6 +59,7 @@ internal class CompaniesViewModel @Inject constructor(
     }
 
     internal fun fetchCompanies() {
+        addCompanyEntities()
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 fetchCompaniesUseCase(
@@ -65,11 +68,24 @@ internal class CompaniesViewModel @Inject constructor(
                 ).onSuccess {
                     setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
                     addPage()
-                    _companies.addAll(it.companies)
+                    replaceCompany(it.companies)
                 }.onFailure {
                     postSideEffect(CompaniesSideEffect.FetchCompaniesError)
                 }
             }
+        }
+    }
+
+    private fun addCompanyEntities() {
+        repeat(NUMBER_OF_ITEM_ON_PAGE) {
+            _companies.add(CompaniesEntity.CompanyEntity.getDefaultEntity())
+        }
+    }
+
+    private fun replaceCompany(companies: List<CompaniesEntity.CompanyEntity>) {
+        val startIndex = _companies.lastIndex - LAST_INDEX_OF_PAGE
+        companies.forEachIndexed { index, companyEntity ->
+            _companies[startIndex + index] = companyEntity
         }
     }
 
