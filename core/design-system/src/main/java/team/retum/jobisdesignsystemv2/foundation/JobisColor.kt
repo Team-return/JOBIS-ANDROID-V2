@@ -29,11 +29,11 @@ internal sealed class JobisColor(
     val gray900: Color,
     val transparent: Color,
 ) {
-    object Light : JobisColor(
+    data object Light : JobisColor(
         primary100 = Color(0xFFF3F3FB),
-        primary200 = Color(0xFF135C9D),
-        primary300 = Color(0xFF0F4C82),
-        primary400 = Color(0xFF002C53),
+        primary200 = Color(0xFF2F4DEF),
+        primary300 = Color(0xFF263EBF),
+        primary400 = Color(0xFF132BAC),
         red100 = Color(0xFFFCE9E7),
         red200 = Color(0xFFE74C3C),
         yellow100 = Color(0xFFFDF7E2),
@@ -54,10 +54,10 @@ internal sealed class JobisColor(
         transparent = Color(0x00000000),
     )
 
-    object Dark : JobisColor(
-        primary100 = Color(0xFF002559),
-        primary200 = Color(0xFF135C9D),
-        primary300 = Color(0xFF2770B1),
+    data object Dark : JobisColor(
+        primary100 = Color(0xFF000D8E),
+        primary200 = Color(0xFF2F4DEF),
+        primary300 = Color(0xFF5B6ED4),
         primary400 = Color(0xFF4F98D9),
         red100 = Color(0xFF4C1914),
         red200 = Color(0xFFE74C3C),

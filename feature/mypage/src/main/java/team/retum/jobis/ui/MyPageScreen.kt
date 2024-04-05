@@ -200,7 +200,7 @@ private fun MyPageScreen(
                             description = "notice icon",
                             contentTitle = stringResource(id = R.string.notice),
                             onClick = onNoticeClick,
-                            iconColor = null,
+                            iconColor = JobisTheme.colors.onPrimary,
                         ),
                     ),
                 ),
