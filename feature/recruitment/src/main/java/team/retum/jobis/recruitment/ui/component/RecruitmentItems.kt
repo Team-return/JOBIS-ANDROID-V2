@@ -9,18 +9,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -31,22 +29,21 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.usecase.entity.MilitarySupport
 import team.retum.usecase.entity.RecruitmentsEntity
 
 @Composable
-internal fun RecruitmentsContent(
-    lazyListState: LazyListState,
-    recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity>,
+internal fun RecruitmentItems(
+    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onBookmarkClick: (Long) -> Unit,
+    whetherFetchNextPage: (Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
-    LazyColumn(state = lazyListState) {
-        items(
-            items = recruitments,
-            key = { it.id },
-        ) { recruitment ->
+    LazyColumn {
+        itemsIndexed(items = recruitments) { index, recruitment ->
             val (bookmarked, setBookmarked) = remember { mutableStateOf(recruitment.bookmarked) }
-            RecruitmentContent(
+            RecruitmentItem(
                 recruitment = recruitment,
                 onClick = onRecruitmentClick,
                 bookmarkIcon = painterResource(
@@ -61,23 +58,24 @@ internal fun RecruitmentsContent(
                     setBookmarked(!bookmarked)
                 },
             )
+            if (whetherFetchNextPage(index)) {
+                fetchNextPage()
+            }
         }
     }
 }
 
 @Composable
-private fun RecruitmentContent(
+private fun RecruitmentItem(
     recruitment: RecruitmentsEntity.RecruitmentEntity,
     onClick: (recruitId: Long) -> Unit,
     bookmarkIcon: Painter,
     onBookmarked: (recruitId: Long) -> Unit,
 ) {
-    val context = LocalContext.current
-    val middleText = remember {
-        StringBuilder().apply {
-            append(context.getString(R.string.military))
-            append(if (recruitment.militarySupport) " O " else " X ")
-        }.toString()
+    val middleText = when (recruitment.militarySupport) {
+        MilitarySupport.TRUE -> stringResource(id = R.string.military_supported)
+        MilitarySupport.FALSE -> stringResource(id = R.string.military_not_supported)
+        else -> ""
     }
 
     Row(

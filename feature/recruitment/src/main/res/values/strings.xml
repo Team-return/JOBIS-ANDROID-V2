@@ -2,7 +2,8 @@
 <resources>
     <string name="recruitment">모집의뢰서</string>
 
-    <string name="military">병역특례</string>
+    <string name="military_supported">병역특례 O</string>
+    <string name="military_not_supported">병역특례 X</string>
     <string name="train_pay">실습 수당</string>
 
     <string name="recruitment_no_content">검색어와 관련된 모집의뢰서를 못 찾았어요</string>
