@@ -1,5 +1,7 @@
 package team.retum.jobis.recruitment.ui.component
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,6 +34,8 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.MilitarySupport
 import team.retum.usecase.entity.RecruitmentsEntity
 
+private const val DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED = 0.6f
+
 @Composable
 internal fun RecruitmentItems(
     recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
@@ -46,13 +50,11 @@ internal fun RecruitmentItems(
             RecruitmentItem(
                 recruitment = recruitment,
                 onClick = onRecruitmentClick,
-                bookmarkIcon = painterResource(
-                    id = if (bookmarked) {
-                        JobisIcon.BookmarkOn
-                    } else {
-                        JobisIcon.BookmarkOff
-                    },
-                ),
+                bookmarkIcon = if (bookmarked) {
+                    JobisIcon.BookmarkOn
+                } else {
+                    JobisIcon.BookmarkOff
+                },
                 onBookmarked = {
                     onBookmarkClick(it)
                     setBookmarked(!bookmarked)
@@ -69,10 +71,10 @@ internal fun RecruitmentItems(
 private fun RecruitmentItem(
     recruitment: RecruitmentsEntity.RecruitmentEntity,
     onClick: (recruitId: Long) -> Unit,
-    bookmarkIcon: Painter,
+    @DrawableRes bookmarkIcon: Int,
     onBookmarked: (recruitId: Long) -> Unit,
 ) {
-    val middleText = when (recruitment.militarySupport) {
+    val whetherMilitarySupported = when (recruitment.militarySupport) {
         MilitarySupport.TRUE -> stringResource(id = R.string.military_supported)
         MilitarySupport.FALSE -> stringResource(id = R.string.military_not_supported)
         else -> ""
@@ -94,7 +96,14 @@ private fun RecruitmentItem(
             AsyncImage(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(
+                        color = if (recruitment.companyProfileUrl.isEmpty()) {
+                            JobisTheme.colors.surfaceVariant
+                        } else {
+                            Color.Unspecified
+                        },
+                    ),
                 model = recruitment.companyProfileUrl,
                 contentDescription = "company profile",
             )
@@ -104,13 +113,33 @@ private fun RecruitmentItem(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 JobisText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(
+                            color = if (recruitment.companyName.isBlank()) {
+                                JobisTheme.colors.surfaceVariant
+                            } else {
+                                Color.Unspecified
+                            },
+                        ),
                     text = recruitment.companyName,
                     style = JobisTypography.SubHeadLine,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 JobisText(
-                    text = middleText,
+                    modifier = Modifier
+                        .fillMaxWidth(DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(
+                            if (whetherMilitarySupported.isBlank()) {
+                                JobisTheme.colors.surfaceVariant
+                            } else {
+                                Color.Unspecified
+                            },
+                        ),
+                    text = whetherMilitarySupported,
                     style = JobisTypography.SubBody,
                     color = JobisTheme.colors.inverseOnSurface,
                 )
@@ -119,7 +148,7 @@ private fun RecruitmentItem(
         Spacer(modifier = Modifier.width(4.dp))
         JobisIconButton(
             modifier = Modifier.padding(4.dp),
-            painter = bookmarkIcon,
+            painter = painterResource(id = bookmarkIcon),
             contentDescription = "bookmark",
             onClick = { onBookmarked(recruitment.id) },
             tint = JobisTheme.colors.onPrimary,
