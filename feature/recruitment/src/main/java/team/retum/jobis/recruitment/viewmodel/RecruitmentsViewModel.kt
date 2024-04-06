@@ -49,6 +49,7 @@ internal class RecruitmentViewModel @Inject constructor(
     internal fun clearRecruitment() {
         if (state.value.jobCode != null || state.value.techCode != null) {
             _recruitments.clear()
+            setState { state.value.copy(page = 0L) }
         }
     }
 
