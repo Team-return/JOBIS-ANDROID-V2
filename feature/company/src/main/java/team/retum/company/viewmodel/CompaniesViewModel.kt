@@ -67,7 +67,6 @@ internal class CompaniesViewModel @Inject constructor(
                 ).onSuccess {
                     setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
                     replaceCompany(it.companies)
-                    _companies.removeAll(_companies.filter { item -> item.id == 0L })
                 }.onFailure {
                     postSideEffect(CompaniesSideEffect.FetchCompaniesError)
                 }
@@ -86,6 +85,7 @@ internal class CompaniesViewModel @Inject constructor(
         companies.forEachIndexed { index, companyEntity ->
             _companies[startIndex + index] = companyEntity
         }
+        _companies.removeAll(_companies.filter { item -> item.id == 0L })
     }
 
     internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {

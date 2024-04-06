@@ -47,8 +47,11 @@ internal fun CompanyItem(
         HasRecruitment.TRUE -> JobisTheme.colors.primaryContainer
         else -> JobisTheme.colors.onSurface
     }
-    val takeText = if (take == 0f) ""
-    else "연매출 ${take}억"
+    val takeText = if (take == 0f) {
+        ""
+    } else {
+        "연매출 ${take}억"
+    }
 
     Row(
         modifier = modifier
@@ -64,8 +67,11 @@ internal fun CompanyItem(
                 .size(48.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(
-                    color = if (companyImageUrl.isEmpty()) JobisTheme.colors.surfaceVariant
-                    else Color.Unspecified,
+                    color = if (companyImageUrl.isEmpty()) {
+                        JobisTheme.colors.surfaceVariant
+                    } else {
+                        Color.Unspecified
+                    },
                 ),
             contentDescription = "company image",
         )
@@ -75,8 +81,11 @@ internal fun CompanyItem(
                     .fillMaxWidth(DEFAULT_SIZE_COMPANY_NAME)
                     .clip(RoundedCornerShape(4.dp))
                     .background(
-                        color = if (companyName.isBlank()) JobisTheme.colors.surfaceVariant
-                        else Color.Unspecified,
+                        color = if (companyName.isBlank()) {
+                            JobisTheme.colors.surfaceVariant
+                        } else {
+                            Color.Unspecified
+                        },
                     ),
                 text = companyName,
                 style = JobisTypography.SubHeadLine,
