@@ -69,6 +69,7 @@ internal class CompaniesViewModel @Inject constructor(
                 ).onSuccess {
                     setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
                     replaceCompany(it.companies)
+                    _companies.removeAll(_companies.filter { item -> item.id == 0L })
                 }.onFailure {
                     postSideEffect(CompaniesSideEffect.FetchCompaniesError)
                 }
@@ -100,7 +101,7 @@ internal class CompaniesViewModel @Inject constructor(
     internal fun fetchTotalCompanyPageCount() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCompanyCountUseCase(name = state.value.name).onSuccess {
-                setState { state.value.copy(totalPage = it.totalPageCount) }
+                setState { state.value.copy(totalPage = it.totalPageCount.toInt()) }
                 fetchCompanies()
             }
         }
@@ -108,7 +109,7 @@ internal class CompaniesViewModel @Inject constructor(
 }
 
 internal data class CompaniesState(
-    val totalPage: Long,
+    val totalPage: Int,
     val page: Int,
     val name: String?,
     val showCompaniesEmptyContent: Boolean,
