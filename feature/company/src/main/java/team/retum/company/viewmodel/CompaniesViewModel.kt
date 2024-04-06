@@ -101,6 +101,7 @@ internal class CompaniesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             fetchCompanyCountUseCase(name = state.value.name).onSuccess {
                 setState { state.value.copy(totalPage = it.totalPageCount) }
+                fetchCompanies()
             }
         }
     }
