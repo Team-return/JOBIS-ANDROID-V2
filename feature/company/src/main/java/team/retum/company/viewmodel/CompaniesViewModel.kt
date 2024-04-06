@@ -17,6 +17,8 @@ import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
 import javax.inject.Inject
 
 private const val SEARCH_DEBOUNCE_MILLIS = 1000L
+private const val NUMBER_OF_ITEM_ON_PAGE = 12
+private const val LAST_INDEX_OF_PAGE = 11
 
 @HiltViewModel
 internal class CompaniesViewModel @Inject constructor(
@@ -35,10 +37,8 @@ internal class CompaniesViewModel @Inject constructor(
     private fun debounceName() {
         viewModelScope.launch {
             state.map { it.name }.distinctUntilChanged().debounce(SEARCH_DEBOUNCE_MILLIS).collect {
-                setState { state.value.copy(showCompaniesEmptyContent = it?.isNotEmpty() ?: false) }
                 if (!it.isNullOrBlank()) {
                     fetchTotalCompanyPageCount()
-                    fetchCompanies()
                 }
             }
         }
@@ -57,6 +57,8 @@ internal class CompaniesViewModel @Inject constructor(
     }
 
     internal fun fetchCompanies() {
+        addCompanyEntities()
+        addPage()
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 fetchCompaniesUseCase(
@@ -64,8 +66,7 @@ internal class CompaniesViewModel @Inject constructor(
                     name = name,
                 ).onSuccess {
                     setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
-                    addPage()
-                    _companies.addAll(it.companies)
+                    replaceCompany(it.companies)
                 }.onFailure {
                     postSideEffect(CompaniesSideEffect.FetchCompaniesError)
                 }
@@ -73,8 +74,22 @@ internal class CompaniesViewModel @Inject constructor(
         }
     }
 
+    private fun addCompanyEntities() {
+        repeat(NUMBER_OF_ITEM_ON_PAGE) {
+            _companies.add(CompaniesEntity.CompanyEntity.getDefaultEntity())
+        }
+    }
+
+    private fun replaceCompany(companies: List<CompaniesEntity.CompanyEntity>) {
+        val startIndex = _companies.lastIndex - LAST_INDEX_OF_PAGE
+        companies.forEachIndexed { index, companyEntity ->
+            _companies[startIndex + index] = companyEntity
+        }
+        _companies.removeAll(_companies.filter { item -> item.id == 0L })
+    }
+
     internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {
-        return lastVisibleItemIndex == companies.lastIndex && page <= totalPage
+        return lastVisibleItemIndex == companies.lastIndex && page < totalPage
     }
 
     private fun addPage() = with(state.value) {
@@ -84,22 +99,23 @@ internal class CompaniesViewModel @Inject constructor(
     internal fun fetchTotalCompanyPageCount() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCompanyCountUseCase(name = state.value.name).onSuccess {
-                setState { state.value.copy(totalPage = it.totalPageCount) }
+                setState { state.value.copy(totalPage = it.totalPageCount.toInt()) }
+                fetchCompanies()
             }
         }
     }
 }
 
 internal data class CompaniesState(
-    val totalPage: Long,
+    val totalPage: Int,
     val page: Int,
     val name: String?,
     val showCompaniesEmptyContent: Boolean,
 ) {
     companion object {
         fun getDefaultState() = CompaniesState(
-            totalPage = 0,
-            page = 1,
+            totalPage = 1,
+            page = 0,
             name = null,
             showCompaniesEmptyContent = false,
         )

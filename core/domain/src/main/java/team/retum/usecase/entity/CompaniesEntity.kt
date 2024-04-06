@@ -3,6 +3,12 @@ package team.retum.usecase.entity
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchCompaniesResponse
 
+enum class HasRecruitment {
+    TRUE,
+    FALSE,
+    LOADING,
+}
+
 data class CompaniesEntity(
     val companies: List<CompanyEntity>,
 ) {
@@ -11,8 +17,18 @@ data class CompaniesEntity(
         val name: String,
         val logoUrl: String,
         val take: Float,
-        val hasRecruitment: Boolean,
-    )
+        val hasRecruitment: HasRecruitment,
+    ) {
+        companion object {
+            fun getDefaultEntity() = CompanyEntity(
+                id = 0,
+                name = "",
+                logoUrl = "",
+                take = 0f,
+                hasRecruitment = HasRecruitment.LOADING,
+            )
+        }
+    }
 }
 
 internal fun FetchCompaniesResponse.toCompaniesEntity() = CompaniesEntity(
@@ -24,5 +40,8 @@ private fun FetchCompaniesResponse.CompanyResponse.toEntity() = CompaniesEntity.
     name = this.name,
     logoUrl = ResourceKeys.IMAGE_URL + this.logoUrl,
     take = this.take,
-    hasRecruitment = this.hasRecruitment,
+    hasRecruitment = when (this.hasRecruitment) {
+        true -> HasRecruitment.TRUE
+        false -> HasRecruitment.FALSE
+    },
 )

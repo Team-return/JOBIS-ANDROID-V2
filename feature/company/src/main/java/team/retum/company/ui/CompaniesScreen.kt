@@ -37,7 +37,6 @@ internal fun Companies(
 
     LaunchedEffect(Unit) {
         with(companiesViewModel) {
-            fetchCompanies()
             fetchTotalCompanyPageCount()
             sideEffect.collect {
                 when (it) {
