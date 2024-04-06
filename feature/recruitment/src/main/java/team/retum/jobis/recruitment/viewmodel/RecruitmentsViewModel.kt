@@ -5,6 +5,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.usecase.entity.RecruitmentsEntity
@@ -27,6 +31,21 @@ internal class RecruitmentViewModel @Inject constructor(
         mutableStateListOf()
     val recruitments: List<RecruitmentsEntity.RecruitmentEntity> = _recruitments
 
+    init {
+        debounceName()
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun debounceName() {
+        viewModelScope.launch {
+            state.map { it.name }.distinctUntilChanged().debounce(SEARCH_DEBOUNCE_MILLIS).collect {
+                if (!it.isNullOrBlank()) {
+                    fetchTotalRecruitmentCount()
+                }
+            }
+        }
+    }
+
     internal fun clearRecruitment() {
         if (state.value.jobCode != null || state.value.techCode != null) {
             _recruitments.clear()
@@ -47,12 +66,13 @@ internal class RecruitmentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 fetchRecruitmentsUseCase(
-                    name = null,
+                    name = name,
                     page = page.toInt(),
                     jobCode = jobCode,
                     techCode = techCode,
                     winterIntern = false,
                 ).onSuccess {
+                    setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
                 }
             }
@@ -81,7 +101,7 @@ internal class RecruitmentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 fetchRecruitmentCountUseCase.invoke(
-                    name = null,
+                    name = name,
                     jobCode = jobCode,
                     techCode = techCode,
                     winterIntern = false,
@@ -90,6 +110,18 @@ internal class RecruitmentViewModel @Inject constructor(
                     fetchRecruitments()
                 }
             }
+        }
+    }
+
+    internal fun setName(name: String) {
+        val initialState = RecruitmentsState.getDefaultState()
+        _recruitments.clear()
+        setState {
+            state.value.copy(
+                name = name,
+                page = initialState.page,
+                totalPage = initialState.totalPage,
+            )
         }
     }
 
@@ -113,6 +145,8 @@ internal data class RecruitmentsState(
     val page: Long,
     val jobCode: Long?,
     val techCode: String?,
+    val name: String?,
+    val showRecruitmentsEmptyContent: Boolean,
 ) {
     companion object {
         fun getDefaultState() = RecruitmentsState(
@@ -120,6 +154,8 @@ internal data class RecruitmentsState(
             page = 0,
             jobCode = null,
             techCode = null,
+            name = null,
+            showRecruitmentsEmptyContent = false,
         )
     }
 }

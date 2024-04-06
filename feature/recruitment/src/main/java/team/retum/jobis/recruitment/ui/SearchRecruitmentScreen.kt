@@ -9,13 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,9 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.recruitment.R
-import team.retum.jobis.recruitment.ui.component.RecruitmentsContent
-import team.retum.jobis.recruitment.viewmodel.SearchRecruitmentState
-import team.retum.jobis.recruitment.viewmodel.SearchRecruitmentViewModel
+import team.retum.jobis.recruitment.ui.component.RecruitmentItems
+import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
+import team.retum.jobis.recruitment.viewmodel.RecruitmentsState
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -39,38 +34,32 @@ import team.retum.usecase.entity.RecruitmentsEntity
 internal fun SearchRecruitment(
     onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
-    searchRecruitmentViewModel: SearchRecruitmentViewModel = hiltViewModel(),
+    recruitmentsViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
-    val state by searchRecruitmentViewModel.state.collectAsStateWithLifecycle()
-    val lazyListState = rememberLazyListState()
-
-    LaunchedEffect(Unit) {
-        with(searchRecruitmentViewModel) {
-            snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.callNextPageByPosition()
-            observeName()
-        }
-    }
+    val state by recruitmentsViewModel.state.collectAsStateWithLifecycle()
 
     SearchRecruitmentScreen(
-        recruitments = searchRecruitmentViewModel.recruitments,
+        recruitments = recruitmentsViewModel.recruitments,
         onBackPressed = onBackPressed,
         onRecruitmentClick = onRecruitmentDetailsClick,
-        onBookmarkClick = searchRecruitmentViewModel::bookmarkRecruitment,
+        onBookmarkClick = recruitmentsViewModel::bookmarkRecruitment,
         state = state,
-        lazyListState = lazyListState,
-        onNameChange = searchRecruitmentViewModel::setName,
+        onNameChange = recruitmentsViewModel::setName,
+        whetherFetchNextPage = recruitmentsViewModel::whetherFetchNextPage,
+        fetchNextPage = recruitmentsViewModel::fetchRecruitments,
     )
 }
 
 @Composable
 private fun SearchRecruitmentScreen(
-    recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity>,
+    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
     onBackPressed: () -> Unit,
     onRecruitmentClick: (Long) -> Unit,
     onBookmarkClick: (Long) -> Unit,
-    state: SearchRecruitmentState,
-    lazyListState: LazyListState,
+    state: RecruitmentsState,
     onNameChange: (String) -> Unit,
+    whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -84,17 +73,18 @@ private fun SearchRecruitmentScreen(
             onValueChange = onNameChange,
             leadingIcon = painterResource(id = JobisIcon.Search),
         )
-        if (recruitments.isNotEmpty() || state.name.isNullOrEmpty()) {
-            RecruitmentsContent(
-                lazyListState = lazyListState,
-                recruitments = recruitments,
-                onRecruitmentClick = onRecruitmentClick,
-                onBookmarkClick = onBookmarkClick,
-            )
-        } else {
+        RecruitmentItems(
+            recruitments = recruitments,
+            onRecruitmentClick = onRecruitmentClick,
+            onBookmarkClick = onBookmarkClick,
+            whetherFetchNextPage = whetherFetchNextPage,
+            fetchNextPage = fetchNextPage,
+        )
+        if (state.showRecruitmentsEmptyContent) {
             EmptyRecruitmentContent()
         }
     }
+
 }
 
 @Composable
