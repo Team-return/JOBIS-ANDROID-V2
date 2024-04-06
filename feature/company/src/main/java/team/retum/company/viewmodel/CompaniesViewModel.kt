@@ -37,10 +37,8 @@ internal class CompaniesViewModel @Inject constructor(
     private fun debounceName() {
         viewModelScope.launch {
             state.map { it.name }.distinctUntilChanged().debounce(SEARCH_DEBOUNCE_MILLIS).collect {
-                setState { state.value.copy(showCompaniesEmptyContent = it?.isNotEmpty() ?: false) }
                 if (!it.isNullOrBlank()) {
                     fetchTotalCompanyPageCount()
-                    fetchCompanies()
                 }
             }
         }
