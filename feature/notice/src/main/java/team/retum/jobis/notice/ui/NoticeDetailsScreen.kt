@@ -1,13 +1,16 @@
 package team.retum.jobis.notice.ui
 
+import android.content.Context
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,6 +56,14 @@ internal fun NoticeDetails(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+
+                is NoticeDetailsSideEffect.DownloadFailed -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.failed_download),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
             }
         }
     }
@@ -61,6 +72,7 @@ internal fun NoticeDetails(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
         state = state,
+        saveFileData = noticeDetailsViewModel::saveFileData,
     )
 }
 
@@ -69,6 +81,7 @@ private fun NoticeDetailsScreen(
     onBackPressed: () -> Unit,
     scrollState: ScrollState,
     state: NoticeDetailsState,
+    saveFileData: (urlSting: String, fileName: String, context: Context) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -80,13 +93,17 @@ private fun NoticeDetailsScreen(
             onBackPressed = onBackPressed,
         )
         Column(
-            Modifier
+            modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState),
         ) {
             Notice(noticeDetailsEntity = state.noticeDetailsEntity)
             state.noticeDetailsEntity.attachments.forEach {
-                // TODO: AttachFile 함수 호출
+                AttachFile(
+                    fileName = it.url,
+                    saveFileData = saveFileData,
+
+                    )
             }
         }
     }
@@ -120,7 +137,9 @@ private fun Notice(
 @Composable
 private fun AttachFile(
     fileName: String,
+    saveFileData: (urlSting: String, fileName: String, context: Context) -> Unit,
 ) {
+    val context = LocalContext.current
     Column {
         JobisText(
             modifier = Modifier.padding(vertical = 8.dp),
@@ -129,19 +148,28 @@ private fun AttachFile(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         Row(
-            modifier = Modifier.padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    shape = RoundedCornerShape(12.dp),
+                    color = JobisTheme.colors.inverseSurface,
+                )
+                .padding(
+                    horizontal = 12.dp,
+                    vertical = 14.dp,
+                ),
+            horizontalArrangement = Arrangement.spacedBy(4.dp, alignment = Alignment.End),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             JobisText(
-                modifier = Modifier.padding(start = 12.dp),
-                text = fileName,
+                modifier = Modifier.weight(1f),
+                text = fileName.split("-").last(),
                 style = JobisTypography.Body,
             )
             JobisIconButton(
                 painter = painterResource(id = R.drawable.ic_download),
                 contentDescription = "download",
-                onClick = {},
+                onClick = { saveFileData(fileName, fileName.split("-").last(), context) },
             )
         }
     }
