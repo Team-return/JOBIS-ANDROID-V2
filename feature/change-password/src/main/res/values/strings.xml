@@ -10,7 +10,7 @@
     <string name="complete">완료</string>
     <string name="not_found_email">가입되지 않은 이메일이에요</string>
 
-    <string name="password_information_description">8 ~ 16자, 영문자, 숫자, 특수문자 포함</string>
+    <string name="password_information_description">8 ~ 16자, 영문자, 숫자, 특수문자(!@#$%^&amp;*) 포함</string>
 
     <string name="success_reset_password">비밀번호가 성공적으로 변경되었습니다</string>
 
