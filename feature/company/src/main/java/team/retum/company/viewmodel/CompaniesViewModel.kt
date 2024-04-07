@@ -85,7 +85,9 @@ internal class CompaniesViewModel @Inject constructor(
         companies.forEachIndexed { index, companyEntity ->
             _companies[startIndex + index] = companyEntity
         }
-        _companies.removeAll(_companies.filter { item -> item.id == 0L })
+        runCatching {
+            _companies.removeAll(_companies.filter { item -> item.id == 0L })
+        }
     }
 
     internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {

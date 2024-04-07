@@ -95,7 +95,9 @@ internal class RecruitmentViewModel @Inject constructor(
         recruitments.forEachIndexed { index, recruitmentEntity ->
             _recruitments[startIndex + index] = recruitmentEntity
         }
-        _recruitments.removeAll(_recruitments.filter { item -> item.id == 0L })
+        runCatching {
+            _recruitments.removeAll(_recruitments.filter { item -> item.id == 0L })
+        }
     }
 
     internal fun fetchTotalRecruitmentCount() {
