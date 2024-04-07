@@ -57,7 +57,10 @@ internal fun CompanyItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp)
-            .clickable(onClick = { onCompanyContentClick(id) }),
+            .clickable(
+                onClick = { onCompanyContentClick(id) },
+                enabled = id != 0L,
+            ),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Top,
     ) {

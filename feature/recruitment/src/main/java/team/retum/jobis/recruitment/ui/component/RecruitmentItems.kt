@@ -91,7 +91,10 @@ private fun RecruitmentItem(
         Row(
             modifier = Modifier
                 .weight(1f)
-                .clickable(onClick = { onClick(recruitment.id) }),
+                .clickable(
+                    onClick = { onClick(recruitment.id) },
+                    enabled = recruitment.id != 0L,
+                ),
         ) {
             AsyncImage(
                 modifier = Modifier
