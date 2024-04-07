@@ -84,7 +84,6 @@ private fun SearchRecruitmentScreen(
             EmptyRecruitmentContent()
         }
     }
-
 }
 
 @Composable
