@@ -2,7 +2,6 @@ package team.retum.jobis.notice.viewmodel
 
 import android.content.Context
 import android.os.Environment
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -66,10 +65,8 @@ internal class NoticeDetailsViewModel @Inject constructor(
                 output.flush()
                 output.close()
                 input.close()
-
             } catch (e: Exception) {
                 postSideEffect(NoticeDetailsSideEffect.DownloadFailed)
-                Log.d("ERROR", e.toString())
             }
         }
     }

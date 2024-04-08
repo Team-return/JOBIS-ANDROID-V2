@@ -102,8 +102,7 @@ private fun NoticeDetailsScreen(
                 AttachFile(
                     fileName = it.url,
                     saveFileData = saveFileData,
-
-                    )
+                )
             }
         }
     }
