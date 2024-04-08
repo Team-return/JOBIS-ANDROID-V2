@@ -73,6 +73,7 @@ internal fun NoticeDetails(
         scrollState = rememberScrollState(),
         state = state,
         saveFileData = noticeDetailsViewModel::saveFileData,
+        context = context,
     )
 }
 
@@ -81,7 +82,8 @@ private fun NoticeDetailsScreen(
     onBackPressed: () -> Unit,
     scrollState: ScrollState,
     state: NoticeDetailsState,
-    saveFileData: (urlSting: String, fileName: String, context: Context) -> Unit,
+    saveFileData: (String, String, Context) -> Unit,
+    context: Context,
 ) {
     Column(
         modifier = Modifier
@@ -102,6 +104,7 @@ private fun NoticeDetailsScreen(
                 AttachFile(
                     fileName = it.url,
                     saveFileData = saveFileData,
+                    context = context,
                 )
             }
         }
@@ -136,9 +139,9 @@ private fun Notice(
 @Composable
 private fun AttachFile(
     fileName: String,
-    saveFileData: (urlSting: String, fileName: String, context: Context) -> Unit,
+    saveFileData: (url: String, fileName: String, Context) -> Unit,
+    context: Context,
 ) {
-    val context = LocalContext.current
     Column {
         JobisText(
             modifier = Modifier.padding(vertical = 8.dp),
