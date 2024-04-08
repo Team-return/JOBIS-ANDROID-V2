@@ -101,16 +101,18 @@ internal class RecruitmentViewModel @Inject constructor(
     }
 
     internal fun fetchTotalRecruitmentCount() {
-        viewModelScope.launch(Dispatchers.IO) {
-            with(state.value) {
-                fetchRecruitmentCountUseCase.invoke(
-                    name = name,
-                    jobCode = jobCode,
-                    techCode = techCode,
-                    winterIntern = false,
-                ).onSuccess {
-                    setState { copy(totalPage = it.totalPageCount) }
-                    fetchRecruitments()
+        with(state.value) {
+            if (page < totalPage) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    fetchRecruitmentCountUseCase.invoke(
+                        name = name,
+                        jobCode = jobCode,
+                        techCode = techCode,
+                        winterIntern = false,
+                    ).onSuccess {
+                        setState { copy(totalPage = it.totalPageCount) }
+                        fetchRecruitments()
+                    }
                 }
             }
         }
