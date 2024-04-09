@@ -82,11 +82,13 @@ internal class CompaniesViewModel @Inject constructor(
 
     private fun replaceCompany(companies: List<CompaniesEntity.CompanyEntity>) {
         val startIndex = _companies.lastIndex - LAST_INDEX_OF_PAGE
-        companies.forEachIndexed { index, companyEntity ->
-            _companies[startIndex + index] = companyEntity
-        }
         runCatching {
+            companies.forEachIndexed { index, companyEntity ->
+                _companies[startIndex + index] = companyEntity
+            }
             _companies.removeAll(_companies.filter { item -> item.id == 0L })
+        }.onFailure {
+            postSideEffect(CompaniesSideEffect.FetchCompaniesError)
         }
     }
 

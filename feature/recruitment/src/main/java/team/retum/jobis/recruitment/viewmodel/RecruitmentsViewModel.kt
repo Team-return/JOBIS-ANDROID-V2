@@ -25,7 +25,7 @@ internal class RecruitmentViewModel @Inject constructor(
     private val fetchRecruitmentsUseCase: FetchRecruitmentsUseCase,
     private val fetchRecruitmentCountUseCase: FetchRecruitmentCountUseCase,
     private val recruitmentBookmarkUseCase: BookmarkRecruitmentUseCase,
-) : BaseViewModel<RecruitmentsState, Unit>(RecruitmentsState.getDefaultState()) {
+) : BaseViewModel<RecruitmentsState, RecruitmentsSideEffect>(RecruitmentsState.getDefaultState()) {
 
     private val _recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity> =
         mutableStateListOf()
@@ -92,11 +92,13 @@ internal class RecruitmentViewModel @Inject constructor(
 
     private fun replaceRecruitments(recruitments: List<RecruitmentsEntity.RecruitmentEntity>) {
         val startIndex = _recruitments.lastIndex - LAST_INDEX_OF_PAGE
-        recruitments.forEachIndexed { index, recruitmentEntity ->
-            _recruitments[startIndex + index] = recruitmentEntity
-        }
         runCatching {
+            recruitments.forEachIndexed { index, recruitmentEntity ->
+                _recruitments[startIndex + index] = recruitmentEntity
+            }
             _recruitments.removeAll(_recruitments.filter { item -> item.id == 0L })
+        }.onFailure {
+            postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
         }
     }
 
@@ -163,4 +165,8 @@ internal data class RecruitmentsState(
             showRecruitmentsEmptyContent = false,
         )
     }
+}
+
+internal sealed interface RecruitmentsSideEffect {
+    data object FetchRecruitmentsError: RecruitmentsSideEffect
 }
