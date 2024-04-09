@@ -168,5 +168,5 @@ internal data class RecruitmentsState(
 }
 
 internal sealed interface RecruitmentsSideEffect {
-    data object FetchRecruitmentsError: RecruitmentsSideEffect
+    data object FetchRecruitmentsError : RecruitmentsSideEffect
 }
