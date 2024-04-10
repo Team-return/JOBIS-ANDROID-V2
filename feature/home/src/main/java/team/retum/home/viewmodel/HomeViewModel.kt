@@ -1,5 +1,7 @@
 package team.retum.home.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -30,8 +32,8 @@ internal class HomeViewModel @Inject constructor(
     private val fetchRejectionReasonUseCase: FetchRejectionReasonUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
-    private val _appliedCompanies: MutableList<AppliedCompaniesEntity.ApplicationEntity> =
-        mutableListOf()
+    private val _appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity> =
+        mutableStateListOf()
     internal val appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity> =
         _appliedCompanies
 
