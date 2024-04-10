@@ -5,12 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import team.retum.company.component.CompanyItem
+import team.retum.company.component.CompanyItems
 import team.retum.company.viewmodel.CompaniesState
 import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
@@ -72,28 +69,12 @@ private fun SearchCompaniesScreen(
             hint = stringResource(id = R.string.search_hint),
             onValueChange = onNameChange,
         )
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .background(JobisTheme.colors.background),
-        ) {
-            if (companies.isNotEmpty()) {
-                itemsIndexed(companies) { index, item ->
-                    CompanyItem(
-                        onCompanyContentClick = onCompanyContentClick,
-                        companyImageUrl = item.logoUrl,
-                        companyName = item.name,
-                        id = item.id,
-                        hasRecruitment = item.hasRecruitment,
-                        take = item.take,
-                    )
-                    if (whetherFetchNextPage(index)) {
-                        fetchNextPage()
-                    }
-                }
-            }
-        }
+        CompanyItems(
+            companies = companies,
+            onCompanyContentClick = onCompanyContentClick,
+            whetherFetchNextPage = whetherFetchNextPage,
+            fetchNextPage = fetchNextPage,
+        )
         if (state.showCompaniesEmptyContent) {
             EmptySearchContent()
         }

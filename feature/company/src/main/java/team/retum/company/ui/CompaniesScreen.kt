@@ -3,19 +3,14 @@ package team.retum.company.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import team.retum.company.component.CompanyItem
+import team.retum.company.component.CompanyItems
 import team.retum.company.viewmodel.CompaniesSideEffect
 import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
@@ -86,25 +81,11 @@ private fun CompaniesScreen(
                 onClick = onSearchClick,
             )
         }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .background(JobisTheme.colors.background),
-        ) {
-            itemsIndexed(companies) { index, item ->
-                CompanyItem(
-                    onCompanyContentClick = onCompanyContentClick,
-                    companyImageUrl = item.logoUrl,
-                    companyName = item.name,
-                    id = item.id,
-                    take = item.take,
-                    hasRecruitment = item.hasRecruitment,
-                )
-                if (whetherFetchNextPage(index)) {
-                    fetchNextPage()
-                }
-            }
-        }
+        CompanyItems(
+            companies = companies,
+            onCompanyContentClick = onCompanyContentClick,
+            whetherFetchNextPage = whetherFetchNextPage,
+            fetchNextPage = fetchNextPage,
+        )
     }
 }

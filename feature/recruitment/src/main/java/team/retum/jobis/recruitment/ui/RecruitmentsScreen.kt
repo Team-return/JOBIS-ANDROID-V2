@@ -3,18 +3,14 @@ package team.retum.jobis.recruitment.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import team.retum.jobis.recruitment.R
-import team.retum.jobis.recruitment.ui.component.RecruitmentsContent
+import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
@@ -30,47 +26,42 @@ internal fun Recruitments(
     onSearchRecruitmentClick: () -> Unit,
     recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
-    val lazyListState = rememberLazyListState()
-
     LaunchedEffect(Unit) {
         with(recruitmentViewModel) {
             setJobCode(RecruitmentFilterViewModel.jobCode)
             setTechCode(RecruitmentFilterViewModel.techCode)
-            recruitmentViewModel.setPage(1)
-            recruitmentViewModel.clearRecruitment()
-            recruitmentViewModel.fetchRecruitments()
-            snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.callNextPageByPosition()
+            clearRecruitment()
+            fetchTotalRecruitmentCount()
         }
     }
 
     RecruitmentsScreen(
-        recruitments = recruitmentViewModel.getRecruitments(),
+        recruitments = recruitmentViewModel.recruitments,
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
         onBookmarkClick = recruitmentViewModel::bookmarkRecruitment,
-        lazyListState = lazyListState,
+        whetherFetchNextPage = recruitmentViewModel::whetherFetchNextPage,
+        fetchNextPage = recruitmentViewModel::fetchRecruitments,
     )
 }
 
 @Composable
 private fun RecruitmentsScreen(
-    recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity>,
+    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
     onBookmarkClick: (Long) -> Unit,
-    lazyListState: LazyListState,
+    whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(JobisTheme.colors.background),
     ) {
-        // TODO collapsing top app bar lazyliststate 이용하게 변경
-        JobisLargeTopAppBar(
-            title = stringResource(id = R.string.recruitment),
-        ) {
+        JobisLargeTopAppBar(title = stringResource(id = R.string.recruitment)) {
             JobisIconButton(
                 painter = painterResource(JobisIcon.Filter),
                 contentDescription = "filter",
@@ -83,11 +74,12 @@ private fun RecruitmentsScreen(
                 onClick = onSearchRecruitmentClick,
             )
         }
-        RecruitmentsContent(
-            lazyListState = lazyListState,
+        RecruitmentItems(
             recruitments = recruitments,
             onRecruitmentClick = onRecruitmentClick,
             onBookmarkClick = onBookmarkClick,
+            whetherFetchNextPage = whetherFetchNextPage,
+            fetchNextPage = fetchNextPage,
         )
     }
 }

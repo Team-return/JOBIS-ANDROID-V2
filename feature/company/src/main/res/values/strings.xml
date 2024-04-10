@@ -6,7 +6,7 @@
     <string name="not_found_company">검색어와 관련 된 회사를 못찾았어요</string>
     <string name="double_check">제대로 입력했는지 다시 한번 확인해주세요</string>
     <string name="search_hint">검색어를 입력해주세요</string>
-    <string name="toast_fetch_companies_error">불러오는 중 문제가 발생했어요</string>
+    <string name="toast_fetch_companies_error">기업 목록을 불러오는 중 문제가 발생했어요</string>
 
     <!--Company Details Screen-->
     <string name="company_details">기업 상세</string>
