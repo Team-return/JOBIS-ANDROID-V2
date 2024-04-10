@@ -1,13 +1,8 @@
 package team.retum.usecase.entity
 
+import team.retum.common.enums.MilitarySupport
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchRecruitmentsResponse
-
-enum class MilitarySupport {
-    TRUE,
-    FALSE,
-    LOADING,
-}
 
 data class RecruitmentsEntity(
     val recruitments: List<RecruitmentEntity>,

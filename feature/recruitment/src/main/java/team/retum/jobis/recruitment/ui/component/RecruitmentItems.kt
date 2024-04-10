@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import team.retum.common.enums.MilitarySupport
 import team.retum.jobis.recruitment.R
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -31,7 +32,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.retum.usecase.entity.MilitarySupport
 import team.retum.usecase.entity.RecruitmentsEntity
 
 private const val DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED = 0.6f
