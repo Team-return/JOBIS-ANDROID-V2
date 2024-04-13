@@ -18,7 +18,7 @@ fun NavGraphBuilder.setProfile(
 ) {
     composable(
         route = "$NAVIGATION_SET_PROFILE/{${ResourceKeys.SIGN_UP}}",
-        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { NavType.StringType }),
+        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { type = NavType.StringType }),
     ) {
         SetProfile(
             onBackPressed = onBackPressed,
