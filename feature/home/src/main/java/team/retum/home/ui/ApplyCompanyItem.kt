@@ -111,6 +111,7 @@ internal fun ApplyCompanyItem(
                 style = JobisTypography.Body,
                 maxLines = 1,
             )
+            Spacer(modifier = Modifier.width(4.dp))
             JobisText(
                 text = applicationStatus.value,
                 style = JobisTypography.SubBody,
