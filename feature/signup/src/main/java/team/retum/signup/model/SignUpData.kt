@@ -14,7 +14,6 @@ data class SignUpData(
     val gender: Gender? = null,
     val classRoom: String = "",
     val number: String = "",
-    val platformType: String = "",
     val profileImageUrl: String = "",
 )
 

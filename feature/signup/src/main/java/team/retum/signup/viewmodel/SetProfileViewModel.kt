@@ -11,6 +11,7 @@ import team.retum.common.utils.FileUtil
 import team.retum.usecase.usecase.file.CreatePresignedUrlUseCase
 import team.retum.usecase.usecase.file.UploadFileUseCase
 import java.io.File
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,14 +58,8 @@ internal class SetProfileViewModel @Inject constructor(
             presignedUrl = presignedUrl,
             file = state.value.image!!,
         ).onSuccess {
-            postSideEffect(
-                SetProfileSideEffect.MoveToNext(
-                    profileImageUrl = fileUrl.replace(
-                        "/",
-                        " ",
-                    ),
-                ),
-            )
+            val encodedImageUrl = URLEncoder.encode(fileUrl, "UTF8")
+            postSideEffect(SetProfileSideEffect.MoveToNext(profileImageUrl = encodedImageUrl))
         }
     }
 }

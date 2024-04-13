@@ -10,6 +10,7 @@ import team.retum.common.exception.OfflineException
 import team.retum.signup.model.SignUpData
 import team.retum.usecase.usecase.student.PostSignUpUseCase
 import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
+import java.net.URLDecoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,16 +39,18 @@ internal class TermsViewModel @Inject constructor(
 
     internal fun onCompleteClick(signUpData: SignUpData) {
         with(signUpData) {
+            val decodedPassword = URLDecoder.decode(password, "UTF8")
+            val decodedImageUrl = URLDecoder.decode(profileImageUrl, "UTF8")
             viewModelScope.launch(Dispatchers.IO) {
                 postSignUpUseCase(
                     email = email,
-                    password = password,
+                    password = decodedPassword,
                     grade = grade,
                     name = name,
                     gender = gender!!,
                     classRoom = classRoom.toLong(),
                     number = number.toLong(),
-                    profileImageUrl = profileImageUrl.replace(" ", "/"),
+                    profileImageUrl = decodedImageUrl,
                     deviceToken = deviceToken,
                 ).onSuccess {
                     postSideEffect(TermsSideEffect.Success)
