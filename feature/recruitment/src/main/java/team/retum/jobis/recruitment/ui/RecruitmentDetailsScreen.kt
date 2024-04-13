@@ -56,6 +56,7 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.AreasEntity
 import team.retum.usecase.entity.RecruitmentDetailsEntity
+import java.net.URLEncoder
 
 @Composable
 internal fun RecruitmentDetails(
@@ -140,7 +141,10 @@ private fun RecruitmentDetailsScreen(
                         applicationId = 0,
                         recruitmentId = recruitmentId,
                         rejectionReason = "",
-                        companyLogoUrl = recruitmentDetail.companyProfileUrl.replace("/", " "),
+                        companyLogoUrl = URLEncoder.encode(
+                            recruitmentDetail.companyProfileUrl,
+                            "UTF8",
+                        ),
                         companyName = recruitmentDetail.companyName,
                         isReApply = false,
                     ),
