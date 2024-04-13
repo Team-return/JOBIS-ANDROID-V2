@@ -46,7 +46,7 @@ internal fun RecruitmentItems(
 ) {
     LazyColumn {
         itemsIndexed(items = recruitments) { index, recruitment ->
-            val (bookmarked, setBookmarked) = remember { mutableStateOf(recruitment.bookmarked) }
+            var bookmarked = recruitment.bookmarked
             RecruitmentItem(
                 recruitment = recruitment,
                 onClick = onRecruitmentClick,
@@ -57,7 +57,7 @@ internal fun RecruitmentItems(
                 },
                 onBookmarked = {
                     onBookmarkClick(it)
-                    setBookmarked(!bookmarked)
+                    bookmarked = !bookmarked
                 },
             )
             if (whetherFetchNextPage(index)) {
