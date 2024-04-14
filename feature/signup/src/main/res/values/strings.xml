@@ -39,7 +39,7 @@
     <string name="hint_password">계정의 비밀번호를 설정해주세요.</string>
     <string name="hint_check_password">위 비밀번호를 한 번 더 입력해주세요.</string>
 
-    <string name="password_information_description">8 ~ 16자, 영문자, 숫자, 특수문자 포함</string>
+    <string name="password_information_description">8 ~ 16자, 영문자, 숫자, 특수문자(!@#$%^&amp;*) 포함</string>
     <string name="password_error_description">비밀번호 형식에 맞지 않아요</string>
     <string name="repeat_password_error_description">비밀번호가 일치하지 않아요</string>
 

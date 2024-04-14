@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.exception.UnAuthorizedException
+import team.retum.common.exception.BadRequestException
 import team.retum.usecase.usecase.student.ComparePasswordUseCase
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ internal class ComparePasswordViewModel @Inject constructor(
                 postSideEffect(ComparePasswordSideEffect.Success(password = password))
             }.onFailure {
                 setState {
-                    state.value.copy(showPasswordDescription = it is UnAuthorizedException)
+                    state.value.copy(showPasswordDescription = it is BadRequestException)
                 }
             }
         }
