@@ -60,6 +60,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
+import java.net.URLEncoder
 import java.time.LocalDate
 
 private const val INITIAL_PAGE = 40
@@ -420,7 +421,7 @@ private fun ApplyStatus(
                         applicationId = it.applicationId,
                         recruitmentId = it.recruitmentId,
                         rejectionReason = "",
-                        companyLogoUrl = it.companyLogoUrl.replace("/", " "),
+                        companyLogoUrl = URLEncoder.encode(it.companyLogoUrl, "UTF8"),
                         companyName = it.company,
                         isReApply = true,
                     )

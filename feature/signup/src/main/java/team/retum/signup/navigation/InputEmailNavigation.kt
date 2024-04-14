@@ -18,7 +18,7 @@ fun NavGraphBuilder.inputEmail(
 ) {
     composable(
         route = "$NAVIGATION_INPUT_EMAIL/{${ResourceKeys.SIGN_UP}}",
-        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { NavType.StringType }),
+        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { type = NavType.StringType }),
     ) {
         InputEmail(
             onBackPressed = onBackPressed,

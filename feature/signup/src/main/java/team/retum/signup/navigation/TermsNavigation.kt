@@ -18,7 +18,7 @@ fun NavGraphBuilder.terms(
 ) {
     composable(
         route = "$NAVIGATION_TERMS/{${ResourceKeys.SIGN_UP}}",
-        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { NavType.StringType }),
+        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { type = NavType.StringType }),
     ) {
         Terms(
             onBackPressed = onBackPressed,

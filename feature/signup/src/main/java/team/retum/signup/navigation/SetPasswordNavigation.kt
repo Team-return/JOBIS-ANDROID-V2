@@ -18,7 +18,7 @@ fun NavGraphBuilder.setPassword(
 ) {
     composable(
         route = "$NAVIGATION_SET_PASSWORD/{${ResourceKeys.SIGN_UP}}",
-        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { NavType.StringType }),
+        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { type = NavType.StringType }),
     ) {
         SetPassword(
             onBackPressed = onBackPressed,
