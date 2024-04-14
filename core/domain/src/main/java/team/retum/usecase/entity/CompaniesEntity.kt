@@ -18,6 +18,7 @@ data class CompaniesEntity(
         val logoUrl: String,
         val take: Float,
         val hasRecruitment: HasRecruitment,
+        val takeText: String,
     ) {
         companion object {
             fun getDefaultEntity() = CompanyEntity(
@@ -26,6 +27,7 @@ data class CompaniesEntity(
                 logoUrl = "",
                 take = 0f,
                 hasRecruitment = HasRecruitment.LOADING,
+                takeText = "",
             )
         }
     }
@@ -43,5 +45,10 @@ private fun FetchCompaniesResponse.CompanyResponse.toEntity() = CompaniesEntity.
     hasRecruitment = when (this.hasRecruitment) {
         true -> HasRecruitment.TRUE
         false -> HasRecruitment.FALSE
+    },
+    takeText = if (take == 0f) {
+        ""
+    } else {
+        "연매출 ${take}억"
     },
 )

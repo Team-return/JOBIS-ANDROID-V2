@@ -32,6 +32,7 @@ internal class RecruitmentViewModel @Inject constructor(
     val recruitments: List<RecruitmentsEntity.RecruitmentEntity> = _recruitments
 
     init {
+        clear()
         debounceName()
     }
 
@@ -50,6 +51,17 @@ internal class RecruitmentViewModel @Inject constructor(
         if (state.value.jobCode != null || state.value.techCode != null) {
             _recruitments.clear()
             setState { state.value.copy(page = 0L) }
+        }
+    }
+
+    private fun clear() {
+        RecruitmentFilterViewModel.jobCode = null
+        RecruitmentFilterViewModel.techCode = null
+        _recruitments.clear()
+        setState {
+            state.value.copy(
+                page = 0L,
+            )
         }
     }
 

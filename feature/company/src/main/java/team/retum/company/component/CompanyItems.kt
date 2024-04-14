@@ -52,6 +52,7 @@ internal fun CompanyItems(
                 id = item.id,
                 take = item.take,
                 hasRecruitment = item.hasRecruitment,
+                takeText = item.takeText,
             )
             if (whetherFetchNextPage(index)) {
                 fetchNextPage()
@@ -69,6 +70,7 @@ private fun CompanyItem(
     id: Long,
     take: Float,
     hasRecruitment: HasRecruitment,
+    takeText: String,
 ) {
     val hasRecruitmentText = when (hasRecruitment) {
         HasRecruitment.TRUE -> stringResource(id = R.string.has_recruitment)
@@ -78,11 +80,6 @@ private fun CompanyItem(
     val hasRecruitmentColor = when (hasRecruitment) {
         HasRecruitment.TRUE -> JobisTheme.colors.primaryContainer
         else -> JobisTheme.colors.onSurface
-    }
-    val takeText = if (take == 0f) {
-        ""
-    } else {
-        "연매출 ${take}억"
     }
 
     Row(

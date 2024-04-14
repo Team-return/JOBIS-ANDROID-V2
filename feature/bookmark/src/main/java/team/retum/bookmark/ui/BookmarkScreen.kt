@@ -30,7 +30,6 @@ import coil.compose.AsyncImage
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
-import team.retum.common.utils.ResourceKeys.IMAGE_URL
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -101,11 +100,11 @@ private fun BookmarkScreen(
                     .padding(horizontal = 24.dp)
                     .background(JobisTheme.colors.background),
             ) {
-                items(bookmarks) {
+                items(bookmarks, key = { it.recruitmentId }) {
                     BookmarkItem(
                         companyName = it.companyName,
-                        companyImageUrl = IMAGE_URL + it.companyLogoUrl,
-                        date = it.createdAt.substring(0..9),
+                        companyImageUrl = it.companyLogoUrl,
+                        date = it.createdAt,
                         recruitmentId = it.recruitmentId,
                         onDeleteClick = onDeleteClick,
                         onRecruitmentDetailClick = onRecruitmentDetailClick,

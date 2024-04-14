@@ -346,7 +346,7 @@ private fun WriteInterviewReview(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     JobisText(
-                        text = companyName.take(10) + "...",
+                        text = companyName,
                         style = JobisTypography.Description,
                         overflow = TextOverflow.Ellipsis,
                         color = JobisTheme.colors.inverseOnSurface,

@@ -1,5 +1,6 @@
 package team.retum.usecase.entity
 
+import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.BookmarksResponse
 
 data class BookmarksEntity(
@@ -18,8 +19,8 @@ fun BookmarksResponse.toBookmarkEntity() = BookmarksEntity(
 )
 
 private fun BookmarksResponse.BookmarkResponse.toEntity() = BookmarksEntity.BookmarkEntity(
-    companyLogoUrl = this.companyLogoUrl,
+    companyLogoUrl = ResourceKeys.IMAGE_URL + this.companyLogoUrl,
     companyName = this.companyName,
     recruitmentId = this.recruitmentId,
-    createdAt = this.createdAt,
+    createdAt = this.createdAt.substring(0..9),
 )

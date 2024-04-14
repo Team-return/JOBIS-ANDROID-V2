@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.component.ReviewContent
+import team.retum.company.model.CompanyInfo
 import team.retum.company.viewmodel.CompanyDetailsSideEffect
 import team.retum.company.viewmodel.CompanyDetailsState
 import team.retum.company.viewmodel.CompanyDetailsViewModel
@@ -43,7 +44,6 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.FetchReviewsEntity
-import team.retum.usecase.entity.company.CompanyDetailsEntity
 
 @Composable
 internal fun CompanyDetails(
@@ -82,6 +82,23 @@ internal fun CompanyDetails(
         }
     }
 
+    val companyInfoList = with(state.companyDetailsEntity) {
+        listOf(
+            CompanyInfo(R.string.representative_name, representativeName),
+            CompanyInfo(R.string.founded_at, foundedAt),
+            CompanyInfo(R.string.worker_number, workerNumber),
+            CompanyInfo(R.string.take, take),
+            CompanyInfo(R.string.main_address, mainAddress),
+            CompanyInfo(R.string.sub_address, subAddress),
+            CompanyInfo(R.string.manager, managerName),
+            CompanyInfo(R.string.manager_phone_number, managerPhoneNo),
+            CompanyInfo(R.string.sub_manager, subManagerName),
+            CompanyInfo(R.string.sub_manager_phone_number, subManagerPhoneNo),
+            CompanyInfo(R.string.email, email),
+            CompanyInfo(R.string.fax, fax),
+        )
+    }
+
     CompanyDetailsScreen(
         companyId = companyId,
         onBackPressed = onBackPressed,
@@ -90,6 +107,7 @@ internal fun CompanyDetails(
         onMoveToRecruitmentButtonClick = companyDetailsViewModel::onMoveToRecruitmentButtonClick,
         isMovedRecruitmentDetails = isMovedRecruitmentDetails,
         state = state,
+        companyInfoList = companyInfoList,
     )
 }
 
@@ -102,6 +120,7 @@ private fun CompanyDetailsScreen(
     onMoveToRecruitmentButtonClick: () -> Unit,
     isMovedRecruitmentDetails: Boolean,
     state: CompanyDetailsState,
+    companyInfoList: List<CompanyInfo>,
 ) {
     Column(
         modifier = Modifier
@@ -123,7 +142,14 @@ private fun CompanyDetailsScreen(
                 name = state.companyDetailsEntity.companyName,
                 description = state.companyDetailsEntity.companyIntroduce,
             )
-            CompanyInformations(companyDetailsEntity = state.companyDetailsEntity)
+            Column(modifier = Modifier.padding(vertical = 16.dp)) {
+                companyInfoList.forEach { (title, detail) ->
+                    CompanyInformation(
+                        title = stringResource(id = title),
+                        detail = detail,
+                    )
+                }
+            }
             if (state.reviews.isNotEmpty()) {
                 Reviews(
                     reviews = state.reviews,
@@ -192,62 +218,6 @@ private fun CompanyMainInformation(
             text = description,
             style = JobisTypography.Body,
         )
-    }
-}
-
-@Composable
-private fun CompanyInformations(companyDetailsEntity: CompanyDetailsEntity) {
-    Column(modifier = Modifier.padding(vertical = 16.dp)) {
-        with(companyDetailsEntity) {
-            CompanyInformation(
-                title = stringResource(id = R.string.representative_name),
-                detail = representativeName,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.founded_at),
-                detail = foundedAt,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.worker_number),
-                detail = workerNumber,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.take),
-                detail = take,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.main_address),
-                detail = mainAddress,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.sub_address),
-                detail = subAddress,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.manager),
-                detail = managerName,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.manager_phone_number),
-                detail = managerPhoneNo,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.sub_manager),
-                detail = subManagerName,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.sub_manager_phone_number),
-                detail = subManagerPhoneNo,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.email),
-                detail = email,
-            )
-            CompanyInformation(
-                title = stringResource(id = R.string.fax),
-                detail = fax,
-            )
-        }
     }
 }
 

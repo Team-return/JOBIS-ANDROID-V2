@@ -12,7 +12,7 @@ class SendAuthenticationCodeUseCase @Inject constructor(
         authCodeType: AuthCodeType,
     ) = runCatching {
         authRepository.sendAuthenticationCode(
-            email = email,
+            email = "$email@dsm.hs.kr",
             authCodeType = authCodeType,
         )
     }
