@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.common.component.ReviewContent
-import team.retum.company.model.CompanyInfo
+import team.retum.company.model.CompanyInfoData
 import team.retum.company.viewmodel.CompanyDetailsSideEffect
 import team.retum.company.viewmodel.CompanyDetailsState
 import team.retum.company.viewmodel.CompanyDetailsViewModel
@@ -84,18 +84,18 @@ internal fun CompanyDetails(
 
     val companyInfoList = with(state.companyDetailsEntity) {
         listOf(
-            CompanyInfo(R.string.representative_name, representativeName),
-            CompanyInfo(R.string.founded_at, foundedAt),
-            CompanyInfo(R.string.worker_number, workerNumber),
-            CompanyInfo(R.string.take, take),
-            CompanyInfo(R.string.main_address, mainAddress),
-            CompanyInfo(R.string.sub_address, subAddress),
-            CompanyInfo(R.string.manager, managerName),
-            CompanyInfo(R.string.manager_phone_number, managerPhoneNo),
-            CompanyInfo(R.string.sub_manager, subManagerName),
-            CompanyInfo(R.string.sub_manager_phone_number, subManagerPhoneNo),
-            CompanyInfo(R.string.email, email),
-            CompanyInfo(R.string.fax, fax),
+            CompanyInfoData(R.string.representative_name, representativeName),
+            CompanyInfoData(R.string.founded_at, foundedAt),
+            CompanyInfoData(R.string.worker_number, workerNumber),
+            CompanyInfoData(R.string.take, take),
+            CompanyInfoData(R.string.main_address, mainAddress),
+            CompanyInfoData(R.string.sub_address, subAddress),
+            CompanyInfoData(R.string.manager, managerName),
+            CompanyInfoData(R.string.manager_phone_number, managerPhoneNo),
+            CompanyInfoData(R.string.sub_manager, subManagerName),
+            CompanyInfoData(R.string.sub_manager_phone_number, subManagerPhoneNo),
+            CompanyInfoData(R.string.email, email),
+            CompanyInfoData(R.string.fax, fax),
         )
     }
 
@@ -120,7 +120,7 @@ private fun CompanyDetailsScreen(
     onMoveToRecruitmentButtonClick: () -> Unit,
     isMovedRecruitmentDetails: Boolean,
     state: CompanyDetailsState,
-    companyInfoList: List<CompanyInfo>,
+    companyInfoList: List<CompanyInfoData>,
 ) {
     Column(
         modifier = Modifier

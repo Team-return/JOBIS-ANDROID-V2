@@ -4,6 +4,8 @@ import team.retum.common.enums.AuthCodeType
 import team.retum.data.repository.auth.AuthRepository
 import javax.inject.Inject
 
+private const val EMAIL = "@dsm.hs.kr"
+
 class SendAuthenticationCodeUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
@@ -12,7 +14,7 @@ class SendAuthenticationCodeUseCase @Inject constructor(
         authCodeType: AuthCodeType,
     ) = runCatching {
         authRepository.sendAuthenticationCode(
-            email = "$email@dsm.hs.kr",
+            email = email + EMAIL,
             authCodeType = authCodeType,
         )
     }
