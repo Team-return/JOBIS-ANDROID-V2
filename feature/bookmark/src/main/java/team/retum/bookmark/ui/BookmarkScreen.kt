@@ -100,7 +100,10 @@ private fun BookmarkScreen(
                     .padding(horizontal = 24.dp)
                     .background(JobisTheme.colors.background),
             ) {
-                items(bookmarks, key = { it.recruitmentId }) {
+                items(
+                    items = bookmarks,
+                    key = { it.recruitmentId },
+                ) {
                     BookmarkItem(
                         companyName = it.companyName,
                         companyImageUrl = it.companyLogoUrl,

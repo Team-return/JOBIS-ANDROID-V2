@@ -82,7 +82,7 @@ internal fun CompanyDetails(
         }
     }
 
-    val companyInfoList = with(state.companyDetailsEntity) {
+    val companyInfo = with(state.companyDetailsEntity) {
         listOf(
             CompanyInfoData(R.string.representative_name, representativeName),
             CompanyInfoData(R.string.founded_at, foundedAt),
@@ -107,7 +107,7 @@ internal fun CompanyDetails(
         onMoveToRecruitmentButtonClick = companyDetailsViewModel::onMoveToRecruitmentButtonClick,
         isMovedRecruitmentDetails = isMovedRecruitmentDetails,
         state = state,
-        companyInfoList = companyInfoList,
+        companyInfo = companyInfo,
     )
 }
 
@@ -120,7 +120,7 @@ private fun CompanyDetailsScreen(
     onMoveToRecruitmentButtonClick: () -> Unit,
     isMovedRecruitmentDetails: Boolean,
     state: CompanyDetailsState,
-    companyInfoList: List<CompanyInfoData>,
+    companyInfo: List<CompanyInfoData>,
 ) {
     Column(
         modifier = Modifier
@@ -143,7 +143,7 @@ private fun CompanyDetailsScreen(
                 description = state.companyDetailsEntity.companyIntroduce,
             )
             Column(modifier = Modifier.padding(vertical = 16.dp)) {
-                companyInfoList.forEach { (title, detail) ->
+                companyInfo.forEach { (title, detail) ->
                     CompanyInformation(
                         title = stringResource(id = title),
                         detail = detail,
