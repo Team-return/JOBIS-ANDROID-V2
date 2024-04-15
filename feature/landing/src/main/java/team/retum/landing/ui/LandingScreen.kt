@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.LottieComposition
@@ -117,7 +118,7 @@ private fun LandingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             JobisButton(
-                text = "새 계정으로 시작하기",
+                text = stringResource(id = R.string.start_new_account),
                 onClick = onSignUpClick,
                 color = ButtonColor.Primary,
                 keyboardInteractionEnabled = false,
@@ -130,7 +131,7 @@ private fun LandingScreen(
                         indication = rememberRipple(),
                         interactionSource = remember { MutableInteractionSource() },
                     ),
-                text = "기존 계정으로 로그인하기",
+                text = stringResource(id = R.string.login_with_existing_account),
                 style = JobisTypography.SubBody,
                 textDecoration = TextDecoration.Underline,
                 color = JobisTheme.colors.onSurfaceVariant,

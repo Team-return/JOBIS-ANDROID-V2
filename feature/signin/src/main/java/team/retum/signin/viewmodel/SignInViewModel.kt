@@ -14,8 +14,6 @@ import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
 import team.retum.usecase.usecase.user.SignInUseCase
 import javax.inject.Inject
 
-private const val EMAIL = "@dsm.hs.kr"
-
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
@@ -64,7 +62,7 @@ class SignInViewModel @Inject constructor(
         setState { state.value.copy(buttonEnabled = false) }
         viewModelScope.launch(Dispatchers.IO) {
             signInUseCase(
-                email = state.value.email + EMAIL,
+                email = state.value.email,
                 password = state.value.password,
                 deviceToken = deviceToken,
             ).onSuccess {
