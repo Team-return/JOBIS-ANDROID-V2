@@ -18,7 +18,7 @@ fun NavGraphBuilder.selectGender(
 ) {
     composable(
         route = "$NAVIGATION_SELECT_GENDER/{${ResourceKeys.SIGN_UP}}",
-        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { NavType.StringType }),
+        arguments = listOf(navArgument(ResourceKeys.SIGN_UP) { type = NavType.StringType }),
     ) {
         SelectGender(
             onBackPressed = onBackPressed,

@@ -18,5 +18,5 @@ internal fun FetchReviewableCompaniesResponse.toEntity() = ReviewableCompaniesEn
 private fun FetchReviewableCompaniesResponse.CompanyResponse.toEntity() =
     ReviewableCompaniesEntity.ReviewableCompanyEntity(
         id = this.id,
-        name = this.name,
+        name = this.name.take(10) + "...",
     )

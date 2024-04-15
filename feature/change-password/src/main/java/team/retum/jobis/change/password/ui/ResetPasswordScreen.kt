@@ -128,7 +128,7 @@ private fun ResetPasswordInputs(
         hint = stringResource(id = R.string.hint_password),
         showDescription = showPasswordDescription,
         informationDescription = stringResource(id = R.string.password_information_description),
-        errorDescription = stringResource(id = R.string.password_error_description),
+        errorDescription = stringResource(id = R.string.password_error),
         descriptionType = passwordDescriptionType,
         showVisibleIcon = true,
         imeAction = ImeAction.Next,

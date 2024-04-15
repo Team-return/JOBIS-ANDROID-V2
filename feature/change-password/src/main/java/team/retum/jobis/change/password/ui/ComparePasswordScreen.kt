@@ -74,7 +74,7 @@ private fun ComparePasswordScreen(
             showVisibleIcon = true,
             showDescription = { state.showPasswordDescription },
             descriptionType = DescriptionType.Error,
-            errorDescription = stringResource(id = R.string.password_error_description),
+            errorDescription = stringResource(id = R.string.password_error),
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
