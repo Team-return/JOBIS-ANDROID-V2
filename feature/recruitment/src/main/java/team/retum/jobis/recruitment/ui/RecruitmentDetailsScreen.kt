@@ -457,7 +457,11 @@ private fun BottomBar(
                 },
             ),
             contentDescription = "bookmark",
-            tint = JobisTheme.colors.onPrimary,
+            tint = if (isBookmark) {
+                JobisTheme.colors.onPrimary
+            } else {
+                JobisTheme.colors.onSurfaceVariant
+            },
         )
     }
 }
