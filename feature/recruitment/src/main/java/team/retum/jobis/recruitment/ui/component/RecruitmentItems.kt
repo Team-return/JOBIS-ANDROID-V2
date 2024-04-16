@@ -94,9 +94,10 @@ private fun RecruitmentItem(
                     .size(48.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(
-                        color = when (recruitment.companyProfileUrl.isEmpty()) {
-                            true -> JobisTheme.colors.surfaceVariant
-                            false -> Color.Unspecified
+                        color = if (recruitment.companyProfileUrl.isEmpty()) {
+                            JobisTheme.colors.surfaceVariant
+                        } else {
+                            Color.Unspecified
                         },
                     ),
                 model = recruitment.companyProfileUrl,
@@ -112,9 +113,10 @@ private fun RecruitmentItem(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(4.dp))
                         .background(
-                            color = when (recruitment.companyName.isBlank()) {
-                                true -> JobisTheme.colors.surfaceVariant
-                                false -> Color.Unspecified
+                            color = if (recruitment.companyName.isBlank()) {
+                                JobisTheme.colors.surfaceVariant
+                            } else {
+                                Color.Unspecified
                             },
                         ),
                     text = recruitment.companyName,
@@ -127,9 +129,10 @@ private fun RecruitmentItem(
                         .fillMaxWidth(DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED)
                         .clip(RoundedCornerShape(4.dp))
                         .background(
-                            when (whetherMilitarySupported.isBlank()) {
-                                true -> JobisTheme.colors.surfaceVariant
-                                false -> Color.Unspecified
+                            if (whetherMilitarySupported.isBlank()) {
+                                JobisTheme.colors.surfaceVariant
+                            } else {
+                                Color.Unspecified
                             },
                         ),
                     text = whetherMilitarySupported,
@@ -142,16 +145,18 @@ private fun RecruitmentItem(
         JobisIconButton(
             modifier = Modifier.padding(4.dp),
             painter = painterResource(
-                id = when (bookmarked) {
-                    true -> JobisIcon.BookmarkOn
-                    false -> JobisIcon.BookmarkOff
+                id = if (bookmarked) {
+                    JobisIcon.BookmarkOn
+                } else {
+                    JobisIcon.BookmarkOff
                 },
             ),
             contentDescription = "bookmark",
             onClick = { onBookmarked(recruitment.id) },
-            tint = when (bookmarked) {
-                true -> JobisTheme.colors.onPrimary
-                false -> JobisTheme.colors.onSurfaceVariant
+            tint = if (bookmarked) {
+                JobisTheme.colors.onPrimary
+            } else {
+                JobisTheme.colors.onSurfaceVariant
             },
         )
     }
