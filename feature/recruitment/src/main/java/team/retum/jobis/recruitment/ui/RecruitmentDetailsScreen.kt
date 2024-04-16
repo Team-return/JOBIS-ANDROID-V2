@@ -427,7 +427,7 @@ private fun BottomBar(
                     id = if (isApplicable) {
                         R.string.apply
                     } else {
-                        R.string.can_do_apply_third
+                        R.string.can_do_apply
                     },
                 ),
                 style = JobisTypography.SubHeadLine,
