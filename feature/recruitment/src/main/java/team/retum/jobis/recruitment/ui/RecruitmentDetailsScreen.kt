@@ -450,14 +450,16 @@ private fun BottomBar(
                 .clip(RectangleShape)
                 .padding(16.dp),
             painter = painterResource(
-                if (isBookmark) {
-                    JobisIcon.BookmarkOn
-                } else {
-                    JobisIcon.BookmarkOff
+                when (isBookmark) {
+                    true -> JobisIcon.BookmarkOn
+                    false -> JobisIcon.BookmarkOff
                 },
             ),
             contentDescription = "bookmark",
-            tint = JobisTheme.colors.onPrimary,
+            tint = when (isBookmark) {
+                true -> JobisTheme.colors.onPrimary
+                false -> JobisTheme.colors.onSurfaceVariant
+            },
         )
     }
 }

@@ -1,6 +1,5 @@
 package team.retum.jobis.recruitment.ui.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,11 +47,7 @@ internal fun RecruitmentItems(
             RecruitmentItem(
                 recruitment = recruitment,
                 onClick = onRecruitmentClick,
-                bookmarkIcon = if (bookmarked) {
-                    JobisIcon.BookmarkOn
-                } else {
-                    JobisIcon.BookmarkOff
-                },
+                bookmarked = bookmarked,
                 onBookmarked = {
                     onBookmarkClick(it)
                     bookmarked = !bookmarked
@@ -69,7 +64,7 @@ internal fun RecruitmentItems(
 private fun RecruitmentItem(
     recruitment: RecruitmentsEntity.RecruitmentEntity,
     onClick: (recruitId: Long) -> Unit,
-    @DrawableRes bookmarkIcon: Int,
+    bookmarked: Boolean,
     onBookmarked: (recruitId: Long) -> Unit,
 ) {
     val whetherMilitarySupported = when (recruitment.militarySupport) {
@@ -99,10 +94,9 @@ private fun RecruitmentItem(
                     .size(48.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(
-                        color = if (recruitment.companyProfileUrl.isEmpty()) {
-                            JobisTheme.colors.surfaceVariant
-                        } else {
-                            Color.Unspecified
+                        color = when (recruitment.companyProfileUrl.isEmpty()) {
+                            true -> JobisTheme.colors.surfaceVariant
+                            false -> Color.Unspecified
                         },
                     ),
                 model = recruitment.companyProfileUrl,
@@ -118,10 +112,9 @@ private fun RecruitmentItem(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(4.dp))
                         .background(
-                            color = if (recruitment.companyName.isBlank()) {
-                                JobisTheme.colors.surfaceVariant
-                            } else {
-                                Color.Unspecified
+                            color = when (recruitment.companyName.isBlank()) {
+                                true -> JobisTheme.colors.surfaceVariant
+                                false -> Color.Unspecified
                             },
                         ),
                     text = recruitment.companyName,
@@ -134,10 +127,9 @@ private fun RecruitmentItem(
                         .fillMaxWidth(DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED)
                         .clip(RoundedCornerShape(4.dp))
                         .background(
-                            if (whetherMilitarySupported.isBlank()) {
-                                JobisTheme.colors.surfaceVariant
-                            } else {
-                                Color.Unspecified
+                            when (whetherMilitarySupported.isBlank()) {
+                                true -> JobisTheme.colors.surfaceVariant
+                                false -> Color.Unspecified
                             },
                         ),
                     text = whetherMilitarySupported,
@@ -149,10 +141,18 @@ private fun RecruitmentItem(
         Spacer(modifier = Modifier.width(4.dp))
         JobisIconButton(
             modifier = Modifier.padding(4.dp),
-            painter = painterResource(id = bookmarkIcon),
+            painter = painterResource(
+                id = when (bookmarked) {
+                    true -> JobisIcon.BookmarkOn
+                    false -> JobisIcon.BookmarkOff
+                },
+            ),
             contentDescription = "bookmark",
             onClick = { onBookmarked(recruitment.id) },
-            tint = JobisTheme.colors.onPrimary,
+            tint = when (bookmarked) {
+                true -> JobisTheme.colors.onPrimary
+                false -> JobisTheme.colors.onSurfaceVariant
+            },
         )
     }
 }
