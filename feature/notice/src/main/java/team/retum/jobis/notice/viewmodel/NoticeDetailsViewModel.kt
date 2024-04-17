@@ -35,7 +35,7 @@ internal class NoticeDetailsViewModel @Inject constructor(
 
     internal fun saveFileData(urlString: String, destinationPath: String, context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
+            runCatching {
                 val url = URL(ResourceKeys.IMAGE_URL + urlString)
                 val connection = url.openConnection()
                 connection.connect()
@@ -62,7 +62,9 @@ internal class NoticeDetailsViewModel @Inject constructor(
                 output.flush()
                 output.close()
                 input.close()
-            } catch (e: Exception) {
+            }.onSuccess {
+                postSideEffect(NoticeDetailsSideEffect.DownLoadSuccess)
+            }.onFailure {
                 postSideEffect(NoticeDetailsSideEffect.DownloadFailed)
             }
         }
@@ -87,6 +89,7 @@ internal data class NoticeDetailsState(
 }
 
 internal sealed interface NoticeDetailsSideEffect {
+    data object DownLoadSuccess : NoticeDetailsSideEffect
     data object BadRequest : NoticeDetailsSideEffect
     data object DownloadFailed : NoticeDetailsSideEffect
 }

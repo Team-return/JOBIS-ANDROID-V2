@@ -1,6 +1,5 @@
 package team.retum.jobis.notice.ui
 
-import android.content.Context
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +31,7 @@ import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.notification.JobisNotification
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.notice.NoticeDetailsEntity
@@ -64,6 +64,20 @@ internal fun NoticeDetails(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+
+                is NoticeDetailsSideEffect.DownLoadSuccess -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.success_download),
+                    ).show()
+
+                    JobisNotification.create(
+                        context = context,
+                        channelId = "channel_id",
+                        title = "",
+                        content = ""
+                    )
+                }
             }
         }
     }
@@ -72,8 +86,13 @@ internal fun NoticeDetails(
         onBackPressed = onBackPressed,
         scrollState = rememberScrollState(),
         state = state,
-        saveFileData = noticeDetailsViewModel::saveFileData,
-        context = context,
+        saveFileData = { url, fileName ->
+            noticeDetailsViewModel.saveFileData(
+                urlString = url,
+                destinationPath = fileName,
+                context = context,
+            )
+        },
     )
 }
 
@@ -82,8 +101,7 @@ private fun NoticeDetailsScreen(
     onBackPressed: () -> Unit,
     scrollState: ScrollState,
     state: NoticeDetailsState,
-    saveFileData: (String, String, Context) -> Unit,
-    context: Context,
+    saveFileData: (String, String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -104,7 +122,6 @@ private fun NoticeDetailsScreen(
                 AttachFile(
                     fileName = it.url,
                     saveFileData = saveFileData,
-                    context = context,
                 )
             }
         }
@@ -139,8 +156,7 @@ private fun Notice(
 @Composable
 private fun AttachFile(
     fileName: String,
-    saveFileData: (url: String, fileName: String, Context) -> Unit,
-    context: Context,
+    saveFileData: (url: String, fileName: String) -> Unit,
 ) {
     Column {
         JobisText(
@@ -171,7 +187,7 @@ private fun AttachFile(
             JobisIconButton(
                 painter = painterResource(id = R.drawable.ic_download),
                 contentDescription = "download",
-                onClick = { saveFileData(fileName, fileName.split("-").last(), context) },
+                onClick = { saveFileData(fileName, fileName.split("-").last()) },
             )
         }
     }
