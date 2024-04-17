@@ -18,7 +18,7 @@
     <string name="authentication_code">인증코드</string>
 
     <string name="authentication">인증 하기</string>
-    <string name="re_send_authentication_code">재전송</string>
+    <string name="re_send_authentication_code">재발송</string>
 
     <string name="hint_email">example</string>
     <string name="hint_authentication_code">이메일로 온 코드를 입력해주세요</string>
