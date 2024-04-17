@@ -138,7 +138,7 @@ private fun EmailInputs(
         showEmailHint = true,
         checkDescription = stringResource(
             id = if (isResend()) {
-                R.string.description_email_re_sent
+                R.string.description_email_re_send
             } else {
                 R.string.description_email_sent
             },
