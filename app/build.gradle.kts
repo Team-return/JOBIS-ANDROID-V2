@@ -38,7 +38,6 @@ android {
         }
         debug {
             splits.abi.isEnable = false
-            splits.density.isEnable = false
             aaptOptions.cruncherEnabled = false
         }
     }
