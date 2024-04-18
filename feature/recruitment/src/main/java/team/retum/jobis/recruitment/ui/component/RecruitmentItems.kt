@@ -1,6 +1,5 @@
 package team.retum.jobis.recruitment.ui.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,11 +47,7 @@ internal fun RecruitmentItems(
             RecruitmentItem(
                 recruitment = recruitment,
                 onClick = onRecruitmentClick,
-                bookmarkIcon = if (bookmarked) {
-                    JobisIcon.BookmarkOn
-                } else {
-                    JobisIcon.BookmarkOff
-                },
+                bookmarked = bookmarked,
                 onBookmarked = {
                     onBookmarkClick(it)
                     bookmarked = !bookmarked
@@ -69,7 +64,7 @@ internal fun RecruitmentItems(
 private fun RecruitmentItem(
     recruitment: RecruitmentsEntity.RecruitmentEntity,
     onClick: (recruitId: Long) -> Unit,
-    @DrawableRes bookmarkIcon: Int,
+    bookmarked: Boolean,
     onBookmarked: (recruitId: Long) -> Unit,
 ) {
     val whetherMilitarySupported = when (recruitment.militarySupport) {
@@ -149,10 +144,20 @@ private fun RecruitmentItem(
         Spacer(modifier = Modifier.width(4.dp))
         JobisIconButton(
             modifier = Modifier.padding(4.dp),
-            painter = painterResource(id = bookmarkIcon),
+            painter = painterResource(
+                id = if (bookmarked) {
+                    JobisIcon.BookmarkOn
+                } else {
+                    JobisIcon.BookmarkOff
+                },
+            ),
             contentDescription = "bookmark",
             onClick = { onBookmarked(recruitment.id) },
-            tint = JobisTheme.colors.onPrimary,
+            tint = if (bookmarked) {
+                JobisTheme.colors.onPrimary
+            } else {
+                JobisTheme.colors.onSurfaceVariant
+            },
         )
     }
 }

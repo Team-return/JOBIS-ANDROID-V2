@@ -427,7 +427,7 @@ private fun BottomBar(
                     id = if (isApplicable) {
                         R.string.apply
                     } else {
-                        R.string.can_do_apply_third
+                        R.string.can_do_not_apply
                     },
                 ),
                 style = JobisTypography.SubHeadLine,
@@ -457,7 +457,11 @@ private fun BottomBar(
                 },
             ),
             contentDescription = "bookmark",
-            tint = JobisTheme.colors.onPrimary,
+            tint = if (isBookmark) {
+                JobisTheme.colors.onPrimary
+            } else {
+                JobisTheme.colors.onSurfaceVariant
+            },
         )
     }
 }

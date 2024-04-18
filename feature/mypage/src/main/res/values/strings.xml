@@ -11,7 +11,6 @@
     <string name="membership_withdrawal">회원 탈퇴</string>
     <string name="bug_report">버그 제보</string>
     <string name="to_bug_report">버그 제보하기</string>
-    <string name="bug_report_box">버그 제보함</string>
     <string name="write_interview_review">면접 후기를 적어주세요!</string>
     <string name="go_write">작성하러 가기 →</string>
     <string name="sign_out_modal_title">JOBIS에서 로그아웃 하시겠어요?</string>
