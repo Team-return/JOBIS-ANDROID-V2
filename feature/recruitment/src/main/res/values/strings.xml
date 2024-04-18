@@ -4,7 +4,6 @@
 
     <string name="military_supported">병역특례 O</string>
     <string name="military_not_supported">병역특례 X</string>
-    <string name="train_pay">실습 수당</string>
 
     <string name="recruitment_no_content">검색어와 관련된 모집의뢰서를 못 찾았어요</string>
     <string name="retry">제대로 입력했는지 다시 한 번 확인해주세요</string>
@@ -20,7 +19,6 @@
     <string name="recruitment_procedure">채용절차</string>
     <string name="required_grade">필수 성적</string>
     <string name="work_hours">근무시간</string>
-    <string name="convert_to_full_time_job">정규직 전환 시</string>
     <string name="wage_and_benefits">복리후생</string>
     <string name="submission_document">제출 서류</string>
     <string name="etc">기타 사항</string>

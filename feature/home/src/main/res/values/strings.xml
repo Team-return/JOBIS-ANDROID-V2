@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="employment_rate">%s기 대마고\n학생들의 취업</string>
-    <string name="employment_rate_current">현재 %s명이 취업했어용</string>
 
-    <string name="search_other_companies">다른 기업들\n탐색하기</string>
     <string name="experiential_field_training">체험형 \n현장실습</string>
     <string name="how_about_other_companies">다른 기업들은 어떨까?\n다른 기업들 둘러 보러 가기</string>
 
@@ -13,7 +11,6 @@
     <string name="description_apply_status">승인요청 및 반려 상태엔 재지원 가능</string>
     <string name="empty_apply_companies">현재 지원한 기업이 없어요</string>
 
-    <string name="reason">사유 보기</string>
     <string name="reason_rejection">반려 사유</string>
     <string name="re_apply">재지원 하기</string>
 
