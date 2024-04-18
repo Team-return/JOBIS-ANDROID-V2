@@ -104,6 +104,7 @@ private fun InputEmailScreen(
             showAuthenticationCodeDescription = { state.showAuthenticationCodeDescription },
             sendAuthenticationCode = { state.sendAuthenticationCode },
             remainTime = state.remainTime,
+            isResend = { state.isResend },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
@@ -127,6 +128,7 @@ private fun EmailInputs(
     showAuthenticationCodeDescription: () -> Boolean,
     sendAuthenticationCode: () -> Boolean,
     remainTime: String,
+    isResend: () -> Boolean,
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
@@ -134,7 +136,13 @@ private fun EmailInputs(
         hint = stringResource(id = R.string.hint_email),
         onValueChange = onEmailChange,
         showEmailHint = true,
-        checkDescription = stringResource(id = R.string.description_email_sent),
+        checkDescription = stringResource(
+            id = if (isResend()) {
+                R.string.description_email_re_send
+            } else {
+                R.string.description_email_sent
+            },
+        ),
         errorDescription = stringResource(id = R.string.description_conflict_email),
         showDescription = showEmailDescription,
         descriptionType = emailDescriptionType,
@@ -150,6 +158,7 @@ private fun EmailInputs(
             color = ButtonColor.Secondary,
             onClick = onAuthenticationClick,
             keyboardInteractionEnabled = false,
+            enabled = email().isNotEmpty(),
         )
     }
     JobisTextField(

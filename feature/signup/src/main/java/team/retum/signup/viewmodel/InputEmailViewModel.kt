@@ -25,6 +25,7 @@ internal class InputEmailViewModel @Inject constructor(
 ) : BaseViewModel<InputEmailState, InputEmailSideEffect>(InputEmailState.getDefaultState()) {
 
     private val timerUtil: TimerUtil = TimerUtil()
+    private var authenticationClickCount: Int = 0
 
     internal fun onNextClick() {
         setState { state.value.copy(buttonEnabled = false) }
@@ -82,6 +83,10 @@ internal class InputEmailViewModel @Inject constructor(
                         showEmailDescription = true,
                     )
                 }
+                if (authenticationClickCount > 0) {
+                    setState { state.value.copy(isResend = true) }
+                }
+                authenticationClickCount++
             }.onFailure {
                 when (it) {
                     is BadRequestException -> {
@@ -134,6 +139,7 @@ internal data class InputEmailState(
     val buttonEnabled: Boolean,
     val sendAuthenticationCode: Boolean,
     val remainTime: String,
+    val isResend: Boolean,
 ) {
     companion object {
         fun getDefaultState() = InputEmailState(
@@ -145,6 +151,7 @@ internal data class InputEmailState(
             buttonEnabled = false,
             sendAuthenticationCode = false,
             remainTime = "5:00",
+            isResend = false,
         )
     }
 }
