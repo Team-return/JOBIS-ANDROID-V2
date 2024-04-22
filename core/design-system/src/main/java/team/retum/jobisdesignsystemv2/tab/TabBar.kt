@@ -29,7 +29,7 @@ fun TabBar(
     onSelectTab: (Int) -> Unit,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = 24.dp,

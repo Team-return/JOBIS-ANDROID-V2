@@ -24,6 +24,10 @@ android {
         }
     }
 
+    hilt {
+        enableAggregatingTask = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -40,6 +44,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+        }
+        debug {
+            splits.abi.isEnable = false
+            aaptOptions.cruncherEnabled = false
         }
     }
     compileOptions {
