@@ -27,3 +27,7 @@ internal fun DependencyHandler.androidTestImplementation(dependencyNotation: Any
 internal fun DependencyHandler.kapt(dependencyNotation: Any) {
     add("kapt", dependencyNotation)
 }
+
+internal fun DependencyHandler.kaptAndroidTest(dependencyNotation: Any) {
+    add("kaptAndroidTest", dependencyNotation)
+}
