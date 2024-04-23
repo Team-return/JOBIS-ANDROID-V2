@@ -18,4 +18,5 @@ object ResourceKeys {
     const val IS_MOVED_RECRUITMENT_DETAILS = "isMovedRecruitmentDetails"
     const val IS_MOVED_COMPANY_DETAILS = "isMovedCompanyDetails"
     const val EMAIL = "@dsm.hs.kr"
+    const val DATABASE_NAME = "jobis-database"
 }
