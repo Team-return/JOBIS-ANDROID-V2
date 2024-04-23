@@ -26,11 +26,16 @@ class ComposeGradlePlugin : Plugin<Project> {
             implementation(project(":core:design-system"))
             implementation(project(":core:common"))
             implementation(project(":core:domain"))
+
             implementation(libs.findLibrary("androidx.compose.foundation").get())
             implementation(libs.findLibrary("androidx.compose.material3").get())
             implementation(libs.findLibrary("androidx.lifecycle.runtime.compose").get())
             implementation(libs.findLibrary("hilt.navigation").get())
             implementation(libs.findLibrary("androidx.navigation.compose").get())
+
+            androidTestImplementation(libs.findLibrary("androidx.compose.ui.test").get())
+            androidTestImplementation(libs.findLibrary("hilt.android.testing").get())
+            kaptAndroidTest(libs.findLibrary("hilt-android-compiler").get())
         }
     }
 }
