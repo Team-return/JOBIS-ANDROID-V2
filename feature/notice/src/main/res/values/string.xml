@@ -3,7 +3,7 @@
     <string name="announcement">공지사항</string>
     <string name="attachFile">첨부파일</string>
     <string name="occurred_error">오류가 발생했습니다</string>
-    <string name="failed_download">다운로드를 실패했습니다</string>
-    <string name="success_download">파일이 다운로드되었습니다</string>
+    <string name="failed_download">다운로드에 실패했습니다</string>
+    <string name="success_download">다운로드가 완료되었어요!</string>
     <string name="open">열기</string>
 </resources>
