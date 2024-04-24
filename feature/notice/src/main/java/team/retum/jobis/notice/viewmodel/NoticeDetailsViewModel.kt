@@ -54,6 +54,9 @@ internal class NoticeDetailsViewModel @Inject constructor(
                 val data = ByteArray(1024)
                 var total: Long = 0
                 var count: Int
+
+                setState { state.value.copy(filePath = dir) }
+
                 while (input.read(data).also { count = it } != -1) {
                     total += count.toLong()
                     output.write(data, 0, count)
@@ -74,6 +77,7 @@ internal class NoticeDetailsViewModel @Inject constructor(
 internal data class NoticeDetailsState(
     val noticeId: Long,
     val noticeDetailsEntity: NoticeDetailsEntity,
+    val filePath: String,
 ) {
     companion object {
         fun getDefaultState() = NoticeDetailsState(
@@ -84,6 +88,7 @@ internal data class NoticeDetailsState(
                 createdAt = "",
                 attachments = emptyList(),
             ),
+            filePath = "",
         )
     }
 }
