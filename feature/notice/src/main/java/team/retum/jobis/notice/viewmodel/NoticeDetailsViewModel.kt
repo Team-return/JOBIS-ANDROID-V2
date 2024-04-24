@@ -33,21 +33,28 @@ internal class NoticeDetailsViewModel @Inject constructor(
         }
     }
 
-    internal fun saveFileData(urlString: String, destinationPath: String, context: Context) {
+    internal fun saveFileData(
+        urlString: String,
+        destinationPath: String,
+        context: Context,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 val url = URL(ResourceKeys.IMAGE_URL + urlString)
                 val connection = url.openConnection()
                 connection.connect()
 
+                // 파일을 저장할 디렉토리 생성
                 val dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
                     .toString() + destinationPath
 
+                // 디렉토리 존재 확인
                 val directory = File(dir)
                 if (!directory.exists()) {
                     directory.createNewFile()
                 }
 
+                // 파일 스트림 초기화
                 val input = BufferedInputStream(url.openStream(), 8192)
                 val output = FileOutputStream(dir)
 
@@ -55,13 +62,16 @@ internal class NoticeDetailsViewModel @Inject constructor(
                 var total: Long = 0
                 var count: Int
 
+                // 파일 경로 저장(파일 열때 사용)
                 setState { state.value.copy(filePath = dir) }
 
+                // 파일 버퍼를 사용하여 다운로드
                 while (input.read(data).also { count = it } != -1) {
                     total += count.toLong()
                     output.write(data, 0, count)
                 }
 
+                // 스트림 및 열기 닫기
                 output.flush()
                 output.close()
                 input.close()
