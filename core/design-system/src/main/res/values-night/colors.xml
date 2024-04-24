@@ -3,4 +3,7 @@
     <color name="gray20">#060606</color>
     <color name="gray30">#191919</color>
     <color name="gray90">#FFFFFF</color>
+    <color name="primary10">#000D8E</color>
+    <color name="primary20">#4F98D9</color>  <!--디자인 시스템에서는 primary40값임-->
+    <color name="primary30">#4F98D9</color>  <!--디자인 시스템에서는 primary40값임-->
 </resources>
