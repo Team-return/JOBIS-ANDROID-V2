@@ -1,8 +1,5 @@
 package team.retum.jobis.notice.ui
 
-import android.content.Context
-import android.content.Intent
-import android.webkit.MimeTypeMap
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,9 +20,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.jobis.notice.util.openDownloadedFile
 import team.retum.jobis.notice.viewmodel.NoticeDetailsSideEffect
 import team.retum.jobis.notice.viewmodel.NoticeDetailsState
 import team.retum.jobis.notice.viewmodel.NoticeDetailsViewModel
@@ -39,8 +36,6 @@ import team.retum.jobisdesignsystemv2.popup.JobisPopup
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.notice.NoticeDetailsEntity
-import java.io.File
-import java.util.Locale
 
 @Composable
 internal fun NoticeDetails(
@@ -75,7 +70,7 @@ internal fun NoticeDetails(
                     JobisPopup.showPopup(
                         context = context,
                         message = context.getString(R.string.success_download),
-                        drawable = JobisIcon.DownLoad,
+                        drawable = JobisIcon.Download,
                         onClick = {
                             openDownloadedFile(
                                 filePath = state.filePath,
@@ -192,7 +187,7 @@ private fun AttachFile(
                 style = JobisTypography.Body,
             )
             JobisIconButton(
-                painter = painterResource(id = JobisIcon.DownLoad),
+                painter = painterResource(id = JobisIcon.Download),
                 contentDescription = "download",
                 onClick = {
                     saveFileData(
@@ -205,26 +200,4 @@ private fun AttachFile(
             )
         }
     }
-}
-
-private fun openDownloadedFile(
-    filePath: String,
-    context: Context,
-) {
-    val file = File(filePath)
-    val uri = FileProvider.getUriForFile(
-        context,
-        context.packageName + ".provider",
-        file,
-    )
-    val intent = Intent(Intent.ACTION_VIEW)
-    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    intent.setDataAndType(uri, getMimeType(filePath))
-    context.startActivity(intent)
-}
-
-private fun getMimeType(filePath: String): String? {
-    val extension = MimeTypeMap.getFileExtensionFromUrl(filePath)
-    return MimeTypeMap.getSingleton()
-        .getMimeTypeFromExtension(extension.toLowerCase(Locale.getDefault()))
 }
