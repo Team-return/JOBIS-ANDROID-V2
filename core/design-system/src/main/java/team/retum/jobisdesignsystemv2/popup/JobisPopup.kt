@@ -17,7 +17,18 @@ import team.retum.design_system.R
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 
 object JobisPopup {
-
+    /**
+     * Jobis' Custom Popup
+     *
+     * It is a view created in xml and consists of icons,messages and button.
+     *
+     * @param context Context used in JobisPopup
+     * @param message Message to display in JobisPopup
+     * @param onClick Called when this button is clicked
+     * @param buttonText ButtonText to be written on the button
+     * @param gravity Gravity which controls the placement of the popup window
+     * @param drawable Icons to be used in JobisPopup
+     */
     fun showPopup(
         context: Context,
         message: String,
@@ -25,7 +36,7 @@ object JobisPopup {
         buttonText: String,
         gravity: Int = Gravity.TOP,
         iconColor: Int = R.color.primary30,
-        @DrawableRes drawable: Int = JobisIcon.AppLogo,
+        @DrawableRes drawable: Int = JobisIcon.Download,
     ) {
         val popupView: View = LayoutInflater.from(context).inflate(R.layout.jobis_popup, null)
         val popupWindow = PopupWindow(
