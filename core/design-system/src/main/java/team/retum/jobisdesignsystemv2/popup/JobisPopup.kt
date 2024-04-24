@@ -3,9 +3,11 @@ package team.retum.jobisdesignsystemv2.popup
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
@@ -21,6 +23,7 @@ object JobisPopup {
         message: String,
         onClick: () -> Unit,
         buttonText: String,
+        gravity: Int = Gravity.TOP,
         iconColor: Int = R.color.primary30,
         @DrawableRes drawable: Int = JobisIcon.AppLogo,
     ) {
@@ -31,12 +34,25 @@ object JobisPopup {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true,
         )
+        val slideInAnimation = AnimationUtils.loadAnimation(context, R.anim.popup_slide_in)
+        popupView.startAnimation(slideInAnimation)
 
-        popupView.findViewById<ImageView>(R.id.img_popup_icon).setColorFilter(iconColor)
-        popupView.findViewById<ImageView>(R.id.img_popup_icon).setImageResource(drawable)
-        popupView.findViewById<TextView>(R.id.tv_popup_message).text = message
-        popupView.findViewById<Button>(R.id.btn_popup).setOnClickListener { onClick() }
-        popupView.findViewById<Button>(R.id.btn_popup).text = buttonText
+        val slideOutAnimation = AnimationUtils.loadAnimation(context, R.anim.popup_slide_out)
+
+        popupView.apply {
+            findViewById<ImageView>(R.id.img_popup_icon).setColorFilter(iconColor)
+            findViewById<ImageView>(R.id.img_popup_icon).setImageResource(drawable)
+            findViewById<TextView>(R.id.tv_popup_message).text = message
+            findViewById<Button>(R.id.btn_popup).setOnClickListener { onClick() }
+            findViewById<Button>(R.id.btn_popup).text = buttonText
+        }
+
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                popupView.startAnimation(slideOutAnimation)
+            },
+            3500,
+        )
 
         Handler(Looper.getMainLooper()).postDelayed(
             {
@@ -45,6 +61,6 @@ object JobisPopup {
             4000,
         )
 
-        popupWindow.showAtLocation(popupView, 0, 0, 180)
+        popupWindow.showAtLocation(popupView, gravity, 0, 180)
     }
 }
