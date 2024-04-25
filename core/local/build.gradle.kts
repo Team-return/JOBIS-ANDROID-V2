@@ -9,9 +9,12 @@ plugins {
 apply<CommonGradlePlugin>()
 
 android {
-    namespace = "team.retum.jobis.local"
+    namespace = "team.retum.jobis.core.local"
 }
 
 dependencies {
     implementation(project(":core:common"))
+
+    api(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
 }
