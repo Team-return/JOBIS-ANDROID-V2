@@ -32,6 +32,7 @@ class CommonGradlePlugin : Plugin<Project> {
             implementation(libs.findLibrary("hilt.android").get())
             kapt(libs.findLibrary(("hilt.android.compiler")).get())
             testImplementation(libs.findLibrary("junit").get())
+            androidTestImplementation(libs.findLibrary("junit").get())
             androidTestImplementation(libs.findLibrary("androidx.junit").get())
             androidTestImplementation(libs.findLibrary("androidx.espresso.core").get())
             implementation(libs.findLibrary("hilt-android-testing").get())
