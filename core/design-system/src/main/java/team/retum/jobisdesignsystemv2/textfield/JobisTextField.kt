@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -116,6 +117,7 @@ private fun TextField(
     leadingIcon: Painter?,
     content: @Composable () -> Unit,
     fieldColor: Color,
+    testTag: String,
 ) {
     val hintAlpha by animateFloatAsState(
         targetValue = if (value().isEmpty()) {
@@ -145,7 +147,8 @@ private fun TextField(
                 .padding(
                     horizontal = 16.dp,
                     vertical = 8.dp,
-                ),
+                )
+                .testTag(testTag),
             textStyle = style,
             singleLine = singleLine,
             visualTransformation = visualTransformation,
@@ -289,6 +292,7 @@ fun JobisTextField(
     showVisibleIcon: Boolean = false,
     leadingIcon: Painter? = null,
     fieldColor: Color = JobisTheme.colors.inverseSurface,
+    testTag: String = "",
     content: @Composable () -> Unit = { },
 ) {
     Column(
@@ -325,6 +329,7 @@ fun JobisTextField(
             leadingIcon = leadingIcon,
             content = content,
             fieldColor = fieldColor,
+            testTag = testTag,
         )
         AnimatedVisibility(
             visible = showDescription(),
