@@ -9,6 +9,10 @@ apply<CommonGradlePlugin>()
 
 android {
     namespace = "team.retum.domain"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {

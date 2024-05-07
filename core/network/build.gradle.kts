@@ -35,6 +35,9 @@ android {
             )
         }
     }
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {

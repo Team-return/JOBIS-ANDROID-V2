@@ -11,6 +11,10 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.bookmark"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {

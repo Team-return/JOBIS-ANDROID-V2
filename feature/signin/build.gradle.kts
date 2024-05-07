@@ -38,4 +38,7 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }

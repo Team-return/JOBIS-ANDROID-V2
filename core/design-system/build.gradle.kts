@@ -17,6 +17,9 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = ProjectProperties.COMPOSE_COMPILER_EXTENSION
     }
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {

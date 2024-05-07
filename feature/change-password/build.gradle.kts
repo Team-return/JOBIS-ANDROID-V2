@@ -12,4 +12,8 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.jobis.change_password"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
