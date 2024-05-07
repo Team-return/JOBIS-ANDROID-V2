@@ -42,5 +42,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+      - name: Run test
+        run: ./gradlew connectAndroidTest
+
       - name: Check Ktlint
         run: ./gradlew ktlintCheck

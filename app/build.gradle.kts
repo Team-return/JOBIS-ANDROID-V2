@@ -38,14 +38,6 @@ android {
             )
         }
         debug {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-        debug {
             splits.abi.isEnable = false
             aaptOptions.cruncherEnabled = false
         }

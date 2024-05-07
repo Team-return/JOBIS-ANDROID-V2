@@ -10,12 +10,15 @@ class CommonGradlePlugin : Plugin<Project> {
     }
 
     private fun setProjectConfig(project: Project) {
+        val moduleName = project.projectDir.absolutePath.split("/").last()
         project.android().apply {
             compileSdk = ProjectProperties.COMPILE_SDK
 
             defaultConfig {
                 minSdk = ProjectProperties.MIN_SDK
-                testInstrumentationRunner = "team.retum.common.HiltTestRunner"
+                if(moduleName != "design-system") {
+                    testInstrumentationRunner = "team.retum.common.HiltTestRunner"
+                }
                 consumerProguardFiles("consumer-rules.pro")
             }
 
