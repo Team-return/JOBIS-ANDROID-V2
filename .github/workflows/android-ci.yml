@@ -42,8 +42,13 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Run test
-        run: ./gradlew connectAndroidTest
+      - name: Run UI tests
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          script: ./gradlew connectedCheck
 
       - name: Check Ktlint
         run: ./gradlew ktlintCheck
