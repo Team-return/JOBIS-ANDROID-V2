@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -132,6 +133,7 @@ private fun SignInScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
+            modifier = Modifier.testTag(stringResource(id = R.string.sign_in)),
             text = stringResource(id = R.string.sign_in),
             onClick = onSignInClick,
             color = ButtonColor.Primary,
@@ -158,6 +160,7 @@ private fun SignInInputs(
         errorDescription = stringResource(id = R.string.description_email_not_found),
         descriptionType = DescriptionType.Error,
         showDescription = notFoundEmail,
+        testTag = stringResource(id = R.string.email),
     )
     JobisTextField(
         title = stringResource(id = R.string.password),
@@ -168,6 +171,7 @@ private fun SignInInputs(
         errorDescription = stringResource(id = R.string.description_password_invalid),
         showDescription = invalidPassword,
         descriptionType = DescriptionType.Error,
+        testTag = stringResource(id = R.string.password),
     )
 }
 

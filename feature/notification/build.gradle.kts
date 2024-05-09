@@ -12,4 +12,8 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.alarm"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }

@@ -62,17 +62,18 @@ private fun BasicButton(
 ) {
     val keyboardShow by keyboardAsState()
     val isKeyboardHideButton = keyboardShow && keyboardInteractionEnabled
-    val padding = if (isKeyboardHideButton || buttonType == ButtonType.SMALL || buttonType == ButtonType.DIALOG) {
-        PaddingValues(
-            vertical = 0.dp,
-            horizontal = 0.dp,
-        )
-    } else {
-        PaddingValues(
-            vertical = 12.dp,
-            horizontal = 24.dp,
-        )
-    }
+    val padding =
+        if (isKeyboardHideButton || buttonType == ButtonType.SMALL || buttonType == ButtonType.DIALOG) {
+            PaddingValues(
+                vertical = 0.dp,
+                horizontal = 0.dp,
+            )
+        } else {
+            PaddingValues(
+                vertical = 12.dp,
+                horizontal = 24.dp,
+            )
+        }
     val (shapeByKeyboardShow, pressDepth) = if (isKeyboardHideButton) {
         RoundedCornerShape(0.dp) to MIN_PRESS_DEPTH
     } else {
@@ -92,6 +93,8 @@ private fun BasicButton(
         shape = shapeByKeyboardShow,
         color = backgroundColor,
         content = content,
+        enabled = enabled,
+        onClick = onClick,
     )
 }
 

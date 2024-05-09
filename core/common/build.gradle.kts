@@ -10,11 +10,15 @@ apply<CommonGradlePlugin>()
 
 android {
     namespace = "team.retum.common"
+
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = ProjectProperties.COMPOSE_COMPILER_EXTENSION
+    }
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
     }
 }
 

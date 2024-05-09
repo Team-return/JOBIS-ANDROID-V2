@@ -34,20 +34,24 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    internal fun setEmail(email: String) = setState {
+    internal fun setEmail(email: String) {
+        setState {
+            state.value.copy(
+                email = email,
+                showEmailDescription = false,
+            )
+        }
         setButtonEnabled()
-        state.value.copy(
-            email = email,
-            showEmailDescription = false,
-        )
     }
 
-    internal fun setPassword(password: String) = setState {
+    internal fun setPassword(password: String) {
+        setState {
+            state.value.copy(
+                password = password,
+                showPasswordDescription = false,
+            )
+        }
         setButtonEnabled()
-        state.value.copy(
-            password = password,
-            showPasswordDescription = false,
-        )
     }
 
     private fun setButtonEnabled() = setState {
