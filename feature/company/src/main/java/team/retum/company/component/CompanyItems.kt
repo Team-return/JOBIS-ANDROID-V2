@@ -144,7 +144,7 @@ private fun CompanyItem(
                     .fillMaxWidth(DEFAULT_SIZE_TAKE)
                     .clip(RoundedCornerShape(4.dp))
                     .background(
-                        color = when (take == 0f) {
+                        color = when (takeText.isEmpty()) {
                             true -> JobisTheme.colors.surfaceVariant
                             else -> Color.Unspecified
                         },

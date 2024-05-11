@@ -46,9 +46,5 @@ private fun FetchCompaniesResponse.CompanyResponse.toEntity() = CompaniesEntity.
         true -> HasRecruitment.TRUE
         false -> HasRecruitment.FALSE
     },
-    takeText = if (take == 0f) {
-        ""
-    } else {
-        "연매출 ${take}억"
-    },
+    takeText = "연매출 ${take.toString().removeSuffix(".0")}억",
 )
