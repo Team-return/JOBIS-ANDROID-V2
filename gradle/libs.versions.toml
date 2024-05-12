@@ -9,6 +9,7 @@ androidx-compose-foundation = "1.6.6"
 androidx-lifecycle-viewmodel = "2.7.0"
 androidx-lifecycle-runtime-compose = "2.7.0"
 
+converter-moshi = "2.9.0"
 google-service = "4.4.1"
 google-firebase-bom = "32.7.4"
 
@@ -19,6 +20,7 @@ junit = "4.13.2"
 android-gradle = "8.2.2"
 kotlin = "1.9.21"
 lottie-compose = "6.3.0"
+moshi-kotlin = "1.12.0"
 squareup-retrofit = "2.9.0"
 squareup-logging-interceptor = "4.12.0"
 squareup-javapoet = "1.13.0"
@@ -60,6 +62,7 @@ androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
 
+converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -69,6 +72,7 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-android-gradle-plugin" }
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-android-navigation" }
 
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi-kotlin" }
 squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareup-retrofit" }
 squareup-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "squareup-retrofit" }
 squareup-javapoet = { group = "com.squareup", name = "javapoet", version.ref = "squareup-javapoet" }

@@ -1,5 +1,7 @@
 package team.retum.network.di
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,7 +11,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
 import team.retum.network.api.ApplicationApi
@@ -40,11 +42,11 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        gsonConverterFactory: GsonConverterFactory,
+        moshiConverterFactory: MoshiConverterFactory,
         okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
-            .addConverterFactory(gsonConverterFactory)
+            .addConverterFactory(moshiConverterFactory)
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_URL)
             .build()
@@ -52,8 +54,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
+    fun provideMoshiConverterFactory(): MoshiConverterFactory {
+        return MoshiConverterFactory.create(
+            Moshi.Builder()
+                .addLast(KotlinJsonAdapterFactory())
+                .build(),
+        )
     }
 
     @Provides
