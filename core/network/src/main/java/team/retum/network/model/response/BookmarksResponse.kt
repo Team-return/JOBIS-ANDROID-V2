@@ -1,14 +1,16 @@
 package team.retum.network.model.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class BookmarksResponse(
-    @SerializedName("bookmarks") val bookmarks: List<BookmarkResponse>,
+    @Json(name = "bookmarks") val bookmarks: List<BookmarkResponse>,
 ) {
     data class BookmarkResponse(
-        @SerializedName("company_logo_url") val companyLogoUrl: String,
-        @SerializedName("company_name") val companyName: String,
-        @SerializedName("recruitment_id") val recruitmentId: Long,
-        @SerializedName("created_at") val createdAt: String,
+        @Json(name = "company_logo_url") val companyLogoUrl: String,
+        @Json(name = "company_name") val companyName: String,
+        @Json(name = "recruitment_id") val recruitmentId: Long,
+        @Json(name = "created_at") val createdAt: String,
     )
 }

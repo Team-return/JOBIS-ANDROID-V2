@@ -1,14 +1,16 @@
 package team.retum.network.model.request
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class PostReviewRequest(
-    @SerializedName("company_id") val companyId: Long,
-    @SerializedName("qna_elements") val qnaElements: List<PostReviewContentRequest>,
+    @Json(name = "company_id") val companyId: Long,
+    @Json(name = "qna_elements") val qnaElements: List<PostReviewContentRequest>,
 ) {
     data class PostReviewContentRequest(
-        @SerializedName("question") val question: String,
-        @SerializedName("answer") val answer: String,
-        @SerializedName("code_id") val codeId: Long,
+        @Json(name = "question") val question: String,
+        @Json(name = "answer") val answer: String,
+        @Json(name = "code_id") val codeId: Long,
     )
 }

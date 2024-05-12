@@ -1,12 +1,14 @@
 package team.retum.network.model.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FetchCodesResponse(
-    @SerializedName("codes") val codes: List<CodeResponse>,
+    @Json(name = "codes") val codes: List<CodeResponse>,
 ) {
     data class CodeResponse(
-        @SerializedName("code") val code: Long,
-        @SerializedName("keyword") val keyword: String,
+        @Json(name = "code") val code: Long,
+        @Json(name = "keyword") val keyword: String,
     )
 }

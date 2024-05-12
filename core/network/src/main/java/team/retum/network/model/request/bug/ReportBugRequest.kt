@@ -1,11 +1,13 @@
 package team.retum.network.model.request.bug
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import team.retum.common.enums.DevelopmentArea
 
+@JsonClass(generateAdapter = true)
 data class ReportBugRequest(
-    @SerializedName("title") val title: String,
-    @SerializedName("content") val content: String,
-    @SerializedName("development_area") val developmentArea: DevelopmentArea,
-    @SerializedName("attachment_urls") val attachmentUrls: List<String>,
+    @Json(name = "title") val title: String,
+    @Json(name = "content") val content: String,
+    @Json(name = "development_area") val developmentArea: DevelopmentArea,
+    @Json(name = "attachment_urls") val attachmentUrls: List<String>,
 )

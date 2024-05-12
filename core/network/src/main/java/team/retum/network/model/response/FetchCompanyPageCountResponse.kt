@@ -1,7 +1,9 @@
 package team.retum.network.model.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FetchCompanyPageCountResponse(
-    @SerializedName("total_page_count") val totalPageCount: Long,
+    @Json(name = "total_page_count") val totalPageCount: Long,
 )
