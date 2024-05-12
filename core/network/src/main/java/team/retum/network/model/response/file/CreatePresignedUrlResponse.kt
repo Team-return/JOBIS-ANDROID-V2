@@ -7,6 +7,7 @@ import com.squareup.moshi.JsonClass
 data class CreatePresignedUrlResponse(
     @Json(name = "urls") val urls: List<UrlResponse>
 ) {
+    @JsonClass(generateAdapter = true)
     data class UrlResponse(
         @Json(name = "file_path") val filePath: String,
         @Json(name = "pre_signed_url") val preSignedUrl: String,

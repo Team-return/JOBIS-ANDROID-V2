@@ -8,6 +8,7 @@ import team.retum.common.enums.BannerType
 data class FetchBannersResponse(
     @Json(name = "banners") val banners: List<BannerResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class BannerResponse(
         @Json(name = "id") val bannerId: String,
         @Json(name = "banner_url") val bannerUrl: String,

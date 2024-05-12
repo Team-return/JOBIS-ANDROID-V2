@@ -1,8 +1,10 @@
 package team.retum.network.model.request.student
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ForgottenPasswordRequest(
-    @SerializedName("email") val email: String,
-    @SerializedName("password") val password: String,
+    @Json(name = "email") val email: String,
+    @Json(name = "password") val password: String,
 )

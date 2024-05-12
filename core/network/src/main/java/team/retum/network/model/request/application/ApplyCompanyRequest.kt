@@ -8,6 +8,7 @@ import team.retum.common.enums.AttachmentType
 data class ApplyCompanyRequest(
     @Json(name = "attachments") val attachments: List<Attachments>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class Attachments(
         @Json(name = "url") val url: String,
         @Json(name = "type") val attachmentType: AttachmentType,

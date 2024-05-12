@@ -9,6 +9,7 @@ import team.retum.common.enums.AttachmentType
 data class FetchAppliedCompaniesResponse(
     @Json(name = "applications") val applications: List<ApplicationResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class ApplicationResponse(
         @Json(name = "application_id") val applicationId: Long,
         @Json(name = "recruitment_id") val recruitmentId: Long,
@@ -17,6 +18,7 @@ data class FetchAppliedCompaniesResponse(
         @Json(name = "attachments") val attachments: List<AttachmentResponse>,
         @Json(name = "application_status") val applicationStatus: ApplyStatus,
     ) {
+        @JsonClass(generateAdapter = true)
         data class AttachmentResponse(
             @Json(name = "url") val url: String,
             @Json(name = "type") val attachmentType: AttachmentType,

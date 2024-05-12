@@ -7,6 +7,7 @@ import com.squareup.moshi.JsonClass
 data class BookmarksResponse(
     @Json(name = "bookmarks") val bookmarks: List<BookmarkResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class BookmarkResponse(
         @Json(name = "company_logo_url") val companyLogoUrl: String,
         @Json(name = "company_name") val companyName: String,

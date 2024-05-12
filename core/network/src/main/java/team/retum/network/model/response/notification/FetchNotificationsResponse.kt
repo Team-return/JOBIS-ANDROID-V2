@@ -1,6 +1,5 @@
 package team.retum.network.model.response.notification
 
-import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import team.retum.common.enums.AlarmType
@@ -9,6 +8,7 @@ import team.retum.common.enums.AlarmType
 data class FetchNotificationsResponse(
     @Json(name = "notifications") val notifications: List<NotificationResponse>
 ) {
+    @JsonClass(generateAdapter = true)
     data class NotificationResponse(
         @Json(name = "notification_id") val notificationId: Long,
         @Json(name = "title") val title: String,

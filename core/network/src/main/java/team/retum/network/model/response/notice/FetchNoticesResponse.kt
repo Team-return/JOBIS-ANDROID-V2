@@ -7,6 +7,7 @@ import com.squareup.moshi.JsonClass
 data class FetchNoticesResponse(
     @Json(name = "notices") val notices: List<NoticeResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class NoticeResponse(
         @Json(name = "id") val id: Long,
         @Json(name = "title") val title: String,

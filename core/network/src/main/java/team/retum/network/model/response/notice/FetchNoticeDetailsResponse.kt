@@ -11,6 +11,7 @@ data class FetchNoticeDetailsResponse(
     @Json(name = "created_at") val createdAt: String,
     @Json(name = "attachments") val attachments: List<AttachmentResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class AttachmentResponse(
         @Json(name = "url") val url: String,
         @Json(name = "type") val type: AttachmentType,

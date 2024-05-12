@@ -1,7 +1,9 @@
 package team.retum.network.model.request.student
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class EditProfileImageRequest(
-    @SerializedName("profile_image_url") val profileImageUrl: String,
+    @Json(name = "profile_image_url") val profileImageUrl: String,
 )

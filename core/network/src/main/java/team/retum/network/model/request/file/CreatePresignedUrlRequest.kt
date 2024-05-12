@@ -8,6 +8,7 @@ import team.retum.common.enums.FileType
 data class CreatePresignedUrlRequest(
     @Json(name = "files") val files: List<FileRequest>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class FileRequest(
         @Json(name = "type") val type: FileType,
         @Json(name = "file_name") val fileName: String,
