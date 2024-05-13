@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,17 +43,20 @@ internal fun CompanyItems(
             .padding(horizontal = 24.dp)
             .background(JobisTheme.colors.background),
     ) {
-        itemsIndexed(companies) { index, item ->
+        items(
+            count = companies.size,
+            key = { it },
+        ) {
             CompanyItem(
                 onCompanyContentClick = onCompanyContentClick,
-                companyImageUrl = item.logoUrl,
-                companyName = item.name,
-                id = item.id,
-                take = item.take,
-                hasRecruitment = item.hasRecruitment,
-                takeText = item.takeText,
+                companyImageUrl = companies[it].logoUrl,
+                companyName = companies[it].name,
+                id = companies[it].id,
+                take = companies[it].take,
+                hasRecruitment = companies[it].hasRecruitment,
+                takeText = companies[it].takeText,
             )
-            if (whetherFetchNextPage(index)) {
+            if (whetherFetchNextPage(it)) {
                 fetchNextPage()
             }
         }

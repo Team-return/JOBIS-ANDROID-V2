@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -42,18 +41,21 @@ internal fun RecruitmentItems(
     fetchNextPage: () -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(items = recruitments) { index, recruitment ->
-            var bookmarked = recruitment.bookmarked
+        items(
+            count = recruitments.size,
+            key = { it },
+        ) {
+            var bookmarked = recruitments[it].bookmarked
             RecruitmentItem(
-                recruitment = recruitment,
+                recruitment = recruitments[it],
                 onClick = onRecruitmentClick,
                 bookmarked = bookmarked,
-                onBookmarked = {
-                    onBookmarkClick(it)
+                onBookmarked = { id ->
+                    onBookmarkClick(id)
                     bookmarked = !bookmarked
                 },
             )
-            if (whetherFetchNextPage(index)) {
+            if (whetherFetchNextPage(it)) {
                 fetchNextPage()
             }
         }
