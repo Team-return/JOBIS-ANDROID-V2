@@ -37,12 +37,12 @@ internal class HomeViewModel @Inject constructor(
     internal val appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity> =
         _appliedCompanies
 
-     internal fun calculateTerm() = setState {
+    internal fun calculateTerm() = setState {
         val term = LocalDate.now().year - SCHOOL_ESTABLISHMENT - 1
         state.value.copy(term = term)
     }
 
-     internal fun fetchStudentInformation() {
+    internal fun fetchStudentInformation() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchStudentInformationUseCase().onSuccess {
                 val profileImageUrl = ResourceKeys.IMAGE_URL + it.profileImageUrl
@@ -51,7 +51,7 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
-     internal fun fetchAppliedCompanies() {
+    internal fun fetchAppliedCompanies() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchAppliedCompaniesUseCase().onSuccess {
                 _appliedCompanies.addAll(
@@ -63,7 +63,7 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
-     internal fun fetchEmploymentCount() {
+    internal fun fetchEmploymentCount() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchEmploymentCountUseCase().onSuccess {
                 setState {
