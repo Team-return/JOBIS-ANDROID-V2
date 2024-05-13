@@ -1,13 +1,16 @@
 package team.retum.network.model.request.file
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import team.retum.common.enums.FileType
 
+@JsonClass(generateAdapter = true)
 data class CreatePresignedUrlRequest(
-    @SerializedName("files") val files: List<FileRequest>,
+    @Json(name = "files") val files: List<FileRequest>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class FileRequest(
-        @SerializedName("type") val type: FileType,
-        @SerializedName("file_name") val fileName: String,
+        @Json(name = "type") val type: FileType,
+        @Json(name = "file_name") val fileName: String,
     )
 }

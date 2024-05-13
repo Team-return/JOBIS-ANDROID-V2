@@ -1,10 +1,12 @@
 package team.retum.network.model.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class TokenResponse(
-    @SerializedName("access_token") val accessToken: String,
-    @SerializedName("access_expires_at") val accessExpiresAt: String,
-    @SerializedName("refresh_token") val refreshToken: String,
-    @SerializedName("refresh_expires_at") val refreshExpiresAt: String,
+    @Json(name = "access_token") val accessToken: String,
+    @Json(name = "access_expires_at") val accessExpiresAt: String,
+    @Json(name = "refresh_token") val refreshToken: String,
+    @Json(name = "refresh_expires_at") val refreshExpiresAt: String,
 )

@@ -1,13 +1,16 @@
 package team.retum.network.model.response.notice
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FetchNoticesResponse(
-    @SerializedName("notices") val notices: List<NoticeResponse>,
+    @Json(name = "notices") val notices: List<NoticeResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class NoticeResponse(
-        @SerializedName("id") val id: Long,
-        @SerializedName("title") val title: String,
-        @SerializedName("created_at") val createdAt: String,
+        @Json(name = "id") val id: Long,
+        @Json(name = "title") val title: String,
+        @Json(name = "created_at") val createdAt: String,
     )
 }

@@ -1,11 +1,13 @@
 package team.retum.network.model.request.user
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import team.retum.common.enums.PlatformType
 
+@JsonClass(generateAdapter = true)
 data class SignInRequest(
-    @SerializedName("account_id") val email: String,
-    @SerializedName("password") val password: String,
-    @SerializedName("platform_type") val platformType: PlatformType = PlatformType.ANDROID,
-    @SerializedName("device_token") val deviceToken: String,
+    @Json(name = "account_id") val email: String,
+    @Json(name = "password") val password: String,
+    @Json(name = "platform_type") val platformType: PlatformType = PlatformType.ANDROID,
+    @Json(name = "device_token") val deviceToken: String,
 )

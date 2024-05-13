@@ -1,14 +1,17 @@
 package team.retum.network.model.response.banner
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import team.retum.common.enums.BannerType
 
+@JsonClass(generateAdapter = true)
 data class FetchBannersResponse(
-    @SerializedName("banners") val banners: List<BannerResponse>,
+    @Json(name = "banners") val banners: List<BannerResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class BannerResponse(
-        @SerializedName("id") val bannerId: String,
-        @SerializedName("banner_url") val bannerUrl: String,
-        @SerializedName("banner_type") val bannerType: BannerType,
+        @Json(name = "id") val bannerId: String,
+        @Json(name = "banner_url") val bannerUrl: String,
+        @Json(name = "banner_type") val bannerType: BannerType,
     )
 }

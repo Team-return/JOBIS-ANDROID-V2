@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":core:local"))
 
     implementation(libs.squareup.retrofit)
-    implementation(libs.squareup.retrofit.converter.gson)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.logging.interceptor)
 }

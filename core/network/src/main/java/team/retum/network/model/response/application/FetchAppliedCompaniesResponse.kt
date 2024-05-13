@@ -1,23 +1,27 @@
 package team.retum.network.model.response.application
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import team.retum.common.enums.ApplyStatus
 import team.retum.common.enums.AttachmentType
 
+@JsonClass(generateAdapter = true)
 data class FetchAppliedCompaniesResponse(
-    @SerializedName("applications") val applications: List<ApplicationResponse>,
+    @Json(name = "applications") val applications: List<ApplicationResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class ApplicationResponse(
-        @SerializedName("application_id") val applicationId: Long,
-        @SerializedName("recruitment_id") val recruitmentId: Long,
-        @SerializedName("company") val company: String,
-        @SerializedName("company_logo_url") val companyLogoUrl: String,
-        @SerializedName("attachments") val attachments: List<AttachmentResponse>,
-        @SerializedName("application_status") val applicationStatus: ApplyStatus,
+        @Json(name = "application_id") val applicationId: Long,
+        @Json(name = "recruitment_id") val recruitmentId: Long,
+        @Json(name = "company") val company: String,
+        @Json(name = "company_logo_url") val companyLogoUrl: String,
+        @Json(name = "attachments") val attachments: List<AttachmentResponse>,
+        @Json(name = "application_status") val applicationStatus: ApplyStatus,
     ) {
+        @JsonClass(generateAdapter = true)
         data class AttachmentResponse(
-            @SerializedName("url") val url: String,
-            @SerializedName("type") val attachmentType: AttachmentType,
+            @Json(name = "url") val url: String,
+            @Json(name = "type") val attachmentType: AttachmentType,
         )
     }
 }

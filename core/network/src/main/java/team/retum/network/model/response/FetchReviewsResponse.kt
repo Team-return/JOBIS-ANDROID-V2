@@ -1,14 +1,17 @@
 package team.retum.network.model.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FetchReviewsResponse(
-    @SerializedName("reviews") val reviews: List<Review>,
+    @Json(name = "reviews") val reviews: List<Review>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class Review(
-        @SerializedName("review_id") val reviewId: String,
-        @SerializedName("year") val year: Int,
-        @SerializedName("writer") val writer: String,
-        @SerializedName("date") val date: String,
+        @Json(name = "review_id") val reviewId: String,
+        @Json(name = "year") val year: Int,
+        @Json(name = "writer") val writer: String,
+        @Json(name = "date") val date: String,
     )
 }
