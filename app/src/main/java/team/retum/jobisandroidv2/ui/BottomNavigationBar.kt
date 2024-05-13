@@ -4,7 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -32,7 +32,10 @@ private val bottomMenus = listOf(
 fun BottomNavigationBar(navController: NavController) {
     val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     Column {
-        Divider(thickness = 0.3.dp)
+        HorizontalDivider(
+            thickness = 0.3.dp,
+            color = JobisTheme.colors.surfaceTint,
+        )
         BottomAppBar(
             modifier = Modifier.fillMaxHeight(0.08f),
             contentColor = JobisTheme.colors.background,
@@ -54,8 +57,11 @@ fun BottomNavigationBar(navController: NavController) {
                     onClick = {
                         if (!selected) {
                             navController.navigate(it.route) {
-                                popUpTo(0)
+                                popUpTo(0) {
+                                    saveState = true
+                                }
                                 launchSingleTop = true
+                                restoreState = true
                             }
                         }
                     },
