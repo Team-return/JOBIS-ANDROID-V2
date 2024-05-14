@@ -45,18 +45,18 @@ internal fun CompanyItems(
     ) {
         items(
             count = companies.size,
-            key = { it },
-        ) {
+            key = { index -> index },
+        ) { index ->
             CompanyItem(
                 onCompanyContentClick = onCompanyContentClick,
-                companyImageUrl = companies[it].logoUrl,
-                companyName = companies[it].name,
-                id = companies[it].id,
-                take = companies[it].take,
-                hasRecruitment = companies[it].hasRecruitment,
-                takeText = companies[it].takeText,
+                companyImageUrl = companies[index].logoUrl,
+                companyName = companies[index].name,
+                id = companies[index].id,
+                take = companies[index].take,
+                hasRecruitment = companies[index].hasRecruitment,
+                takeText = companies[index].takeText,
             )
-            if (whetherFetchNextPage(it)) {
+            if (whetherFetchNextPage(index)) {
                 fetchNextPage()
             }
         }

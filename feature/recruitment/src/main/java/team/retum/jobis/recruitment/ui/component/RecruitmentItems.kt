@@ -43,11 +43,11 @@ internal fun RecruitmentItems(
     LazyColumn {
         items(
             count = recruitments.size,
-            key = { it },
-        ) {
-            var bookmarked = recruitments[it].bookmarked
+            key = { index -> index },
+        ) { index ->
+            var bookmarked = recruitments[index].bookmarked
             RecruitmentItem(
-                recruitment = recruitments[it],
+                recruitment = recruitments[index],
                 onClick = onRecruitmentClick,
                 bookmarked = bookmarked,
                 onBookmarked = { id ->
@@ -55,7 +55,7 @@ internal fun RecruitmentItems(
                     bookmarked = !bookmarked
                 },
             )
-            if (whetherFetchNextPage(it)) {
+            if (whetherFetchNextPage(index)) {
                 fetchNextPage()
             }
         }
