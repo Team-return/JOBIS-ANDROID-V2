@@ -97,6 +97,12 @@ internal fun Home(
     )
 
     LaunchedEffect(Unit) {
+        with(homeViewModel) {
+            calculateTerm()
+            fetchStudentInformation()
+            fetchAppliedCompanies()
+            fetchEmploymentCount()
+        }
         if (isDecemberOrLater()) {
             menus.add(
                 MenuItem(
