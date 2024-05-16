@@ -19,7 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -127,7 +127,7 @@ private fun RecruitmentDetailsScreen(
                 onMoveToCompanyDetailsClick = onMoveToCompanyDetailsClick,
                 isMovedCompanyDetails = isMovedCompanyDetails,
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = JobisTheme.colors.inverseSurface,
                 thickness = 1.dp,
