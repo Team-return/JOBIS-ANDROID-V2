@@ -16,12 +16,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -305,6 +305,7 @@ private fun AddQuestionBottomSheet(
                             checked = state.checked == codes.keyword,
                             onClick = {
                                 setChecked(codes.keyword)
+                                setKeyword(codes.keyword)
                                 setSelectedTech(codes.code)
                             },
                             backgroundColor = JobisTheme.colors.background,
