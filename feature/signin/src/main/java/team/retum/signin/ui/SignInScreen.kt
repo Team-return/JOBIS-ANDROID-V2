@@ -26,6 +26,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -48,7 +49,7 @@ internal fun SignIn(
     onForgotPasswordClick: () -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel(),
 ) {
-    val state by signInViewModel.state.collectAsState()
+    val state by signInViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
