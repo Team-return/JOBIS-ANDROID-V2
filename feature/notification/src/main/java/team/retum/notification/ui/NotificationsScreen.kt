@@ -108,7 +108,6 @@ private fun NotificationsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
         ) {
             items(notificationList) {
                 NotificationContent(
@@ -135,7 +134,15 @@ private fun NotificationContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .fillMaxWidth()
+            .background(
+                color = if(isNew) JobisTheme.colors.secondaryContainer
+                else JobisTheme.colors.background
+            )
+            .padding(
+                vertical = 16.dp,
+                horizontal = 24.dp,
+            )
             .clickable(
                 enabled = true,
                 onClick = {
