@@ -14,7 +14,6 @@ import team.retum.usecase.usecase.company.FetchCompaniesUseCase
 import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
 import javax.inject.Inject
 
-
 /**
  * This class test Companies view model
  *
