@@ -25,7 +25,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class CompanyTest {
+class CompanyViewModelTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -43,6 +43,7 @@ class CompanyTest {
         hiltRule.inject()
         viewModel = CompaniesViewModel(fetchCompaniesUseCase, fetchCompanyCountUseCase)
     }
+
     @Test
     fun setNameTest() {
         val newName = "홍승재 타이어"
