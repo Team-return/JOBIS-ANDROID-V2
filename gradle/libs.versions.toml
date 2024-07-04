@@ -38,6 +38,7 @@ androidx-compose-ui-test = "1.6.6"
 androidx-test-runner = "1.5.2"
 
 androidx-room-runtime = "2.6.1"
+junit-ktx = "1.2.1"
 
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
@@ -93,6 +94,7 @@ androidx-test-runner = { group = "androidx.test", name = "runner", version.ref =
 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room-runtime" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room-runtime" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

@@ -24,4 +24,10 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.junit.ktx)
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.51.1")
+
+    androidTestApi(libs.androidx.junit)
 }
