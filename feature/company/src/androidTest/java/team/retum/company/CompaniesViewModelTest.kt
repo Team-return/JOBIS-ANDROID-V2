@@ -25,7 +25,7 @@ import javax.inject.Inject
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class CompanyViewModelTest {
+class CompaniesViewModelTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)

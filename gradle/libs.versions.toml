@@ -16,7 +16,6 @@ google-firebase-bom = "32.7.4"
 firebase-messaging = "23.4.1"
 
 hilt-android-gradle-plugin = "2.51.1"
-hilt-compiler = "2.51.1"
 junit = "4.13.2"
 android-gradle = "8.2.2"
 kotlin = "1.9.21"
@@ -65,7 +64,7 @@ androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-j
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
 
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-compiler" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android-gradle-plugin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
