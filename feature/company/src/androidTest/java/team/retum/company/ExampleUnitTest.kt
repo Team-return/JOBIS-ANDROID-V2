@@ -1,9 +1,10 @@
-package team.retum.jobisdesignsystemv2
+package team.retum.company
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -12,7 +13,7 @@ import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.usecase.usecase.company.FetchCompaniesUseCase
 import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
 import javax.inject.Inject
-import androidx.test.ext.junit.runners.AndroidJUnit4
+
 
 /**
  * This class test Companies view model
