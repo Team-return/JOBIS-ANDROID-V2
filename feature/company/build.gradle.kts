@@ -24,10 +24,7 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.junit.ktx)
 
     androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.compiler)
-
-    androidTestApi(libs.androidx.junit)
 }
