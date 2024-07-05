@@ -20,6 +20,10 @@ android {
     kotlinOptions {
         jvmTarget = ProjectProperties.JVM_TARGET
     }
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
 }
 
 dependencies {
