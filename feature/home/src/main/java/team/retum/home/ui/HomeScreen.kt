@@ -295,31 +295,33 @@ private fun Banner(
             }
         }
     }
-    Row(
-        modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        repeat(pagerState.pageCount) { page ->
-            val color = if (pagerState.currentPage == page) {
-                JobisTheme.colors.onPrimary
-            } else {
-                JobisTheme.colors.surfaceVariant
+    if (banners.isNotEmpty()) {
+        Row(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            repeat(pagerState.pageCount) { page ->
+                val color = if (pagerState.currentPage == page) {
+                    JobisTheme.colors.onPrimary
+                } else {
+                    JobisTheme.colors.surfaceVariant
+                }
+                val size = if (pagerState.currentPage == page) {
+                    DpSize(12.dp, 6.dp)
+                } else {
+                    DpSize(6.dp, 6.dp)
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(size),
+                )
             }
-            val size = if (pagerState.currentPage == page) {
-                DpSize(12.dp, 6.dp)
-            } else {
-                DpSize(6.dp, 6.dp)
-            }
-            Box(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .clip(CircleShape)
-                    .background(color)
-                    .size(size),
-            )
         }
     }
 }
