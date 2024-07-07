@@ -304,15 +304,9 @@ private fun Banner(
             horizontalArrangement = Arrangement.Center,
         ) {
             repeat(pagerState.pageCount) { page ->
-                val color = if (pagerState.currentPage == page) {
-                    JobisTheme.colors.onPrimary
-                } else {
-                    JobisTheme.colors.surfaceVariant
-                }
-                val size = if (pagerState.currentPage == page) {
-                    DpSize(12.dp, 6.dp)
-                } else {
-                    DpSize(6.dp, 6.dp)
+                val (color, size) = when (pagerState.currentPage) {
+                    page -> JobisTheme.colors.onPrimary to DpSize(12.dp, 6.dp)
+                    else -> JobisTheme.colors.surfaceVariant to DpSize(6.dp, 6.dp)
                 }
                 Box(
                     modifier = Modifier
