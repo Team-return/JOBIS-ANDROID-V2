@@ -246,31 +246,31 @@ private fun Banner(
 ) {
     val pagerState = rememberPagerState { banners.size + 1 }
     val coroutineScope = rememberCoroutineScope()
-    HorizontalPager(
-        state = pagerState,
-        pageSize = threePagerPerViewport,
-        contentPadding = PaddingValues(horizontal = 18.dp),
-        beyondBoundsPageCount = pagerState.pageCount + 1,
-    ) { page ->
-        LaunchedEffect(pagerState.settledPage) {
-            launch {
-                delay(PAGER_AUTO_SCROLL_TIME)
-                with(pagerState) {
-                    val target = if (settledPage < pageCount - 1) settledPage + 1 else 0
 
-                    coroutineScope.launch {
-                        animateScrollToPage(
-                            page = target,
-                            animationSpec = tween(
-                                durationMillis = 500,
-                                easing = FastOutSlowInEasing,
-                            ),
-                        )
-                    }
+    LaunchedEffect(pagerState.settledPage) {
+        launch {
+            delay(PAGER_AUTO_SCROLL_TIME)
+            with(pagerState) {
+                val target = if (settledPage < pageCount - 1) settledPage + 1 else 0
+
+                coroutineScope.launch {
+                    animateScrollToPage(
+                        page = target,
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = FastOutSlowInEasing,
+                        ),
+                    )
                 }
             }
         }
+    }
 
+    HorizontalPager(
+        state = pagerState,
+        contentPadding = PaddingValues(horizontal = 18.dp),
+        beyondBoundsPageCount = pagerState.pageCount + 1,
+    ) { page ->
         JobisCard(
             modifier = Modifier
                 .padding(
