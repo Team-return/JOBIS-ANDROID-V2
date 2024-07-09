@@ -21,13 +21,13 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
+import team.retum.signup.BuildConfig
 import team.retum.signup.R
 import team.retum.signup.model.SignUpData
 import team.retum.signup.viewmodel.TermsSideEffect
 import team.retum.signup.viewmodel.TermsState
 import team.retum.signup.viewmodel.TermsViewModel
 
-private const val TERMS_URL = "https://jobis-webview.team-return.com/sign-up-policy"
 private const val WEB_VIEW_SCROLL_BOTTOM = 1
 
 @Composable
@@ -108,11 +108,11 @@ private fun TermsScreen(
                     setOnScrollChangeListener { _, _, _, _, _ ->
                         onReachTheEnded(!canScrollVertically(WEB_VIEW_SCROLL_BOTTOM))
                     }
-                    loadUrl(TERMS_URL)
+                    loadUrl(BuildConfig.TERMS_URL)
                 }
             },
             update = {
-                it.loadUrl(TERMS_URL)
+                it.loadUrl(BuildConfig.TERMS_URL)
             },
         )
         JobisButton(
