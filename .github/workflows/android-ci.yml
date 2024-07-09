@@ -44,3 +44,14 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Dependency Updates
+        run: ./gradlew dependencyUpdates
+
+dependabot:
+  version: 2
+  updates:
+    - package-ecosystem: "gradle"
+      directory: "/"
+      schedule:
+        interval: "weekly"
