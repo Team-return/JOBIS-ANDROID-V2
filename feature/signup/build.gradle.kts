@@ -23,14 +23,14 @@ android {
             buildConfigField(
                 type = "String",
                 name = "TERMS_URL",
-                value = properties.getProperty("TERMS_URL", ""),
+                value = properties.getProperty("TERMS_URL", "\"\""),
             )
         }
         debug {
             buildConfigField(
                 type = "String",
                 name = "TERMS_URL",
-                value = properties.getProperty("TERMS_URL", ""),
+                value = properties.getProperty("TERMS_URL", "\"\""),
             )
         }
     }
