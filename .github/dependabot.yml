@@ -6,11 +6,16 @@
 version: 2
 
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"
   - package-ecosystem: "gradle"
-    directory: "/"
+    directory: "/src"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "🔗 :: "
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "org.jetbrains.kotlin"
+      - dependency-name: "com.android.tools.build"
+      - dependency-name: "app/google-services.json"
+    labels:
+      - "빌드"
