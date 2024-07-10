@@ -9,7 +9,7 @@ androidx-compose-foundation = "1.6.6"
 androidx-lifecycle-viewmodel = "2.7.0"
 androidx-lifecycle-runtime-compose = "2.7.0"
 
-converter-moshi = "2.9.0"
+converter-moshi = "2.11.0"
 google-service = "4.4.1"
 google-firebase-bom = "32.7.4"
 
