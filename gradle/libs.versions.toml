@@ -29,7 +29,7 @@ androidx-compose-material = "1.6.5"
 
 com-google-android-material = "1.11.0"
 
-kotlinx-serialization-json = "1.6.3"
+kotlinx-serialization-json = "1.7.1"
 org-jlleitschuh-ktlint-gradle = "11.3.1"
 
 app-update-ktx = "2.1.0"
