@@ -16,6 +16,5 @@ updates:
     ignore:
       - dependency-name: "org.jetbrains.kotlin"
       - dependency-name: "com.android.tools.build"
-      - dependency-name: "app/google-services.json"
     labels:
       - "빌드"
