@@ -12,8 +12,6 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "🔗 :: "
-      include:
-        scope: true
     open-pull-requests-limit: 3
     ignore:
       - dependency-name: "org.jetbrains.kotlin"
