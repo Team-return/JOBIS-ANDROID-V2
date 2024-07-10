@@ -11,7 +11,9 @@ updates:
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "chore :: 버전 업데이트"
+      prefix: "🔗 :: "
+      include:
+        scope: true
     open-pull-requests-limit: 3
     ignore:
       - dependency-name: "org.jetbrains.kotlin"
