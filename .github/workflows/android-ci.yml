@@ -47,7 +47,7 @@ jobs:
         run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
 
       - name: Create google-services.json
-        run: echo ${{ secrets.GOOGLE_SERVICES_JSON }} | base64 --decode > ./app/google-services.json
+        run: cat /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json | base64
 
       - name: Putting data
         env:
