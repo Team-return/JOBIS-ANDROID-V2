@@ -29,12 +29,12 @@ androidx-compose-material = "1.6.5"
 
 com-google-android-material = "1.11.0"
 
-kotlinx-serialization-json = "1.7.1"
+kotlinx-serialization-json = "1.6.3"
 org-jlleitschuh-ktlint-gradle = "11.3.1"
 
 app-update-ktx = "2.1.0"
 
-androidx-compose-ui-test = "1.6.6"
+androidx-compose-ui-test = "1.6.8"
 androidx-test-runner = "1.5.2"
 
 androidx-room-runtime = "2.6.1"
