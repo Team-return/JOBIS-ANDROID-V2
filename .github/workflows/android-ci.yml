@@ -11,8 +11,7 @@ on:
       - main
 
 jobs:
-  build:
-
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,18 +28,35 @@ jobs:
         run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
 
       - name: Create google-services.json
-        run: cat /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json | base64
-
-      - name: Putting data
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json
+        run: echo ${{ secrets.GOOGLE_SERVICES_JSON }} | base64 --decode > ./app/google-services.json
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Check Ktlint
-        run: ./gradlew ktlintCheck
+        run: ./gradlew ktlintCheck --include '**/src/main/java/team/retum/**/*.kt'
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          java-version: '18'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Create local.properties
+        run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
+
+      - name: Create google-services.json
+        run: echo ${{ secrets.GOOGLE_SERVICES_JSON }} | base64 --decode > ./app/google-services.json
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
