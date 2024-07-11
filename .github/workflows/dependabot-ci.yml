@@ -1,3 +1,6 @@
+# dependabot이 secret 파일에 접근 권한 설정이 의도대로 되지 않아서 임시 해결책 으로 pr 작성자를 바꿈
+# 나중에 권한 설정 오류를 해결할 수 있으면 수정할 예정
+
 name: Change Dependabot Author
 
 on:
