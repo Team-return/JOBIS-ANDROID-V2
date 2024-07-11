@@ -34,7 +34,7 @@ org-jlleitschuh-ktlint-gradle = "11.3.1"
 
 app-update-ktx = "2.1.0"
 
-androidx-compose-ui-test = "1.6.6"
+androidx-compose-ui-test = "1.6.8"
 androidx-test-runner = "1.5.2"
 
 androidx-room-runtime = "2.6.1"
