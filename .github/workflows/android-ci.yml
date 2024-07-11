@@ -39,7 +39,7 @@ jobs:
         run: echo $DATA > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json
 
       - name: Check Ktlint
-        run: ./gradlew ktlintCheck --include '**/src/main/java/team/retum/**/*.kt'
+        run: ./gradlew ktlintCheck
 
   build:
     runs-on: ubuntu-latest
