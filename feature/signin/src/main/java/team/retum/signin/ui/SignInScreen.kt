@@ -41,6 +41,14 @@ import team.retum.signin.viewmodel.SignInSideEffect
 import team.retum.signin.viewmodel.SignInState
 import team.retum.signin.viewmodel.SignInViewModel
 
+/**
+ * navigation에 정의되는 로그인 함수
+ *
+ * @param onBackClick 로그인 화면에서 뒤로가기 버튼을 눌렀을 때 동작하는 함수
+ * @param onSignInSuccess 로그인 화면에서 로그인 성공 시 동작하는 함수
+ * @param onForgotPasswordClick 로그인 화면에서 비밀번호 찾기 텍스트를 클릭했을 때 동작하는 함수
+ * @param signInViewModel [SignInState], [SignInSideEffect]를 관리하는 로그인 뷰모델
+ */
 @Composable
 internal fun SignIn(
     onBackClick: () -> Unit,
@@ -99,6 +107,14 @@ internal fun SignIn(
     )
 }
 
+/**
+ * 로그인 화면을 담당하는 컴포저블 함수
+ *
+ * @param state 로그인 화면에서 사용되는 email, password 등의 상태를 담고 있는 데이터 클래스
+ * @param onEmailChange 사용자가 입력한 이메일이 변경될 때마다 동작하는 함수
+ * @param onPasswordChange 사용자가 입력한 비밀번호가 변경될 때마다 동작하는 함수
+ * @param onSignInClick 로그인 버튼 클릭 시 동작하는 함수
+ */
 @Composable
 private fun SignInScreen(
     onBackClick: () -> Unit,
@@ -121,8 +137,8 @@ private fun SignInScreen(
             password = { state.password },
             onEmailChange = onEmailChange,
             onPasswordChange = onPasswordChange,
-            notFoundEmail = { state.showEmailDescription },
-            invalidPassword = { state.showPasswordDescription },
+            showNotFoundEmailDescription = { state.showEmailDescription },
+            showInvalidPasswordDescription = { state.showPasswordDescription },
         )
         Spacer(modifier = Modifier.height(8.dp))
         JobisMediumButton(
@@ -142,14 +158,24 @@ private fun SignInScreen(
     }
 }
 
+/**
+ * 로그인 인풋을 담당하는 컴포저블 함수
+ *
+ * @param email [SignInState.email]을 반환하는 함수
+ * @param password [SignInState.password]를 반환하는 함수
+ * @param onEmailChange [SignInState.email]을 업데이트 하는 함수
+ * @param onPasswordChange [SignInState.password]를 업데이트 하는 함수
+ * @param showNotFoundEmailDescription [R.string.description_email_not_found]표시를 결정하는 booelan 값 반환 함수
+ * @param showInvalidPasswordDescription [R.string.description_password_invalid]표를 결정하는 boolean 값 반환 함수
+ */
 @Composable
 private fun SignInInputs(
     email: () -> String,
     password: () -> String,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    notFoundEmail: () -> Boolean,
-    invalidPassword: () -> Boolean,
+    showNotFoundEmailDescription: () -> Boolean,
+    showInvalidPasswordDescription: () -> Boolean,
 ) {
     JobisTextField(
         title = stringResource(id = R.string.email),
@@ -159,7 +185,7 @@ private fun SignInInputs(
         onValueChange = onEmailChange,
         errorDescription = stringResource(id = R.string.description_email_not_found),
         descriptionType = DescriptionType.Error,
-        showDescription = notFoundEmail,
+        showDescription = showNotFoundEmailDescription,
         testTag = stringResource(id = R.string.email),
     )
     JobisTextField(
@@ -169,7 +195,7 @@ private fun SignInInputs(
         onValueChange = onPasswordChange,
         showVisibleIcon = true,
         errorDescription = stringResource(id = R.string.description_password_invalid),
-        showDescription = invalidPassword,
+        showDescription = showInvalidPasswordDescription,
         descriptionType = DescriptionType.Error,
         testTag = stringResource(id = R.string.password),
     )
