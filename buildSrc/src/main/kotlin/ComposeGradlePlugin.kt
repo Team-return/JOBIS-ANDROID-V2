@@ -3,6 +3,10 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 
+/**
+ * compose 사용 모듈의 공통적인 gradle 설정 및 의존성 선언 모음
+ *
+ */
 class ComposeGradlePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         setProjectConfig(project)
