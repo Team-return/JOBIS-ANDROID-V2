@@ -22,6 +22,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        /**
+         * ANR 발생 제한 시간(5s)을 10s로 늦추기 위해 사용
+         * TODO: ANR이 발생하는 원인을 제거할 필요가 있음
+         */
         ANRWatchDog(ANR_TIME).start()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         checkAppUpdate()
