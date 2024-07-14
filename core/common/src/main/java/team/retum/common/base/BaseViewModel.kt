@@ -11,7 +11,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * TODO
+ * 뷰모델이 가지는 state, side effect와 관리 함수가 추상화 되어 있는 뷰모델
+ *
+ * JOBIS의 모든 뷰모델은 해당 클래스를 상속받아 구현해야 한다.
+ * ```
+ * class SignInViewModel @Inject constructor(
+ *     private val signInUseCase: SignInUseCase,
+ *     private val getDeviceTokenUseCase: GetDeviceTokenUseCase,
+ * ) : BaseViewModel<SignInState, SignInSideEffect>(SignInState.getDefaultState())
+ * ```
  *
  * @param S 상속받는 뷰모델에서 사용될 state data class
  * @param E 상속받는 뷰모델에서 사용할 side effect sealed class
