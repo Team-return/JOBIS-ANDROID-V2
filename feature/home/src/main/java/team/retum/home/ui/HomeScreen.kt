@@ -202,7 +202,6 @@ private fun HomeScreen(
                 state = state,
                 banners = banners,
             )
-
             StudentInformation(
                 modifier = Modifier.padding(
                     horizontal = 24.dp,
