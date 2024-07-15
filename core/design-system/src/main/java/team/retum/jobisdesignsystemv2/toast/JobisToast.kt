@@ -12,15 +12,22 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 
 object JobisToast {
     /**
-     * Jobis' Custom Toast
+     * JOBIS에서 사용하는 토스트이다.
      *
-     * It is a view created in xml and consists of icons and messages.
+     * @param context 토스트 표시에 사용될 [Context]
+     * @param message 토스트에 표시될 메시지
+     * @param duration 토스트 표시 시간
+     * @param drawable 토스트에 텍스트와 함께 표시될 drawable의 resource id
+     * @return 위 파라미터들로 만들어진 [Toast] 객체
      *
-     * @param context Context used in JobisToast.
-     * @param message Message to display in JobisToast
-     * @param duration How much to display
-     * @param drawable Icons to be used in JobisToast
-     * @return customized toast
+     * 다음과 같이 사용한다.
+     * ```
+     * JobisToast.create(
+     *     context = context,
+     *     message = context.getString(R.string.toast_unexpected_grade),
+     *     drawable = JobisIcon.Error,
+     * ).show()
+     * ```
      */
     fun create(
         context: Context,
