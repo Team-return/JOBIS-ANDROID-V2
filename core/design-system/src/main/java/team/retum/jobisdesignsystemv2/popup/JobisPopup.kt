@@ -18,16 +18,17 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 
 object JobisPopup {
     /**
-     * Jobis' Custom Popup
+     * JOBIS에서 사용하는 커스텀 팝업
      *
-     * It is a view created in xml and consists of icons,messages and button.
+     * 아이콘, 메시지와 버튼을 포함하고 있는 xml 뷰
      *
-     * @param context Context used in JobisPopup
-     * @param message Message to display in JobisPopup
-     * @param onClick Called when this button is clicked
-     * @param buttonText ButtonText to be written on the button
-     * @param gravity Gravity which controls the placement of the popup window
-     * @param drawable Icons to be used in JobisPopup
+     * @param context [JobisPopup]에서 사용될 [Context]
+     * @param message [JobisPopup]에서 보여질 메시지
+     * @param onClick [JobisPopup]의 버튼이 클릭될 때 동작하는 함수
+     * @param buttonText 버튼에 표시될 텍스트
+     * @param gravity [JobisPopup]이 표시될 기준
+     * - default value : [Gravity.TOP]
+     * @param drawable [JobisPopup]에서 사용될 drawable resource의 id
      */
     fun showPopup(
         context: Context,
