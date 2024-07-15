@@ -21,14 +21,14 @@ internal const val MIN_PRESS_DEPTH = 1f
 internal const val DEFAULT_DISABLED_MILLIS = 300L
 
 /**
- * This is the ripple upon click used by Jobis.
+ * JOBIS에서 클릭 이벤트 및 효과를 표현할 때 사용하는 [Modifier] 확장 함수
  *
- * @param enabled Controls the enabled state.
- * @param pressDepth Width of view when pressed
- * @param onPressed Manage the state of the press
- * @param onClick Called when this button is clicked.
- * @param disabledMillis The duration in milliseconds after which the clickable will be re-enabled.
- * @return Modifier that changed ripple on click
+ * @param enabled 클릭 활성화 여부
+ * @param pressDepth 클릭 애니메이션의 깊이 정도
+ * @param onPressed 요소가 눌러졌을 때 동작하는 함수
+ * @param onClick 요소를 클릭했을 때 동작하는 함수
+ * @param disabledMillis 요소 클릭 후 잠시 비활성화 될 시간
+ * @return 클릭, 애니메이션 등이 적용된 [Modifier]
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("ComposableNaming")
