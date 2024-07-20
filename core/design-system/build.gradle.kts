@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.com.google.android.material)
+    api(libs.androidx.compose.ui.tooling.preview)
 
     testApi(libs.junit)
     androidTestApi(libs.androidx.compose.ui.test.junit4)
