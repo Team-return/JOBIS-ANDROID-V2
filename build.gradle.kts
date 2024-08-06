@@ -12,4 +12,5 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.ktlint.gradle) apply false
     alias(libs.plugins.google.service) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
 }

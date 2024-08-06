@@ -5,6 +5,7 @@ plugins {
     id(libs.plugins.kotlin.kapt.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
     id(libs.plugins.google.service.get().pluginId)
+    id(libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 android {
@@ -91,6 +92,8 @@ dependencies {
 
     implementation(platform(libs.com.google.firebase.bom))
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
