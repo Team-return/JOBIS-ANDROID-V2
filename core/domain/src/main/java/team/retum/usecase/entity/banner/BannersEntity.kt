@@ -7,9 +7,10 @@ data class BannersEntity(
     val banners: List<BannerEntity>,
 ) {
     data class BannerEntity(
-        val bannerId: String,
+        val bannerId: Long,
         val bannerUrl: String,
         val bannerType: BannerType,
+        val detailId: Long,
     )
 }
 
@@ -21,4 +22,5 @@ private fun FetchBannersResponse.BannerResponse.toEntity() = BannersEntity.Banne
     bannerId = this.bannerId,
     bannerUrl = this.bannerUrl,
     bannerType = this.bannerType,
+    detailId = this.detailId,
 )

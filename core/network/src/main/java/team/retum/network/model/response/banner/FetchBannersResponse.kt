@@ -10,8 +10,9 @@ data class FetchBannersResponse(
 ) {
     @JsonClass(generateAdapter = true)
     data class BannerResponse(
-        @Json(name = "id") val bannerId: String,
+        @Json(name = "id") val bannerId: Long,
         @Json(name = "banner_url") val bannerUrl: String,
         @Json(name = "banner_type") val bannerType: BannerType,
+        @Json(name = "detail_id") val detailId: Long,
     )
 }

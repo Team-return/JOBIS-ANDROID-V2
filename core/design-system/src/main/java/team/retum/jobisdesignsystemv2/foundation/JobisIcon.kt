@@ -31,4 +31,7 @@ object JobisIcon {
     val AppLogo = R.drawable.app_logo
     val Notice = R.drawable.ic_notice
     val Download = R.drawable.ic_download
+    val Building = R.drawable.ic_building
+    val File = R.drawable.ic_file
+    val SnowMan = R.drawable.ic_snow_man
 }
