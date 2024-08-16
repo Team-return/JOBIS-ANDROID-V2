@@ -50,6 +50,7 @@ internal fun Root(
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    onNotificationSettingClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
@@ -83,6 +84,7 @@ internal fun Root(
         onCompaniesClick = onCompaniesClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
+        onNotificationSettingClick = onNotificationSettingClick,
         onNoticeClick = onNoticeClick,
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
@@ -115,6 +117,7 @@ private fun RootScreen(
     onSearchRecruitmentClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
+    onNotificationSettingClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
@@ -173,6 +176,7 @@ private fun RootScreen(
                     onNoticeClick = onNoticeClick,
                     onPostReviewClick = onPostReviewClick,
                     navigateToLanding = navigateToLanding,
+                    onNotificationSettingClick = onNotificationSettingClick,
                 )
             }
         }

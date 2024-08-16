@@ -32,6 +32,8 @@ import team.retum.jobisandroidv2.root.root
 import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.NAVIGATION_NOTIFICATIONS
 import team.retum.notification.navigation.navigateToNotification
+import team.retum.notification.navigation.navigateToNotificationSetting
+import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
 import team.retum.review.navigation.navigateToPostReview
 import team.retum.review.navigation.navigateToReviewDetails
@@ -56,6 +58,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             onChangePasswordClick = navController::navigateToComparePassword,
             onReportBugClick = navController::navigateToReportBug,
             onSearchRecruitmentClick = navController::navigateToSearchRecruitment,
+            onNotificationSettingClick = navController::navigateToNotificationSetting,
             onNoticeClick = navController::navigateToNotices,
             navigateToLanding = { navController.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navController::navigateToPostReview,
@@ -63,6 +66,7 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             navigateToRecruitmentDetails = navController::navigateToRecruitmentDetails,
             navigatedFromNotifications = navigatedFromNotifications(navController.previousBackStackEntry?.destination?.route),
         )
+        notificationSetting(onBackPressed = navController::popBackStack)
         notifications(
             onBackPressed = {
                 navController.navigateToRoot()
