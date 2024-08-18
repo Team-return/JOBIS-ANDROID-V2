@@ -1,5 +1,6 @@
 package team.retum.network.datasource.notification
 
+import team.retum.common.enums.NotificationTopic
 import team.retum.network.api.NotificationApi
 import team.retum.network.model.response.notification.FetchNotificationsResponse
 import team.retum.network.util.RequestHandler
@@ -17,4 +18,24 @@ class NotificationDataSourceImpl @Inject constructor(
         RequestHandler<Unit>().request {
             notificationApi.readNotification(notificationId = notificationId)
         }
+
+    override suspend fun subscribeNotificationTopic(
+        deviceToken: String,
+        topic: NotificationTopic,
+    ) = RequestHandler<Unit>().request {
+        notificationApi.subscribeNotificationTopic(
+            deviceToken = deviceToken,
+            topic = topic,
+        )
+    }
+
+    override suspend fun unsubscribeNotificationTopic(
+        deviceToken: String,
+        topic: NotificationTopic,
+    ) = RequestHandler<Unit>().request {
+        notificationApi.unsubscribeNotificationTopic(
+            deviceToken = deviceToken,
+            topic = topic,
+        )
+    }
 }
