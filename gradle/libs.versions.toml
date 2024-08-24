@@ -10,6 +10,7 @@ androidx-lifecycle-viewmodel = "2.7.0"
 androidx-lifecycle-runtime-compose = "2.7.0"
 
 converter-moshi = "2.9.0"
+firebase-bom = "32.3.1"
 google-service = "4.4.1"
 google-firebase-bom = "32.7.4"
 
@@ -67,7 +68,10 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android-gradle-plugin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
