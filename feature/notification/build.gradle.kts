@@ -21,5 +21,5 @@ android {
 dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics.ktx)
-    implementation (libs.firebase.messaging)
+    implementation(libs.firebase.messaging)
 }
