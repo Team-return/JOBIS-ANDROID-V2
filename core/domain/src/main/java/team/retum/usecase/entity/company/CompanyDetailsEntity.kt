@@ -26,7 +26,6 @@ private const val END_NUMBER_START_INDEX_SEOUL_6 = 6
 private const val END_NUMBER_START_INDEX_OTHERS_6 = 6
 private const val END_NUMBER_START_INDEX_OTHERS_7 = 7
 
-
 data class CompanyDetailsEntity(
     val businessNumber: String,
     val companyName: String,

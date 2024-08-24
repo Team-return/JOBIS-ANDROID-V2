@@ -31,7 +31,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "TEST_PASSWORD",
-                value = properties.getProperty("TEST_PASSWORD", "\"test\"")
+                value = properties.getProperty("TEST_PASSWORD", "\"test\""),
             )
         }
     }

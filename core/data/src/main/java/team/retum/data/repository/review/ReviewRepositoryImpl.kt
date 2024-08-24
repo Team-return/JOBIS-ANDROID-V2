@@ -17,5 +17,4 @@ class ReviewRepositoryImpl @Inject constructor(
 
     override suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse =
         reviewDataSource.fetchReviewDetail(reviewId)
-
 }

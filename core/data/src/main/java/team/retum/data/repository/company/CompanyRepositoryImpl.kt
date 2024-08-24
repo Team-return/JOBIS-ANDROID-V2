@@ -3,8 +3,8 @@ package team.retum.data.repository.company
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
-import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import team.retum.network.model.response.company.FetchCompanyDetailsResponse
+import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import javax.inject.Inject
 
 class CompanyRepositoryImpl @Inject constructor(

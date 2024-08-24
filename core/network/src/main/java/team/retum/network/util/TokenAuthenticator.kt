@@ -69,9 +69,12 @@ class TokenAuthenticator @Inject constructor(
     }
 
     private fun buildRequest(response: Response): Request? {
-        return if (hasException) null
-        else response.request.newBuilder()
-            .addHeader("Authorization", "${ResourceKeys.BEARER} $accessToken")
-            .build()
+        return if (hasException) {
+            null
+        } else {
+            response.request.newBuilder()
+                .addHeader("Authorization", "${ResourceKeys.BEARER} $accessToken")
+                .build()
+        }
     }
 }
