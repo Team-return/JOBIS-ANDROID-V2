@@ -28,5 +28,5 @@ data class FetchCompanyDetailsResponse(
     @Json(name = "recruitment_id") val recruitmentId: Long?,
     @Json(name = "attachments") val attachments: List<String>?,
     @Json(name = "service_name") val serviceName: String?,
-    @Json(name = "business_area") val businessArea: String?
+    @Json(name = "business_area") val businessArea: String?,
 )

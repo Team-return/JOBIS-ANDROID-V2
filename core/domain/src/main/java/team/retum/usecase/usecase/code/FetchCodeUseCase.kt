@@ -20,4 +20,3 @@ class FetchCodeUseCase @Inject constructor(
         ).toCodesEntity()
     }
 }
-

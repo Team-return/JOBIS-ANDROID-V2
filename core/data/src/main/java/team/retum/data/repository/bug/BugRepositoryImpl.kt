@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class BugRepositoryImpl @Inject constructor(
     private val remoteBugDataSource: RemoteBugDataSource,
-): BugRepository {
+) : BugRepository {
     override suspend fun reportBug(reportBugRequest: ReportBugRequest) {
         remoteBugDataSource.reportBug(reportBugRequest = reportBugRequest)
     }

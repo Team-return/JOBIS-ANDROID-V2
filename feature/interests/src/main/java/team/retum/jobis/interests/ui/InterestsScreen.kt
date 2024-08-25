@@ -92,7 +92,7 @@ private fun InterestsInput(
                 "Java",
             ).toMutableStateList(),
             checkedSkills = checkedSkills,
-            onCheckedChange = { index, checked,_ ->
+            onCheckedChange = { index, checked, _ ->
                 // TODO 뷰모델로 함수 옮기기
                 checkedSkills.run {
                     when (checked) {
@@ -104,7 +104,3 @@ private fun InterestsInput(
         )
     }
 }
-
-
-
-

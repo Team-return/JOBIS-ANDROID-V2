@@ -6,8 +6,8 @@ import retrofit2.http.Query
 import team.retum.network.di.RequestUrls
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
-import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import team.retum.network.model.response.company.FetchCompanyDetailsResponse
+import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 
 interface CompanyApi {
     @GET(RequestUrls.Companies.student)
