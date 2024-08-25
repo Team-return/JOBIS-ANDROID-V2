@@ -182,7 +182,7 @@ private fun CompanyInformation(
                 ),
             model = recruitmentDetail.companyProfileUrl,
             contentDescription = "company profile",
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Crop,
         )
         JobisText(
             text = recruitmentDetail.companyName,
