@@ -10,6 +10,7 @@ androidx-lifecycle-viewmodel = "2.7.0"
 androidx-lifecycle-runtime-compose = "2.7.0"
 
 converter-moshi = "2.9.0"
+firebase-bom = "32.3.1"
 google-service = "4.4.1"
 google-firebase-bom = "32.7.4"
 
@@ -67,7 +68,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-crashlytics"}
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android-gradle-plugin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
@@ -87,10 +89,10 @@ kotlin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serializ
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
-com-google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "google-firebase-bom" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "google-firebase-bom" }
 com-google-android-play = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "app-update-ktx" }
 
-firebase_messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
 
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "androidx-compose-ui-test" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt-android-gradle-plugin" }
