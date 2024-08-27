@@ -20,6 +20,7 @@ hilt-android-gradle-plugin = "2.51.1"
 junit = "4.13.2"
 android-gradle = "8.2.2"
 kotlin = "1.9.21"
+kotlinx-collections-immutable = "0.3.7"
 lottie-compose = "6.3.0"
 moshi-kotlin = "1.12.0"
 squareup-retrofit = "2.9.0"
@@ -74,6 +75,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android-gradle-plugin" }
