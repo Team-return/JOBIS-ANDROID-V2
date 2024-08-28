@@ -1,4 +1,4 @@
-package team.retum.common.component
+package team.retum.jobisdesignsystemv2.review
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
