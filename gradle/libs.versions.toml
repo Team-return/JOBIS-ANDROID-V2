@@ -9,6 +9,7 @@ androidx-compose-foundation = "1.6.6"
 androidx-lifecycle-viewmodel = "2.7.0"
 androidx-lifecycle-runtime-compose = "2.7.0"
 
+compose-stable-marker = "1.0.5"
 converter-moshi = "2.9.0"
 firebase-bom = "32.3.1"
 google-service = "4.4.1"
@@ -67,6 +68,7 @@ androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
 
+compose-stable-marker = { module = "com.github.skydoves:compose-stable-marker", version.ref = "compose-stable-marker" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
