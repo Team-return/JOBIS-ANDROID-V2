@@ -1,10 +1,12 @@
 package team.retum.usecase.entity
 
+import androidx.compose.runtime.Immutable
 import team.retum.network.model.response.FetchReviewsResponse
 
 data class FetchReviewsEntity(
     val reviews: List<Review>,
 ) {
+    @Immutable
     data class Review(
         val reviewId: String,
         val year: String,

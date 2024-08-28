@@ -2,6 +2,7 @@ package team.retum.jobis.notice.viewmodel
 
 import android.content.Context
 import android.os.Environment
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -84,6 +85,7 @@ internal class NoticeDetailsViewModel @Inject constructor(
     }
 }
 
+@Immutable
 internal data class NoticeDetailsState(
     val noticeId: Long,
     val noticeDetailsEntity: NoticeDetailsEntity,

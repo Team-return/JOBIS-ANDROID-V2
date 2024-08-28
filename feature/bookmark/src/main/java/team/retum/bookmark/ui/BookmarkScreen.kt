@@ -27,6 +27,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
@@ -69,7 +71,7 @@ internal fun Bookmarks(
     }
 
     BookmarkScreen(
-        bookmarks = bookmarkViewModel.bookmarks,
+        bookmarks = bookmarkViewModel.bookmarks.toPersistentList(),
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
         onRecruitmentDetailClick = onRecruitmentDetailClick,
@@ -78,7 +80,7 @@ internal fun Bookmarks(
 
 @Composable
 private fun BookmarkScreen(
-    bookmarks: List<BookmarksEntity.BookmarkEntity>,
+    bookmarks: ImmutableList<BookmarksEntity.BookmarkEntity>,
     onDeleteClick: (Long) -> Unit,
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
@@ -194,7 +196,7 @@ private fun BookmarkItem(
             }
         }
         JobisIconButton(
-            painter = painterResource(id = JobisIcon.Delete),
+            drawableResId = JobisIcon.Delete,
             contentDescription = "delete",
             onClick = { onDeleteClick(recruitmentId) },
         )

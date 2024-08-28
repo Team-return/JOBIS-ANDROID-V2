@@ -1,11 +1,13 @@
 package team.retum.usecase.entity.banner
 
+import androidx.compose.runtime.Immutable
 import team.retum.common.enums.BannerType
 import team.retum.network.model.response.banner.FetchBannersResponse
 
 data class BannersEntity(
     val banners: List<BannerEntity>,
 ) {
+    @Immutable
     data class BannerEntity(
         val bannerId: Long,
         val bannerUrl: String,

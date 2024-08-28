@@ -1,12 +1,15 @@
 package team.retum.usecase.entity
 
+import androidx.compose.runtime.Immutable
 import team.retum.common.enums.MilitarySupport
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchRecruitmentsResponse
 
+@Immutable
 data class RecruitmentsEntity(
     val recruitments: List<RecruitmentEntity>,
 ) {
+    @Immutable
     data class RecruitmentEntity(
         val id: Long,
         val companyName: String,

@@ -1,5 +1,6 @@
 package team.retum.usecase.entity.application
 
+import androidx.compose.runtime.Immutable
 import team.retum.common.enums.ApplyStatus
 import team.retum.common.enums.AttachmentType
 import team.retum.network.model.response.application.FetchAppliedCompaniesResponse
@@ -7,6 +8,7 @@ import team.retum.network.model.response.application.FetchAppliedCompaniesRespon
 data class AppliedCompaniesEntity(
     val applications: List<ApplicationEntity>,
 ) {
+    @Immutable
     data class ApplicationEntity(
         val applicationId: Long,
         val recruitmentId: Long,

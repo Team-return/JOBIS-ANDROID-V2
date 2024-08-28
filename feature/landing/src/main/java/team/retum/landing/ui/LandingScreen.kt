@@ -20,16 +20,13 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -56,14 +53,6 @@ internal fun Landing(
     onSignUpClick: () -> Unit,
 ) {
     val context = LocalContext.current
-    val composition by rememberLottieComposition(
-        if (isSystemInDarkTheme()) {
-            LottieCompositionSpec.RawRes(R.raw.splash_black)
-        } else {
-            LottieCompositionSpec.RawRes(R.raw.splash_white)
-        },
-    )
-    var showButton by remember { mutableStateOf(false) }
     val settingLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
     val requestPermissionLauncher =
@@ -85,15 +74,12 @@ internal fun Landing(
 
     LaunchedEffect(Unit) {
         delay(500L)
-        showButton = true
         if (!notificationPermissionGranted(context)) {
             requestPermissionLauncher.requestNotificationPermission()
         }
     }
 
     LandingScreen(
-        composition = composition,
-        showButton = showButton,
         onSignInClick = onSignInClick,
         onSignUpClick = onSignUpClick,
     )
@@ -101,11 +87,16 @@ internal fun Landing(
 
 @Composable
 private fun LandingScreen(
-    composition: LottieComposition?,
-    showButton: Boolean,
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
 ) {
+    val composition by rememberLottieComposition(
+        if (isSystemInDarkTheme()) {
+            LottieCompositionSpec.RawRes(R.raw.splash_black)
+        } else {
+            LottieCompositionSpec.RawRes(R.raw.splash_white)
+        },
+    )
     Box {
         LottieAnimation(
             composition = composition,

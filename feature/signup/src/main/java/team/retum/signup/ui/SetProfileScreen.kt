@@ -104,7 +104,7 @@ private fun SetProfileScreen(
             onBackPressed = onBackPressed,
         )
         SetImage(
-            uri = state.uri,
+            uri = state.uri.toString(),
             onClick = {
                 val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
                 val request = PickVisualMediaRequest(mediaType)
@@ -123,7 +123,7 @@ private fun SetProfileScreen(
 
 @Composable
 private fun SetImage(
-    uri: Uri?,
+    uri: String?,
     onClick: () -> Unit,
 ) {
     Column(

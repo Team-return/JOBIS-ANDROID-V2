@@ -18,6 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
@@ -39,7 +41,7 @@ internal fun SearchRecruitment(
     val state by recruitmentsViewModel.state.collectAsStateWithLifecycle()
 
     SearchRecruitmentScreen(
-        recruitments = recruitmentsViewModel.recruitments,
+        recruitments = recruitmentsViewModel.recruitments.toPersistentList(),
         onBackPressed = onBackPressed,
         onRecruitmentClick = onRecruitmentDetailsClick,
         onBookmarkClick = recruitmentsViewModel::bookmarkRecruitment,
@@ -52,7 +54,7 @@ internal fun SearchRecruitment(
 
 @Composable
 private fun SearchRecruitmentScreen(
-    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
+    recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onBackPressed: () -> Unit,
     onRecruitmentClick: (Long) -> Unit,
     onBookmarkClick: (Long) -> Unit,
@@ -71,7 +73,7 @@ private fun SearchRecruitmentScreen(
             value = { state.name ?: "" },
             hint = stringResource(id = R.string.recruitment_search_hint),
             onValueChange = onNameChange,
-            leadingIcon = painterResource(id = JobisIcon.Search),
+            drawableResId = JobisIcon.Search,
         )
         RecruitmentItems(
             recruitments = recruitments,
