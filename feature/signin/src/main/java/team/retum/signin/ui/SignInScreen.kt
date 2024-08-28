@@ -143,7 +143,7 @@ private fun SignInScreen(
         Spacer(modifier = Modifier.height(8.dp))
         JobisMediumButton(
             text = stringResource(id = R.string.forgot_password),
-            drawable = painterResource(id = JobisIcon.LockReset),
+            drawableResId = JobisIcon.LockReset,
             onClick = onForgotPasswordClick,
             keyboardInteractionEnabled = false,
         )

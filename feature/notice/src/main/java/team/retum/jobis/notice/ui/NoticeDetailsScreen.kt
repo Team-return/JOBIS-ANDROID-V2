@@ -187,7 +187,7 @@ private fun AttachFile(
                 style = JobisTypography.Body,
             )
             JobisIconButton(
-                painter = painterResource(id = JobisIcon.Download),
+                drawableResId = JobisIcon.Download,
                 contentDescription = "download",
                 onClick = {
                     saveFileData(
