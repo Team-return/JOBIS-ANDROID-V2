@@ -97,7 +97,7 @@ private fun BasicTopAppBar(
             onBackPressed?.run {
                 JobisIconButton(
                     modifier = Modifier.padding(vertical = 8.dp),
-                    painter = painterResource(id = JobisIcon.Arrow),
+                    drawableResId = JobisIcon.Arrow,
                     contentDescription = stringResource(id = R.string.content_description_arrow),
                     onClick = onBackPressed,
                 )
@@ -260,7 +260,7 @@ private fun JobisSmallTopAppBarPreview() {
             onBackPressed = {},
         ) {
             JobisIconButton(
-                painter = painterResource(JobisIcon.Search),
+                drawableResId = JobisIcon.Search,
                 contentDescription = "search",
                 onClick = {},
             )
@@ -274,13 +274,13 @@ private fun JobisLargeTopAppBarPreview() {
     JobisDesignSystemV2Theme {
         JobisLargeTopAppBar(title = "모집의뢰서") {
             JobisIconButton(
-                painter = painterResource(JobisIcon.Filter),
+                drawableResId = JobisIcon.Filter,
                 contentDescription = "filter",
                 onClick = {},
                 tint = JobisTheme.colors.onPrimary,
             )
             JobisIconButton(
-                painter = painterResource(JobisIcon.Search),
+                drawableResId = JobisIcon.Search,
                 contentDescription = "search",
                 onClick = {},
             )
