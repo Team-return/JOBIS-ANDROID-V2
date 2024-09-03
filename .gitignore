@@ -29,8 +29,5 @@ render.experimental.xml
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
-# Google Cloud Platfor (e.g. Release Google play console)
-GoogleCloudPlatform.json
-
 # Android Profiling
 *.hprof
