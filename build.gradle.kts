@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath(libs.kotlin.serialization)
+        classpath(libs.play.publisher)
     }
 }
 
