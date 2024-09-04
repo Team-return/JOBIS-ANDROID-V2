@@ -70,11 +70,68 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Send Slack Message
+      - name: Notify Slack on Success
+        if: success()
+        id: slack-success
         uses: slackapi/slack-github-action@v1.24.0
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
-        env:
+        with: 
+          payload: | 
+            {
+              "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
+              "attachments": [
+                {
+                  "color": "#36a64f", 
+                  "title": "${{ github.repository }}",
+                  "title_link": "https://github.com/${{github.repository}}",
+                  "text": "🚀 앱이 배포되었습니다.",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Tag",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
+                    }
+                  ]
+                }
+              ]
+            }
+        env: 
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Notify Slack on Failure
+        if: failure()
+        id: slack-failure
+        uses: slackapi/slack-github-action@v1.24.0
+        with: 
+          payload: | 
+            {
+              "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
+              "attachments": [
+                {
+                  "color": "#ff0000", 
+                  "title": "${{ github.repository }}",
+                  "title_link": "https://github.com/${{github.repository}}",
+                  "text": "💣 앱 배포에 실패했어요 ㅠㅠ",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Tag",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
+                    }
+                  ]
+                }
+              ]
+            }
+        env: 
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
