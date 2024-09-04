@@ -1,5 +1,6 @@
 package team.retum.review.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,7 @@ internal class ReviewDetailsViewModel @Inject constructor(
     }
 }
 
+@Immutable
 internal data class ReviewDetailsState(
     val reviewId: String,
     val questions: List<FetchReviewDetailEntity.Detail>,

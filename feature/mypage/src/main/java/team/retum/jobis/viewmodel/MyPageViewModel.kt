@@ -2,6 +2,7 @@ package team.retum.jobis.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -112,6 +113,7 @@ internal class MyPageViewModel @Inject constructor(
     }
 }
 
+@Immutable
 internal data class MyPageState(
     val studentInformation: StudentInformationEntity,
     val showSignOutModal: Boolean,

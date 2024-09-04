@@ -22,4 +22,6 @@ dependencies {
     implementation(project(":core:common"))
 
     implementation(libs.coil.compose)
+
+    implementation(libs.kotlinx.collections.immutable)
 }

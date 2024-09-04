@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
@@ -36,7 +37,7 @@ internal fun Recruitments(
     }
 
     RecruitmentsScreen(
-        recruitments = recruitmentViewModel.recruitments,
+        recruitments = recruitmentViewModel.recruitments.toPersistentList(),
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
@@ -48,7 +49,7 @@ internal fun Recruitments(
 
 @Composable
 private fun RecruitmentsScreen(
-    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
+    recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
@@ -63,13 +64,13 @@ private fun RecruitmentsScreen(
     ) {
         JobisLargeTopAppBar(title = stringResource(id = R.string.recruitment)) {
             JobisIconButton(
-                painter = painterResource(JobisIcon.Filter),
+                drawableResId = JobisIcon.Filter,
                 contentDescription = "filter",
                 onClick = onRecruitmentFilterClick,
                 tint = JobisTheme.colors.onPrimary,
             )
             JobisIconButton(
-                painter = painterResource(JobisIcon.Search),
+                drawableResId = JobisIcon.Search,
                 contentDescription = "search",
                 onClick = onSearchRecruitmentClick,
             )

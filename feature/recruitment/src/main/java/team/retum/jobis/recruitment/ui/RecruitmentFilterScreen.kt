@@ -21,13 +21,13 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
-import team.retum.common.component.Skills
 import team.retum.common.enums.CodeType
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
@@ -40,6 +40,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.skills.Skills
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
@@ -66,7 +67,7 @@ internal fun RecruitmentFilter(
         state = state,
         setKeyword = recruitmentFilterViewModel::setKeyword,
         setSelectedMajor = recruitmentFilterViewModel::setSelectedMajor,
-        majors = recruitmentFilterViewModel.majors,
+        majors = recruitmentFilterViewModel.majors.toPersistentList(),
         techs = recruitmentFilterViewModel.techs,
         onCheckSkill = recruitmentFilterViewModel::addSkill,
         checkedSkills = recruitmentFilterViewModel.checkedSkills,
@@ -79,7 +80,7 @@ private fun RecruitmentFilterScreen(
     state: RecruitmentFilterState,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
-    majors: List<CodesEntity.CodeEntity>,
+    majors: ImmutableList<CodesEntity.CodeEntity>,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
     onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
     checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
@@ -98,7 +99,7 @@ private fun RecruitmentFilterScreen(
                 keyword = { state.keyword ?: "" },
                 onKeywordChange = setKeyword,
                 majors = majors,
-                techs = techs,
+                techs = techs.toPersistentList(),
                 selectedMajor = state.selectedMajor,
                 onMajorSelected = setSelectedMajor,
                 onMajorUnselected = { setSelectedMajor("", null) },
@@ -124,8 +125,8 @@ private fun RecruitmentFilterScreen(
 private fun FilterInputs(
     keyword: () -> String,
     onKeywordChange: (String) -> Unit,
-    majors: List<CodesEntity.CodeEntity>,
-    techs: List<CodesEntity.CodeEntity>,
+    majors: ImmutableList<CodesEntity.CodeEntity>,
+    techs: ImmutableList<CodesEntity.CodeEntity>,
     selectedMajor: String,
     onMajorSelected: (String, Long?) -> Unit,
     onMajorUnselected: () -> Unit,
@@ -136,7 +137,7 @@ private fun FilterInputs(
         value = keyword,
         hint = stringResource(id = R.string.recruitment_search_hint),
         onValueChange = onKeywordChange,
-        leadingIcon = painterResource(id = JobisIcon.Search),
+        drawableResId = JobisIcon.Search,
     )
     FlowRow(
         maxItemsInEachRow = 5,
@@ -165,8 +166,8 @@ private fun FilterInputs(
     }
     Skills(
         skills = techs.map { it.keyword }.toMutableStateList(),
-        checkedSkills = checkedSkills.map { it.keyword },
-        checkSkillsId = techs.map { it.code },
+        checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
+        checkSkillsId = techs.map { it.code }.toPersistentList(),
     ) { index, checked, id ->
         checkedSkills.run {
             onCheckSkill(

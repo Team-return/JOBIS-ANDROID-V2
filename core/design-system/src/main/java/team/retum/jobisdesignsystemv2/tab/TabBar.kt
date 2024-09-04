@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -25,7 +26,7 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 fun TabBar(
     modifier: Modifier = Modifier,
     selectedTabIndex: Int,
-    tabs: List<String>,
+    tabs: ImmutableList<String>,
     onSelectTab: (Int) -> Unit,
 ) {
     Row(

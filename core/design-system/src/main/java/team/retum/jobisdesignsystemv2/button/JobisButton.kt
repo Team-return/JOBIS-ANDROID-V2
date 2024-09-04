@@ -1,5 +1,6 @@
 package team.retum.jobisdesignsystemv2.button
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -22,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -269,7 +269,7 @@ private fun MediumButton(
     modifier: Modifier,
     text: String,
     color: ButtonColor,
-    painter: Painter,
+    @DrawableRes drawableResId: Int,
     enabled: Boolean,
     keyboardInteractionEnabled: Boolean,
     onClick: () -> Unit,
@@ -296,7 +296,7 @@ private fun MediumButton(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Icon(
-                painter = painter,
+                painter = painterResource(id = drawableResId),
                 tint = contentColor,
                 contentDescription = "drawable",
             )
@@ -363,7 +363,7 @@ fun JobisMediumButton(
     modifier: Modifier = Modifier,
     text: String,
     color: ButtonColor = ButtonColor.Default,
-    drawable: Painter,
+    @DrawableRes drawableResId: Int,
     enabled: Boolean = true,
     keyboardInteractionEnabled: Boolean = true,
     onClick: () -> Unit,
@@ -372,7 +372,7 @@ fun JobisMediumButton(
         modifier = modifier,
         text = text,
         color = color,
-        painter = drawable,
+        drawableResId = drawableResId,
         enabled = enabled,
         keyboardInteractionEnabled = keyboardInteractionEnabled,
         onClick = onClick,

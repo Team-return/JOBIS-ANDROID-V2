@@ -1,4 +1,4 @@
-package team.retum.common.component
+package team.retum.jobisdesignsystemv2.skills
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +10,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -19,8 +20,8 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 @Composable
 fun Skills(
     skills: SnapshotStateList<String>,
-    checkSkillsId: List<Long>? = null,
-    checkedSkills: List<String>,
+    checkSkillsId: ImmutableList<Long>? = null,
+    checkedSkills: ImmutableList<String>,
     onCheckedChange: (String, Boolean, Long) -> Unit,
 ) {
     LazyColumn {

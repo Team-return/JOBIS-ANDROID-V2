@@ -21,4 +21,6 @@ android {
 dependencies {
 
     implementation(libs.coil.compose)
+
+    implementation(libs.kotlinx.collections.immutable)
 }
