@@ -12,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import team.retum.common.component.ReviewContent
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
-import team.retum.review.viewmodel.ReviewsState
+import team.retum.jobisdesignsystemv2.review.ReviewContent
 import team.retum.review.viewmodel.ReviewsViewModel
+import team.retum.usecase.entity.FetchReviewsEntity
 
 @Composable
 internal fun Reviews(
@@ -37,7 +39,7 @@ internal fun Reviews(
         onBackPressed = onBackPressed,
         companyName = companyName,
         onReviewContentClick = navigateToReviewDetails,
-        state = state,
+        reviews = state.reviews.toPersistentList(),
     )
 }
 
@@ -46,7 +48,7 @@ private fun ReviewsScreen(
     onBackPressed: () -> Unit,
     companyName: String,
     onReviewContentClick: (String, String) -> Unit,
-    state: ReviewsState,
+    reviews: ImmutableList<FetchReviewsEntity.Review>,
 ) {
     Column(
         modifier = Modifier
@@ -61,7 +63,7 @@ private fun ReviewsScreen(
             modifier = Modifier.padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            state.reviews.forEach {
+            reviews.forEach {
                 ReviewContent(
                     onClick = onReviewContentClick,
                     reviewId = it.reviewId,

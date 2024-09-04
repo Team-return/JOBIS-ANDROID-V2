@@ -7,9 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.company.component.CompanyItems
 import team.retum.company.viewmodel.CompaniesSideEffect
 import team.retum.company.viewmodel.CompaniesViewModel
@@ -51,7 +52,7 @@ internal fun Companies(
         onBackPressed = onBackPressed,
         onSearchClick = onSearchClick,
         onCompanyContentClick = onCompanyContentClick,
-        companies = companiesViewModel.companies,
+        companies = companiesViewModel.companies.toPersistentList(),
         whetherFetchNextPage = companiesViewModel::whetherFetchNextPage,
         fetchNextPage = companiesViewModel::fetchCompanies,
     )
@@ -62,7 +63,7 @@ private fun CompaniesScreen(
     onBackPressed: () -> Unit,
     onSearchClick: () -> Unit,
     onCompanyContentClick: (Long) -> Unit,
-    companies: List<CompaniesEntity.CompanyEntity>,
+    companies: ImmutableList<CompaniesEntity.CompanyEntity>,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
 ) {
@@ -76,7 +77,7 @@ private fun CompaniesScreen(
             onBackPressed = onBackPressed,
         ) {
             JobisIconButton(
-                painter = painterResource(JobisIcon.Search),
+                drawableResId = JobisIcon.Search,
                 contentDescription = "search",
                 onClick = onSearchClick,
             )

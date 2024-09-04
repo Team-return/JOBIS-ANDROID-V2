@@ -21,6 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.notice.viewmodel.NoticesSideEffect
 import team.retum.jobis.notice.viewmodel.NoticesViewModel
 import team.retum.jobis.notification.R
@@ -60,7 +62,7 @@ internal fun Notices(
     NoticesScreen(
         onBackPressed = onBackPressed,
         navigateToDetail = navigateToDetail,
-        notices = state.value.notices,
+        notices = state.value.notices.toPersistentList(),
     )
 }
 
@@ -68,7 +70,7 @@ internal fun Notices(
 private fun NoticesScreen(
     onBackPressed: () -> Unit,
     navigateToDetail: (Long) -> Unit,
-    notices: List<NoticesEntity.NoticeEntity>,
+    notices: ImmutableList<NoticesEntity.NoticeEntity>,
 ) {
     Column(
         modifier = Modifier

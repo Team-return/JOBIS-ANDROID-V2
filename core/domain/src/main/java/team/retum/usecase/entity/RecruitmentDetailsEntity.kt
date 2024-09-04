@@ -1,5 +1,6 @@
 package team.retum.usecase.entity
 
+import androidx.compose.runtime.Immutable
 import team.retum.common.enums.HiringProgress
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.Areas
@@ -7,6 +8,7 @@ import team.retum.network.model.response.FetchRecruitmentDetailsResponse
 import team.retum.network.model.response.Job
 import team.retum.network.model.response.Tech
 
+@Immutable
 data class RecruitmentDetailsEntity(
     val companyId: Long,
     val companyProfileUrl: String,
@@ -28,6 +30,7 @@ data class RecruitmentDetailsEntity(
     val bookmarked: Boolean,
 )
 
+@Immutable
 data class AreasEntity(
     val id: Long,
     val job: List<JobEntity>,

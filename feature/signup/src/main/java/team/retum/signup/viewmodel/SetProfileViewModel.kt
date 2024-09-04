@@ -2,6 +2,7 @@ package team.retum.signup.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -64,6 +65,7 @@ internal class SetProfileViewModel @Inject constructor(
     }
 }
 
+@Immutable
 internal data class SetProfileState(
     val image: File?,
     val imageUrl: String,

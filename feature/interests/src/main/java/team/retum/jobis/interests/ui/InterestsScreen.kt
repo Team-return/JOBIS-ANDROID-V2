@@ -18,10 +18,11 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import team.retum.common.component.Skills
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.interests.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.skills.Skills
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 
@@ -72,7 +73,7 @@ private fun InterestsInput(
     selectedCategoryIndex: Int,
     categories: SnapshotStateList<String>,
     onSelectCategory: (Int) -> Unit,
-    checkedSkills: MutableList<String>,
+    checkedSkills: SnapshotStateList<String>,
 ) {
     Column(modifier = Modifier.padding(vertical = 16.dp)) {
         JobisTextField(
@@ -82,7 +83,7 @@ private fun InterestsInput(
         )
         TabBar(
             selectedTabIndex = selectedCategoryIndex,
-            tabs = categories,
+            tabs = categories.toPersistentList(),
             onSelectTab = onSelectCategory,
         )
         // TODO 더미 데이터 제거
@@ -91,7 +92,7 @@ private fun InterestsInput(
                 "Kotlin",
                 "Java",
             ).toMutableStateList(),
-            checkedSkills = checkedSkills,
+            checkedSkills = checkedSkills.toPersistentList(),
             onCheckedChange = { index, checked, _ ->
                 // TODO 뷰모델로 함수 옮기기
                 checkedSkills.run {

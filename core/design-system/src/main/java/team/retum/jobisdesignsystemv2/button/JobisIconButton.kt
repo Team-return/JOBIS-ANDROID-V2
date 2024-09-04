@@ -1,5 +1,6 @@
 package team.retum.jobisdesignsystemv2.button
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -13,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.utils.DURATION_MILLIS
@@ -22,7 +23,7 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 @Composable
 private fun BasicIconButton(
     modifier: Modifier,
-    painter: Painter,
+    @DrawableRes drawableResId: Int,
     tint: Color,
     defaultBackgroundColor: Color,
     contentDescription: String,
@@ -54,7 +55,7 @@ private fun BasicIconButton(
                 shape = CircleShape,
             )
             .padding(4.dp),
-        painter = painter,
+        painter = painterResource(id = drawableResId),
         contentDescription = contentDescription,
         tint = tint,
     )
@@ -64,7 +65,7 @@ private fun BasicIconButton(
  * This composable function creates a JobisIconButton element for use in Jobis.
  *
  * @param modifier The modifier to be applied to the JobisIconButton.
- * @param painter To draw inside this icon
+ * @param drawableResId To draw inside this icon
  * @param tint To color inside this icon
  * @param contentDescription A brief description of what the icon is
  * @param enabled Controls the enabled state.
@@ -73,7 +74,7 @@ private fun BasicIconButton(
 @Composable
 fun JobisIconButton(
     modifier: Modifier = Modifier,
-    painter: Painter,
+    @DrawableRes drawableResId: Int,
     tint: Color = JobisTheme.colors.onSurfaceVariant,
     defaultBackgroundColor: Color = JobisTheme.colors.background,
     contentDescription: String,
@@ -82,7 +83,7 @@ fun JobisIconButton(
 ) {
     BasicIconButton(
         modifier = modifier,
-        painter = painter,
+        drawableResId = drawableResId,
         tint = tint,
         defaultBackgroundColor = defaultBackgroundColor,
         contentDescription = contentDescription,

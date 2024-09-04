@@ -1,11 +1,13 @@
 package team.retum.usecase.entity
 
+import androidx.compose.runtime.Immutable
 import team.retum.network.model.request.PostReviewRequest
 
 data class PostReviewEntity(
     val companyId: Long,
     val qnaElements: List<PostReviewContentEntity>,
 ) {
+    @Immutable
     data class PostReviewContentEntity(
         val question: String,
         val answer: String,

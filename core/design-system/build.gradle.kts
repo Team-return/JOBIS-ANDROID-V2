@@ -41,4 +41,6 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugApi(libs.androidx.compose.ui.tooling)
     debugApi(libs.androidx.compose.ui.test.manifest)
+
+    implementation(libs.kotlinx.collections.immutable)
 }

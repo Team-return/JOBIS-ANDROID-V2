@@ -1,5 +1,6 @@
 package team.retum.jobis.recruitment.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,7 @@ internal class RecruitmentDetailsViewModel @Inject constructor(
     }
 }
 
+@Immutable
 internal data class RecruitmentDetailsState(
     val recruitmentDetailsEntity: RecruitmentDetailsEntity,
     val buttonEnabled: Boolean,
