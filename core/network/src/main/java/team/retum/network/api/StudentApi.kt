@@ -9,8 +9,8 @@ import team.retum.network.di.RequestUrls
 import team.retum.network.model.request.student.ChangePasswordRequest
 import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
-import team.retum.network.model.response.FetchStudentInformationResponse
 import team.retum.network.model.request.student.PostSignUpRequest
+import team.retum.network.model.response.FetchStudentInformationResponse
 import team.retum.network.model.response.TokenResponse
 
 interface StudentApi {

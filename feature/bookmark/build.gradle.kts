@@ -4,6 +4,7 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.ktlint.gradle.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
@@ -20,4 +21,6 @@ android {
 dependencies {
 
     implementation(libs.coil.compose)
+
+    implementation(libs.kotlinx.collections.immutable)
 }

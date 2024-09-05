@@ -1,6 +1,6 @@
 package team.retum.common.enums
 
-enum class ReviewProcess  {
+enum class ReviewProcess {
     QUESTION,
     TECH,
     FINISH,

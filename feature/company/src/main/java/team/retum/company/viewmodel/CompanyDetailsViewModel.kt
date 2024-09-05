@@ -1,5 +1,6 @@
 package team.retum.company.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -63,6 +64,7 @@ internal class CompanyDetailsViewModel @Inject constructor(
     }
 }
 
+@Immutable
 internal data class CompanyDetailsState(
     val companyId: Long,
     val companyDetailsEntity: CompanyDetailsEntity,

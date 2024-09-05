@@ -61,7 +61,6 @@ internal fun Root(
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
-    val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -70,7 +69,6 @@ internal fun Root(
     var applicationData by remember { mutableStateOf(ApplicationData.getDefaultApplicationData()) }
 
     RootScreen(
-        navController = navController,
         sheetState = sheetState,
         applicationId = applicationId,
         onAlarmClick = onAlarmClick,
@@ -108,7 +106,7 @@ internal fun Root(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun RootScreen(
-    navController: NavHostController,
+    navController: NavHostController = rememberNavController(),
     sheetState: ModalBottomSheetState,
     applicationId: Long?,
     onAlarmClick: () -> Unit,

@@ -130,7 +130,6 @@ class SignInViewModelTest {
     fun show_toast_test() {
         init()
         enter_dummy_values()
-
     }
 
     private fun enter_dummy_values() {

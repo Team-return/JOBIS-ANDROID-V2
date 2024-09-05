@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -424,6 +425,7 @@ private fun ListItem(
     }
 }
 
+@Immutable
 private data class ListItemInfo(
     val imageResource: Painter,
     val description: String,
@@ -432,6 +434,7 @@ private data class ListItemInfo(
     val iconColor: Color,
 )
 
+@Immutable
 private data class ContentItemInfo(
     val items: List<ListItemInfo>,
 )

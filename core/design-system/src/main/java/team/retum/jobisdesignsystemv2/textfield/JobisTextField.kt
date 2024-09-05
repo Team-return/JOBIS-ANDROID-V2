@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -114,7 +113,7 @@ private fun TextField(
     maxLength: Int,
     showEmailHint: Boolean,
     showVisibleIcon: Boolean,
-    leadingIcon: Painter?,
+    @DrawableRes drawableResId: Int?,
     content: @Composable () -> Unit,
     fieldColor: Color,
     testTag: String,
@@ -162,9 +161,9 @@ private fun TextField(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                leadingIcon?.run {
+                drawableResId?.run {
                     Icon(
-                        painter = leadingIcon,
+                        painter = painterResource(id = drawableResId),
                         contentDescription = "leading icon",
                         tint = JobisTheme.colors.onSurfaceVariant,
                     )
@@ -197,7 +196,7 @@ private fun TextField(
                     content()
                     if (showVisibleIcon) {
                         JobisIconButton(
-                            painter = painterResource(id = icon),
+                            drawableResId = icon,
                             contentDescription = stringResource(id = R.string.content_description_eye_off),
                             onClick = { visible = !visible },
                             defaultBackgroundColor = JobisTheme.colors.inverseSurface,
@@ -272,7 +271,7 @@ private fun Description(
  * @param maxLength 텍스트 필드 값의 최대 길이
  * @param showEmailHint 이메일 도메인에 대한 힌트를 표시할 것인지 결정(e.g., @dsm.hs.kr).
  * @param showVisibleIcon 비밀번호 표시
- * @param leadingIcon
+ * @param drawableResId 텍스트 필드에 표시될 아이콘
  * @param fieldColor 배경 색상
  * @param testTag UI 테스트 코드에서 TextField 노드를 찾기 위해 사용할 태그
  * @param content 내부에 추가로 표시될 뷰
@@ -318,7 +317,7 @@ fun JobisTextField(
     maxLength: Int = Int.MAX_VALUE,
     showEmailHint: Boolean = false,
     showVisibleIcon: Boolean = false,
-    leadingIcon: Painter? = null,
+    @DrawableRes drawableResId: Int? = null,
     fieldColor: Color = JobisTheme.colors.inverseSurface,
     testTag: String = "",
     content: @Composable () -> Unit = { },
@@ -354,7 +353,7 @@ fun JobisTextField(
             maxLength = maxLength,
             showEmailHint = showEmailHint,
             showVisibleIcon = showVisibleIcon,
-            leadingIcon = leadingIcon,
+            drawableResId = drawableResId,
             content = content,
             fieldColor = fieldColor,
             testTag = testTag,

@@ -1,11 +1,13 @@
 package team.retum.usecase.entity
 
+import androidx.compose.runtime.Immutable
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.BookmarksResponse
 
 data class BookmarksEntity(
     val bookmarks: List<BookmarkEntity>,
 ) {
+    @Immutable
     data class BookmarkEntity(
         val companyLogoUrl: String,
         val companyName: String,

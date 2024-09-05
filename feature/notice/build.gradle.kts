@@ -17,3 +17,7 @@ android {
         jvmTarget = ProjectProperties.JVM_TARGET
     }
 }
+
+dependencies {
+    implementation(libs.kotlinx.collections.immutable)
+}

@@ -99,6 +99,8 @@ internal fun PostReview(
     PostReviewScreen(
         onBackPressed = onBackPressed,
         sheetScope = sheetScope,
+        hideModalBottomSheet = { sheetScope.launch { sheetState.hide() } },
+        onSheetShow = { sheetScope.launch { sheetState.show() } },
         sheetState = sheetState,
         addQuestion = {
             reviewViewModel.addReview()
@@ -126,6 +128,8 @@ internal fun PostReview(
 private fun PostReviewScreen(
     onBackPressed: () -> Unit,
     sheetScope: CoroutineScope,
+    hideModalBottomSheet: () -> Unit,
+    onSheetShow: () -> Unit,
     sheetState: ModalBottomSheetState,
     addQuestion: () -> Unit,
     state: ReviewState,
@@ -149,7 +153,7 @@ private fun PostReviewScreen(
         sheetState = sheetState,
         sheetContent = {
             if (reviewProcess == ReviewProcess.FINISH) {
-                sheetScope.launch { sheetState.hide() }
+                hideModalBottomSheet()
                 addQuestion()
             } else {
                 AddQuestionBottomSheet(
@@ -218,10 +222,8 @@ private fun PostReviewScreen(
                 text = stringResource(id = R.string.add_question),
                 onClick = {
                     onReviewProcessChange(ReviewProcess.QUESTION)
-                    sheetScope.launch {
-                        setInit()
-                        sheetState.show()
-                    }
+                    onSheetShow()
+                    setInit()
                 },
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -289,7 +291,7 @@ private fun AddQuestionBottomSheet(
             JobisTextField(
                 value = { state.keyword },
                 hint = stringResource(id = R.string.search),
-                leadingIcon = painterResource(id = JobisIcon.Search),
+                drawableResId = JobisIcon.Search,
                 onValueChange = setKeyword,
                 fieldColor = JobisTheme.colors.background,
             )

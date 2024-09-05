@@ -8,7 +8,7 @@ import team.retum.network.util.RequestHandler
 import javax.inject.Inject
 
 class RemoteAuthDataSourceImpl @Inject constructor(
-    private val authApi: AuthApi
+    private val authApi: AuthApi,
 ) : RemoteAuthDataSource {
     override suspend fun sendAuthenticationCode(sendAuthenticationCodeRequest: SendAuthenticationCodeRequest) {
         RequestHandler<Unit>().request {

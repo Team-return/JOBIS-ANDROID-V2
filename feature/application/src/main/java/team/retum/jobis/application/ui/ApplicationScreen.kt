@@ -322,7 +322,7 @@ private fun Attachment(
                 style = JobisTypography.Body,
             )
             JobisIconButton(
-                painter = painterResource(id = JobisIcon.Close),
+                drawableResId = JobisIcon.Close,
                 contentDescription = "remove",
                 tint = JobisTheme.colors.onSurfaceVariant,
                 onClick = onRemoveClick,
@@ -359,11 +359,11 @@ private fun Urls(
                     value = { url },
                     hint = stringResource(id = R.string.hint_url),
                     onValueChange = { onUrlChange(index, it) },
-                    leadingIcon = painterResource(id = JobisIcon.Link),
+                    drawableResId = JobisIcon.Link,
                 )
                 JobisIconButton(
                     modifier = Modifier.padding(end = 32.dp),
-                    painter = painterResource(id = JobisIcon.Close),
+                    drawableResId = JobisIcon.Close,
                     contentDescription = "close",
                     onClick = { onRemoveUrlClick(index) },
                     defaultBackgroundColor = JobisTheme.colors.inverseSurface,

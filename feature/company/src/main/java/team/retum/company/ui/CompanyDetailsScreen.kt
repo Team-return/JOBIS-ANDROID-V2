@@ -28,7 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import team.retum.common.component.ReviewContent
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.company.model.CompanyInfoData
 import team.retum.company.viewmodel.CompanyDetailsSideEffect
 import team.retum.company.viewmodel.CompanyDetailsState
@@ -40,6 +41,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.review.ReviewContent
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
@@ -107,7 +109,7 @@ internal fun CompanyDetails(
         onMoveToRecruitmentButtonClick = companyDetailsViewModel::onMoveToRecruitmentButtonClick,
         isMovedRecruitmentDetails = isMovedRecruitmentDetails,
         state = state,
-        companyInfo = companyInfo,
+        companyInfo = companyInfo.toPersistentList(),
     )
 }
 
@@ -120,7 +122,7 @@ private fun CompanyDetailsScreen(
     onMoveToRecruitmentButtonClick: () -> Unit,
     isMovedRecruitmentDetails: Boolean,
     state: CompanyDetailsState,
-    companyInfo: List<CompanyInfoData>,
+    companyInfo: ImmutableList<CompanyInfoData>,
 ) {
     Column(
         modifier = Modifier
@@ -152,7 +154,7 @@ private fun CompanyDetailsScreen(
             }
             if (state.reviews.isNotEmpty()) {
                 Reviews(
-                    reviews = state.reviews,
+                    reviews = state.reviews.toPersistentList(),
                     navigateToReviewDetails = navigateToReviewDetails,
                     showMoreReviews = state.showMoreReviews,
                     onShowMoreReviewClick = {
@@ -252,7 +254,7 @@ private fun CompanyInformation(
 
 @Composable
 private fun Reviews(
-    reviews: List<FetchReviewsEntity.Review>,
+    reviews: ImmutableList<FetchReviewsEntity.Review>,
     navigateToReviewDetails: (String, String) -> Unit,
     showMoreReviews: Boolean,
     onShowMoreReviewClick: () -> Unit,

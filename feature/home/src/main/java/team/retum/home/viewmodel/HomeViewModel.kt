@@ -1,5 +1,6 @@
 package team.retum.home.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
@@ -122,6 +123,7 @@ internal class HomeViewModel @Inject constructor(
     }
 }
 
+@Immutable
 internal data class HomeState(
     val studentInformation: StudentInformationEntity,
     val rate: String,

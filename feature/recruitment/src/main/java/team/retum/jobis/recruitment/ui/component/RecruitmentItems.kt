@@ -15,11 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
 import team.retum.common.enums.MilitarySupport
 import team.retum.jobis.recruitment.R
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -34,7 +35,7 @@ private const val DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED = 0.6f
 
 @Composable
 internal fun RecruitmentItems(
-    recruitments: List<RecruitmentsEntity.RecruitmentEntity>,
+    recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onBookmarkClick: (Long) -> Unit,
     whetherFetchNextPage: (Int) -> Boolean,
@@ -104,6 +105,7 @@ private fun RecruitmentItem(
                     ),
                 model = recruitment.companyProfileUrl,
                 contentDescription = "company profile",
+                contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.width(12.dp))
             Column(
@@ -146,13 +148,11 @@ private fun RecruitmentItem(
         Spacer(modifier = Modifier.width(4.dp))
         JobisIconButton(
             modifier = Modifier.padding(4.dp),
-            painter = painterResource(
-                id = if (bookmarked) {
-                    JobisIcon.BookmarkOn
-                } else {
-                    JobisIcon.BookmarkOff
-                },
-            ),
+            drawableResId = if (bookmarked) {
+                JobisIcon.BookmarkOn
+            } else {
+                JobisIcon.BookmarkOff
+            },
             contentDescription = "bookmark",
             onClick = { onBookmarked(recruitment.id) },
             tint = if (bookmarked) {

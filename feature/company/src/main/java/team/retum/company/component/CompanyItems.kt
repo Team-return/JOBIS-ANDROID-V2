@@ -14,10 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -32,7 +34,7 @@ private const val DEFAULT_SIZE_TAKE = 0.5f
 
 @Composable
 internal fun CompanyItems(
-    companies: List<CompaniesEntity.CompanyEntity>,
+    companies: ImmutableList<CompaniesEntity.CompanyEntity>,
     onCompanyContentClick: (Long) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
@@ -108,6 +110,7 @@ private fun CompanyItem(
                     },
                 ),
             contentDescription = "company image",
+            contentScale = ContentScale.Crop,
         )
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             JobisText(

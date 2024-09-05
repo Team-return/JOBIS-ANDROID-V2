@@ -6,7 +6,7 @@ import team.retum.common.enums.AlarmType
 
 @JsonClass(generateAdapter = true)
 data class FetchNotificationsResponse(
-    @Json(name = "notifications") val notifications: List<NotificationResponse>
+    @Json(name = "notifications") val notifications: List<NotificationResponse>,
 ) {
     @JsonClass(generateAdapter = true)
     data class NotificationResponse(

@@ -9,7 +9,9 @@ androidx-compose-foundation = "1.6.6"
 androidx-lifecycle-viewmodel = "2.7.0"
 androidx-lifecycle-runtime-compose = "2.7.0"
 
+compose-stable-marker = "1.0.5"
 converter-moshi = "2.9.0"
+firebase-bom = "32.3.1"
 google-service = "4.4.1"
 google-firebase-bom = "32.7.4"
 
@@ -19,8 +21,10 @@ hilt-android-gradle-plugin = "2.51.1"
 junit = "4.13.2"
 android-gradle = "8.2.2"
 kotlin = "1.9.21"
+kotlinx-collections-immutable = "0.3.7"
 lottie-compose = "6.3.0"
 moshi-kotlin = "1.12.0"
+play-publisher = "3.8.4"
 squareup-retrofit = "2.9.0"
 squareup-logging-interceptor = "4.12.0"
 squareup-javapoet = "1.13.0"
@@ -41,6 +45,8 @@ androidx-room-runtime = "2.6.1"
 junit-ktx = "1.2.1"
 
 firebase-crashlytics = "2.9.9"
+
+triplet-play = "3.8.4"
 
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
@@ -65,13 +71,16 @@ androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
 
+compose-stable-marker = { module = "com.github.skydoves:compose-stable-marker", version.ref = "compose-stable-marker" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-crashlytics"}
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android-gradle-plugin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android-gradle-plugin" }
@@ -79,6 +88,7 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-android-navigation" }
 
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi-kotlin" }
+play-publisher = { module = "com.github.triplet.gradle:play-publisher", version.ref = "play-publisher" }
 squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareup-retrofit" }
 squareup-javapoet = { group = "com.squareup", name = "javapoet", version.ref = "squareup-javapoet" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "squareup-logging-interceptor" }
@@ -87,10 +97,10 @@ kotlin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serializ
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
-com-google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "google-firebase-bom" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "google-firebase-bom" }
 com-google-android-play = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "app-update-ktx" }
 
-firebase_messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
 
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "androidx-compose-ui-test" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt-android-gradle-plugin" }
@@ -111,3 +121,4 @@ kotlinx-serialization = { id = "kotlinx-serialization", version.ref = "kotlin" }
 ktlint-gradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "org-jlleitschuh-ktlint-gradle" }
 google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
+triplet-play = { id = "com.github.triplet.play", version.ref = "triplet-play" }

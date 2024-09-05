@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class BannerRepositoryImpl @Inject constructor(
     private val remoteBannerDataSource: RemoteBannerDataSource,
-): BannerRepository {
+) : BannerRepository {
     override suspend fun fetchBanners(): FetchBannersResponse {
         return remoteBannerDataSource.fetchBanners()
     }

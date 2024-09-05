@@ -18,5 +18,4 @@ class CodeRepositoryImpl @Inject constructor(
             type = type,
             parentCode = parentCode,
         )
-
 }

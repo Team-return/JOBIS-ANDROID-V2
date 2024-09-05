@@ -51,6 +51,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.model.ApplicationData
@@ -142,13 +144,13 @@ internal fun Home(
 
     HomeScreen(
         scrollState = scrollState,
-        menus = menus,
+        menus = menus.toPersistentList(),
         onAlarmClick = onAlarmClick,
         onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
         state = state,
-        banners = state.banners,
+        banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
-        appliedCompanies = homeViewModel.appliedCompanies,
+        appliedCompanies = homeViewModel.appliedCompanies.toPersistentList(),
         applicationId = applicationId,
         setScroll = { position ->
             homeViewModel.fetchScroll(
@@ -169,13 +171,13 @@ private fun isDecemberOrLater(): Boolean {
 @Composable
 private fun HomeScreen(
     scrollState: ScrollState,
-    menus: List<MenuItem>,
+    menus: ImmutableList<MenuItem>,
     onAlarmClick: () -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
-    banners: List<BannersEntity.BannerEntity>,
+    banners: ImmutableList<BannersEntity.BannerEntity>,
     studentInformation: StudentInformationEntity,
-    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
     applicationId: Long?,
     setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -189,7 +191,7 @@ private fun HomeScreen(
     ) {
         JobisSmallTopAppBar(showLogo = true) {
             JobisIconButton(
-                painter = painterResource(JobisIcon.Bell),
+                drawableResId = JobisIcon.Bell,
                 contentDescription = "notification",
                 onClick = onAlarmClick,
             )
@@ -239,7 +241,7 @@ private fun HomeScreen(
 @Composable
 private fun Banner(
     state: HomeState,
-    banners: List<BannersEntity.BannerEntity>,
+    banners: ImmutableList<BannersEntity.BannerEntity>,
 ) {
     val pagerState = rememberPagerState { banners.size + 1 }
     val coroutineScope = rememberCoroutineScope()
@@ -396,7 +398,7 @@ private fun StudentInformation(
 @Composable
 private fun Menus(
     modifier: Modifier = Modifier,
-    menus: List<MenuItem>,
+    menus: ImmutableList<MenuItem>,
 ) {
     Column(modifier = modifier) {
         JobisText(
@@ -466,7 +468,7 @@ private fun Menu(
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
     applicationId: Long?,
-    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
     onShowRejectionReasonClick: (ApplicationData) -> Unit,
     setScroll: (position: Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,

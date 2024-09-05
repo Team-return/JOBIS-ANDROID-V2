@@ -1,12 +1,14 @@
 package team.retum.usecase.entity.notice
 
 import android.annotation.SuppressLint
+import androidx.compose.runtime.Immutable
 import team.retum.network.model.response.notice.FetchNoticesResponse
 import java.text.SimpleDateFormat
 
 data class NoticesEntity(
     val notices: List<NoticeEntity>,
 ) {
+    @Immutable
     data class NoticeEntity(
         val id: Long,
         val title: String,

@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CreatePresignedUrlResponse(
-    @Json(name = "urls") val urls: List<UrlResponse>
+    @Json(name = "urls") val urls: List<UrlResponse>,
 ) {
     @JsonClass(generateAdapter = true)
     data class UrlResponse(
