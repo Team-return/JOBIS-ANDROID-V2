@@ -5,4 +5,13 @@
     <string name="all">전체</string>
     <string name="read">읽음</string>
     <string name="not_read">안읽음</string>
+
+    <string name="notification_setting">알림 설정</string>
+    <string name="all_notification">전체 알림</string>
+    <string name="detail_notification">세부 알림</string>
+    <string name="notice_notification">공지사항 알림</string>
+    <string name="application_notification">지원서 알림</string>
+    <string name="recruitment_notification">모집의뢰서 알림</string>
+    <string name="cannot_current_notification_status">설정된 알림을 가져오지 못했어요</string>
+    <string name="change_notification_fail">알림을 변경에 실패했어요</string>
 </resources>
