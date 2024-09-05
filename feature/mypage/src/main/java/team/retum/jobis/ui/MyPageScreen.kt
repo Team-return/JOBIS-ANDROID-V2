@@ -48,9 +48,6 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 
-private const val INTEREST_MENU_ID = 1
-private const val WITHDRAWAL_MENU_ID = 4
-
 @Composable
 internal fun MyPage(
     onSelectInterestClick: () -> Unit,
@@ -60,6 +57,7 @@ internal fun MyPage(
     navigateToLanding: () -> Unit,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
     onPostReviewClick: (Long) -> Unit,
+    onNotificationSettingClick: () -> Unit,
 ) {
     val state by myPageViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -122,6 +120,7 @@ internal fun MyPage(
         onSignOutClick = myPageViewModel::onSignOutClick,
         onWithdrawalClick = myPageViewModel::onWithdrawalClick,
         onPostReviewClick = onPostReviewClick,
+        onNotificationSettingClick = onNotificationSettingClick,
         showUpdateLaterToast = showUpdateLaterToast,
         showGallery = showGallery,
     )
@@ -140,6 +139,7 @@ private fun MyPageScreen(
     onSignOutClick: () -> Unit,
     onWithdrawalClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    onNotificationSettingClick: () -> Unit,
     showUpdateLaterToast: () -> Unit,
     showGallery: () -> Unit,
 ) {
@@ -191,11 +191,24 @@ private fun MyPageScreen(
                 )
             }
             ContentListItem(
+                contentListTitle = stringResource(id = R.string.notification),
+                contentItemInfo = ContentItemInfo(
+                    items = listOf(
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.Bell),
+                            description = "bell icon",
+                            contentTitle = stringResource(id = R.string.notification_setting),
+                            onClick = onNotificationSettingClick,
+                            iconColor = JobisTheme.colors.onPrimary,
+                        ),
+                    ),
+                ),
+            )
+            ContentListItem(
                 contentListTitle = stringResource(id = R.string.help),
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
-                            menuId = 0,
                             imageResource = painterResource(id = JobisIcon.Notice),
                             description = "notice icon",
                             contentTitle = stringResource(id = R.string.notice),
@@ -204,22 +217,19 @@ private fun MyPageScreen(
                         ),
                     ),
                 ),
-                showUpdateLaterToast = showUpdateLaterToast,
             )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.account),
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
-                            menuId = 1,
                             imageResource = painterResource(id = JobisIcon.Code),
                             description = "interest field icon",
                             contentTitle = stringResource(id = R.string.interest_field),
-                            onClick = onSelectInterestClick,
+                            onClick = showUpdateLaterToast,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
-                            menuId = 2,
                             imageResource = painterResource(id = JobisIcon.LockReset),
                             description = "password change icon",
                             contentTitle = stringResource(id = R.string.password_change),
@@ -227,7 +237,6 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
-                            menuId = 3,
                             imageResource = painterResource(id = JobisIcon.LogOut),
                             description = "logout icon",
                             contentTitle = stringResource(id = R.string.logout),
@@ -235,23 +244,20 @@ private fun MyPageScreen(
                             iconColor = JobisTheme.colors.error,
                         ),
                         ListItemInfo(
-                            menuId = 4,
                             imageResource = painterResource(id = JobisIcon.PersonRemove),
                             description = "membership withdrawal icon",
                             contentTitle = stringResource(id = R.string.membership_withdrawal),
-                            onClick = { setShowWithdrawalModal(true) },
+                            onClick = showUpdateLaterToast,
                             iconColor = JobisTheme.colors.error,
                         ),
                     ),
                 ),
-                showUpdateLaterToast = showUpdateLaterToast,
             )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.bug_report),
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
-                            menuId = 5,
                             imageResource = painterResource(id = JobisIcon.Report),
                             description = "bug report icon",
                             contentTitle = stringResource(id = R.string.to_bug_report),
@@ -260,7 +266,6 @@ private fun MyPageScreen(
                         ),
                     ),
                 ),
-                showUpdateLaterToast = showUpdateLaterToast,
             )
         }
     }
@@ -372,9 +377,8 @@ private fun WriteInterviewReview(
 
 @Composable
 private fun ContentListItem(
-    contentItemInfo: ContentItemInfo,
     contentListTitle: String,
-    showUpdateLaterToast: () -> Unit,
+    contentItemInfo: ContentItemInfo,
 ) {
     Column(
         modifier = Modifier
@@ -390,13 +394,6 @@ private fun ContentListItem(
         contentItemInfo.items.forEach { item ->
             ListItem(
                 item = item,
-                onItemClick = {
-                    if (item.menuId == INTEREST_MENU_ID || item.menuId == WITHDRAWAL_MENU_ID) {
-                        showUpdateLaterToast()
-                    } else {
-                        item.onClick()
-                    }
-                },
             )
         }
     }
@@ -405,13 +402,12 @@ private fun ContentListItem(
 @Composable
 private fun ListItem(
     item: ListItemInfo,
-    onItemClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)
-            .clickable(onClick = onItemClick),
+            .clickable(onClick = item.onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -419,7 +415,7 @@ private fun ListItem(
             modifier = Modifier.size(28.dp),
             painter = item.imageResource,
             contentDescription = item.description,
-            tint = item.iconColor ?: Color.Unspecified,
+            tint = item.iconColor,
         )
         JobisText(
             text = item.contentTitle,
@@ -429,12 +425,11 @@ private fun ListItem(
 }
 
 private data class ListItemInfo(
-    val menuId: Int,
     val imageResource: Painter,
     val description: String,
     val contentTitle: String,
     val onClick: () -> Unit,
-    val iconColor: Color? = null,
+    val iconColor: Color,
 )
 
 private data class ContentItemInfo(
