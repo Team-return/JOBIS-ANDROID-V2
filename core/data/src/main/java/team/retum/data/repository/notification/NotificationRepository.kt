@@ -1,6 +1,7 @@
 package team.retum.data.repository.notification
 
 import team.retum.common.enums.NotificationTopic
+import team.retum.network.model.response.notification.FetchNotificationSettingStatusesResponse
 import team.retum.network.model.response.notification.FetchNotificationsResponse
 
 interface NotificationRepository {
@@ -8,13 +9,11 @@ interface NotificationRepository {
 
     suspend fun readNotification(notificationId: Long)
 
-    suspend fun subscribeNotificationTopic(
-        deviceToken: String,
+    suspend fun settingNotification(
         topic: NotificationTopic,
     )
 
-    suspend fun unsubscribeNotificationTopic(
-        deviceToken: String,
-        topic: NotificationTopic,
-    )
+    suspend fun settingAllNotification()
+
+    suspend fun fetchNotificationSettingStatuses(): FetchNotificationSettingStatusesResponse
 }
