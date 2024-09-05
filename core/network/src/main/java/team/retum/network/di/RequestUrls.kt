@@ -109,6 +109,8 @@ internal object RequestUrls {
 
         const val notifications = path
         const val notification = "$path/{${PATH.notificationId}}"
+        const val topic = "$path/topic"
+        const val topics = "$path/topics"
     }
 
     data object Notice {
