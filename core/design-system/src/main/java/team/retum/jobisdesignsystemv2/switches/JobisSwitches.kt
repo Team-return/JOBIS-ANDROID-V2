@@ -10,6 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 
+/**
+ * JOBIS에서 사용하는 Switch 컴포넌트
+ *
+ * @param checked 활성화 여부
+ * @param onCheckedChange 상태가 변경되었을 때 동작할 함수
+ * @param modifier [JobisSwitch]에서 지원할 Modifier
+ * @param thumbContent thumb 모양 맞춤 설정
+ * @param enabled 사용 가능 여부
+ * @param colors 색상
+ * @param interactionSource 제스처 처리
+ */
 @Composable
 fun JobisSwitch(
     checked: Boolean,
@@ -49,7 +60,7 @@ object JobisSwitchDefaults {
         disabledUncheckedTrackColor: Color = JobisTheme.colors.surfaceVariant,
         disabledUncheckedBorderColor: Color = Color.Transparent,
         disabledUncheckedIconColor: Color = JobisTheme.colors.surfaceVariant,
-    ) : SwitchColors = SwitchDefaults.colors(
+    ): SwitchColors = SwitchDefaults.colors(
         checkedThumbColor = checkedThumbColor,
         checkedTrackColor = checkedTrackColor,
         checkedBorderColor = checkedBorderColor,
