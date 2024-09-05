@@ -51,7 +51,7 @@ internal fun NotificationSetting(
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.cannot_current_notification_status),
-                    )
+                    ).show()
                 }
 
                 is NotificationSettingSideEffect.ChangeNotificationFailure -> {
