@@ -35,7 +35,7 @@ internal class NotificationSettingViewModel @Inject constructor(
         }
     }
 
-    private fun fetchNotificationSettingsStatues() {
+    private fun fetchNotificationSettingsStatuses() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchNotificationSettingsStatusesUseCase()
                 .onSuccess { topics ->
