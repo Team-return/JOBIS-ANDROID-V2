@@ -26,6 +26,7 @@ import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.NAVIGATION_NOTIFICATIONS
 import team.retum.notification.navigation.navigateToNotification
+import team.retum.notification.navigation.navigateToNotificationSetting
 import team.retum.review.navigation.navigateToPostReview
 import team.retum.review.navigation.navigateToReviewDetails
 import team.retum.review.navigation.navigateToReviews
@@ -110,6 +111,10 @@ internal class JobisNavigator(
 
     fun navigateToSearchRecruitment() {
         navController.navigateToSearchRecruitment()
+    }
+
+    fun navigateToNotificationSetting() {
+        navController.navigateToNotificationSetting()
     }
 
     fun navigateToNotices() {

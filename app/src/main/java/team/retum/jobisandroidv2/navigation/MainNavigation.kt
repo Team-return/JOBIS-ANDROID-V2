@@ -16,6 +16,7 @@ import team.retum.jobis.recruitment.navigation.searchRecruitment
 import team.retum.jobisandroidv2.JobisNavigator
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
+import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
 import team.retum.review.navigation.postReview
 import team.retum.review.navigation.reviewDetails
@@ -39,6 +40,7 @@ internal fun NavGraphBuilder.mainNavigation(
             onChangePasswordClick = navigator::navigateToComparePassword,
             onReportBugClick = navigator::navigateToReportBug,
             onSearchRecruitmentClick = navigator::navigateToSearchRecruitment,
+            onNotificationSettingClick = navigator::navigateToNotificationSetting,
             onNoticeClick = navigator::navigateToNotices,
             navigateToLanding = { navigator.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navigator::navigateToPostReview,
@@ -46,7 +48,7 @@ internal fun NavGraphBuilder.mainNavigation(
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
             navigatedFromNotifications = navigator.navigatedFromNotifications(),
         )
-        notificationSetting(onBackPressed = navController::popBackStack)
+        notificationSetting(onBackPressed = navigator::popBackStackIfNotHome)
         notifications(
             onBackPressed = {
                 navigator.navigateToRoot()
