@@ -24,7 +24,7 @@ internal class NotificationSettingViewModel @Inject constructor(
 
     init {
         getDeviceToken()
-        fetchNotificationSettingsStatues()
+        fetchNotificationSettingsStatuses()
     }
 
     private fun getDeviceToken() {
