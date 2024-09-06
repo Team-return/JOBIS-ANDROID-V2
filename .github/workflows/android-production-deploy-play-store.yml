@@ -38,7 +38,7 @@ jobs:
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: '/keystore/jobis_v2_key.jks'
+          fileName: '/home/runner/work/_temp/keystore/jobis_v2_key.jks'
           encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
 
       - name: Build Release And Publish AAB
@@ -53,6 +53,7 @@ jobs:
         run: |
           echo "::set-output name=code::$(grep versionCode buildSrc/src/main/java/Dependencies.kt | awk '{print $5}')"
           echo "::set-output name=name::$(grep versionName buildSrc/src/main/java/Dependencies.kt | awk '{print $5}' | tr '"' ' ' | tr -d " ")"
+          
       - name: Get tag name
         id: get_tag
         run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
