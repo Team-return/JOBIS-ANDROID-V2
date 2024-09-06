@@ -100,9 +100,11 @@ internal class NotificationSettingViewModel @Inject constructor(
                 NotificationTopic.RECRUITMENT_DONE -> copy(isRecruitmentSubscribe = isSubscribed)
                 NotificationTopic.NEW_INTERESTED_RECRUITMENT -> copy()
             }
+            setState { subscribeState }
+        }
+        with(state.value) {
             val isAllSubscribe =
                 isNoticeSubscribe && isApplicationSubscribe && isRecruitmentSubscribe
-            setState { subscribeState }
             setState { copy(isAllSubscribe = isAllSubscribe) }
         }
     }
