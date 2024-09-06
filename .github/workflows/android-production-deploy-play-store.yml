@@ -38,7 +38,7 @@ jobs:
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: '/home/runner/work/_temp/keystore/jobis_v2_key.jks'
+          fileName: './keystore/jobis_v2_key.jks'
           encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
 
       - name: Build Release And Publish AAB
