@@ -52,7 +52,6 @@ android {
             )
         }
         debug {
-            signingConfig = signingConfigs["release"]
             splits.abi.isEnable = false
             aaptOptions.cruncherEnabled = false
             splits.density.isEnable = false
