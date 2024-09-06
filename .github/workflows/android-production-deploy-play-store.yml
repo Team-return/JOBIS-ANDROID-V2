@@ -29,6 +29,11 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json
 
+      - name: Create google-cloud-platform.json
+        env:
+          DATA: ${{ secrets.GOOGLE_CLOUD_PLATFORM }}
+        run: echo $DATA | base64 --decode > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/src/main/play/google-cloud-platform.json
+
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
