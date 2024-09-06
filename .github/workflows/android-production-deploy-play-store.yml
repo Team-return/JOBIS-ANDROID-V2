@@ -83,21 +83,23 @@ jobs:
           payload: | 
             {
               "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
-              "attachments": [
+              "attachments": 
+              [
                 {
                   "color": "#36a64f", 
                   "title": "${{ toJSON(github.repository) }}",
                   "title_link": "https://github.com/${{github.repository}}",
                   "text": "🚀 앱이 배포되었습니다.",
-                  "fields": [
+                  "fields": 
+                  [
                     {
                       "title": "Repository",
-                      "value": "${{ toJSON(github.repository) }}",
+                      "value": "${{ github.repository }}",
                       "short": true
                     },
                     {
                       "title": "Tag",
-                      "value": "${{ toJSON(github.ref_name) }}",
+                      "value": "${{ github.ref_name }}",
                       "short": true
                     }
                   ]
@@ -116,21 +118,23 @@ jobs:
           payload: | 
             {
               "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
-              "attachments": [
+              "attachments": 
+              [
                 {
                   "color": "#ff0000", 
                   "title": "${{ toJSON(github.repository) }}",
                   "title_link": "https://github.com/${{github.repository}}",
                   "text": "💣 앱 배포에 실패했어요 ㅠㅠ",
-                  "fields": [
+                  "fields": 
+                  [
                     {
                       "title": "Repository",
-                      "value": "${{ toJSON(github.repository) }}",
+                      "value": "${{ github.repository }}",
                       "short": true
                     },
                     {
                       "title": "Tag",
-                      "value": "${{ toJSON(github.ref_name) }}",
+                      "value": "${{ github.ref_name }}",
                       "short": true
                     }
                   ]
