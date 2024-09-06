@@ -93,18 +93,17 @@ internal class NotificationSettingViewModel @Inject constructor(
         topic: NotificationTopic,
         isSubscribed: Boolean,
     ) {
-        val captureState = state.value
-        val subscribeState = when (topic) {
-            NotificationTopic.NEW_NOTICE -> captureState.copy(isNoticeSubscribe = isSubscribed)
-            NotificationTopic.APPLICATION_STATUS_CHANGED -> captureState.copy(isApplicationSubscribe = isSubscribed)
-            NotificationTopic.RECRUITMENT_DONE -> captureState.copy(isRecruitmentSubscribe = isSubscribed)
-            NotificationTopic.NEW_INTERESTED_RECRUITMENT -> captureState
-        }
-        setState { subscribeState }
-        state.value.apply {
+        with(state.value) {
+            val subscribeState = when (topic) {
+                NotificationTopic.NEW_NOTICE -> copy(isNoticeSubscribe = isSubscribed)
+                NotificationTopic.APPLICATION_STATUS_CHANGED -> copy(isApplicationSubscribe = isSubscribed)
+                NotificationTopic.RECRUITMENT_DONE -> copy(isRecruitmentSubscribe = isSubscribed)
+                NotificationTopic.NEW_INTERESTED_RECRUITMENT -> copy()
+            }
             val isAllSubscribe =
                 isNoticeSubscribe && isApplicationSubscribe && isRecruitmentSubscribe
-            setState { state.value.copy(isAllSubscribe = isAllSubscribe) }
+            setState { subscribeState }
+            setState { copy(isAllSubscribe = isAllSubscribe) }
         }
     }
 }
