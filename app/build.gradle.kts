@@ -81,7 +81,7 @@ android {
 }
 
 play {
-    serviceAccountCredentials.set(file("/GoogleCloudPlatform.json"))
+    serviceAccountCredentials.set(file("app/src/main/play/google-cloud-platform.json"))
     defaultToAppBundles.set(true)
     releaseStatus.set(ReleaseStatus.IN_PROGRESS)
     track.set("production")
