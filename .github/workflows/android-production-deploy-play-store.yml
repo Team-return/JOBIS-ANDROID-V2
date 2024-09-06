@@ -29,12 +29,17 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json
 
+      - name: Create google-cloud-platform.json
+        env:
+          DATA: ${{ secrets.GOOGLE_CLOUD_PLATFORM }}
+        run: echo $DATA | base64 --decode > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/src/main/play/google-cloud-platform.json
+
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
         with:
           fileName: '/keystore/jobis_v2_key.jks'
-          encodedString: ${{secrets.APP_RELEASE_KEY_STORE}}
+          encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
 
       - name: Build Release And Publish AAB
         run: ./gradlew publishReleaseBundle
@@ -71,7 +76,7 @@ jobs:
           prerelease: false
 
       - name: Notify Slack on Success
-        if: success()
+        if: ${{ success() }}
         id: slack-success
         uses: slackapi/slack-github-action@v1.24.0
         with: 
@@ -104,7 +109,7 @@ jobs:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
       - name: Notify Slack on Failure
-        if: failure()
+        if: ${{ failure() }}
         id: slack-failure
         uses: slackapi/slack-github-action@v1.24.0
         with: 
