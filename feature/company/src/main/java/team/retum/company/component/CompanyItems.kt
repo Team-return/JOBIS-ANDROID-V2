@@ -54,7 +54,6 @@ internal fun CompanyItems(
                 companyImageUrl = companies[index].logoUrl,
                 companyName = companies[index].name,
                 id = companies[index].id,
-                take = companies[index].take,
                 hasRecruitment = companies[index].hasRecruitment,
                 takeText = companies[index].takeText,
             )
@@ -72,7 +71,6 @@ private fun CompanyItem(
     companyImageUrl: String,
     companyName: String,
     id: Long,
-    take: Float,
     hasRecruitment: HasRecruitment,
     takeText: String,
 ) {

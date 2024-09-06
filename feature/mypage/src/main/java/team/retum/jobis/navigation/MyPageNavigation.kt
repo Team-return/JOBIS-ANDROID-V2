@@ -14,6 +14,7 @@ fun NavGraphBuilder.myPage(
     onNoticeClick: () -> Unit,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    onNotificationSettingClick: () -> Unit,
 ) {
     composable(NAVIGATION_MY_PAGE) {
         MyPage(
@@ -23,6 +24,7 @@ fun NavGraphBuilder.myPage(
             onNoticeClick = onNoticeClick,
             navigateToLanding = navigateToLanding,
             onPostReviewClick = onPostReviewClick,
+            onNotificationSettingClick = onNotificationSettingClick,
         )
     }
 }

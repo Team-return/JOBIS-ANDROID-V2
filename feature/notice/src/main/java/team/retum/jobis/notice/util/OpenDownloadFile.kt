@@ -26,5 +26,5 @@ fun openDownloadedFile(
 private fun getMimeType(filePath: String): String? {
     val extension = MimeTypeMap.getFileExtensionFromUrl(filePath)
     return MimeTypeMap.getSingleton()
-        .getMimeTypeFromExtension(extension.toLowerCase(Locale.getDefault()))
+        .getMimeTypeFromExtension(extension.lowercase(Locale.getDefault()))
 }

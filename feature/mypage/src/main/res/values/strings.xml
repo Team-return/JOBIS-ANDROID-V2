@@ -2,7 +2,9 @@
 <resources>
     <string name="mypage">마이페이지</string>
     <string name="modify">수정</string>
+    <string name="notification_setting">알림 설정</string>
     <string name="notice">공지사항</string>
+    <string name="notification">알림</string>
     <string name="help">도움말</string>
     <string name="account">계정</string>
     <string name="interest_field">관심 분야 선택</string>
