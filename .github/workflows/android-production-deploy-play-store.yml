@@ -83,13 +83,15 @@ jobs:
           payload: | 
             {
               "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
-              "attachments": [
+              "attachments": 
+              [
                 {
                   "color": "#36a64f", 
-                  "title": "${{ github.repository }}",
+                  "title": "${{ toJSON(github.repository) }}",
                   "title_link": "https://github.com/${{github.repository}}",
                   "text": "🚀 앱이 배포되었습니다.",
-                  "fields": [
+                  "fields": 
+                  [
                     {
                       "title": "Repository",
                       "value": "${{ github.repository }}",
@@ -99,6 +101,16 @@ jobs:
                       "title": "Tag",
                       "value": "${{ github.ref_name }}",
                       "short": true
+                    },
+                    {
+                      "title": "Version",
+                      "value": "${{ steps.get_tag.outputs.name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Release Note",
+                      "value": "${{ steps.get_note.outputs.name }}",
+                      "short": false
                     }
                   ]
                 }
@@ -116,13 +128,15 @@ jobs:
           payload: | 
             {
               "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
-              "attachments": [
+              "attachments": 
+              [
                 {
                   "color": "#ff0000", 
-                  "title": "${{ github.repository }}",
+                  "title": "${{ toJSON(github.repository) }}",
                   "title_link": "https://github.com/${{github.repository}}",
                   "text": "💣 앱 배포에 실패했어요 ㅠㅠ",
-                  "fields": [
+                  "fields": 
+                  [
                     {
                       "title": "Repository",
                       "value": "${{ github.repository }}",
@@ -131,6 +145,11 @@ jobs:
                     {
                       "title": "Tag",
                       "value": "${{ github.ref_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Version",
+                      "value": "${{ steps.get_tag.outputs.name }}",
                       "short": true
                     }
                   ]
