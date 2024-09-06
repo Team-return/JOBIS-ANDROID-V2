@@ -101,6 +101,16 @@ jobs:
                       "title": "Tag",
                       "value": "${{ github.ref_name }}",
                       "short": true
+                    },
+                    {
+                      "title": "Version",
+                      "value": "${{ steps.get_tag.outputs.name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Release Note",
+                      "value": "${{ steps.get_note.outputs.name }}",
+                      "short": false
                     }
                   ]
                 }
@@ -135,6 +145,11 @@ jobs:
                     {
                       "title": "Tag",
                       "value": "${{ github.ref_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Version",
+                      "value": "${{ steps.get_tag.outputs.name }}",
                       "short": true
                     }
                   ]
