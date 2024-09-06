@@ -82,12 +82,12 @@ jobs:
         with: 
           payload: | 
             {
-              "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
+              "channel": "${{ secrets.SLACK_DEPLOY_CHANNEL_ID }}",
               "attachments": 
               [
                 {
                   "color": "#36a64f", 
-                  "title": "${{ toJSON(github.repository) }}",
+                  "title": "${{ github.repository }}",
                   "title_link": "https://github.com/${{github.repository}}",
                   "text": "🚀 앱이 배포되었습니다.",
                   "fields": 
@@ -127,13 +127,13 @@ jobs:
         with: 
           payload: | 
             {
-              "channel": ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }},
+              "channel": "${{ secrets.SLACK_DEPLOY_CHANNEL_ID }}",
               "attachments": 
               [
                 {
                   "color": "#ff0000", 
-                  "title": "${{ toJSON(github.repository) }}",
-                  "title_link": "https://github.com/${{github.repository}}",
+                  "title": "${{ github.repository }}",
+                  "title_link": "https://github.com/${{ github.repository }}",
                   "text": "💣 앱 배포에 실패했어요 ㅠㅠ",
                   "fields": 
                   [
