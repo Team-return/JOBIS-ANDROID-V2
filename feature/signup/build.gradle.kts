@@ -1,3 +1,5 @@
+import java.util.Properties
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id(libs.plugins.android.library.get().pluginId)
@@ -10,8 +12,36 @@ plugins {
 apply<CommonGradlePlugin>()
 apply<ComposeGradlePlugin>()
 
+val properties = Properties()
+properties.load(rootProject.file("./local.properties").inputStream())
+
 android {
     namespace = "team.retum.signup"
+
+    buildTypes {
+        release {
+            buildConfigField(
+                type = "String",
+                name = "TERMS_URL",
+                value = properties.getProperty("TERMS_URL", "\"\""),
+            )
+        }
+        debug {
+            buildConfigField(
+                type = "String",
+                name = "TERMS_URL",
+                value = properties.getProperty("TERMS_URL", "\"\""),
+            )
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {

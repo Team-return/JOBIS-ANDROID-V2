@@ -19,7 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.common.model.ApplicationData
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentDetailsSideEffect
@@ -127,7 +129,7 @@ private fun RecruitmentDetailsScreen(
                 onMoveToCompanyDetailsClick = onMoveToCompanyDetailsClick,
                 isMovedCompanyDetails = isMovedCompanyDetails,
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = JobisTheme.colors.inverseSurface,
                 thickness = 1.dp,
@@ -182,7 +184,7 @@ private fun CompanyInformation(
                 ),
             model = recruitmentDetail.companyProfileUrl,
             contentDescription = "company profile",
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Crop,
         )
         JobisText(
             text = recruitmentDetail.companyName,
@@ -213,7 +215,7 @@ private fun RecruitmentDetailInfo(
                 title = stringResource(id = R.string.special_military_service_whether),
                 content = "병역특례 ${if (military) "" else "불"}가능",
             )
-            Position(areas = recruitmentDetail.areas)
+            Position(areas = recruitmentDetail.areas.toPersistentList())
             Detail(
                 title = stringResource(id = R.string.certificate),
                 content = exceptBracket(requiredLicenses.toString()),
@@ -275,7 +277,7 @@ internal fun Detail(
 
 @Composable
 private fun Position(
-    areas: List<AreasEntity>,
+    areas: ImmutableList<AreasEntity>,
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         JobisText(
@@ -288,9 +290,9 @@ private fun Position(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 areas.forEach { areas ->
                     PositionCard(
-                        job = areas.job.map { it.name },
+                        job = areas.job.map { it.name }.toPersistentList(),
                         majorTask = areas.majorTask,
-                        tech = areas.tech.map { it.name },
+                        tech = areas.tech.map { it.name }.toPersistentList(),
                         preferentialTreatment = areas.preferentialTreatment,
                     )
                 }
@@ -301,9 +303,9 @@ private fun Position(
 
 @Composable
 private fun PositionCard(
-    job: List<String>,
+    job: ImmutableList<String>,
     majorTask: String,
-    tech: List<String>,
+    tech: ImmutableList<String>,
     preferentialTreatment: String?,
 ) {
     var showDetails by remember { mutableStateOf(false) }

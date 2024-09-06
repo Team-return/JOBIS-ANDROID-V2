@@ -1,3 +1,5 @@
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+
 plugins {
     id(libs.plugins.android.application.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
@@ -5,6 +7,8 @@ plugins {
     id(libs.plugins.kotlin.kapt.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
     id(libs.plugins.google.service.get().pluginId)
+    id(libs.plugins.firebase.crashlytics.get().pluginId)
+    id(libs.plugins.triplet.play.get().pluginId)
 }
 
 android {
@@ -24,6 +28,22 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            val files = file("/home/runner/work/_temp/keystore/").listFiles()
+            if (files != null) {
+                storeFile = files.first()
+                storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+                keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+                keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+            }
+        }
+    }
+
+    hilt {
+        enableAggregatingTask = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -34,12 +54,10 @@ android {
             )
         }
         debug {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
+            splits.abi.isEnable = false
+            aaptOptions.cruncherEnabled = false
+            splits.density.isEnable = false
+            aaptOptions.cruncherEnabled = false
         }
     }
     compileOptions {
@@ -60,6 +78,19 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+play {
+    serviceAccountCredentials.set(file("/GoogleCloudPlatform.json"))
+    defaultToAppBundles.set(true)
+    releaseStatus.set(ReleaseStatus.IN_PROGRESS)
+    track.set("production")
+}
+
+tasks.register("release") {
+    dependsOn(tasks["clean"])
+    dependsOn(tasks["bundleRelease"])
+    mustRunAfter(tasks["clean"])
 }
 
 dependencies {
@@ -87,8 +118,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)
 
-    implementation(platform(libs.com.google.firebase.bom))
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
@@ -115,8 +148,6 @@ dependencies {
 
 kapt {
     javacOptions {
-        // These options are normally set automatically via the Hilt Gradle plugin, but we
-        // set them manually to workaround a bug in the Kotlin 1.5.20
         option("-Adagger.fastInit=ENABLED")
         option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
     }

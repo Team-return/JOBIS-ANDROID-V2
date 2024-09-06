@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import team.retum.alarm.R
 import team.retum.common.utils.notificationPermissionGranted
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 
@@ -28,8 +30,12 @@ class NotificationManager(private val context: Context) {
 
     private val notificationBuilder: NotificationCompat.Builder by lazy {
         NotificationCompat.Builder(context, Notifications.NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(JobisIcon.AppLogo)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSmallIcon(JobisIcon.Notification)
+            .setColor(ContextCompat.getColor(context, R.color.primary))
+            .setAutoCancel(true)
+            .setPriority(NotificationManager.IMPORTANCE_HIGH)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
     fun setNotificationContent(
@@ -55,7 +61,7 @@ class NotificationManager(private val context: Context) {
     }
 
     private fun createNotificationChannel() {
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_HIGH
         val channel =
             NotificationChannel(
                 Notifications.NOTIFICATION_CHANNEL_ID,

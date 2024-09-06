@@ -1,6 +1,8 @@
 package team.retum.home.ui
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -10,6 +12,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,18 +20,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,10 +46,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import team.retum.common.model.ApplicationData
 import team.retum.home.R
 import team.retum.home.viewmodel.HomeSideEffect
@@ -59,12 +69,10 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
+import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.net.URLEncoder
 import java.time.LocalDate
-
-private const val INITIAL_PAGE = 40
-private const val MAX_PAGE = 100
 
 private data class MenuItem(
     val title: String,
@@ -72,7 +80,8 @@ private data class MenuItem(
     @DrawableRes val icon: Int,
 )
 
-@OptIn(ExperimentalFoundationApi::class)
+private const val PAGER_AUTO_SCROLL_TIME = 3000L
+
 @Composable
 internal fun Home(
     applicationId: Long?,
@@ -87,22 +96,28 @@ internal fun Home(
     val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
-    val pagerState = rememberPagerState(INITIAL_PAGE) { MAX_PAGE }
     val menus = mutableListOf(
         MenuItem(
             title = stringResource(id = R.string.how_about_other_companies),
             onClick = onCompaniesClick,
-            icon = R.drawable.ic_building,
+            icon = JobisIcon.Building,
         ),
     )
 
     LaunchedEffect(Unit) {
+        with(homeViewModel) {
+            calculateTerm()
+            fetchStudentInformation()
+            fetchAppliedCompanies()
+            fetchEmploymentCount()
+            fetchBanners()
+        }
         if (isDecemberOrLater()) {
             menus.add(
                 MenuItem(
                     title = context.getString(R.string.experiential_field_training),
                     onClick = {},
-                    icon = R.drawable.ic_snowman,
+                    icon = JobisIcon.SnowMan,
                 ),
             )
         }
@@ -129,13 +144,13 @@ internal fun Home(
 
     HomeScreen(
         scrollState = scrollState,
-        pagerState = pagerState,
-        menus = menus,
+        menus = menus.toPersistentList(),
         onAlarmClick = onAlarmClick,
         onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
         state = state,
+        banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
-        appliedCompanies = homeViewModel.appliedCompanies,
+        appliedCompanies = homeViewModel.appliedCompanies.toPersistentList(),
         applicationId = applicationId,
         setScroll = { position ->
             homeViewModel.fetchScroll(
@@ -153,17 +168,16 @@ private fun isDecemberOrLater(): Boolean {
     return LocalDate.now().monthValue >= 12
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeScreen(
     scrollState: ScrollState,
-    pagerState: PagerState,
-    menus: List<MenuItem>,
+    menus: ImmutableList<MenuItem>,
     onAlarmClick: () -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
+    banners: ImmutableList<BannersEntity.BannerEntity>,
     studentInformation: StudentInformationEntity,
-    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
     applicationId: Long?,
     setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -177,17 +191,18 @@ private fun HomeScreen(
     ) {
         JobisSmallTopAppBar(showLogo = true) {
             JobisIconButton(
-                painter = painterResource(JobisIcon.Bell),
+                drawableResId = JobisIcon.Bell,
                 contentDescription = "notification",
                 onClick = onAlarmClick,
             )
         }
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
-            EmploymentRate(
-                rate = state.rate,
-                passCount = state.passCount,
-                totalStudentCount = state.totalStudentCount,
-                term = state.term,
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState),
+        ) {
+            Banner(
+                state = state,
+                banners = banners,
             )
             StudentInformation(
                 modifier = Modifier.padding(
@@ -222,6 +237,88 @@ private fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun Banner(
+    state: HomeState,
+    banners: ImmutableList<BannersEntity.BannerEntity>,
+) {
+    val pagerState = rememberPagerState { banners.size + 1 }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(pagerState.settledPage) {
+        launch {
+            delay(PAGER_AUTO_SCROLL_TIME)
+            with(pagerState) {
+                val target = if (settledPage < pageCount - 1) settledPage + 1 else 0
+
+                coroutineScope.launch {
+                    animateScrollToPage(
+                        page = target,
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = FastOutSlowInEasing,
+                        ),
+                    )
+                }
+            }
+        }
+    }
+
+    HorizontalPager(
+        state = pagerState,
+        contentPadding = PaddingValues(horizontal = 18.dp),
+        beyondBoundsPageCount = pagerState.pageCount + 1,
+    ) { page ->
+        JobisCard(
+            modifier = Modifier
+                .padding(
+                    top = 16.dp,
+                    bottom = 10.dp,
+                    start = 6.dp,
+                    end = 6.dp,
+                ),
+        ) {
+            if (page == 0) {
+                EmploymentRate(
+                    term = state.term,
+                    rate = state.rate,
+                    passCount = state.passCount,
+                    totalStudentCount = state.totalStudentCount,
+                )
+            } else {
+                AsyncImage(
+                    model = banners.getOrNull(page - 1)?.bannerUrl,
+                    contentDescription = "banner",
+                )
+            }
+        }
+    }
+    if (banners.isNotEmpty()) {
+        Row(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            repeat(pagerState.pageCount) { page ->
+                val (color, size) = when (pagerState.currentPage) {
+                    page -> JobisTheme.colors.onPrimary to DpSize(12.dp, 6.dp)
+                    else -> JobisTheme.colors.surfaceVariant to DpSize(6.dp, 6.dp)
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(size),
+                )
+            }
+        }
+    }
+}
+
 @Composable
 private fun EmploymentRate(
     term: Int,
@@ -229,46 +326,37 @@ private fun EmploymentRate(
     passCount: Long,
     totalStudentCount: Long,
 ) {
-    JobisCard(
-        modifier = Modifier.padding(
-            top = 16.dp,
-            bottom = 32.dp,
-            start = 24.dp,
-            end = 24.dp,
-        ),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                JobisText(
-                    text = stringResource(id = R.string.employment_rate, term),
-                    style = JobisTypography.HeadLine,
-                )
-                JobisText(
-                    text = "$rate%",
-                    style = JobisTypography.PageTitle,
-                    color = JobisTheme.colors.onPrimary,
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
-                            append("현재")
-                        }
-                        withStyle(SpanStyle(JobisTheme.colors.inverseOnSurface)) {
-                            append(" $passCount/$totalStudentCount ")
-                        }
-                        withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
-                            append("명이 취업했어요")
-                        }
-                    },
-                    style = JobisTypography.Description,
-                )
-            }
-            Image(
-                painter = painterResource(id = R.drawable.ic_file),
-                contentDescription = "file",
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(modifier = Modifier.padding(24.dp)) {
+            JobisText(
+                text = stringResource(id = R.string.employment_rate, term),
+                style = JobisTypography.HeadLine,
+            )
+            JobisText(
+                text = "$rate%",
+                style = JobisTypography.PageTitle,
+                color = JobisTheme.colors.onPrimary,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
+                        append(stringResource(id = R.string.today))
+                    }
+                    withStyle(SpanStyle(JobisTheme.colors.inverseOnSurface)) {
+                        append(" $passCount/$totalStudentCount ")
+                    }
+                    withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
+                        append(stringResource(id = R.string.get_a_job))
+                    }
+                },
+                style = JobisTypography.Description,
             )
         }
+        Image(
+            painter = painterResource(id = JobisIcon.File),
+            contentDescription = "file",
+        )
     }
 }
 
@@ -310,7 +398,7 @@ private fun StudentInformation(
 @Composable
 private fun Menus(
     modifier: Modifier = Modifier,
-    menus: List<MenuItem>,
+    menus: ImmutableList<MenuItem>,
 ) {
     Column(modifier = modifier) {
         JobisText(
@@ -380,7 +468,7 @@ private fun Menu(
 private fun ApplyStatus(
     modifier: Modifier = Modifier,
     applicationId: Long?,
-    appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
     onShowRejectionReasonClick: (ApplicationData) -> Unit,
     setScroll: (position: Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -404,7 +492,7 @@ private fun ApplyStatus(
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onSurfaceVariant,
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.weight(1f),
                 color = JobisTheme.colors.surfaceTint,
             )

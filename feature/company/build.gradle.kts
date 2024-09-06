@@ -12,6 +12,10 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.jobis.company"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {
@@ -20,4 +24,9 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+
+    implementation(libs.kotlinx.collections.immutable)
 }

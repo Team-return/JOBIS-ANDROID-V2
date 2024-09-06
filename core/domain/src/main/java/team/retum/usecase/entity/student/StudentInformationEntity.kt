@@ -1,8 +1,10 @@
 package team.retum.usecase.entity.student
 
+import androidx.compose.runtime.Immutable
 import team.retum.common.enums.Department
 import team.retum.network.model.response.FetchStudentInformationResponse
 
+@Immutable
 data class StudentInformationEntity(
     val studentName: String,
     val studentGcn: String,

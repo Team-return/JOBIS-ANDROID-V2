@@ -1,3 +1,4 @@
+gradle.startParameter.excludedTaskNames.addAll(listOf(":buildSrc:testClasses"))
 pluginManagement {
     repositories {
         google()

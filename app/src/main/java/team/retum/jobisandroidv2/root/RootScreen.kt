@@ -50,6 +50,7 @@ internal fun Root(
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
+    onNotificationSettingClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
@@ -60,7 +61,6 @@ internal fun Root(
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
-    val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -69,7 +69,6 @@ internal fun Root(
     var applicationData by remember { mutableStateOf(ApplicationData.getDefaultApplicationData()) }
 
     RootScreen(
-        navController = navController,
         sheetState = sheetState,
         applicationId = applicationId,
         onAlarmClick = onAlarmClick,
@@ -83,6 +82,7 @@ internal fun Root(
         onCompaniesClick = onCompaniesClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
+        onNotificationSettingClick = onNotificationSettingClick,
         onNoticeClick = onNoticeClick,
         onSelectInterestClick = onSelectInterestClick,
         onChangePasswordClick = onChangePasswordClick,
@@ -106,7 +106,7 @@ internal fun Root(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun RootScreen(
-    navController: NavHostController,
+    navController: NavHostController = rememberNavController(),
     sheetState: ModalBottomSheetState,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
@@ -115,6 +115,7 @@ private fun RootScreen(
     onSearchRecruitmentClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
+    onNotificationSettingClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
@@ -173,6 +174,7 @@ private fun RootScreen(
                     onNoticeClick = onNoticeClick,
                     onPostReviewClick = onPostReviewClick,
                     navigateToLanding = navigateToLanding,
+                    onNotificationSettingClick = onNotificationSettingClick,
                 )
             }
         }

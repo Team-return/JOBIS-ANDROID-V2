@@ -1,5 +1,6 @@
 package team.retum.usecase.entity
 
+import androidx.compose.runtime.Immutable
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchCompaniesResponse
 
@@ -12,6 +13,7 @@ enum class HasRecruitment {
 data class CompaniesEntity(
     val companies: List<CompanyEntity>,
 ) {
+    @Immutable
     data class CompanyEntity(
         val id: Long,
         val name: String,
@@ -46,9 +48,5 @@ private fun FetchCompaniesResponse.CompanyResponse.toEntity() = CompaniesEntity.
         true -> HasRecruitment.TRUE
         false -> HasRecruitment.FALSE
     },
-    takeText = if (take == 0f) {
-        ""
-    } else {
-        "연매출 ${take}억"
-    },
+    takeText = "연매출 ${take.toString().removeSuffix(".0")}억",
 )

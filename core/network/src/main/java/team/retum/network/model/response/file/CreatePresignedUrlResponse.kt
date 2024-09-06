@@ -1,13 +1,15 @@
 package team.retum.network.model.response.file
 
-import com.google.gson.annotations.SerializedName
-import retrofit2.http.Path
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class CreatePresignedUrlResponse(
-    @SerializedName("urls") val urls: List<UrlResponse>
+    @Json(name = "urls") val urls: List<UrlResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class UrlResponse(
-        @SerializedName("file_path") val filePath: String,
-        @SerializedName("pre_signed_url") val preSignedUrl: String,
+        @Json(name = "file_path") val filePath: String,
+        @Json(name = "pre_signed_url") val preSignedUrl: String,
     )
 }

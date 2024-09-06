@@ -1,5 +1,6 @@
 package team.retum.jobisdesignsystemv2.button
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -22,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -62,17 +62,18 @@ private fun BasicButton(
 ) {
     val keyboardShow by keyboardAsState()
     val isKeyboardHideButton = keyboardShow && keyboardInteractionEnabled
-    val padding = if (isKeyboardHideButton || buttonType == ButtonType.SMALL || buttonType == ButtonType.DIALOG) {
-        PaddingValues(
-            vertical = 0.dp,
-            horizontal = 0.dp,
-        )
-    } else {
-        PaddingValues(
-            vertical = 12.dp,
-            horizontal = 24.dp,
-        )
-    }
+    val padding =
+        if (isKeyboardHideButton || buttonType == ButtonType.SMALL || buttonType == ButtonType.DIALOG) {
+            PaddingValues(
+                vertical = 0.dp,
+                horizontal = 0.dp,
+            )
+        } else {
+            PaddingValues(
+                vertical = 12.dp,
+                horizontal = 24.dp,
+            )
+        }
     val (shapeByKeyboardShow, pressDepth) = if (isKeyboardHideButton) {
         RoundedCornerShape(0.dp) to MIN_PRESS_DEPTH
     } else {
@@ -92,6 +93,8 @@ private fun BasicButton(
         shape = shapeByKeyboardShow,
         color = backgroundColor,
         content = content,
+        enabled = enabled,
+        onClick = onClick,
     )
 }
 
@@ -266,7 +269,7 @@ private fun MediumButton(
     modifier: Modifier,
     text: String,
     color: ButtonColor,
-    painter: Painter,
+    @DrawableRes drawableResId: Int,
     enabled: Boolean,
     keyboardInteractionEnabled: Boolean,
     onClick: () -> Unit,
@@ -293,7 +296,7 @@ private fun MediumButton(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Icon(
-                painter = painter,
+                painter = painterResource(id = drawableResId),
                 tint = contentColor,
                 contentDescription = "drawable",
             )
@@ -360,7 +363,7 @@ fun JobisMediumButton(
     modifier: Modifier = Modifier,
     text: String,
     color: ButtonColor = ButtonColor.Default,
-    drawable: Painter,
+    @DrawableRes drawableResId: Int,
     enabled: Boolean = true,
     keyboardInteractionEnabled: Boolean = true,
     onClick: () -> Unit,
@@ -369,7 +372,7 @@ fun JobisMediumButton(
         modifier = modifier,
         text = text,
         color = color,
-        painter = drawable,
+        drawableResId = drawableResId,
         enabled = enabled,
         keyboardInteractionEnabled = keyboardInteractionEnabled,
         onClick = onClick,

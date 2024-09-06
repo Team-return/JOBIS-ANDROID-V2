@@ -14,6 +14,12 @@ import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
 import team.retum.usecase.usecase.user.SignInUseCase
 import javax.inject.Inject
 
+/**
+ * 로그인 화면의 상태 관리와 로그인 비즈니스 로직을 담당하는 로그인 뷰모델
+ *
+ * @property signInUseCase 유저 로그인 기능을 담당하는 유즈케이스
+ * @property getDeviceTokenUseCase 기기 디바이스 토큰 조회를 담당하는 유즈케이스
+ */
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
@@ -34,20 +40,24 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    internal fun setEmail(email: String) = setState {
+    internal fun setEmail(email: String) {
+        setState {
+            state.value.copy(
+                email = email,
+                showEmailDescription = false,
+            )
+        }
         setButtonEnabled()
-        state.value.copy(
-            email = email,
-            showEmailDescription = false,
-        )
     }
 
-    internal fun setPassword(password: String) = setState {
+    internal fun setPassword(password: String) {
+        setState {
+            state.value.copy(
+                password = password,
+                showPasswordDescription = false,
+            )
+        }
         setButtonEnabled()
-        state.value.copy(
-            password = password,
-            showPasswordDescription = false,
-        )
     }
 
     private fun setButtonEnabled() = setState {

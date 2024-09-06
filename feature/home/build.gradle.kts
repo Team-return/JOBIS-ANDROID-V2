@@ -12,8 +12,13 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.home"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {
     api(libs.coil.compose)
+    implementation(libs.kotlinx.collections.immutable)
 }

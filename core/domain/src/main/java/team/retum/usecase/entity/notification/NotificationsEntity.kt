@@ -1,6 +1,7 @@
 package team.retum.usecase.entity.notification
 
 import android.annotation.SuppressLint
+import androidx.compose.runtime.Immutable
 import team.retum.common.enums.AlarmType
 import team.retum.network.model.response.notification.FetchNotificationsResponse
 import java.text.SimpleDateFormat
@@ -8,6 +9,7 @@ import java.text.SimpleDateFormat
 data class NotificationsEntity(
     val notifications: List<NotificationEntity>,
 ) {
+    @Immutable
     data class NotificationEntity(
         val notificationId: Long,
         val title: String,

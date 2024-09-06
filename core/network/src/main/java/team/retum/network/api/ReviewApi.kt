@@ -6,8 +6,8 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import team.retum.network.di.RequestUrls
 import team.retum.network.model.request.PostReviewRequest
-import team.retum.network.model.response.FetchReviewsResponse
 import team.retum.network.model.response.FetchReviewDetailResponse
+import team.retum.network.model.response.FetchReviewsResponse
 
 interface ReviewApi {
     @POST(RequestUrls.Reviews.post)

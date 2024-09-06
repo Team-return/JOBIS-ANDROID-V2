@@ -1,17 +1,20 @@
 package team.retum.network.model.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FetchRecruitmentsResponse(
-    @SerializedName("recruitments") val recruitments: List<RecruitmentResponse>,
+    @Json(name = "recruitments") val recruitments: List<RecruitmentResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class RecruitmentResponse(
-        @SerializedName("id") val id: Long,
-        @SerializedName("company_name") val companyName: String,
-        @SerializedName("company_profile_url") val companyProfileUrl: String,
-        @SerializedName("train_pay") val trainPay: Long,
-        @SerializedName("military_support") val militarySupport: Boolean,
-        @SerializedName("hiring_jobs") val hiringJobs: String,
-        @SerializedName("bookmarked") val bookmarked: Boolean,
+        @Json(name = "id") val id: Long,
+        @Json(name = "company_name") val companyName: String,
+        @Json(name = "company_profile_url") val companyProfileUrl: String,
+        @Json(name = "train_pay") val trainPay: Long,
+        @Json(name = "military_support") val militarySupport: Boolean,
+        @Json(name = "hiring_jobs") val hiringJobs: String,
+        @Json(name = "bookmarked") val bookmarked: Boolean,
     )
 }

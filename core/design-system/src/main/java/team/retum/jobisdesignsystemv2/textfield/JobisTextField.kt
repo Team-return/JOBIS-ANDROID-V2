@@ -34,7 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -51,12 +51,12 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
 /**
- * This class represents what the DescriptionType is.
+ * [JobisTextField]에서 표시되는 description의 종류를 결정
  *
- * @property icon Icon of each description
- * @property contentDescription type of description
- * @property tint To color inside this icon
- * @property color To color inside this description
+ * @property icon description에 포함될 아이콘
+ * @property contentDescription 표시할 string resource id
+ * @property tint description과 함께 표시될 아이콘의 색상
+ * @property color description의 색상
  */
 sealed class DescriptionType(
     @DrawableRes val icon: Int,
@@ -113,9 +113,10 @@ private fun TextField(
     maxLength: Int,
     showEmailHint: Boolean,
     showVisibleIcon: Boolean,
-    leadingIcon: Painter?,
+    @DrawableRes drawableResId: Int?,
     content: @Composable () -> Unit,
     fieldColor: Color,
+    testTag: String,
 ) {
     val hintAlpha by animateFloatAsState(
         targetValue = if (value().isEmpty()) {
@@ -145,7 +146,8 @@ private fun TextField(
                 .padding(
                     horizontal = 16.dp,
                     vertical = 8.dp,
-                ),
+                )
+                .testTag(testTag),
             textStyle = style,
             singleLine = singleLine,
             visualTransformation = visualTransformation,
@@ -159,9 +161,9 @@ private fun TextField(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                leadingIcon?.run {
+                drawableResId?.run {
                     Icon(
-                        painter = leadingIcon,
+                        painter = painterResource(id = drawableResId),
                         contentDescription = "leading icon",
                         tint = JobisTheme.colors.onSurfaceVariant,
                     )
@@ -194,7 +196,7 @@ private fun TextField(
                     content()
                     if (showVisibleIcon) {
                         JobisIconButton(
-                            painter = painterResource(id = icon),
+                            drawableResId = icon,
                             contentDescription = stringResource(id = R.string.content_description_eye_off),
                             onClick = { visible = !visible },
                             defaultBackgroundColor = JobisTheme.colors.inverseSurface,
@@ -248,23 +250,51 @@ private fun Description(
 }
 
 /**
- *  This composable function creates a JobisTextField element for use in Jobis.
+ *  JOBIS에서 사용하는 커스텀 텍스트 필드
  *
- * @param modifier The modifier to be applied to the JobisTextField.
- * @param title Title of text field
- * @param value The input String text to be shown in the text field
- * @param hint The hint text to be displayed when the text field is empty.
- * @param onValueChange A lambda function to be invoked when the text field value changes.
- * @param showDescription A lambda function that returns a boolean indicating whether to show the description.
- * @param errorDescription When the input value does not match the regular expression
- * @param checkDescription When the input value matches a regular expression
- * @param informationDescription If there is an explanation about regular expressions
- * @param descriptionType Description for the current value The default is Information.
- * @param titleStyle The [TextStyle] to be applied to the title.
- * @param titleColor The color of the title text.
- * @param style The [TextStyle] to be applied to the text field.
- * @param singleLine Whether the text field should be a single line or multiline.
- * @param showEmailHint Whether to show email-specific features (e.g., @dsm.hs.kr).
+ * @param modifier [JobisTextField]에 적용될 [Modifier]
+ * @param title 텍스트 필드의 제목
+ * @param value 사용자에게 보여질 텍스트 필드의 값
+ * @param hint 텍스트 필드 값이 비어있을 때 사용자에게 보여질 값
+ * @param onValueChange 텍스트 필드의 값이 변경될 때 호출될 함수
+ * @param showDescription description의 표시 여부를 반환하는 함수
+ * @param errorDescription [DescriptionType.Error]일 때 보여질 description
+ * @param checkDescription [DescriptionType.Check]일 때 보여질 description
+ * @param informationDescription [DescriptionType.Information]일 때 보여질 description
+ * @param descriptionType 텍스트 필드에 보여질 description 종류
+ * @param titleStyle 텍스트 필드 제목에 적용될 [TextStyle]
+ * @param titleColor 텍스트 필드 제목에 적용될 [Color]
+ * @param style 텍스트 필드의 값에 적용될 [TextStyle]
+ * @param imeAction 키보드에 적용될 [ImeAction]
+ * @param keyboardType 키보드 입력 종류
+ * @param singleLine 텍스트 필드에 다중 줄을 허용할 것인지 결정
+ * @param maxLength 텍스트 필드 값의 최대 길이
+ * @param showEmailHint 이메일 도메인에 대한 힌트를 표시할 것인지 결정(e.g., @dsm.hs.kr).
+ * @param showVisibleIcon 비밀번호 표시
+ * @param drawableResId 텍스트 필드에 표시될 아이콘
+ * @param fieldColor 배경 색상
+ * @param testTag UI 테스트 코드에서 TextField 노드를 찾기 위해 사용할 태그
+ * @param content 내부에 추가로 표시될 뷰
+ * 다음과 같이 사용할 수 있다.
+ * ```
+ * JobisTextField(
+ *     title = stringResource(id = R.string.authentication_code),
+ *     value = authenticationCode,
+ *     hint = stringResource(id = R.string.hint_authentication_code),
+ *     onValueChange = onAuthenticationCodeChange,
+ *     errorDescription = stringResource(id = R.string.description),
+ *     showDescription = showAuthenticationCodeDescription,
+ *     descriptionType = DescriptionType.Error,
+ *     keyboardType = KeyboardType.NumberPassword,
+ * ) {
+ *     JobisText(
+ *         text = remainTime,
+ *         style = JobisTypography.Body,
+ *         color = JobisTheme.colors.onSurfaceVariant,
+ *     )
+ * }
+ * ```
+ * 위의 코드 예시는 [JobisTextField] 내부에 이메일 인증 코드 유효 시간을 표시하는 코드이다.
  */
 @Composable
 fun JobisTextField(
@@ -287,8 +317,9 @@ fun JobisTextField(
     maxLength: Int = Int.MAX_VALUE,
     showEmailHint: Boolean = false,
     showVisibleIcon: Boolean = false,
-    leadingIcon: Painter? = null,
+    @DrawableRes drawableResId: Int? = null,
     fieldColor: Color = JobisTheme.colors.inverseSurface,
+    testTag: String = "",
     content: @Composable () -> Unit = { },
 ) {
     Column(
@@ -322,9 +353,10 @@ fun JobisTextField(
             maxLength = maxLength,
             showEmailHint = showEmailHint,
             showVisibleIcon = showVisibleIcon,
-            leadingIcon = leadingIcon,
+            drawableResId = drawableResId,
             content = content,
             fieldColor = fieldColor,
+            testTag = testTag,
         )
         AnimatedVisibility(
             visible = showDescription(),

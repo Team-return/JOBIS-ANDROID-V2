@@ -17,6 +17,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = ProjectProperties.COMPOSE_COMPILER_EXTENSION
     }
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
 }
 
 dependencies {
@@ -25,6 +32,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.com.google.android.material)
+    api(libs.androidx.compose.ui.tooling.preview)
 
     testApi(libs.junit)
     androidTestApi(libs.androidx.compose.ui.test.junit4)
@@ -33,4 +41,6 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugApi(libs.androidx.compose.ui.tooling)
     debugApi(libs.androidx.compose.ui.test.manifest)
+
+    implementation(libs.kotlinx.collections.immutable)
 }

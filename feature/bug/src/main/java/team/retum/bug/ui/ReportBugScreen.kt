@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import team.retum.bug.viewmodel.ReportBugSideEffect
 import team.retum.bug.viewmodel.ReportBugState
@@ -137,7 +136,11 @@ internal fun ReportBug(
         },
         scrollState = scrollState,
         sheetState = sheetState,
-        coroutineScope = coroutineScope,
+        onFieldDropDownClick = {
+            coroutineScope.launch {
+                sheetState.show()
+            }
+        },
     )
 }
 
@@ -155,7 +158,7 @@ private fun ReportBugScreen(
     onFieldSelect: (DevelopmentArea) -> Unit,
     scrollState: ScrollState,
     sheetState: ModalBottomSheetState,
-    coroutineScope: CoroutineScope,
+    onFieldDropDownClick: () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetContent = {
@@ -184,11 +187,7 @@ private fun ReportBugScreen(
             ) {
                 FieldDropDown(
                     selectedField = state.developmentArea,
-                    onClick = {
-                        coroutineScope.launch {
-                            sheetState.show()
-                        }
-                    },
+                    onClick = onFieldDropDownClick,
                 )
                 ReportBugInputs(
                     title = { state.title },
@@ -367,7 +366,7 @@ private fun Screenshots(
             ) {
                 itemsIndexed(screenshots) { index, uri ->
                     Screenshot(
-                        uri = uri,
+                        uri = uri.toString(),
                         index = index,
                         onRemoveClick = onRemoveClick,
                     )
@@ -421,7 +420,7 @@ private fun AddImage(
 
 @Composable
 private fun Screenshot(
-    uri: Uri,
+    uri: String,
     index: Int,
     onRemoveClick: (Int) -> Unit,
 ) {

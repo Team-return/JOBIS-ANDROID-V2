@@ -11,9 +11,7 @@ class TokenInterceptor @Inject constructor(
     private val localUserDataSource: LocalUserDataSource,
 ) : Interceptor {
 
-    private val accessToken by lazy {
-        localUserDataSource.getAccessToken()
-    }
+    private lateinit var accessToken: String
 
     private val ignorePaths by lazy {
         listOf(
@@ -37,6 +35,7 @@ class TokenInterceptor @Inject constructor(
             if (ignorePaths.contains(path) || checkS3Request(url = request.url.toString())) {
                 request
             } else {
+                accessToken = localUserDataSource.getAccessToken()
                 request.newBuilder()
                     .addHeader("Authorization", "${ResourceKeys.BEARER} $accessToken").build()
             },

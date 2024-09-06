@@ -1,16 +1,19 @@
 package team.retum.network.model.response.notice
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import team.retum.common.enums.AttachmentType
 
+@JsonClass(generateAdapter = true)
 data class FetchNoticeDetailsResponse(
-    @SerializedName("title") val title: String,
-    @SerializedName("content") val content: String,
-    @SerializedName("created_at") val createdAt: String,
-    @SerializedName("attachments") val attachments: List<AttachmentResponse>,
+    @Json(name = "title") val title: String,
+    @Json(name = "content") val content: String,
+    @Json(name = "created_at") val createdAt: String,
+    @Json(name = "attachments") val attachments: List<AttachmentResponse>,
 ) {
+    @JsonClass(generateAdapter = true)
     data class AttachmentResponse(
-        @SerializedName("url") val url: String,
-        @SerializedName("type") val type: AttachmentType,
+        @Json(name = "url") val url: String,
+        @Json(name = "type") val type: AttachmentType,
     )
 }

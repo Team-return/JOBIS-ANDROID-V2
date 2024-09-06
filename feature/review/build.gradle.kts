@@ -12,6 +12,10 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.jobis.review"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {
@@ -23,4 +27,6 @@ dependencies {
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.material)
+
+    implementation(libs.kotlinx.collections.immutable)
 }

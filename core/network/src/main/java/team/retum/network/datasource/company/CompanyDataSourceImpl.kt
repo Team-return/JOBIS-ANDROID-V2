@@ -3,8 +3,8 @@ package team.retum.network.datasource.company
 import team.retum.network.api.CompanyApi
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
-import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import team.retum.network.model.response.company.FetchCompanyDetailsResponse
+import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import team.retum.network.util.RequestHandler
 import javax.inject.Inject
 

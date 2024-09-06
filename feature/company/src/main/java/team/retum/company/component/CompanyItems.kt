@@ -8,17 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -33,7 +34,7 @@ private const val DEFAULT_SIZE_TAKE = 0.5f
 
 @Composable
 internal fun CompanyItems(
-    companies: List<CompaniesEntity.CompanyEntity>,
+    companies: ImmutableList<CompaniesEntity.CompanyEntity>,
     onCompanyContentClick: (Long) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
@@ -44,15 +45,17 @@ internal fun CompanyItems(
             .padding(horizontal = 24.dp)
             .background(JobisTheme.colors.background),
     ) {
-        itemsIndexed(companies) { index, item ->
+        items(
+            count = companies.size,
+            key = { index -> index },
+        ) { index ->
             CompanyItem(
                 onCompanyContentClick = onCompanyContentClick,
-                companyImageUrl = item.logoUrl,
-                companyName = item.name,
-                id = item.id,
-                take = item.take,
-                hasRecruitment = item.hasRecruitment,
-                takeText = item.takeText,
+                companyImageUrl = companies[index].logoUrl,
+                companyName = companies[index].name,
+                id = companies[index].id,
+                hasRecruitment = companies[index].hasRecruitment,
+                takeText = companies[index].takeText,
             )
             if (whetherFetchNextPage(index)) {
                 fetchNextPage()
@@ -68,7 +71,6 @@ private fun CompanyItem(
     companyImageUrl: String,
     companyName: String,
     id: Long,
-    take: Float,
     hasRecruitment: HasRecruitment,
     takeText: String,
 ) {
@@ -106,6 +108,7 @@ private fun CompanyItem(
                     },
                 ),
             contentDescription = "company image",
+            contentScale = ContentScale.Crop,
         )
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             JobisText(
@@ -144,7 +147,7 @@ private fun CompanyItem(
                     .fillMaxWidth(DEFAULT_SIZE_TAKE)
                     .clip(RoundedCornerShape(4.dp))
                     .background(
-                        color = when (take == 0f) {
+                        color = when (takeText.isEmpty()) {
                             true -> JobisTheme.colors.surfaceVariant
                             else -> Color.Unspecified
                         },

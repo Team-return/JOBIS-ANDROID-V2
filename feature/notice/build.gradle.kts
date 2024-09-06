@@ -12,4 +12,12 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.jobis.notification"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
+}
+
+dependencies {
+    implementation(libs.kotlinx.collections.immutable)
 }

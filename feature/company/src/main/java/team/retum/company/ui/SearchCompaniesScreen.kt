@@ -18,6 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.company.component.CompanyItems
 import team.retum.company.viewmodel.CompaniesState
 import team.retum.company.viewmodel.CompaniesViewModel
@@ -40,7 +42,7 @@ internal fun SearchCompanies(
     SearchCompaniesScreen(
         onBackPressed = onBackPressed,
         onNameChange = searchCompaniesViewModel::setName,
-        companies = searchCompaniesViewModel.companies,
+        companies = searchCompaniesViewModel.companies.toPersistentList(),
         onCompanyContentClick = onCompanyContentClick,
         state = state,
         whetherFetchNextPage = searchCompaniesViewModel::whetherFetchNextPage,
@@ -52,7 +54,7 @@ internal fun SearchCompanies(
 private fun SearchCompaniesScreen(
     onBackPressed: () -> Unit,
     onNameChange: (String) -> Unit,
-    companies: List<CompaniesEntity.CompanyEntity>,
+    companies: ImmutableList<CompaniesEntity.CompanyEntity>,
     onCompanyContentClick: (Long) -> Unit,
     state: CompaniesState,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,

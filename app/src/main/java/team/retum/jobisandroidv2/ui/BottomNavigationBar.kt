@@ -4,7 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 
@@ -29,10 +30,13 @@ private val bottomMenus = listOf(
 )
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
+fun BottomNavigationBar(navController: NavController = rememberNavController()) {
     val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     Column {
-        Divider(thickness = 0.3.dp)
+        HorizontalDivider(
+            thickness = 0.3.dp,
+            color = JobisTheme.colors.surfaceTint,
+        )
         BottomAppBar(
             modifier = Modifier.fillMaxHeight(0.08f),
             contentColor = JobisTheme.colors.background,
@@ -54,8 +58,11 @@ fun BottomNavigationBar(navController: NavController) {
                     onClick = {
                         if (!selected) {
                             navController.navigate(it.route) {
-                                popUpTo(0)
+                                popUpTo(0) {
+                                    saveState = true
+                                }
                                 launchSingleTop = true
+                                restoreState = true
                             }
                         }
                     },

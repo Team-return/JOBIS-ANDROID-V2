@@ -6,7 +6,7 @@ object ResourceKeys {
     const val REFRESH_TOKEN = "refreshToken"
     const val REFRESH_EXPIRES_AT = "refreshExpiresAt"
     const val DEVICE_TOKEN = "deviceToken"
-    const val IMAGE_URL = "https://jobis-store.s3.ap-northeast-2.amazonaws.com/"
+    const val IMAGE_URL = "https://dsm-s3-bucket-jobis.s3.ap-northeast-2.amazonaws.com/"
     const val SHARED_PREFERENCES_NAME = "jobis"
     const val BEARER = "Bearer"
     const val SIGN_UP = "signUp"
@@ -18,4 +18,5 @@ object ResourceKeys {
     const val IS_MOVED_RECRUITMENT_DETAILS = "isMovedRecruitmentDetails"
     const val IS_MOVED_COMPANY_DETAILS = "isMovedCompanyDetails"
     const val EMAIL = "@dsm.hs.kr"
+    const val DATABASE_NAME = "jobis-database"
 }

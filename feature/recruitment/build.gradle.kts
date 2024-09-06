@@ -12,10 +12,16 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.jobis.recruitment"
+
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {
     implementation(project(":core:common"))
 
     implementation(libs.coil.compose)
+
+    implementation(libs.kotlinx.collections.immutable)
 }

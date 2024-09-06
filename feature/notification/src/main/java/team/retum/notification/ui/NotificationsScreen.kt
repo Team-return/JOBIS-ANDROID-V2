@@ -24,6 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.alarm.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -76,7 +78,7 @@ internal fun Notifications(
         onBackPressed = onBackPressed,
         notificationList = notificationsViewModel.notifications,
         selectedTabIndex = state.selectedTabIndex,
-        tabs = tabs,
+        tabs = tabs.toPersistentList(),
         onSelectTab = { notificationsViewModel.setTabIndex(it) },
         onNotificationDetailsClick = notificationsViewModel::readNotification,
     )
@@ -87,7 +89,7 @@ private fun NotificationsScreen(
     onBackPressed: () -> Unit,
     notificationList: SnapshotStateList<NotificationsEntity.NotificationEntity>,
     selectedTabIndex: Int,
-    tabs: List<String>,
+    tabs: ImmutableList<String>,
     onSelectTab: (Int) -> Unit,
     onNotificationDetailsClick: (NotificationDetailData) -> Unit,
 ) {
@@ -107,8 +109,7 @@ private fun NotificationsScreen(
         )
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+                .fillMaxWidth(),
         ) {
             items(notificationList) {
                 NotificationContent(
@@ -135,7 +136,18 @@ private fun NotificationContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .fillMaxWidth()
+            .background(
+                color = if (isNew) {
+                    JobisTheme.colors.secondaryContainer
+                } else {
+                    JobisTheme.colors.background
+                },
+            )
+            .padding(
+                vertical = 16.dp,
+                horizontal = 24.dp,
+            )
             .clickable(
                 enabled = true,
                 onClick = {

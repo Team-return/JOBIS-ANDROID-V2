@@ -3,4 +3,7 @@
     <color name="gray20">#FAFAFA</color>
     <color name="gray30">#F7F7F7</color>
     <color name="gray90">#000000</color>
+    <color name="primary10">#F3F3FB</color>
+    <color name="primary20">#2F4DEF</color>
+    <color name="primary30">#263EBF</color>
 </resources>

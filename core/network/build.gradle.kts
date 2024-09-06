@@ -5,6 +5,7 @@ plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.ktlint.gradle.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
@@ -35,6 +36,9 @@ android {
             )
         }
     }
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
+    }
 }
 
 dependencies {
@@ -43,6 +47,7 @@ dependencies {
     implementation(project(":core:local"))
 
     implementation(libs.squareup.retrofit)
-    implementation(libs.squareup.retrofit.converter.gson)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.logging.interceptor)
 }

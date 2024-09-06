@@ -13,12 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,6 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
@@ -69,7 +72,7 @@ internal fun Bookmarks(
     }
 
     BookmarkScreen(
-        bookmarks = bookmarkViewModel.bookmarks,
+        bookmarks = bookmarkViewModel.bookmarks.toPersistentList(),
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
         onRecruitmentDetailClick = onRecruitmentDetailClick,
@@ -78,7 +81,7 @@ internal fun Bookmarks(
 
 @Composable
 private fun BookmarkScreen(
-    bookmarks: List<BookmarksEntity.BookmarkEntity>,
+    bookmarks: ImmutableList<BookmarksEntity.BookmarkEntity>,
     onDeleteClick: (Long) -> Unit,
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
@@ -176,7 +179,8 @@ private fun BookmarkItem(
                 model = companyImageUrl,
                 modifier = Modifier
                     .size(56.dp)
-                    .clip(CircleShape),
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
                 contentDescription = "company image",
             )
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -194,7 +198,7 @@ private fun BookmarkItem(
             }
         }
         JobisIconButton(
-            painter = painterResource(id = JobisIcon.Delete),
+            drawableResId = JobisIcon.Delete,
             contentDescription = "delete",
             onClick = { onDeleteClick(recruitmentId) },
         )
