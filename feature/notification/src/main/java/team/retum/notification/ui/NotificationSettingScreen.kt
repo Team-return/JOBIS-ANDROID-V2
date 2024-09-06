@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -95,15 +95,14 @@ private fun NotificationSettingScreen(
             isSubscribe = state.isAllSubscribe,
             onCheckChange = onAllNotificationChange,
         )
-        Spacer(
+        HorizontalDivider(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(
                     horizontal = 24.dp,
                     vertical = 12.dp,
-                )
-                .height(1.dp)
-                .background(JobisTheme.colors.surfaceVariant),
+                ),
+            thickness = 1.dp,
+            color = JobisTheme.colors.surfaceVariant,
         )
         Text(
             modifier = Modifier
