@@ -39,6 +39,13 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json
 
+      - name: Decode Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: './keystore/jobis_v2_key.jks'
+          encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
+
       - name: Execute Gradle task
         run: |
           if [ "${{ matrix.task }}" == "lint" ]; then
