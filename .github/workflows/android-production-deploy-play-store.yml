@@ -53,6 +53,7 @@ jobs:
         run: |
           echo "::set-output name=code::$(grep versionCode buildSrc/src/main/java/Dependencies.kt | awk '{print $5}')"
           echo "::set-output name=name::$(grep versionName buildSrc/src/main/java/Dependencies.kt | awk '{print $5}' | tr '"' ' ' | tr -d " ")"
+          
       - name: Get tag name
         id: get_tag
         run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
