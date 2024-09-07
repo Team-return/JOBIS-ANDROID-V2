@@ -39,6 +39,9 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/google-services.json
 
+      - name: Create keystore directory
+        run: mkdir -p ${{ github.workspace }}/keystore
+        
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
@@ -47,7 +50,7 @@ jobs:
           encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
           
       - name: Check if keystore exists
-        run: ls -l ${{ github.workspace }}
+        run: ls -l ${{ github.workspace }}/keystore
         
       - name: Execute Gradle task
         run: |
