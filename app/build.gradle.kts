@@ -30,7 +30,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("/home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/keystore/jobis_v2_key.jks")
+            storeFile = file("/jobis_v2_key.jks")
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
