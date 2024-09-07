@@ -34,6 +34,9 @@ jobs:
           DATA: ${{ secrets.GOOGLE_CLOUD_PLATFORM }}
         run: echo $DATA | base64 --decode > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/src/main/play/google-cloud-platform.json
 
+      - name: Create keystore directory
+        run: mkdir -p ${{ github.workspace }}/app/keystore
+        
       - name: Decode Keystore
         run: |
           echo "$KEYSTORE" > ${{ github.workspace }}/app/keystore/keystore.b64
