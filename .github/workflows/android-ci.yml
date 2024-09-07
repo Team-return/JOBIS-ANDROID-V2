@@ -46,6 +46,9 @@ jobs:
           fileName: '/home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/keystore/jobis_v2_key.jks'
           encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
 
+      - name: Check if keystore exists
+        run: ls -l /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/keystore/
+        
       - name: Execute Gradle task
         run: |
           if [ "${{ matrix.task }}" == "lint" ]; then
