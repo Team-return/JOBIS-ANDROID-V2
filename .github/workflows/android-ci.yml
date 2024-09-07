@@ -43,11 +43,11 @@ jobs:
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: './keystore/jobis_v2_key.jks'
+          fileName: '${{ github.workspace }}/keystore/jobis_v2_key.jks'
           encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
           
       - name: Check if keystore exists
-        run: ls -l ./keystore
+        run: ls -l ${{ github.workspace }}/keystore
         
       - name: Execute Gradle task
         run: |
