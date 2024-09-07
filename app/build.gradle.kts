@@ -30,7 +30,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file(System.getenv("APP_RELEASE_KEY_STORE"))
+            storeFile = file("./keystore/jobis_v2_key.jks")
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
@@ -43,7 +43,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs["release"]
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
