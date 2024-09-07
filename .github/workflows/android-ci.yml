@@ -43,11 +43,11 @@ jobs:
         run: mkdir -p ${{ github.workspace }}/app/keystore
         
       - name: Decode Keystore
-        id: decode_keystore
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileName: '${{ github.workspace }}/app/keystore/jobis_v2_key.jks'
-          encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
+        run: |
+          echo "$KEYSTORE" > ${{ github.workspace }}/app/keystore/keystore.b64
+          base64 -d -i ${{ github.workspace }}/app/keystore/keystore.b64 > ${{ github.workspace }}/app/keystore/jobis_v2_key.jks
+        env:
+          KEYSTORE: ${{ secrets.APP_RELEASE_KEY_STORE }}
         
       - name: Execute Gradle task
         run: |
