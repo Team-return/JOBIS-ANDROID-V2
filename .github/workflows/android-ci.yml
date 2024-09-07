@@ -41,10 +41,13 @@ jobs:
 
       - name: Decode Keystore
         id: decode_keystore
-        run: echo "${{ secrets.APP_RELEASE_KEY_STORE }}" | base64 --decode > /home/runner/work/_temp/keystore/jobis_v2_key.jks
-
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: './keystore/jobis_v2_key.jks'
+          encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
+          
       - name: Check if keystore exists
-        run: ls -l /home/runner/work/_temp/keystore/
+        run: ls -l ./keystore
         
       - name: Execute Gradle task
         run: |
