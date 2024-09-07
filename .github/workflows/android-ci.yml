@@ -47,7 +47,7 @@ jobs:
           encodedString: ${{ secrets.APP_RELEASE_KEY_STORE }}
           
       - name: Check if keystore exists
-        run: ls -l ${{ github.workspace }}/keystore
+        run: ls -l ${{ github.workspace }}
         
       - name: Execute Gradle task
         run: |
