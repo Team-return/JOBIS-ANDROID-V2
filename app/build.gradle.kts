@@ -30,13 +30,10 @@ android {
 
     signingConfigs {
         create("release") {
-            val files = file("/home/runner/work/_temp/keystore/").listFiles()
-            if (files != null) {
-                storeFile = files.first()
-                storePassword = System.getenv("SIGNING_STORE_PASSWORD")
-                keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-                keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
-            }
+            storeFile = file("./keystore/jobis_v2_key.jks")
+            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
         }
     }
 
@@ -46,7 +43,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs["release"]
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
