@@ -65,28 +65,19 @@ jobs:
         id: get_tag
         run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
 
-      - name: Get release name
-        id: get_release
-        run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
-
       - name: Get release note
         id: read_file
         run: |
           CONTENT=$(cat ./app/src/main/play/release-notes/ko-KR/default.txt)
           echo "::set-output name=release_note::$CONTENT"
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Generate Release
+        uses: actions/create-release@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "$v{{ github.ref }}"
-          release_name: "🚀 :: v${{ github.ref }}"
-          body: |
-            What's Changed
-            - First Change
-            - Second Change
+          release_name: "🚀 :: ${{ steps.get_tag.outputs.name }}"
+          tag_name: ${{ steps.get_tag.outputs.name }}
           draft: false
           prerelease: false
 
