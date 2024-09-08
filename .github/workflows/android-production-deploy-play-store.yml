@@ -34,6 +34,10 @@ jobs:
           DATA: ${{ secrets.GOOGLE_CLOUD_PLATFORM }}
         run: echo $DATA | base64 --decode > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/src/main/play/google-cloud-platform.json
 
+      - name: Create local.properties
+        run: |
+          echo "BASE_URL_PROD=${{ secrets.BASE_URL_PROD }}" >> ./gradle.properties
+          
       - name: Create keystore directory
         run: mkdir -p ${{ github.workspace }}/app/keystore
         
@@ -54,9 +58,9 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          echo "::set-output name=code::$(grep versionCode buildSrc/src/main/java/Dependencies.kt | awk '{print $5}')"
-          echo "::set-output name=name::$(grep versionName buildSrc/src/main/java/Dependencies.kt | awk '{print $5}' | tr '"' ' ' | tr -d " ")"
-          
+          echo "::set-output name=code::$(grep VERSION_CODE buildSrc/src/main/kotlin/ProjectProperties.kt | awk '{print $5}')"
+          echo "::set-output name=name::$(grep VERSION_NAME buildSrc/src/main/kotlin/ProjectProperties.kt | awk '{print $5}' | tr -d '"' )"
+
       - name: Get tag name
         id: get_tag
         run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
@@ -65,17 +69,24 @@ jobs:
         id: get_release
         run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
 
-      - name: Get Release Note
-        id: get_note
-        run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
+      - name: Get release note
+        id: read_file
+        run: |
+          CONTENT=$(cat ./app/src/main/play/release-notes/ko-KR/default.txt)
+          echo "::set-output name=release_note::$CONTENT"
 
-      - name: Generate Release
-        uses: actions/create-release@latest
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:
-          release_name: ${{ steps.get_release.outputs.name }}
-          tag_name: ${{ steps.get_tag.outputs.name }}
+          tag_name: "$v{{ github.ref }}"
+          release_name: "🚀 :: v${{ github.ref }}"
+          body: |
+            What's Changed
+            - First Change
+            - Second Change
           draft: false
           prerelease: false
 
@@ -113,7 +124,7 @@ jobs:
                     },
                     {
                       "title": "Release Note",
-                      "value": "${{ steps.get_note.outputs.name }}",
+                      "value": "${{ steps.read_file.outputs.release_note }}",
                       "short": false
                     }
                   ]
