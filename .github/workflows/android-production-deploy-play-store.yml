@@ -68,8 +68,7 @@ jobs:
       - name: Get release note
         id: read_file
         run: |
-          CONTENT=$(cat ./app/src/main/play/release-notes/ko-KR/default.txt)
-          echo "::set-output name=release_note::$CONTENT"
+          echo "RELEASE_NOTE=$(cat ./app/src/main/play/release-notes/ko-KR/default.txt)" >> $GITHUB_ENV
 
       - name: Generate Release
         uses: actions/create-release@latest
@@ -115,7 +114,7 @@ jobs:
                     },
                     {
                       "title": "Release Note",
-                      "value": "${{ steps.read_file.outputs.release_note }}",
+                      "value": "${{ env.RELEASE_NOTE }}",
                       "short": false
                     }
                   ]
