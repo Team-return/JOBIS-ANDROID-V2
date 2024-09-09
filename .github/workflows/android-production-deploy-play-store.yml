@@ -21,9 +21,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Create local.properties
-        run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
-
       - name: Create google-services.json
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
@@ -36,7 +33,7 @@ jobs:
 
       - name: Create local.properties
         run: |
-          echo "BASE_URL_PROD=${{ secrets.BASE_URL_PROD }}" >> ./gradle.properties
+          echo "BASE_URL_PROD=${{ secrets.BASE_URL_PROD }}" >> ${{ github.workspace }}/gradle.properties
           
       - name: Create keystore directory
         run: mkdir -p ${{ github.workspace }}/app/keystore
@@ -68,8 +65,7 @@ jobs:
       - name: Get release note
         id: read_file
         run: |
-          CONTENT=$(cat ./app/src/main/play/release-notes/ko-KR/default.txt)
-          echo "::set-output name=release_note::$CONTENT"
+          echo "RELEASE_NOTE=$(cat ./app/src/main/play/release-notes/ko-KR/default.txt)" >> $GITHUB_ENV
 
       - name: Generate Release
         uses: actions/create-release@latest
@@ -115,7 +111,7 @@ jobs:
                     },
                     {
                       "title": "Release Note",
-                      "value": "${{ steps.read_file.outputs.release_note }}",
+                      "value": "${{ env.RELEASE_NOTE }}",
                       "short": false
                     }
                   ]
