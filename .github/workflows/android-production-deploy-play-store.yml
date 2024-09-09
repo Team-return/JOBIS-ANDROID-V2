@@ -33,7 +33,7 @@ jobs:
 
       - name: Create local.properties
         run: |
-          echo "BASE_URL_PROD=${{ secrets.BASE_URL_PROD }}" >> ${{ github.workspace }}/local.properties
+          echo "BASE_URL_PROD=\"${{ secrets.BASE_URL_PROD }}\"" >> ${{ github.workspace }}/local.properties
           
       - name: Create keystore directory
         run: mkdir -p ${{ github.workspace }}/app/keystore
