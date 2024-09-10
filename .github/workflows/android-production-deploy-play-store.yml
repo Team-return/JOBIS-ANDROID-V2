@@ -62,11 +62,12 @@ jobs:
         id: get_tag
         run: echo "::set-output name=name::v${{ steps.get_version.outputs.name }}"
 
-      - name: Read and encode release notes
+      - name: Read release notes
         id: read_release_note
         run: |
-          RELEASE_NOTE=$(cat ./app/src/main/play/release-notes/ko-KR/default.txt | base64)
-          echo "RELEASE_NOTE=$RELEASE_NOTE" >> $GITHUB_ENV
+          echo "RELEASE_NOTE<<EOF" >> $GITHUB_ENV
+          cat ./app/src/main/play/release-notes/ko-KR/default.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
           
       - name: Generate Release
         uses: actions/create-release@latest
@@ -112,7 +113,7 @@ jobs:
                     },
                     {
                       "title": "Release Note",
-                      "value": "${{ env.RELEASE_NOTE | base64 --decode }}",
+                      "value": "${{ env.RELEASE_NOTE }}",
                       "short": false
                     }
                   ]
