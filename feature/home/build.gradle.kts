@@ -19,6 +19,6 @@ android {
 }
 
 dependencies {
-    api(libs.coil.compose)
+    implementation(libs.coil.compose)
     implementation(libs.kotlinx.collections.immutable)
 }

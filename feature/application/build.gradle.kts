@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    api(libs.coil.compose)
-    api(libs.kotlin.stdlib)
-    api(libs.kotlinx.serialization.json)
+    implementation(libs.coil.compose)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.serialization.json)
 }

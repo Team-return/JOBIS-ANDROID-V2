@@ -20,6 +20,6 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    api(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
 }
