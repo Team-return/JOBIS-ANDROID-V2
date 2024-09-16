@@ -20,8 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -175,7 +175,7 @@ private fun SetImageButton(
             .clickable(
                 onClick = onClick,
                 interactionSource = interactionSource,
-                indication = rememberRipple(),
+                indication = ripple(),
             )
             .padding(
                 vertical = 8.dp,

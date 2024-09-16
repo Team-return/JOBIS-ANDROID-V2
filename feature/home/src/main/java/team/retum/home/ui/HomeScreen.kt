@@ -268,7 +268,7 @@ private fun Banner(
     HorizontalPager(
         state = pagerState,
         contentPadding = PaddingValues(horizontal = 18.dp),
-        beyondBoundsPageCount = pagerState.pageCount + 1,
+        beyondViewportPageCount = pagerState.pageCount + 1,
     ) { page ->
         JobisCard(
             modifier = Modifier

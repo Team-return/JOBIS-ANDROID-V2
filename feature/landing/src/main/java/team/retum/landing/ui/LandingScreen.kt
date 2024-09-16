@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -108,7 +108,7 @@ private fun LandingScreen(
                     .padding(bottom = 24.dp)
                     .clickable(
                         onClick = onSignInClick,
-                        indication = rememberRipple(),
+                        indication = ripple(),
                         interactionSource = remember { MutableInteractionSource() },
                     ),
                 text = stringResource(id = R.string.login_with_existing_account),
