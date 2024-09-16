@@ -4,7 +4,7 @@ plugins {
     id(libs.plugins.android.application.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
-    id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.kotlin.ksp.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
     id(libs.plugins.google.service.get().pluginId)
     id(libs.plugins.firebase.crashlytics.get().pluginId)
@@ -122,7 +122,7 @@ dependencies {
     implementation(libs.firebase.analytics)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -142,11 +142,4 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(libs.anrwatchdog)
-}
-
-kapt {
-    javacOptions {
-        option("-Adagger.fastInit=ENABLED")
-        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
-    }
 }

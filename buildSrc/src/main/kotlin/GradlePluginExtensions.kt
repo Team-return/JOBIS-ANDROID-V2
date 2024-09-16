@@ -24,10 +24,10 @@ internal fun DependencyHandler.androidTestImplementation(dependencyNotation: Any
     add("androidTestImplementation", dependencyNotation)
 }
 
-internal fun DependencyHandler.kapt(dependencyNotation: Any) {
-    add("kapt", dependencyNotation)
+internal fun DependencyHandler.ksp(dependencyNotation: Any) {
+    add("ksp", dependencyNotation)
 }
 
-internal fun DependencyHandler.kaptAndroidTest(dependencyNotation: Any) {
-    add("kaptAndroidTest", dependencyNotation)
+internal fun DependencyHandler.kspAndroidTest(dependencyNotation: Any) {
+    add("kspAndroidTest", dependencyNotation)
 }
