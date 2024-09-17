@@ -2,7 +2,7 @@
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
-    id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.kotlin.ksp.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
     id(libs.plugins.kotlinx.serialization.get().pluginId)
@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    api(libs.coil.compose)
-    api(libs.kotlin.stdlib)
-    api(libs.kotlinx.serialization.json)
+    implementation(libs.coil.compose)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.serialization.json)
 }

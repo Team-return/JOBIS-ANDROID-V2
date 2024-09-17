@@ -1,18 +1,16 @@
 [versions]
-androidx-junit = "1.1.5"
-androidx-espresso-core = "3.5.1"
-androidx-compose-bom = "2024.04.00"
-androidx-navigation-compose = "2.7.6"
+androidx-junit = "1.2.1"
+androidx-espresso-core = "3.6.1"
+androidx-compose-bom = "2024.09.01"
+androidx-navigation-compose = "2.8.0"
 anrwatchdog = "1.4.0"
-coil-compose = "2.5.0"
-androidx-compose-foundation = "1.6.6"
-androidx-lifecycle-viewmodel = "2.7.0"
-androidx-lifecycle-runtime-compose = "2.7.0"
+coil-compose = "2.6.0"
+androidx-compose-foundation = "1.7.1"
+androidx-lifecycle-viewmodel = "2.8.5"
 
 compose-stable-marker = "1.0.5"
 converter-moshi = "2.9.0"
-firebase-bom = "32.3.1"
-google-service = "4.4.1"
+google-service = "4.4.2"
 google-firebase-bom = "32.7.4"
 
 firebase-messaging = "23.4.1"
@@ -23,23 +21,23 @@ android-gradle = "8.2.2"
 kotlin = "1.9.21"
 kotlinx-collections-immutable = "0.3.7"
 lottie-compose = "6.3.0"
-moshi-kotlin = "1.12.0"
+moshi-kotlin = "1.15.1"
 play-publisher = "3.8.4"
-squareup-retrofit = "2.9.0"
+squareup-retrofit = "2.11.0"
 squareup-logging-interceptor = "4.12.0"
 squareup-javapoet = "1.13.0"
 hilt-android-navigation = "1.2.0"
-androidx-compose-material = "1.6.5"
+androidx-compose-material = "1.7.1"
 
-com-google-android-material = "1.11.0"
+com-google-android-material = "1.12.0"
 
 kotlinx-serialization-json = "1.6.3"
 org-jlleitschuh-ktlint-gradle = "11.3.1"
 
 app-update-ktx = "2.1.0"
 
-androidx-compose-ui-test = "1.6.8"
-androidx-test-runner = "1.5.2"
+androidx-compose-ui-test = "1.7.1"
+androidx-test-runner = "1.6.2"
 
 androidx-room-runtime = "2.6.1"
 junit-ktx = "1.2.1"
@@ -47,6 +45,8 @@ junit-ktx = "1.2.1"
 firebase-crashlytics = "2.9.9"
 
 triplet-play = "3.8.4"
+
+kotlin-ksp = "1.9.21-1.0.16"
 
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
@@ -75,7 +75,7 @@ compose-stable-marker = { module = "com.github.skydoves:compose-stable-marker", 
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-crashlytics"}
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-crashlytics" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android-gradle-plugin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle" }
@@ -116,7 +116,7 @@ android-application = { id = "com.android.application", version.ref = "android-g
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android-gradle-plugin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
 kotlinx-serialization = { id = "kotlinx-serialization", version.ref = "kotlin" }
 ktlint-gradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "org-jlleitschuh-ktlint-gradle" }
 google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
