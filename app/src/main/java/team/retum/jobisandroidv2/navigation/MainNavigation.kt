@@ -13,6 +13,7 @@ import team.retum.jobis.notice.navigation.notices
 import team.retum.jobis.recruitment.navigation.recruitmentDetails
 import team.retum.jobis.recruitment.navigation.recruitmentFilter
 import team.retum.jobis.recruitment.navigation.searchRecruitment
+import team.retum.jobis.recruitment.navigation.winterIntern
 import team.retum.jobisandroidv2.JobisNavigator
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
@@ -33,6 +34,7 @@ internal fun NavGraphBuilder.mainNavigation(
     ) {
         root(
             onAlarmClick = navigator::navigateToNotification,
+            onWinterInternClick = navigator::navigateToWinterIntern,
             onRecruitmentDetailsClick = navigator::navigateToRecruitmentDetails,
             onCompaniesClick = navigator::navigateToCompanies,
             onRecruitmentFilterClick = navigator::navigateToRecruitmentFilter,
@@ -68,6 +70,12 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
             onSearchClick = navigator::navigateToSearchCompanies,
             onCompanyContentClick = navigator::navigateToCompanyDetails,
+        )
+        winterIntern(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onRecruitmentDetailsClick = navigator::navigateToRecruitmentDetails,
+            onRecruitmentFilterClick = navigator::navigateToRecruitmentFilter,
+            onSearchRecruitmentClick = navigator::navigateToSearchRecruitment,
         )
         searchCompanies(
             onBackPressed = navigator::popBackStackIfNotHome,

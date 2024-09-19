@@ -12,6 +12,7 @@ const val APPLICATION_ID = "applicationId"
 
 fun NavGraphBuilder.root(
     onAlarmClick: () -> Unit,
+    onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -34,6 +35,7 @@ fun NavGraphBuilder.root(
         Root(
             applicationId = it.arguments?.getString(APPLICATION_ID)?.toLong(),
             onAlarmClick = onAlarmClick,
+            onWinterInternClick = onWinterInternClick,
             onRecruitmentDetailsClick = onRecruitmentDetailsClick,
             onCompaniesClick = onCompaniesClick,
             onRecruitmentFilterClick = onRecruitmentFilterClick,

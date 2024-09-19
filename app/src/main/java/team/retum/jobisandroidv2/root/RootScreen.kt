@@ -32,6 +32,7 @@ import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobis.navigation.myPage
+import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobis.recruitment.navigation.navigateToRecruitments
 import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
@@ -46,6 +47,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 internal fun Root(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -78,6 +80,7 @@ internal fun Root(
                 sheetState.show()
             }
         },
+        onWinterInternClick = onWinterInternClick,
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
         onCompaniesClick = onCompaniesClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
@@ -110,6 +113,7 @@ private fun RootScreen(
     sheetState: ModalBottomSheetState,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
@@ -154,6 +158,7 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
+                    onWinterInternClick = onWinterInternClick,
                     navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                     navigatedFromNotifications = navigatedFromNotifications,
                     navigateToApplication = navigateToApplication,
