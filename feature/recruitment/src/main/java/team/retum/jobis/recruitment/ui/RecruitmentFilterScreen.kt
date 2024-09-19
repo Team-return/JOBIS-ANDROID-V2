@@ -55,6 +55,10 @@ internal fun RecruitmentFilter(
 ) {
     val state by recruitmentFilterViewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        recruitmentFilterViewModel.fetchCodes()
+    }
+
     LaunchedEffect(state.keyword, state.type, state.parentCode) {
         delay(SEARCH_DELAY)
         if (state.type == CodeType.TECH) {
