@@ -31,6 +31,7 @@ internal fun Recruitments(
         with(recruitmentViewModel) {
             setJobCode(RecruitmentFilterViewModel.jobCode)
             setTechCode(RecruitmentFilterViewModel.techCode)
+            setWinterIntern(isWinterIntern = false)
             clearRecruitment()
             fetchTotalRecruitmentCount()
         }
