@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="recruitment">모집의뢰서</string>
+    <string name="recruitment_experiential_field_training">체험형 현장실습</string>
+
 
     <string name="military_supported">병역특례 O</string>
     <string name="military_not_supported">병역특례 X</string>
