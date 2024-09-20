@@ -81,7 +81,7 @@ android {
 play {
     serviceAccountCredentials.set(file("src/main/play/google-cloud-platform.json"))
     defaultToAppBundles.set(true)
-    releaseStatus.set(ReleaseStatus.IN_PROGRESS)
+    releaseStatus.set(ReleaseStatus.COMPLETED)
     track.set("production")
 }
 
