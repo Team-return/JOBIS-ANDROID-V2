@@ -84,6 +84,10 @@ internal class RecruitmentViewModel @Inject constructor(
         state.value.copy(techCode = techCode)
     }
 
+    internal fun setWinterIntern(isWinterIntern: Boolean) = setState {
+        state.value.copy(isWinterIntern = isWinterIntern)
+    }
+
     internal fun fetchRecruitments() {
         addRecruitmentEntities()
         addPage()
@@ -94,7 +98,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     page = page.toInt(),
                     jobCode = jobCode,
                     techCode = techCode,
-                    winterIntern = false,
+                    winterIntern = isWinterIntern,
                 ).onSuccess {
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
@@ -141,7 +145,7 @@ internal class RecruitmentViewModel @Inject constructor(
                         name = name,
                         jobCode = jobCode,
                         techCode = techCode,
-                        winterIntern = false,
+                        winterIntern = isWinterIntern,
                     ).onSuccess {
                         setState { copy(totalPage = it.totalPageCount) }
                         fetchRecruitments()
@@ -189,6 +193,7 @@ internal data class RecruitmentsState(
     val page: Long,
     val jobCode: Long?,
     val techCode: String?,
+    val isWinterIntern: Boolean,
     val name: String?,
     val showRecruitmentsEmptyContent: Boolean,
 ) {
@@ -198,6 +203,7 @@ internal data class RecruitmentsState(
             page = 0,
             jobCode = null,
             techCode = null,
+            isWinterIntern = false,
             name = null,
             showRecruitmentsEmptyContent = false,
         )

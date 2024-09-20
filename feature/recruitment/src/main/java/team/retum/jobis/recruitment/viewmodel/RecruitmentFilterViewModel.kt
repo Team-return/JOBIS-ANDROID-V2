@@ -22,10 +22,6 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         var techCode: String? = null
     }
 
-    init {
-        fetchCodes()
-    }
-
     private var _majors: MutableList<CodesEntity.CodeEntity> = mutableStateListOf()
     val majors get() = _majors
 

@@ -14,14 +14,15 @@ import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
-import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
+import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.usecase.entity.RecruitmentsEntity
 
 @Composable
-internal fun Recruitments(
+internal fun WinterIntern(
+    onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: () -> Unit,
@@ -31,13 +32,14 @@ internal fun Recruitments(
         with(recruitmentViewModel) {
             setJobCode(RecruitmentFilterViewModel.jobCode)
             setTechCode(RecruitmentFilterViewModel.techCode)
-            setWinterIntern(isWinterIntern = false)
+            setWinterIntern(isWinterIntern = true)
             clearRecruitment()
             fetchTotalRecruitmentCount()
         }
     }
 
-    RecruitmentsScreen(
+    WinterInternScreen(
+        onBackPressed = onBackPressed,
         recruitments = recruitmentViewModel.recruitments.toPersistentList(),
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
@@ -49,7 +51,8 @@ internal fun Recruitments(
 }
 
 @Composable
-private fun RecruitmentsScreen(
+private fun WinterInternScreen(
+    onBackPressed: () -> Unit,
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -63,7 +66,10 @@ private fun RecruitmentsScreen(
             .fillMaxSize()
             .background(JobisTheme.colors.background),
     ) {
-        JobisLargeTopAppBar(title = stringResource(id = R.string.recruitment)) {
+        JobisSmallTopAppBar(
+            title = stringResource(id = R.string.recruitment_experiential_field_training),
+            onBackPressed = onBackPressed,
+        ) {
             JobisIconButton(
                 drawableResId = JobisIcon.Filter,
                 contentDescription = "filter",

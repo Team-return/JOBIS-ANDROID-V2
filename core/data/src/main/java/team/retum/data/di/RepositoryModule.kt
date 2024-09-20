@@ -20,6 +20,8 @@ import team.retum.data.repository.company.CompanyRepository
 import team.retum.data.repository.company.CompanyRepositoryImpl
 import team.retum.data.repository.file.FileRepository
 import team.retum.data.repository.file.FileRepositoryImpl
+import team.retum.data.repository.intern.WinterInterRepository
+import team.retum.data.repository.intern.WinterInternRepositoryImpl
 import team.retum.data.repository.notice.NoticeRepository
 import team.retum.data.repository.notice.NoticeRepositoryImpl
 import team.retum.data.repository.notification.NotificationRepository
@@ -92,4 +94,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindBugRepository(bugRepositoryImpl: BugRepositoryImpl): BugRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWinterInternRepository(winterInternRepositoryImpl: WinterInternRepositoryImpl): WinterInterRepository
 }

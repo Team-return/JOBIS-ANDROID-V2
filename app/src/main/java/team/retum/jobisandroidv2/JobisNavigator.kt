@@ -19,6 +19,7 @@ import team.retum.jobis.notice.navigation.navigateToNotices
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
+import team.retum.jobis.recruitment.navigation.navigateToWinterIntern
 import team.retum.jobis.verify.email.navigation.navigateToVerifyEmail
 import team.retum.jobisandroidv2.root.APPLICATION_ID
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
@@ -131,6 +132,10 @@ internal class JobisNavigator(
 
     fun navigateToRoot(applicationId: Long = 0) {
         navController.navigateToRoot(applicationId = applicationId)
+    }
+
+    fun navigateToWinterIntern() {
+        navController.navigateToWinterIntern()
     }
 
     fun navigateToRecruitmentDetails(

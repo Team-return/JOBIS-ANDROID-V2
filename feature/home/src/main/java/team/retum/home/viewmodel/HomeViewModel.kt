@@ -15,6 +15,7 @@ import team.retum.common.utils.ResourceKeys
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
+import team.retum.usecase.intern.FetchWinterInternUseCase
 import team.retum.usecase.usecase.application.FetchAppliedCompaniesUseCase
 import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
 import team.retum.usecase.usecase.application.FetchRejectionReasonUseCase
@@ -34,6 +35,7 @@ internal class HomeViewModel @Inject constructor(
     private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
     private val fetchRejectionReasonUseCase: FetchRejectionReasonUseCase,
     private val fetchBannersUseCase: FetchBannersUseCase,
+    private val fetchWinterInternUseCase: FetchWinterInternUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
     private val _appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity> =
@@ -50,6 +52,14 @@ internal class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             fetchBannersUseCase().onSuccess {
                 setState { state.value.copy(banners = it.banners) }
+            }
+        }
+    }
+
+    internal fun fetchWinterIntern() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchWinterInternUseCase().onSuccess {
+                setState { state.value.copy(isWinterIntern = it) }
             }
         }
     }
@@ -131,6 +141,7 @@ internal data class HomeState(
     val passCount: Long,
     val term: Int,
     val banners: List<BannersEntity.BannerEntity>,
+    val isWinterIntern: Boolean,
 ) {
     companion object {
         fun getDefaultState() = HomeState(
@@ -145,6 +156,7 @@ internal data class HomeState(
             passCount = 0,
             term = 0,
             banners = emptyList(),
+            isWinterIntern = false,
         )
     }
 }
