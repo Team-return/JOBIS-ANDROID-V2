@@ -16,8 +16,6 @@ import team.retum.usecase.usecase.auth.AuthorizeAuthenticationCodeUseCase
 import team.retum.usecase.usecase.auth.SendAuthenticationCodeUseCase
 import javax.inject.Inject
 
-internal const val EMAIL_ADDRESS = "@dsm.hs.kr"
-
 @HiltViewModel
 internal class VerifyEmailViewModel @Inject constructor(
     private val sendAuthenticationCodeUseCase: SendAuthenticationCodeUseCase,
@@ -29,7 +27,7 @@ internal class VerifyEmailViewModel @Inject constructor(
     internal fun onNextClick() {
         setState { state.value.copy(buttonEnabled = false) }
         viewModelScope.launch(Dispatchers.IO) {
-            val email = state.value.email + EMAIL_ADDRESS
+            val email = state.value.email
             authorizeAuthenticationCodeUseCase(
                 email = email,
                 authCode = state.value.authenticationCode,
@@ -70,7 +68,7 @@ internal class VerifyEmailViewModel @Inject constructor(
     internal fun onAuthenticationClick() {
         viewModelScope.launch(Dispatchers.IO) {
             sendAuthenticationCodeUseCase(
-                email = state.value.email + EMAIL_ADDRESS,
+                email = state.value.email,
                 authCodeType = AuthCodeType.PASSWORD,
             ).onSuccess {
                 stopAuthenticationTimer()
@@ -86,6 +84,10 @@ internal class VerifyEmailViewModel @Inject constructor(
                 when (it) {
                     is BadRequestException -> {
                         postSideEffect(VerifyEmailSideEffect.CheckEmailValidation)
+                    }
+
+                    is NotFoundException -> {
+                        postSideEffect(VerifyEmailSideEffect.NotFoundStudent)
                     }
 
                     is ConflictException -> {
@@ -153,4 +155,5 @@ internal sealed interface VerifyEmailSideEffect {
     data class MoveToVerifyPassword(val email: String) : VerifyEmailSideEffect
     data object CheckEmailValidation : VerifyEmailSideEffect
     data object AuthenticationCodeExpiration : VerifyEmailSideEffect
+    data object NotFoundStudent: VerifyEmailSideEffect
 }

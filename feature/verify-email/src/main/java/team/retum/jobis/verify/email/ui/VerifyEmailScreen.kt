@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
-import team.retum.jobis.verify.email.viewmodel.EMAIL_ADDRESS
+import team.retum.common.utils.ResourceKeys
 import team.retum.jobis.verify.email.viewmodel.VerifyEmailSideEffect
 import team.retum.jobis.verify.email.viewmodel.VerifyEmailState
 import team.retum.jobis.verify.email.viewmodel.VerifyEmailViewModel
@@ -24,6 +24,7 @@ import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisSmallButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -46,7 +47,7 @@ internal fun VerifyEmail(
                 is VerifyEmailSideEffect.MoveToVerifyPassword -> {
                     navigateToResetPassword(
                         ResetPasswordNavigationArgumentType.EMAIL,
-                        state.email + EMAIL_ADDRESS,
+                        state.email + ResourceKeys.EMAIL,
                     )
                 }
 
@@ -61,6 +62,15 @@ internal fun VerifyEmail(
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.toast_check_email_validation),
+                        drawable = JobisIcon.Error
+                    ).show()
+                }
+
+                is VerifyEmailSideEffect.NotFoundStudent -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_check_email),
+                        drawable = JobisIcon.Error,
                     ).show()
                 }
             }
