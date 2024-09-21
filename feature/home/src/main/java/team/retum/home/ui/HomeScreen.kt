@@ -130,7 +130,7 @@ internal fun Home(
         state = state,
         banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
-        appliedCompanies = homeViewModel.appliedCompanies.toPersistentList(),
+        appliedCompanies = state.appliedCompanies.toPersistentList(),
         applicationId = applicationId,
         setScroll = { position ->
             homeViewModel.fetchScroll(

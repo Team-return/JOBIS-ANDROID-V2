@@ -38,11 +38,6 @@ internal class HomeViewModel @Inject constructor(
     private val fetchWinterInternUseCase: FetchWinterInternUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
-    private val _appliedCompanies: SnapshotStateList<AppliedCompaniesEntity.ApplicationEntity> =
-        mutableStateListOf()
-    internal val appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity> =
-        _appliedCompanies
-
     internal fun calculateTerm() = setState {
         val term = LocalDate.now().year - SCHOOL_ESTABLISHMENT - 1
         state.value.copy(term = term)
@@ -76,11 +71,7 @@ internal class HomeViewModel @Inject constructor(
     internal fun fetchAppliedCompanies() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchAppliedCompaniesUseCase().onSuccess { appliedCompaniesEntity ->
-                _appliedCompanies.addAll(
-                    appliedCompaniesEntity.applications.map { applicationEntity ->
-                        applicationEntity.copy(companyLogoUrl = ResourceKeys.IMAGE_URL + applicationEntity.companyLogoUrl)
-                    },
-                )
+                setState { state.value.copy(appliedCompanies = appliedCompaniesEntity.applications) }
             }
         }
     }
@@ -141,6 +132,7 @@ internal data class HomeState(
     val passCount: Long,
     val term: Int,
     val banners: List<BannersEntity.BannerEntity>,
+    val appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
     val isWinterIntern: Boolean,
 ) {
     companion object {
@@ -156,6 +148,7 @@ internal data class HomeState(
             passCount = 0,
             term = 0,
             banners = emptyList(),
+            appliedCompanies = emptyList(),
             isWinterIntern = false,
         )
     }
