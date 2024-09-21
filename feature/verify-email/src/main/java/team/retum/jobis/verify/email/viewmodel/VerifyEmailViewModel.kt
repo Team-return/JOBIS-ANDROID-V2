@@ -155,5 +155,5 @@ internal sealed interface VerifyEmailSideEffect {
     data class MoveToVerifyPassword(val email: String) : VerifyEmailSideEffect
     data object CheckEmailValidation : VerifyEmailSideEffect
     data object AuthenticationCodeExpiration : VerifyEmailSideEffect
-    data object NotFoundStudent: VerifyEmailSideEffect
+    data object NotFoundStudent : VerifyEmailSideEffect
 }

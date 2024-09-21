@@ -62,7 +62,7 @@ internal fun VerifyEmail(
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.toast_check_email_validation),
-                        drawable = JobisIcon.Error
+                        drawable = JobisIcon.Error,
                     ).show()
                 }
 
