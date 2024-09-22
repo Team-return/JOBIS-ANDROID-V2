@@ -9,6 +9,7 @@ plugins {
     id(libs.plugins.google.service.get().pluginId)
     id(libs.plugins.firebase.crashlytics.get().pluginId)
     id(libs.plugins.triplet.play.get().pluginId)
+    id(libs.plugins.baselineprofile.get().pluginId)
 }
 
 android {
@@ -122,6 +123,8 @@ dependencies {
     implementation(libs.firebase.analytics)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baselineprofile"))
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.compose.ui)

@@ -15,6 +15,7 @@ plugins {
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.kotlin.ksp) apply false
+    alias(libs.plugins.baselineprofile) apply false
 }
 
 allprojects {
