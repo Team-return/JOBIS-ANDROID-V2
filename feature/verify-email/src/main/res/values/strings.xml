@@ -17,4 +17,6 @@
     <string name="authentication">인증 하기</string>
 
     <string name="toast_check_email_validation">이메일 형식을 확인해주세요</string>
+
+    <string name="toast_check_email">이메일을 확인해주세요</string>
 </resources>
