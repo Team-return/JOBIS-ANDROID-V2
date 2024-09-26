@@ -9,6 +9,7 @@ plugins {
     id(libs.plugins.google.service.get().pluginId)
     id(libs.plugins.firebase.crashlytics.get().pluginId)
     id(libs.plugins.triplet.play.get().pluginId)
+    id(libs.plugins.firebase.perf.get().pluginId)
 }
 
 android {
@@ -137,6 +138,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation(libs.firebase.perf)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
