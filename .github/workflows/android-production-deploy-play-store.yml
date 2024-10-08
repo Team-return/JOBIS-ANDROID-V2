@@ -78,87 +78,73 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Notify Slack on Success
+      - name: Notify Discord on Success
         if: ${{ success() }}
-        id: slack-success
-        uses: slackapi/slack-github-action@v1.24.0
-        with: 
-          payload: | 
-            {
-              "channel": "${{ secrets.SLACK_DEPLOY_CHANNEL_ID }}",
-              "attachments": 
-              [
-                {
-                  "color": "#36a64f", 
-                  "title": "${{ github.repository }}",
-                  "title_link": "https://github.com/${{github.repository}}",
-                  "text": "🚀 앱이 배포되었습니다.",
-                  "fields": 
-                  [
-                    {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Tag",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Version",
-                      "value": "${{ steps.get_tag.outputs.name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Release Note",
-                      "value": "${{ env.RELEASE_NOTE }}",
-                      "short": false
-                    }
-                  ]
-                }
-              ]
-            }
+        id: discord-success
+        uses: Ilshidur/action-discord@0.3.2
         env: 
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_USERNAME: 깡통 로켓
+          DISCORD_EMBEDS: |
+           [
+             {
+               "title": "🚀 앱이 배포되었습니다.",
+               "color": "#36a64f",
+               "description": "https://github.com/${{github.repository}}",
+               "fields": [
+                  {
+                    "name": "Repository",
+                    "value": "${{ github.repository }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Tag",
+                    "value": "${{ github.ref_name }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Version",
+                    "value": "${{ steps.get_tag.outputs.name }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Release Note",
+                    "value": "${{ env.RELEASE_NOTE }}",
+                    "inline": false
+                  },
+                ]
+             }
+           ]
 
-      - name: Notify Slack on Failure
+      - name: Notify Discord on Failure
         if: ${{ failure() }}
-        id: slack-failure
-        uses: slackapi/slack-github-action@v1.24.0
-        with: 
-          payload: | 
-            {
-              "channel": "${{ secrets.SLACK_DEPLOY_CHANNEL_ID }}",
-              "attachments": 
-              [
-                {
-                  "color": "#ff0000", 
-                  "title": "${{ github.repository }}",
-                  "title_link": "https://github.com/${{ github.repository }}",
-                  "text": "💣 앱 배포에 실패했어요 ㅠㅠ",
-                  "fields": 
-                  [
-                    {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Tag",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Version",
-                      "value": "${{ steps.get_tag.outputs.name }}",
-                      "short": true
-                    }
-                  ]
-                }
-              ]
-            }
+        id: discord-failure
+        uses: Ilshidur/action-discord@0.3.2
         env: 
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_USERNAME: 깡통 로켓
+          DISCORD_EMBEDS: |
+           [
+             {
+               "title": "💣 앱 배포에 실패했어요 ㅠㅠ",
+               "color": "#ff0000",
+               "description": "https://github.com/${{github.repository}}",
+               "fields": [
+                  {
+                    "name": "Repository",
+                    "value": "${{ github.repository }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Tag",
+                    "value": "${{ github.ref_name }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Version",
+                    "value": "${{ steps.get_tag.outputs.name }}",
+                    "inline": true
+                  },
+                ]
+             }
+           ]
