@@ -45,7 +45,7 @@ internal fun WinterIntern(
 
     LaunchedEffect(recruitmentViewModel.sideEffect) {
         recruitmentViewModel.sideEffect.collect {
-            when(it) {
+            when (it) {
                 is RecruitmentsSideEffect.FetchRecruitmentsError -> {
                     JobisToast.create(
                         context = context,
