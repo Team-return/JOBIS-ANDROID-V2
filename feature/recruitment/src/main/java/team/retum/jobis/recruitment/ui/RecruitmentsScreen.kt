@@ -40,15 +40,13 @@ internal fun Recruitments(
             clearRecruitment()
             fetchTotalRecruitmentCount()
         }
-    }
 
-    LaunchedEffect(recruitmentViewModel.sideEffect) {
         recruitmentViewModel.sideEffect.collect {
             when (it) {
                 is RecruitmentsSideEffect.FetchRecruitmentsError -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.occurred_error),
+                        message = context.getString(R.string.cannot_find_recruitment),
                         drawable = JobisIcon.Error,
                     ).show()
                 }
