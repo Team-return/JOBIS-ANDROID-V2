@@ -102,6 +102,8 @@ internal class RecruitmentViewModel @Inject constructor(
                 ).onSuccess {
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
+                }.onFailure {
+                    postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
                 }
             }
         }
@@ -149,6 +151,8 @@ internal class RecruitmentViewModel @Inject constructor(
                     ).onSuccess {
                         setState { copy(totalPage = it.totalPageCount) }
                         fetchRecruitments()
+                    }.onFailure {
+                        postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
                     }
                 }
             }
