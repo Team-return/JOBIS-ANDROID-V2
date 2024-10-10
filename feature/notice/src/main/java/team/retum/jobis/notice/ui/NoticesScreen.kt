@@ -1,17 +1,13 @@
 package team.retum.jobis.notice.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
@@ -31,6 +27,7 @@ import team.retum.jobis.notice.viewmodel.NoticesSideEffect
 import team.retum.jobis.notice.viewmodel.NoticesViewModel
 import team.retum.jobis.notification.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -98,7 +95,7 @@ private fun NoticesScreen(
             }
         }
         if (notices.isEmpty()) {
-            EmptyNoticeContent()
+            EmptyContent(title = stringResource(id = R.string.no_notice))
         }
     }
 }
@@ -140,25 +137,5 @@ private fun NoticesItem(
                 tint = JobisTheme.colors.surfaceTint,
             )
         }
-    }
-}
-
-@Composable
-private fun EmptyNoticeContent() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            modifier = Modifier.size(128.dp),
-            painter = painterResource(JobisIcon.Empty),
-            contentDescription = "empty notice",
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        JobisText(
-            text = stringResource(id = R.string.no_notice),
-            style = JobisTypography.SubHeadLine,
-        )
     }
 }

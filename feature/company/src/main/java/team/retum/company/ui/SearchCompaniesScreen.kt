@@ -25,6 +25,7 @@ import team.retum.company.viewmodel.CompaniesState
 import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -79,36 +80,10 @@ private fun SearchCompaniesScreen(
             fetchNextPage = fetchNextPage,
         )
         if (state.showCompaniesEmptyContent) {
-            EmptySearchContent()
+            EmptyContent(
+                title = stringResource(id = R.string.not_found_company),
+                description = stringResource(id = R.string.double_check),
+            )
         }
-    }
-}
-
-@Composable
-private fun EmptySearchContent() {
-    Column(
-        modifier = Modifier
-            .background(JobisTheme.colors.background)
-            .fillMaxSize()
-            .padding(vertical = 160.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            modifier = Modifier.size(128.dp),
-            painter = painterResource(id = JobisIcon.Empty),
-            contentDescription = "empty bookmark",
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        JobisText(
-            text = stringResource(id = R.string.not_found_company),
-            style = JobisTypography.HeadLine,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        JobisText(
-            text = stringResource(id = R.string.double_check),
-            style = JobisTypography.Body,
-            color = JobisTheme.colors.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
     }
 }

@@ -1,6 +1,5 @@
 package team.retum.notification.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,7 +28,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.alarm.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.retum.jobisdesignsystemv2.foundation.JobisIcon
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
@@ -125,7 +123,7 @@ private fun NotificationsScreen(
             }
         }
         if (notificationList.isEmpty()) {
-            EmptyNotificationContent()
+            EmptyContent(title = stringResource(id = R.string.no_notification))
         }
     }
 }
@@ -202,25 +200,5 @@ private fun NotificationContent(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun EmptyNotificationContent() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            modifier = Modifier.size(128.dp),
-            painter = painterResource(JobisIcon.Empty),
-            contentDescription = "empty notification",
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        JobisText(
-            text = stringResource(id = R.string.no_notification),
-            style = JobisTypography.SubHeadLine,
-        )
     }
 }
