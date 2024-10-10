@@ -52,6 +52,5 @@ fun EmptyContent(
                 )
             }
         }
-
     }
 }
