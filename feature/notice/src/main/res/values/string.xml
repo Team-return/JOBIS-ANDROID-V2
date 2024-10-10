@@ -6,4 +6,5 @@
     <string name="failed_download">다운로드에 실패했습니다</string>
     <string name="success_download">다운로드가 완료되었어요!</string>
     <string name="open">열기</string>
+    <string name="no_notice">아직 공지사항이 없어요</string>
 </resources>

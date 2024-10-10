@@ -27,6 +27,7 @@ import team.retum.jobis.notice.viewmodel.NoticesSideEffect
 import team.retum.jobis.notice.viewmodel.NoticesViewModel
 import team.retum.jobis.notification.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -92,6 +93,9 @@ private fun NoticesScreen(
                     onClick = { navigateToDetail(it.id) },
                 )
             }
+        }
+        if (notices.isEmpty()) {
+            EmptyContent(title = stringResource(id = R.string.no_notice))
         }
     }
 }

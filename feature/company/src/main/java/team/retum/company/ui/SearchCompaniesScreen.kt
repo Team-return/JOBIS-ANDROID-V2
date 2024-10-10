@@ -1,21 +1,12 @@
 package team.retum.company.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
@@ -25,9 +16,8 @@ import team.retum.company.viewmodel.CompaniesState
 import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
-import team.retum.jobisdesignsystemv2.foundation.JobisTypography
-import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.usecase.entity.CompaniesEntity
 
@@ -78,36 +68,10 @@ private fun SearchCompaniesScreen(
             fetchNextPage = fetchNextPage,
         )
         if (state.showCompaniesEmptyContent) {
-            EmptySearchContent()
+            EmptyContent(
+                title = stringResource(id = R.string.not_found_company),
+                description = stringResource(id = R.string.double_check),
+            )
         }
-    }
-}
-
-@Composable
-private fun EmptySearchContent() {
-    Column(
-        modifier = Modifier
-            .background(JobisTheme.colors.background)
-            .fillMaxSize()
-            .padding(vertical = 160.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            modifier = Modifier.size(128.dp),
-            painter = painterResource(id = R.drawable.ic_empty_company),
-            contentDescription = "empty bookmark",
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        JobisText(
-            text = stringResource(id = R.string.not_found_company),
-            style = JobisTypography.HeadLine,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        JobisText(
-            text = stringResource(id = R.string.double_check),
-            style = JobisTypography.Body,
-            color = JobisTheme.colors.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
     }
 }
