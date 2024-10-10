@@ -97,7 +97,7 @@ private fun NoticesScreen(
                 )
             }
         }
-        if(notices.isEmpty()) {
+        if (notices.isEmpty()) {
             EmptyNoticeContent()
         }
     }
