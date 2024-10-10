@@ -99,7 +99,7 @@ private fun EmptyRecruitmentContent() {
     ) {
         Image(
             modifier = Modifier.size(128.dp),
-            painter = painterResource(id = R.drawable.ic_empty_company),
+            painter = painterResource(JobisIcon.Empty),
             contentDescription = "empty recruitment",
         )
         Spacer(modifier = Modifier.height(16.dp))

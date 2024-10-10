@@ -25,6 +25,7 @@ import team.retum.company.viewmodel.CompaniesState
 import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -94,7 +95,7 @@ private fun EmptySearchContent() {
     ) {
         Image(
             modifier = Modifier.size(128.dp),
-            painter = painterResource(id = R.drawable.ic_empty_company),
+            painter = painterResource(id = JobisIcon.Empty),
             contentDescription = "empty bookmark",
         )
         Spacer(modifier = Modifier.height(16.dp))
