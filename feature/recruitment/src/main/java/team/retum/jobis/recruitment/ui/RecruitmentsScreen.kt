@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -14,10 +15,12 @@ import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
+import team.retum.jobis.recruitment.viewmodel.RecruitmentsSideEffect
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.RecruitmentsEntity
 
 @Composable
@@ -27,6 +30,8 @@ internal fun Recruitments(
     onSearchRecruitmentClick: () -> Unit,
     recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         with(recruitmentViewModel) {
             setJobCode(RecruitmentFilterViewModel.jobCode)
@@ -34,6 +39,18 @@ internal fun Recruitments(
             setWinterIntern(isWinterIntern = false)
             clearRecruitment()
             fetchTotalRecruitmentCount()
+        }
+
+        recruitmentViewModel.sideEffect.collect {
+            when (it) {
+                is RecruitmentsSideEffect.FetchRecruitmentsError -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.cannot_find_recruitment),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+            }
         }
     }
 

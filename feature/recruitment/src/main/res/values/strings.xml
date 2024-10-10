@@ -29,6 +29,7 @@
     <string name="major_task">주요 업무</string>
 
     <string name="occurred_error">오류가 발생했습니다</string>
+    <string name="cannot_find_recruitment">모집의뢰서를 불러오지 못했어요</string>
 
     <string name="setting_filter">필터 설정</string>
     <string name="appliance">적용하기</string>
