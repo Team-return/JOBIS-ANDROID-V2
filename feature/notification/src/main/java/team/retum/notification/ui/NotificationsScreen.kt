@@ -28,6 +28,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.alarm.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
@@ -108,8 +109,7 @@ private fun NotificationsScreen(
             onSelectTab = onSelectTab,
         )
         LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             items(notificationList) {
                 NotificationContent(
@@ -121,6 +121,9 @@ private fun NotificationsScreen(
                     onClick = onNotificationDetailsClick,
                 )
             }
+        }
+        if (notificationList.isEmpty()) {
+            EmptyContent(title = stringResource(id = R.string.no_notification))
         }
     }
 }
