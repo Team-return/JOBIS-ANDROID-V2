@@ -1,15 +1,17 @@
 package team.retum.network.util
 
 import retrofit2.HttpException
+import team.retum.common.exception.BadGatewayException
 import team.retum.common.exception.BadRequestException
-import team.retum.common.exception.CheckServerException
 import team.retum.common.exception.ConflictException
 import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.ForbiddenException
+import team.retum.common.exception.GatewayTimeout
 import team.retum.common.exception.MethodNotAllowedException
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.OfflineException
 import team.retum.common.exception.ServerException
+import team.retum.common.exception.ServiceUnavailable
 import team.retum.common.exception.TooManyRequestException
 import team.retum.common.exception.UnAuthorizedException
 import java.net.SocketTimeoutException
@@ -56,7 +58,9 @@ class RequestHandler<T> {
                 405 -> MethodNotAllowedException
                 409 -> ConflictException
                 429 -> TooManyRequestException
-                502 -> CheckServerException
+                502 -> BadGatewayException
+                503 -> ServiceUnavailable
+                504 -> GatewayTimeout
                 in 500..599 -> ServerException
                 else -> e
             }
