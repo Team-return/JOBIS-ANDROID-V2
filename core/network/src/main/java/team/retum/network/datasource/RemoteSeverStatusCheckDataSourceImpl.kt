@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class RemoteSeverStatusCheckDataSourceImpl @Inject constructor(
     private val severStatusCheckApi: SeverStatusCheckApi,
-) : RemoteSeverStatusCheckDataSource{
+) : RemoteSeverStatusCheckDataSource {
     override suspend fun severStatusCheck() {
         RequestHandler<Unit>().request {
             severStatusCheckApi.severStatusCheck()
