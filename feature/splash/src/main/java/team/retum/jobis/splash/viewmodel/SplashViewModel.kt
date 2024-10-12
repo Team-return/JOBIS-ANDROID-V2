@@ -5,10 +5,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.exception.CheckServerException
+import team.retum.common.exception.BadGatewayException
 import team.retum.common.exception.ConnectionTimeOutException
+import team.retum.common.exception.GatewayTimeout
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.OfflineException
+import team.retum.common.exception.ServiceUnavailable
+import team.retum.usecase.usecase.SeverStatusCheckUseCase
 import team.retum.usecase.usecase.auth.ReissueTokenUseCase
 import team.retum.usecase.usecase.user.GetAccessTokenUseCase
 import team.retum.usecase.usecase.user.GetRefreshExpiresAtUseCase
@@ -22,9 +25,24 @@ internal class SplashViewModel @Inject constructor(
     private val getRefreshExpiresAtUseCase: GetRefreshExpiresAtUseCase,
     private val getRefreshTokenUseCase: GetRefreshTokenUseCase,
     private val reissueTokenUseCase: ReissueTokenUseCase,
+    private val severStatusCheckUseCase: SeverStatusCheckUseCase,
 ) : BaseViewModel<SplashState, SplashSideEffect>(SplashState.getInitialState()) {
 
-    internal fun getAccessToken() {
+    internal fun checkSeverStatus() {
+        viewModelScope.launch(Dispatchers.IO) {
+            severStatusCheckUseCase().onSuccess {
+                getAccessToken()
+            }.onFailure {
+                when (it) {
+                    is BadGatewayException, ServiceUnavailable, GatewayTimeout -> {
+                        postSideEffect(SplashSideEffect.ShowCheckServerDialog)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getAccessToken() {
         viewModelScope.launch(Dispatchers.IO) {
             getAccessTokenUseCase().onSuccess {
                 if (it.isBlank()) {
@@ -38,7 +56,7 @@ internal class SplashViewModel @Inject constructor(
                         postSideEffect(SplashSideEffect.MoveToLanding)
                     }
 
-                    is CheckServerException -> {
+                    is BadGatewayException, ServiceUnavailable, GatewayTimeout -> {
                         postSideEffect(SplashSideEffect.ShowCheckServerDialog)
                     }
                 }
