@@ -26,6 +26,7 @@ import team.retum.network.api.NoticeApi
 import team.retum.network.api.NotificationApi
 import team.retum.network.api.RecruitmentApi
 import team.retum.network.api.ReviewApi
+import team.retum.network.api.SeverStatusCheckApi
 import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
 import team.retum.network.api.WinterInternApi
@@ -176,5 +177,11 @@ object NetworkModule {
     @Singleton
     fun provideWinterInternApi(retrofit: Retrofit): WinterInternApi {
         return retrofit.create(WinterInternApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSeverStatusCheckApi(retrofit: Retrofit): SeverStatusCheckApi {
+        return retrofit.create(SeverStatusCheckApi::class.java)
     }
 }

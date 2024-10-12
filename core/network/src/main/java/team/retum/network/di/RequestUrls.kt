@@ -125,4 +125,10 @@ internal object RequestUrls {
 
         const val winterIntern = path
     }
+
+    data object CheckSeverStatus {
+        private const val path = "/"
+
+        const val checkSeverStatus = path
+    }
 }
