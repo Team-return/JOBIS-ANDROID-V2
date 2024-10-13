@@ -126,9 +126,9 @@ internal object RequestUrls {
         const val winterIntern = path
     }
 
-    data object CheckSeverStatus {
+    data object CheckServerStatus {
         private const val path = "/"
 
-        const val checkSeverStatus = path
+        const val checkServerStatus = path
     }
 }

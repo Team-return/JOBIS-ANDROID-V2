@@ -1,12 +1,12 @@
 package team.retum.data.repository
 
-import team.retum.network.datasource.RemoteSeverStatusCheckDataSource
+import team.retum.network.datasource.RemoteServerStatusCheckDataSource
 import javax.inject.Inject
 
-class SeverStatusCheckRepositoryImpl @Inject constructor(
-    private val remoteSeverStatusCheckDataSource: RemoteSeverStatusCheckDataSource,
-) : SeverStatusCheckRepository {
-    override suspend fun severStatusCheck() {
-        remoteSeverStatusCheckDataSource.severStatusCheck()
+class ServerStatusCheckRepositoryImpl @Inject constructor(
+    private val remoteServerStatusCheckDataSource: RemoteServerStatusCheckDataSource,
+) : ServerStatusCheckRepository {
+    override suspend fun serverStatusCheck() {
+        remoteServerStatusCheckDataSource.serverStatusCheck()
     }
 }

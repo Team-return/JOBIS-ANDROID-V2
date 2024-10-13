@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import team.retum.network.datasource.RemoteSeverStatusCheckDataSource
-import team.retum.network.datasource.RemoteSeverStatusCheckDataSourceImpl
+import team.retum.network.datasource.RemoteServerStatusCheckDataSource
+import team.retum.network.datasource.RemoteServerStatusCheckDataSourceImpl
 import team.retum.network.datasource.application.RemoteApplicationDataSource
 import team.retum.network.datasource.application.RemoteApplicationDataSourceImpl
 import team.retum.network.datasource.auth.RemoteAuthDataSource
@@ -103,5 +103,5 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindSeverStatusCheckDataSource(severStatusCheckDataSourceImpl: RemoteSeverStatusCheckDataSourceImpl): RemoteSeverStatusCheckDataSource
+    abstract fun bindServerStatusCheckDataSource(serverStatusCheckDataSourceImpl: RemoteServerStatusCheckDataSourceImpl): RemoteServerStatusCheckDataSource
 }

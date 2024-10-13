@@ -11,7 +11,7 @@ import team.retum.common.exception.GatewayTimeout
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.OfflineException
 import team.retum.common.exception.ServiceUnavailable
-import team.retum.usecase.usecase.SeverStatusCheckUseCase
+import team.retum.usecase.usecase.ServerStatusCheckUseCase
 import team.retum.usecase.usecase.auth.ReissueTokenUseCase
 import team.retum.usecase.usecase.user.GetAccessTokenUseCase
 import team.retum.usecase.usecase.user.GetRefreshExpiresAtUseCase
@@ -25,12 +25,12 @@ internal class SplashViewModel @Inject constructor(
     private val getRefreshExpiresAtUseCase: GetRefreshExpiresAtUseCase,
     private val getRefreshTokenUseCase: GetRefreshTokenUseCase,
     private val reissueTokenUseCase: ReissueTokenUseCase,
-    private val severStatusCheckUseCase: SeverStatusCheckUseCase,
+    private val serverStatusCheckUseCase: ServerStatusCheckUseCase,
 ) : BaseViewModel<SplashState, SplashSideEffect>(SplashState.getInitialState()) {
 
-    internal fun checkSeverStatus() {
+    internal fun checkServerStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-            severStatusCheckUseCase().onSuccess {
+            serverStatusCheckUseCase().onSuccess {
                 getAccessToken()
             }.onFailure {
                 when (it) {
@@ -54,10 +54,6 @@ internal class SplashViewModel @Inject constructor(
                 when (it) {
                     is NullPointerException -> {
                         postSideEffect(SplashSideEffect.MoveToLanding)
-                    }
-
-                    is BadGatewayException, ServiceUnavailable, GatewayTimeout -> {
-                        postSideEffect(SplashSideEffect.ShowCheckServerDialog)
                     }
                 }
             }

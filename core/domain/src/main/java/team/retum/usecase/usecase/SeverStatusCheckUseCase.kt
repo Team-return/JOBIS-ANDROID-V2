@@ -1,12 +1,12 @@
 package team.retum.usecase.usecase
 
-import team.retum.data.repository.SeverStatusCheckRepository
+import team.retum.data.repository.ServerStatusCheckRepository
 import javax.inject.Inject
 
-class SeverStatusCheckUseCase @Inject constructor(
-    private val severStatusCheckRepository: SeverStatusCheckRepository,
+class ServerStatusCheckUseCase @Inject constructor(
+    private val serverStatusCheckRepository: ServerStatusCheckRepository,
 ) {
-    suspend operator fun invoke() = kotlin.runCatching {
-        severStatusCheckRepository.severStatusCheck()
+    suspend operator fun invoke() = runCatching {
+        serverStatusCheckRepository.serverStatusCheck()
     }
 }
