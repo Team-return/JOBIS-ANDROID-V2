@@ -5,12 +5,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.exception.BadGatewayException
 import team.retum.common.exception.ConnectionTimeOutException
-import team.retum.common.exception.GatewayTimeout
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.OfflineException
-import team.retum.common.exception.ServiceUnavailable
+import team.retum.common.exception.ServerException
 import team.retum.usecase.usecase.ServerStatusCheckUseCase
 import team.retum.usecase.usecase.auth.ReissueTokenUseCase
 import team.retum.usecase.usecase.user.GetAccessTokenUseCase
@@ -34,7 +32,7 @@ internal class SplashViewModel @Inject constructor(
                 getAccessToken()
             }.onFailure {
                 when (it) {
-                    is BadGatewayException, ServiceUnavailable, GatewayTimeout -> {
+                    is ServerException -> {
                         postSideEffect(SplashSideEffect.ShowCheckServerDialog)
                     }
                 }
