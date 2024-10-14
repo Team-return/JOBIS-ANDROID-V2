@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class LocalDeviceDataSourceImpl @Inject constructor(
     @DeviceDataSource private val sharedPreferences: SharedPreferences,
-): LocalDeviceDataSource {
+) : LocalDeviceDataSource {
     override suspend fun saveDeviceToken(deviceToken: String) {
         sharedPreferences.edit {
             this.putString(ResourceKeys.DEVICE_TOKEN, deviceToken)
