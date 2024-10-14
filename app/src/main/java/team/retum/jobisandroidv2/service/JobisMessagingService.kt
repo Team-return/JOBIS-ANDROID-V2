@@ -6,8 +6,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import team.retum.notification.util.DeviceTokenManager
-import team.retum.notification.util.NotificationManager
+import team.retum.device.DeviceTokenManager
+import team.retum.device.NotificationManager
 import javax.inject.Inject
 
 @AndroidEntryPoint

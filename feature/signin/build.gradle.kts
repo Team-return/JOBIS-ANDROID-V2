@@ -43,3 +43,7 @@ android {
         jvmTarget = ProjectProperties.JVM_TARGET
     }
 }
+
+dependencies {
+    implementation(project(":core:device"))
+}

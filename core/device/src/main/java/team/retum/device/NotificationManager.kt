@@ -1,4 +1,4 @@
-package team.retum.notification.util
+package team.retum.device
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -7,7 +7,6 @@ import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import team.retum.alarm.R
 import team.retum.common.utils.notificationPermissionGranted
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 

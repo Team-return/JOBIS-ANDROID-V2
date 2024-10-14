@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import team.retum.jobisandroidv2.ui.JobisApp
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
-import team.retum.notification.util.DeviceTokenManager
+import team.retum.device.DeviceTokenManager
 import javax.inject.Inject
 
 private const val ANR_TIME = 10000
