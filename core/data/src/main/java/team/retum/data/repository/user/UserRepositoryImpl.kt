@@ -1,6 +1,5 @@
 package team.retum.data.repository.user
 
-import team.retum.jobis.local.DeviceDataSource
 import team.retum.jobis.local.datasource.device.LocalDeviceDataSource
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.datasource.user.RemoteUserDataSource
