@@ -3,10 +3,11 @@ package team.retum.jobis.local.datasource.user
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import team.retum.common.utils.ResourceKeys
+import team.retum.jobis.local.UserDataSource
 import javax.inject.Inject
 
 class LocalUserDataSourceImpl @Inject constructor(
-    private val sharedPreferences: SharedPreferences,
+    @UserDataSource private val sharedPreferences: SharedPreferences,
 ) : LocalUserDataSource {
     override suspend fun saveAccessToken(accessToken: String) {
         sharedPreferences.edit {
@@ -56,16 +57,5 @@ class LocalUserDataSourceImpl @Inject constructor(
         sharedPreferences.edit {
             this@edit.clear()
         }
-    }
-
-    override suspend fun saveDeviceToken(deviceToken: String) {
-        sharedPreferences.edit {
-            this.putString(ResourceKeys.DEVICE_TOKEN, deviceToken)
-        }
-    }
-
-    override suspend fun getDeviceToken(): String {
-        return sharedPreferences.getString(ResourceKeys.DEVICE_TOKEN, "")
-            ?: throw NullPointerException()
     }
 }
