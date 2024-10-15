@@ -3,6 +3,7 @@ package team.retum.usecase.entity.application
 import androidx.compose.runtime.Immutable
 import team.retum.common.enums.ApplyStatus
 import team.retum.common.enums.AttachmentType
+import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.application.FetchAppliedCompaniesResponse
 
 data class AppliedCompaniesEntity(
@@ -33,7 +34,7 @@ private fun FetchAppliedCompaniesResponse.ApplicationResponse.toEntity() =
         applicationId = this.applicationId,
         recruitmentId = this.recruitmentId,
         company = this.company,
-        companyLogoUrl = this.companyLogoUrl,
+        companyLogoUrl = ResourceKeys.IMAGE_URL + this.companyLogoUrl,
         attachments = this.attachments.map { it.toEntity() },
         applicationStatus = this.applicationStatus,
     )
