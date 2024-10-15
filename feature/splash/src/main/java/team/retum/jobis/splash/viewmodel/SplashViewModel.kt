@@ -5,10 +5,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.exception.CheckServerException
 import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.NotFoundException
 import team.retum.common.exception.OfflineException
+import team.retum.common.exception.ServerException
+import team.retum.usecase.usecase.ServerStatusCheckUseCase
 import team.retum.usecase.usecase.auth.ReissueTokenUseCase
 import team.retum.usecase.usecase.user.GetAccessTokenUseCase
 import team.retum.usecase.usecase.user.GetRefreshExpiresAtUseCase
@@ -22,9 +23,24 @@ internal class SplashViewModel @Inject constructor(
     private val getRefreshExpiresAtUseCase: GetRefreshExpiresAtUseCase,
     private val getRefreshTokenUseCase: GetRefreshTokenUseCase,
     private val reissueTokenUseCase: ReissueTokenUseCase,
+    private val serverStatusCheckUseCase: ServerStatusCheckUseCase,
 ) : BaseViewModel<SplashState, SplashSideEffect>(SplashState.getInitialState()) {
 
-    internal fun getAccessToken() {
+    internal fun checkServerStatus() {
+        viewModelScope.launch(Dispatchers.IO) {
+            serverStatusCheckUseCase().onSuccess {
+                getAccessToken()
+            }.onFailure {
+                when (it) {
+                    is ServerException -> {
+                        postSideEffect(SplashSideEffect.ShowCheckServerDialog)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getAccessToken() {
         viewModelScope.launch(Dispatchers.IO) {
             getAccessTokenUseCase().onSuccess {
                 if (it.isBlank()) {
@@ -36,10 +52,6 @@ internal class SplashViewModel @Inject constructor(
                 when (it) {
                     is NullPointerException -> {
                         postSideEffect(SplashSideEffect.MoveToLanding)
-                    }
-
-                    is CheckServerException -> {
-                        postSideEffect(SplashSideEffect.ShowCheckServerDialog)
                     }
                 }
             }
