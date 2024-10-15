@@ -233,7 +233,13 @@ private fun RecruitmentDetailInfo(
             )
             Detail(
                 title = stringResource(id = R.string.required_grade),
-                content = requiredGrade.toString(),
+                content = requiredGrade.toString() + if (requiredGrade != null) {
+                    stringResource(
+                        id = R.string.percent_grade,
+                    )
+                } else {
+                    ""
+                },
             )
             Detail(
                 title = stringResource(id = R.string.work_hours),

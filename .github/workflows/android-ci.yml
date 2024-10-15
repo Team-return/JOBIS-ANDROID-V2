@@ -44,5 +44,5 @@ jobs:
           if [ "${{ matrix.task }}" == "lint" ]; then
             ./gradlew ktlintCheck
           elif [ "${{ matrix.task }}" == "build" ]; then
-            ./gradlew assembleDebug
+            ./gradlew assembleDebug --parallel
           fi

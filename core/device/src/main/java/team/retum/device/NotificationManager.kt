@@ -1,13 +1,14 @@
-package team.retum.notification.util
+package team.retum.device
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import team.retum.alarm.R
 import team.retum.common.utils.notificationPermissionGranted
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 
@@ -18,7 +19,10 @@ private object Notifications {
     const val CHANNEL_DESCRIPTION = "jobis notification channel"
 }
 
-class NotificationManager(private val context: Context) {
+class NotificationManager(
+    private val context: Context,
+    private val intentClass: Class<*>,
+) {
 
     init {
         createNotificationChannel()
@@ -27,6 +31,13 @@ class NotificationManager(private val context: Context) {
     private val notificationManagerCompat: NotificationManagerCompat by lazy {
         NotificationManagerCompat.from(context)
     }
+    private val intent = Intent(context, intentClass)
+    private val contentPendingIntent = PendingIntent.getActivity(
+        context,
+        Notifications.NOTIFICATION_ID,
+        intent,
+        PendingIntent.FLAG_IMMUTABLE,
+    )
 
     private val notificationBuilder: NotificationCompat.Builder by lazy {
         NotificationCompat.Builder(context, Notifications.NOTIFICATION_CHANNEL_ID)
@@ -36,6 +47,7 @@ class NotificationManager(private val context: Context) {
             .setPriority(NotificationManager.IMPORTANCE_HIGH)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setContentIntent(contentPendingIntent)
     }
 
     fun setNotificationContent(

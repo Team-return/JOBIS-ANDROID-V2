@@ -1,4 +1,4 @@
-package team.retum.notification.util
+package team.retum.device
 
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope

@@ -2,7 +2,7 @@
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
-    id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.kotlin.ksp.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
 }
@@ -20,6 +20,6 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    api(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
 }

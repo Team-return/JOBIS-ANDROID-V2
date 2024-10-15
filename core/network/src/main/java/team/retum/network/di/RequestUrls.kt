@@ -119,4 +119,16 @@ internal object RequestUrls {
         const val notices = path
         const val details = "$path/{${PATH.noticeId}}"
     }
+
+    data object WinterIntern {
+        private const val path = "/winter-intern"
+
+        const val winterIntern = path
+    }
+
+    data object CheckServerStatus {
+        private const val path = "/"
+
+        const val checkServerStatus = path
+    }
 }

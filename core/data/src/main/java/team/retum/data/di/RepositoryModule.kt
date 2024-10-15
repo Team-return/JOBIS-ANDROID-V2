@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import team.retum.data.repository.ServerStatusCheckRepository
+import team.retum.data.repository.ServerStatusCheckRepositoryImpl
 import team.retum.data.repository.application.ApplicationRepository
 import team.retum.data.repository.application.ApplicationRepositoryImpl
 import team.retum.data.repository.auth.AuthRepository
@@ -20,6 +22,8 @@ import team.retum.data.repository.company.CompanyRepository
 import team.retum.data.repository.company.CompanyRepositoryImpl
 import team.retum.data.repository.file.FileRepository
 import team.retum.data.repository.file.FileRepositoryImpl
+import team.retum.data.repository.intern.WinterInterRepository
+import team.retum.data.repository.intern.WinterInternRepositoryImpl
 import team.retum.data.repository.notice.NoticeRepository
 import team.retum.data.repository.notice.NoticeRepositoryImpl
 import team.retum.data.repository.notification.NotificationRepository
@@ -92,4 +96,12 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindBugRepository(bugRepositoryImpl: BugRepositoryImpl): BugRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWinterInternRepository(winterInternRepositoryImpl: WinterInternRepositoryImpl): WinterInterRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindServerStatusCheckRepository(serverStatusCheckRepositoryImpl: ServerStatusCheckRepositoryImpl): ServerStatusCheckRepository
 }

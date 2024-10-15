@@ -4,11 +4,12 @@ plugins {
     id(libs.plugins.android.application.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
-    id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.kotlin.ksp.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
     id(libs.plugins.google.service.get().pluginId)
     id(libs.plugins.firebase.crashlytics.get().pluginId)
     id(libs.plugins.triplet.play.get().pluginId)
+    id(libs.plugins.firebase.perf.get().pluginId)
 }
 
 android {
@@ -81,7 +82,7 @@ android {
 play {
     serviceAccountCredentials.set(file("src/main/play/google-cloud-platform.json"))
     defaultToAppBundles.set(true)
-    releaseStatus.set(ReleaseStatus.IN_PROGRESS)
+    releaseStatus.set(ReleaseStatus.COMPLETED)
     track.set("production")
 }
 
@@ -95,6 +96,7 @@ dependencies {
 
     implementation(project(":core:common"))
     implementation(project(":core:design-system"))
+    implementation(project(":core:device"))
     implementation(project((":feature:splash")))
     implementation(project(":feature:landing"))
     implementation(project(":feature:signin"))
@@ -122,31 +124,25 @@ dependencies {
     implementation(libs.firebase.analytics)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
-    api(libs.androidx.compose.ui)
-    api(libs.androidx.compose.ui.graphics)
-    api(libs.androidx.compose.ui.tooling.preview)
-    api(libs.androidx.compose.material3)
-    api(libs.androidx.compose.material)
-    api(libs.com.google.android.play)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.com.google.android.play)
 
-    testApi(libs.junit)
+    testImplementation(libs.junit)
 
-    androidTestApi(libs.androidx.junit)
-    androidTestApi(libs.androidx.espresso.core)
-    androidTestApi(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation(libs.firebase.perf)
 
-    debugApi(libs.androidx.compose.ui.tooling)
-    debugApi(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(libs.anrwatchdog)
-}
-
-kapt {
-    javacOptions {
-        option("-Adagger.fastInit=ENABLED")
-        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
-    }
 }

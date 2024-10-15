@@ -1,6 +1,5 @@
 package team.retum.home.ui
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -72,13 +71,6 @@ import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.net.URLEncoder
-import java.time.LocalDate
-
-private data class MenuItem(
-    val title: String,
-    val onClick: () -> Unit,
-    @DrawableRes val icon: Int,
-)
 
 private const val PAGER_AUTO_SCROLL_TIME = 3000L
 
@@ -88,6 +80,7 @@ internal fun Home(
     onAlarmClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
+    onWinterInternClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
     navigateToApplication: (ApplicationData) -> Unit,
@@ -96,13 +89,6 @@ internal fun Home(
     val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
-    val menus = mutableListOf(
-        MenuItem(
-            title = stringResource(id = R.string.how_about_other_companies),
-            onClick = onCompaniesClick,
-            icon = JobisIcon.Building,
-        ),
-    )
 
     LaunchedEffect(Unit) {
         with(homeViewModel) {
@@ -111,16 +97,9 @@ internal fun Home(
             fetchAppliedCompanies()
             fetchEmploymentCount()
             fetchBanners()
+            fetchWinterIntern()
         }
-        if (isDecemberOrLater()) {
-            menus.add(
-                MenuItem(
-                    title = context.getString(R.string.experiential_field_training),
-                    onClick = {},
-                    icon = JobisIcon.SnowMan,
-                ),
-            )
-        }
+
         homeViewModel.sideEffect.collect {
             when (it) {
                 is HomeSideEffect.ShowRejectionModal -> {
@@ -144,13 +123,14 @@ internal fun Home(
 
     HomeScreen(
         scrollState = scrollState,
-        menus = menus.toPersistentList(),
         onAlarmClick = onAlarmClick,
+        onCompaniesClick = onCompaniesClick,
+        onWinterInternClick = onWinterInternClick,
         onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
         state = state,
         banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
-        appliedCompanies = homeViewModel.appliedCompanies.toPersistentList(),
+        appliedCompanies = state.appliedCompanies.toPersistentList(),
         applicationId = applicationId,
         setScroll = { position ->
             homeViewModel.fetchScroll(
@@ -164,15 +144,12 @@ internal fun Home(
     )
 }
 
-private fun isDecemberOrLater(): Boolean {
-    return LocalDate.now().monthValue >= 12
-}
-
 @Composable
 private fun HomeScreen(
     scrollState: ScrollState,
-    menus: ImmutableList<MenuItem>,
     onAlarmClick: () -> Unit,
+    onCompaniesClick: () -> Unit,
+    onWinterInternClick: () -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
     banners: ImmutableList<BannersEntity.BannerEntity>,
@@ -219,7 +196,9 @@ private fun HomeScreen(
                     vertical = 12.dp,
                     horizontal = 24.dp,
                 ),
-                menus = menus,
+                isWinterIntern = state.isWinterIntern,
+                onCompaniesClick = onCompaniesClick,
+                onWinterInternClick = onWinterInternClick,
             )
             ApplyStatus(
                 modifier = Modifier.padding(
@@ -268,7 +247,7 @@ private fun Banner(
     HorizontalPager(
         state = pagerState,
         contentPadding = PaddingValues(horizontal = 18.dp),
-        beyondBoundsPageCount = pagerState.pageCount + 1,
+        beyondViewportPageCount = pagerState.pageCount + 1,
     ) { page ->
         JobisCard(
             modifier = Modifier
@@ -398,7 +377,9 @@ private fun StudentInformation(
 @Composable
 private fun Menus(
     modifier: Modifier = Modifier,
-    menus: ImmutableList<MenuItem>,
+    isWinterIntern: Boolean,
+    onCompaniesClick: () -> Unit,
+    onWinterInternClick: () -> Unit,
 ) {
     Column(modifier = modifier) {
         JobisText(
@@ -415,12 +396,24 @@ private fun Menus(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            menus.forEach {
+            Menu(
+                modifier = Modifier.weight(1f),
+                text = stringResource(
+                    id = if (isWinterIntern) {
+                        R.string.explore_other_companies
+                    } else {
+                        R.string.how_about_other_companies
+                    },
+                ),
+                onClick = onCompaniesClick,
+                icon = JobisIcon.Building,
+            )
+            if (isWinterIntern) {
                 Menu(
                     modifier = Modifier.weight(1f),
-                    text = it.title,
-                    onClick = it.onClick,
-                    icon = it.icon,
+                    text = stringResource(id = R.string.experiential_field_training),
+                    onClick = onWinterInternClick,
+                    icon = JobisIcon.SnowMan,
                 )
             }
         }

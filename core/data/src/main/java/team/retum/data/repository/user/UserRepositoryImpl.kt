@@ -1,5 +1,6 @@
 package team.retum.data.repository.user
 
+import team.retum.jobis.local.datasource.device.LocalDeviceDataSource
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.datasource.user.RemoteUserDataSource
 import team.retum.network.model.request.user.SignInRequest
@@ -9,6 +10,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val remoteUserDataSource: RemoteUserDataSource,
     private val localUserDataSource: LocalUserDataSource,
+    private val localDeviceDataSource: LocalDeviceDataSource,
 ) : UserRepository {
     override suspend fun signIn(signInRequest: SignInRequest): TokenResponse {
         val response = remoteUserDataSource.signIn(signInRequest = signInRequest)
@@ -58,10 +60,10 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveDeviceToken(deviceToken: String) {
-        localUserDataSource.saveDeviceToken(deviceToken = deviceToken)
+        localDeviceDataSource.saveDeviceToken(deviceToken = deviceToken)
     }
 
     override suspend fun getDeviceToken(): String {
-        return localUserDataSource.getDeviceToken()
+        return localDeviceDataSource.getDeviceToken()
     }
 }

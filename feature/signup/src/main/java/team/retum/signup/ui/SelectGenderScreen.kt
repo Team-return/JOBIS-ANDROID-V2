@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -167,7 +167,7 @@ private fun RowScope.GenderCard(
             .clip(RoundedCornerShape(12.dp))
             .clickable(
                 onClick = onClick,
-                indication = rememberRipple(),
+                indication = ripple(),
                 interactionSource = remember { MutableInteractionSource() },
             )
             .background(backgroundColor)

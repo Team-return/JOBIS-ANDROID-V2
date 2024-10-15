@@ -39,7 +39,7 @@ class ComposeGradlePlugin : Plugin<Project> {
 
             androidTestImplementation(libs.findLibrary("androidx.compose.ui.test").get())
             androidTestImplementation(libs.findLibrary("hilt.android.testing").get())
-            kaptAndroidTest(libs.findLibrary("hilt-android-compiler").get())
+            kspAndroidTest(libs.findLibrary("hilt-android-compiler").get())
         }
     }
 }

@@ -2,7 +2,7 @@
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
-    id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.kotlin.ksp.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
 }
@@ -19,6 +19,6 @@ android {
 }
 
 dependencies {
-    api(libs.coil.compose)
+    implementation(libs.coil.compose)
     implementation(libs.kotlinx.collections.immutable)
 }

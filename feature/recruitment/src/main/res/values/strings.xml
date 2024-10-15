@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="recruitment">모집의뢰서</string>
+    <string name="recruitment_experiential_field_training">체험형 현장실습</string>
+
 
     <string name="military_supported">병역특례 O</string>
     <string name="military_not_supported">병역특례 X</string>
@@ -18,6 +20,7 @@
     <string name="certificate">자격증</string>
     <string name="recruitment_procedure">채용절차</string>
     <string name="required_grade">필수 성적</string>
+    <string name="percent_grade">% 이내</string>
     <string name="work_hours">근무시간</string>
     <string name="wage_and_benefits">복리후생</string>
     <string name="submission_document">제출 서류</string>
@@ -27,6 +30,7 @@
     <string name="major_task">주요 업무</string>
 
     <string name="occurred_error">오류가 발생했습니다</string>
+    <string name="cannot_find_recruitment">모집의뢰서를 불러오지 못했어요</string>
 
     <string name="setting_filter">필터 설정</string>
     <string name="appliance">적용하기</string>

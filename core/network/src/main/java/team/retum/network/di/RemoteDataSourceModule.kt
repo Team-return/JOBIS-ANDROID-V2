@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import team.retum.network.datasource.RemoteServerStatusCheckDataSource
+import team.retum.network.datasource.RemoteServerStatusCheckDataSourceImpl
 import team.retum.network.datasource.application.RemoteApplicationDataSource
 import team.retum.network.datasource.application.RemoteApplicationDataSourceImpl
 import team.retum.network.datasource.auth.RemoteAuthDataSource
@@ -32,6 +34,8 @@ import team.retum.network.datasource.student.RemoteStudentDataSource
 import team.retum.network.datasource.student.RemoteStudentDataSourceImpl
 import team.retum.network.datasource.user.RemoteUserDataSource
 import team.retum.network.datasource.user.RemoteUserDataSourceImpl
+import team.retum.network.datasource.winter.WinterInternDataSource
+import team.retum.network.datasource.winter.WinterInternDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -92,4 +96,12 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindRemoteBugDataSource(remoteBugDataSourceImpl: RemoteBugDataSourceImpl): RemoteBugDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindWinterInternDataSource(winterInternDataSourceImpl: WinterInternDataSourceImpl): WinterInternDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindServerStatusCheckDataSource(serverStatusCheckDataSourceImpl: RemoteServerStatusCheckDataSourceImpl): RemoteServerStatusCheckDataSource
 }

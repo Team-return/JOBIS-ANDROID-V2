@@ -6,8 +6,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import team.retum.notification.util.DeviceTokenManager
-import team.retum.notification.util.NotificationManager
+import team.retum.device.DeviceTokenManager
+import team.retum.device.NotificationManager
+import team.retum.jobisandroidv2.MainActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -17,7 +18,10 @@ class JobisMessagingService : FirebaseMessagingService() {
     lateinit var deviceTokenManager: DeviceTokenManager
 
     private val notificationManager: NotificationManager by lazy {
-        NotificationManager(context = this)
+        NotificationManager(
+            context = this,
+            intentClass = MainActivity::class.java,
+        )
     }
 
     override fun onNewToken(token: String) {

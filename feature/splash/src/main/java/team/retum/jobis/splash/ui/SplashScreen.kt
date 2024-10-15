@@ -35,8 +35,8 @@ internal fun Splash(
 
     LaunchedEffect(Unit) {
         with(splashViewModel) {
-            getAccessToken()
-            splashViewModel.sideEffect.collect {
+            checkServerStatus()
+            sideEffect.collect {
                 when (it) {
                     is SplashSideEffect.MoveToLanding -> {
                         navigateToLanding()

@@ -26,8 +26,10 @@ import team.retum.network.api.NoticeApi
 import team.retum.network.api.NotificationApi
 import team.retum.network.api.RecruitmentApi
 import team.retum.network.api.ReviewApi
+import team.retum.network.api.ServerStatusCheckApi
 import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
+import team.retum.network.api.WinterInternApi
 import team.retum.network.util.TokenAuthenticator
 import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
@@ -169,5 +171,17 @@ object NetworkModule {
     @Singleton
     fun provideBugApi(retrofit: Retrofit): BugApi {
         return retrofit.create(BugApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWinterInternApi(retrofit: Retrofit): WinterInternApi {
+        return retrofit.create(WinterInternApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideServerStatusCheckApi(retrofit: Retrofit): ServerStatusCheckApi {
+        return retrofit.create(ServerStatusCheckApi::class.java)
     }
 }
