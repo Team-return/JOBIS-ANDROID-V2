@@ -133,6 +133,12 @@ private fun NotificationSettingScreen(
             isSubscribe = state.isRecruitmentSubscribe,
             onCheckChange = onTopicChange,
         )
+        NotificationDetailLayout(
+            title = stringResource(id = R.string.winter_intern_notification),
+            topic = NotificationTopic.WINTER_INTERN_STATUS_CHANGED,
+            isSubscribe = state.isWinterInternSubscribe,
+            onCheckChange = onTopicChange,
+        )
     }
 }
 
