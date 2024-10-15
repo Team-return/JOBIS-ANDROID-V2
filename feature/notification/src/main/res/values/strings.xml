@@ -12,6 +12,7 @@
     <string name="notice_notification">공지사항 알림</string>
     <string name="application_notification">지원서 알림</string>
     <string name="recruitment_notification">모집의뢰서 알림</string>
+    <string name="winter_intern_notification">겨울인턴 알림</string>
     <string name="cannot_current_notification_status">설정된 알림을 가져오지 못했어요</string>
     <string name="change_notification_fail">알림을 변경에 실패했어요</string>
     <string name="no_notification">아직 알림이 없어요</string>

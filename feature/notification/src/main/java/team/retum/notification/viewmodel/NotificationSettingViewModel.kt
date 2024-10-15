@@ -67,6 +67,7 @@ internal class NotificationSettingViewModel @Inject constructor(
                 isNoticeSubscribe = isSubscribed,
                 isRecruitmentSubscribe = isSubscribed,
                 isApplicationSubscribe = isSubscribed,
+                isWinterInternSubscribe = isSubscribed,
             )
         }
     }
@@ -98,13 +99,14 @@ internal class NotificationSettingViewModel @Inject constructor(
                 NotificationTopic.NEW_NOTICE -> copy(isNoticeSubscribe = isSubscribed)
                 NotificationTopic.APPLICATION_STATUS_CHANGED -> copy(isApplicationSubscribe = isSubscribed)
                 NotificationTopic.RECRUITMENT_DONE -> copy(isRecruitmentSubscribe = isSubscribed)
+                NotificationTopic.WINTER_INTERN_STATUS_CHANGED -> copy(isWinterInternSubscribe = isSubscribed)
                 NotificationTopic.NEW_INTERESTED_RECRUITMENT -> copy()
             }
             setState { subscribeState }
         }
         with(state.value) {
             val isAllSubscribe =
-                isNoticeSubscribe && isApplicationSubscribe && isRecruitmentSubscribe
+                isNoticeSubscribe && isApplicationSubscribe && isRecruitmentSubscribe && isWinterInternSubscribe
             setState { copy(isAllSubscribe = isAllSubscribe) }
         }
     }
@@ -116,6 +118,7 @@ internal data class NotificationSettingState(
     val isNoticeSubscribe: Boolean,
     val isApplicationSubscribe: Boolean,
     val isRecruitmentSubscribe: Boolean,
+    val isWinterInternSubscribe: Boolean,
 ) {
     companion object {
         fun getDefaultState() = NotificationSettingState(
@@ -124,6 +127,7 @@ internal data class NotificationSettingState(
             isNoticeSubscribe = true,
             isApplicationSubscribe = true,
             isRecruitmentSubscribe = true,
+            isWinterInternSubscribe = true,
         )
     }
 }
