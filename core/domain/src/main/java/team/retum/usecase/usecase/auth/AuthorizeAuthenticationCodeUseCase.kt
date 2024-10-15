@@ -1,6 +1,5 @@
 package team.retum.usecase.usecase.auth
 
-import team.retum.common.utils.ResourceKeys
 import team.retum.data.repository.auth.AuthRepository
 import javax.inject.Inject
 
@@ -12,7 +11,7 @@ class AuthorizeAuthenticationCodeUseCase @Inject constructor(
         authCode: String,
     ) = runCatching {
         authRepository.authorizeAuthenticationCode(
-            email = email + ResourceKeys.EMAIL,
+            email = email,
             authCode = authCode,
         )
     }

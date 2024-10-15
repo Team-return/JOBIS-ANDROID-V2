@@ -16,6 +16,8 @@ import team.retum.usecase.usecase.auth.AuthorizeAuthenticationCodeUseCase
 import team.retum.usecase.usecase.auth.SendAuthenticationCodeUseCase
 import javax.inject.Inject
 
+private const val EMAIL_ADDRESS = "@dsm.hs.kr"
+
 @HiltViewModel
 internal class VerifyEmailViewModel @Inject constructor(
     private val sendAuthenticationCodeUseCase: SendAuthenticationCodeUseCase,
@@ -27,7 +29,7 @@ internal class VerifyEmailViewModel @Inject constructor(
     internal fun onNextClick() {
         setState { state.value.copy(buttonEnabled = false) }
         viewModelScope.launch(Dispatchers.IO) {
-            val email = state.value.email
+            val email = state.value.email + EMAIL_ADDRESS
             authorizeAuthenticationCodeUseCase(
                 email = email,
                 authCode = state.value.authenticationCode,
