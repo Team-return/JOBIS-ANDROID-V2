@@ -79,72 +79,17 @@ jobs:
           prerelease: false
 
       - name: Notify Discord on Success
-        if: ${{ success() }}
+        if: success()
         id: discord-success
-        uses: Ilshidur/action-discord@0.3.2
-        env: 
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DISCORD_USERNAME: 깡통 로켓
-          DISCORD_EMBEDS: |
-           [
-             {
-               "title": "🚀 앱이 배포되었습니다.",
-               "color": "#36a64f",
-               "description": "https://github.com/${{github.repository}}",
-               "fields": [
-                  {
-                    "name": "Repository",
-                    "value": "${{ github.repository }}",
-                    "inline": true
-                  },
-                  {
-                    "name": "Tag",
-                    "value": "${{ github.ref_name }}",
-                    "inline": true
-                  },
-                  {
-                    "name": "Version",
-                    "value": "${{ steps.get_tag.outputs.name }}",
-                    "inline": true
-                  },
-                  {
-                    "name": "Release Note",
-                    "value": "${{ env.RELEASE_NOTE }}",
-                    "inline": false
-                  },
-                ]
-             }
-           ]
+        run: |
+          curl -H "Content-Type: application/json" \
+               -d '{"content": "🚀 앱이 배포되었습니다.\nTag: ${{ github.ref_name }}\n Version: ${{ steps.get_tag.outputs.name }}\nRelease Note: ${{ env.RELEASE_NOTE }}"}' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Notify Discord on Failure
-        if: ${{ failure() }}
         id: discord-failure
-        uses: Ilshidur/action-discord@0.3.2
-        env: 
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DISCORD_USERNAME: 깡통 로켓
-          DISCORD_EMBEDS: |
-           [
-             {
-               "title": "💣 앱 배포에 실패했어요 ㅠㅠ",
-               "color": "#ff0000",
-               "description": "https://github.com/${{github.repository}}",
-               "fields": [
-                  {
-                    "name": "Repository",
-                    "value": "${{ github.repository }}",
-                    "inline": true
-                  },
-                  {
-                    "name": "Tag",
-                    "value": "${{ github.ref_name }}",
-                    "inline": true
-                  },
-                  {
-                    "name": "Version",
-                    "value": "${{ steps.get_tag.outputs.name }}",
-                    "inline": true
-                  },
-                ]
-             }
-           ]
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+               -d '{"content": "💣 앱 배포에 실패했어요 ㅠㅠ\nTag: ${{ github.ref_name }}\nVersion: ${{ steps.get_tag.outputs.name }}"}' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
