@@ -18,8 +18,4 @@ interface LocalUserDataSource {
     fun getRefreshExpiresAt(): String
 
     fun clearUserInformation()
-
-    suspend fun saveDeviceToken(deviceToken: String)
-
-    suspend fun getDeviceToken(): String
 }

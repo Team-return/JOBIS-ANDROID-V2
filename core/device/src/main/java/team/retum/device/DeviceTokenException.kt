@@ -1,3 +1,3 @@
-package team.retum.notification.util
+package team.retum.device
 
 class DeviceTokenException : RuntimeException("Fetching FCM registration token failed")

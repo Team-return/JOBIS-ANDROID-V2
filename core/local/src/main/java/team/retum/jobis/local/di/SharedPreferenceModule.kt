@@ -9,6 +9,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import team.retum.common.utils.ResourceKeys
+import team.retum.jobis.local.DeviceDataSource
+import team.retum.jobis.local.UserDataSource
 import javax.inject.Singleton
 
 @Module
@@ -17,9 +19,19 @@ object SharedPreferenceModule {
 
     @Provides
     @Singleton
+    @UserDataSource
     fun provideDataStore(
         @ApplicationContext context: Context,
     ): SharedPreferences {
-        return context.getSharedPreferences(ResourceKeys.SHARED_PREFERENCES_NAME, MODE_PRIVATE)
+        return context.getSharedPreferences(ResourceKeys.USER_SHARED_PREFERENCES_NAME, MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    @DeviceDataSource
+    fun provideDeviceDataStore(
+        @ApplicationContext context: Context,
+    ): SharedPreferences {
+        return context.getSharedPreferences(ResourceKeys.DEVICE_SHARED_PREFERENCES_NAME, MODE_PRIVATE)
     }
 }
