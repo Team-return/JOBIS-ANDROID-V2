@@ -109,9 +109,6 @@ private fun JobisVerificationButton(
 ) {
     Box(
         modifier = modifier
-            .clickable(
-                onClick = onVerificationClick,
-            )
             .background(
                 color = JobisTheme.colors.primary,
                 shape = RoundedCornerShape(8.dp),
@@ -119,7 +116,10 @@ private fun JobisVerificationButton(
             .padding(
                 horizontal = 8.dp,
                 vertical = 4.dp,
-            ),
+            )
+            .clickable(
+                onClick = onVerificationClick,
+            )
     ) {
         JobisText(
             text = stringResource(
