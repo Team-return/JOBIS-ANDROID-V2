@@ -44,11 +44,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import team.retum.design_system.R
+import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.foundation.JobisColor
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 
 /**
  * [JobisTextField]에서 표시되는 description의 종류를 결정
@@ -101,6 +104,40 @@ private fun TextFieldTitle(
 }
 
 @Composable
+private fun JobisVerificationButton(
+    modifier: Modifier = Modifier,
+    onVerificationClick: () -> Unit,
+    isSendAuthenticationCode: Boolean,
+) {
+    Box(
+        modifier = modifier
+            .clickable(
+                onClick = onVerificationClick,
+            )
+            .background(
+                color = JobisTheme.colors.primary,
+                shape = RoundedCornerShape(8.dp),
+            )
+            .padding(
+                horizontal = 8.dp,
+                vertical = 4.dp,
+            ),
+    ) {
+        JobisText(
+            text = stringResource(
+                id = if (isSendAuthenticationCode) {
+                    R.string.re_send_authentication_code
+                } else {
+                    R.string.authentication
+                },
+            ),
+            style = JobisTypography.Body,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
 private fun TextField(
     modifier: Modifier = Modifier,
     style: TextStyle,
@@ -112,6 +149,9 @@ private fun TextField(
     keyboardType: KeyboardType,
     maxLength: Int,
     showEmailHint: Boolean,
+    showVerificationButton: Boolean,
+    onVerificationClick: () -> Unit,
+    isSendAuthenticationCode: Boolean,
     showVisibleIcon: Boolean,
     @DrawableRes drawableResId: Int?,
     content: @Composable () -> Unit,
@@ -191,6 +231,12 @@ private fun TextField(
                             text = "@dsm.hs.kr",
                             style = style,
                             color = JobisTheme.colors.onSurfaceVariant,
+                        )
+                    }
+                    if (showVerificationButton) {
+                        JobisVerificationButton(
+                            onVerificationClick = onVerificationClick,
+                            isSendAuthenticationCode = isSendAuthenticationCode,
                         )
                     }
                     content()
@@ -316,6 +362,9 @@ fun JobisTextField(
     singleLine: Boolean = true,
     maxLength: Int = Int.MAX_VALUE,
     showEmailHint: Boolean = false,
+    showVerificationButton: Boolean = false,
+    onVerificationClick: () -> Unit = { },
+    isSendAuthenticationCode: Boolean = false,
     showVisibleIcon: Boolean = false,
     @DrawableRes drawableResId: Int? = null,
     fieldColor: Color = JobisTheme.colors.inverseSurface,
@@ -352,6 +401,9 @@ fun JobisTextField(
             keyboardType = keyboardType,
             maxLength = maxLength,
             showEmailHint = showEmailHint,
+            showVerificationButton = showVerificationButton,
+            onVerificationClick = onVerificationClick,
+            isSendAuthenticationCode = isSendAuthenticationCode,
             showVisibleIcon = showVisibleIcon,
             drawableResId = drawableResId,
             content = content,

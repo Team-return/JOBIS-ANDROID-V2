@@ -23,4 +23,6 @@
     <string name="content_description_search">검색하기</string>
     <string name="content_description_jobis">앱 바 로고</string>
     <string name="content_description_information">정보</string>
+    <string name="authentication">인증 하기</string>
+    <string name="re_send_authentication_code">재발송</string>
 </resources>
