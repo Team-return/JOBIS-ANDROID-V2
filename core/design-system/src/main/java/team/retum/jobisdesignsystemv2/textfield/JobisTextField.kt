@@ -119,7 +119,7 @@ private fun JobisVerificationButton(
             )
             .clickable(
                 onClick = onVerificationClick,
-            )
+            ),
     ) {
         JobisText(
             text = stringResource(
@@ -314,6 +314,9 @@ private fun Description(
  * @param singleLine 텍스트 필드에 다중 줄을 허용할 것인지 결정
  * @param maxLength 텍스트 필드 값의 최대 길이
  * @param showEmailHint 이메일 도메인에 대한 힌트를 표시할 것인지 결정(e.g., @dsm.hs.kr).
+ * @param showVerificationButton 인증 버튼을 표시할 것인지 결정
+ * @param onVerificationClick 인증 버튼을 클릭할 때 호출되는 함수
+ * @param isSendAuthenticationCode 인증 여부
  * @param showVisibleIcon 비밀번호 표시
  * @param drawableResId 텍스트 필드에 표시될 아이콘
  * @param fieldColor 배경 색상
