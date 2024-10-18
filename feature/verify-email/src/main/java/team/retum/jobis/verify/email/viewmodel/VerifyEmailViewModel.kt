@@ -70,7 +70,7 @@ internal class VerifyEmailViewModel @Inject constructor(
     internal fun onAuthenticationClick() {
         viewModelScope.launch(Dispatchers.IO) {
             sendAuthenticationCodeUseCase(
-                email = state.value.email,
+                email = state.value.email + EMAIL_ADDRESS,
                 authCodeType = AuthCodeType.PASSWORD,
             ).onSuccess {
                 stopAuthenticationTimer()
