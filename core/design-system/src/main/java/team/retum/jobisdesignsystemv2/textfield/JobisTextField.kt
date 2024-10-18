@@ -49,6 +49,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 
 /**
  * [JobisTextField]에서 표시되는 description의 종류를 결정
@@ -101,6 +102,40 @@ private fun TextFieldTitle(
 }
 
 @Composable
+private fun JobisVerificationButton(
+    modifier: Modifier = Modifier,
+    onVerificationClick: () -> Unit,
+    isSendAuthenticationCode: Boolean,
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = JobisTheme.colors.primary,
+                shape = RoundedCornerShape(8.dp),
+            )
+            .padding(
+                horizontal = 8.dp,
+                vertical = 4.dp,
+            )
+            .clickable(
+                onClick = onVerificationClick,
+            ),
+    ) {
+        JobisText(
+            text = stringResource(
+                id = if (isSendAuthenticationCode) {
+                    R.string.re_send_authentication_code
+                } else {
+                    R.string.authentication
+                },
+            ),
+            style = JobisTypography.Body,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
 private fun TextField(
     modifier: Modifier = Modifier,
     style: TextStyle,
@@ -112,6 +147,9 @@ private fun TextField(
     keyboardType: KeyboardType,
     maxLength: Int,
     showEmailHint: Boolean,
+    showVerificationButton: Boolean,
+    onVerificationClick: () -> Unit,
+    isSendAuthenticationCode: Boolean,
     showVisibleIcon: Boolean,
     @DrawableRes drawableResId: Int?,
     content: @Composable () -> Unit,
@@ -193,6 +231,12 @@ private fun TextField(
                             color = JobisTheme.colors.onSurfaceVariant,
                         )
                     }
+                    if (showVerificationButton) {
+                        JobisVerificationButton(
+                            onVerificationClick = onVerificationClick,
+                            isSendAuthenticationCode = isSendAuthenticationCode,
+                        )
+                    }
                     content()
                     if (showVisibleIcon) {
                         JobisIconButton(
@@ -270,6 +314,9 @@ private fun Description(
  * @param singleLine 텍스트 필드에 다중 줄을 허용할 것인지 결정
  * @param maxLength 텍스트 필드 값의 최대 길이
  * @param showEmailHint 이메일 도메인에 대한 힌트를 표시할 것인지 결정(e.g., @dsm.hs.kr).
+ * @param showVerificationButton 인증 버튼을 표시할 것인지 결정
+ * @param onVerificationClick 인증 버튼을 클릭할 때 호출되는 함수
+ * @param isSendAuthenticationCode 인증 여부
  * @param showVisibleIcon 비밀번호 표시
  * @param drawableResId 텍스트 필드에 표시될 아이콘
  * @param fieldColor 배경 색상
@@ -316,6 +363,9 @@ fun JobisTextField(
     singleLine: Boolean = true,
     maxLength: Int = Int.MAX_VALUE,
     showEmailHint: Boolean = false,
+    showVerificationButton: Boolean = false,
+    onVerificationClick: () -> Unit = { },
+    isSendAuthenticationCode: Boolean = false,
     showVisibleIcon: Boolean = false,
     @DrawableRes drawableResId: Int? = null,
     fieldColor: Color = JobisTheme.colors.inverseSurface,
@@ -352,6 +402,9 @@ fun JobisTextField(
             keyboardType = keyboardType,
             maxLength = maxLength,
             showEmailHint = showEmailHint,
+            showVerificationButton = showVerificationButton,
+            onVerificationClick = onVerificationClick,
+            isSendAuthenticationCode = isSendAuthenticationCode,
             showVisibleIcon = showVisibleIcon,
             drawableResId = drawableResId,
             content = content,
