@@ -17,7 +17,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
-import team.retum.jobisdesignsystemv2.button.JobisSmallButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -146,21 +145,10 @@ private fun EmailInputs(
         errorDescription = stringResource(id = R.string.description_conflict_email),
         showDescription = showEmailDescription,
         descriptionType = emailDescriptionType,
-    ) {
-        JobisSmallButton(
-            text = stringResource(
-                id = if (sendAuthenticationCode()) {
-                    R.string.re_send_authentication_code
-                } else {
-                    R.string.authentication
-                },
-            ),
-            color = ButtonColor.Secondary,
-            onClick = onAuthenticationClick,
-            keyboardInteractionEnabled = false,
-            enabled = email().isNotEmpty(),
-        )
-    }
+        showVerificationButton = true,
+        onVerificationClick = onAuthenticationClick,
+        isSendAuthenticationCode = sendAuthenticationCode(),
+    )
     JobisTextField(
         title = stringResource(id = R.string.authentication_code),
         value = authenticationCode,
