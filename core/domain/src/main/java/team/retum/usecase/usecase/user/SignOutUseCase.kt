@@ -6,7 +6,7 @@ import javax.inject.Inject
 class SignOutUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
-    operator fun invoke() = runCatching {
+    suspend operator fun invoke() = runCatching {
         userRepository.signOut()
     }
 }

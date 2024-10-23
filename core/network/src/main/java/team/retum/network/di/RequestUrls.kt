@@ -15,6 +15,7 @@ internal object RequestUrls {
 
         const val login = "$path/login"
         const val token = "$path/token"
+        const val deviceToken = "$path/device-token"
     }
 
     data object Auth {

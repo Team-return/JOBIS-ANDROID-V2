@@ -55,7 +55,8 @@ class UserRepositoryImpl @Inject constructor(
         return localUserDataSource.getRefreshExpiresAt()
     }
 
-    override fun signOut() {
+    override suspend fun signOut() {
+        remoteUserDataSource.deleteDeviceToken()
         localUserDataSource.clearUserInformation()
     }
 
