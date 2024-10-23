@@ -14,4 +14,8 @@ class RemoteUserDataSourceImpl @Inject constructor(
             userApi.signIn(signInRequest = signInRequest)
         }
     }
+
+    override suspend fun deleteDeviceToken() {
+        userApi.deleteDeviceToken()
+    }
 }

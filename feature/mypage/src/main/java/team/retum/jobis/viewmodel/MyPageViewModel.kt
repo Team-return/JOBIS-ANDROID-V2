@@ -103,8 +103,10 @@ internal class MyPageViewModel @Inject constructor(
     }
 
     internal fun onSignOutClick() {
-        signOutUseCase().onSuccess {
-            postSideEffect(MyPageSideEffect.SuccessSignOut)
+        viewModelScope.launch(Dispatchers.IO) {
+            signOutUseCase().onSuccess {
+                postSideEffect(MyPageSideEffect.SuccessSignOut)
+            }
         }
     }
 

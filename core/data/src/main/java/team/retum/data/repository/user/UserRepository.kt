@@ -22,7 +22,7 @@ interface UserRepository {
 
     fun getRefreshExpiresAt(): String
 
-    fun signOut()
+    suspend fun signOut()
 
     suspend fun saveDeviceToken(deviceToken: String)
 
