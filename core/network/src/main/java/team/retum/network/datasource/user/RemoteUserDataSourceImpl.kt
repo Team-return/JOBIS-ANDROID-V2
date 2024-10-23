@@ -16,6 +16,8 @@ class RemoteUserDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteDeviceToken() {
-        userApi.deleteDeviceToken()
+        return RequestHandler<Unit>().request {
+            userApi.deleteDeviceToken()
+        }
     }
 }
