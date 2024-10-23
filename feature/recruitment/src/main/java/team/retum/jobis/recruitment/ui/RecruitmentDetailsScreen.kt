@@ -275,7 +275,7 @@ internal fun Detail(
         )
         JobisText(
             modifier = Modifier.padding(vertical = 4.dp),
-            text = if (content.isNullOrEmpty() || content == "null") "없음" else content,
+            text = if (content.isNullOrEmpty() || content == "null") "-" else content,
             style = JobisTypography.Body,
         )
     }
@@ -386,7 +386,7 @@ internal fun PositionDetail(
         )
         JobisText(
             modifier = Modifier.padding(top = 4.dp),
-            text = if (content.isNullOrEmpty()) "없음" else content,
+            text = if (content.isNullOrEmpty()) "-" else content,
             style = JobisTypography.Body,
         )
     }
