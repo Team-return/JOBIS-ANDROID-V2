@@ -141,7 +141,7 @@ internal data class MyPageState(
 
 internal sealed interface MyPageSideEffect {
     data object SuccessSignOut : MyPageSideEffect
-    data object FailSignOut: MyPageSideEffect
+    data object FailSignOut : MyPageSideEffect
     data object SuccessEditProfileImage : MyPageSideEffect
     data object BadEditProfileImage : MyPageSideEffect
 }
