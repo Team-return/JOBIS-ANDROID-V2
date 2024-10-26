@@ -91,6 +91,14 @@ internal fun MyPage(
                     navigateToLanding()
                 }
 
+                is MyPageSideEffect.FailSignOut -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_fail_sign_out),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
                 is MyPageSideEffect.BadEditProfileImage -> {
                     JobisToast.create(
                         context = context,
