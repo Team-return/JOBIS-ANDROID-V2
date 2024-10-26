@@ -27,7 +27,7 @@ import team.retum.usecase.entity.RecruitmentsEntity
 internal fun Recruitments(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
-    onSearchRecruitmentClick: () -> Unit,
+    onSearchRecruitmentClick: (Boolean) -> Unit,
     recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -70,7 +70,7 @@ private fun RecruitmentsScreen(
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
-    onSearchRecruitmentClick: () -> Unit,
+    onSearchRecruitmentClick: (Boolean) -> Unit,
     onBookmarkClick: (Long) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
@@ -90,7 +90,7 @@ private fun RecruitmentsScreen(
             JobisIconButton(
                 drawableResId = JobisIcon.Search,
                 contentDescription = "search",
-                onClick = onSearchRecruitmentClick,
+                onClick = { onSearchRecruitmentClick(false) },
             )
         }
         RecruitmentItems(

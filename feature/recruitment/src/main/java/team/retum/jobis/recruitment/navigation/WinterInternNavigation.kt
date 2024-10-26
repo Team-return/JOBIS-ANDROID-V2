@@ -11,7 +11,7 @@ fun NavGraphBuilder.winterIntern(
     onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
-    onSearchRecruitmentClick: () -> Unit,
+    onSearchRecruitmentClick: (Boolean) -> Unit,
 ) {
     composable(NAVIGATION_WINTER_INTERN) {
         WinterIntern(

@@ -212,8 +212,8 @@ private fun RecruitmentDetailInfo(
                 ),
             )
             Detail(
-                title = stringResource(id = R.string.special_military_service_whether),
-                content = "병역특례 ${if (military) "" else "불"}가능",
+                title = stringResource(id = if (winterIntern) R.string.industrial_technical_personnel_whether else R.string.special_military_service_whether),
+                content = "${if (winterIntern) "산업기능 요원 근무" else "병역특례"} ${if (militarySupport) "" else "불"}가능",
             )
             Position(areas = recruitmentDetail.areas.toPersistentList())
             Detail(
@@ -221,7 +221,7 @@ private fun RecruitmentDetailInfo(
                 content = exceptBracket(requiredLicenses.toString()),
             )
             Detail(
-                title = stringResource(id = R.string.recruitment_procedure),
+                title = stringResource(id = if (winterIntern) R.string.selection_procedures else R.string.recruitment_procedure),
                 content = StringBuilder().apply {
                     hiringProgress.forEachIndexed { index, it ->
                         append("${index + 1}. ${it.value}")
@@ -232,14 +232,8 @@ private fun RecruitmentDetailInfo(
                 }.toString(),
             )
             Detail(
-                title = stringResource(id = R.string.required_grade),
-                content = requiredGrade.toString() + if (requiredGrade != null) {
-                    stringResource(
-                        id = R.string.percent_grade,
-                    )
-                } else {
-                    ""
-                },
+                title = stringResource(id = R.string.additional_qualifications),
+                content = additionalQualifications,
             )
             Detail(
                 title = stringResource(id = R.string.work_hours),
@@ -275,7 +269,7 @@ internal fun Detail(
         )
         JobisText(
             modifier = Modifier.padding(vertical = 4.dp),
-            text = if (content.isNullOrEmpty() || content == "null") "없음" else content,
+            text = if (content.isNullOrEmpty() || content == "null") "-" else content,
             style = JobisTypography.Body,
         )
     }
@@ -386,7 +380,7 @@ internal fun PositionDetail(
         )
         JobisText(
             modifier = Modifier.padding(top = 4.dp),
-            text = if (content.isNullOrEmpty()) "없음" else content,
+            text = if (content.isNullOrEmpty()) "-" else content,
             style = JobisTypography.Body,
         )
     }

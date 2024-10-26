@@ -28,7 +28,7 @@ internal fun WinterIntern(
     onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
-    onSearchRecruitmentClick: () -> Unit,
+    onSearchRecruitmentClick: (Boolean) -> Unit,
     recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -73,7 +73,7 @@ private fun WinterInternScreen(
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
-    onSearchRecruitmentClick: () -> Unit,
+    onSearchRecruitmentClick: (isWinterIntern: Boolean) -> Unit,
     onBookmarkClick: (Long) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
@@ -96,7 +96,7 @@ private fun WinterInternScreen(
             JobisIconButton(
                 drawableResId = JobisIcon.Search,
                 contentDescription = "search",
-                onClick = onSearchRecruitmentClick,
+                onClick = { onSearchRecruitmentClick(true) },
             )
         }
         RecruitmentItems(

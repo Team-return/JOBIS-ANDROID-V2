@@ -10,20 +10,21 @@ data class FetchRecruitmentDetailsResponse(
     @Json(name = "company_profile_url") val companyProfileUrl: String,
     @Json(name = "company_name") val companyName: String,
     @Json(name = "areas") val areas: List<Areas>,
-    @Json(name = "required_grade") val requiredGrade: Long?,
+    @Json(name = "additional_qualifications") val additionalQualifications: String?,
     @Json(name = "working_hours") val workingHours: String,
     @Json(name = "required_licenses") val requiredLicenses: List<String>?,
     @Json(name = "hiring_progress") val hiringProgress: List<HiringProgress>,
     @Json(name = "train_pay") val trainPay: Long,
     @Json(name = "pay") val pay: String?,
     @Json(name = "benefits") val benefits: String?,
-    @Json(name = "military") val military: Boolean,
+    @Json(name = "military_support") val militarySupport: Boolean,
     @Json(name = "submit_document") val submitDocument: String,
     @Json(name = "start_date") val startDate: String?,
     @Json(name = "end_date") val endDate: String?,
     @Json(name = "etc") val etc: String?,
     @Json(name = "is_applicable") val isApplicable: Boolean,
     @Json(name = "bookmarked") val bookmarked: Boolean,
+    @Json(name = "winter_intern") val winterIntern: Boolean,
 )
 
 @JsonClass(generateAdapter = true)
