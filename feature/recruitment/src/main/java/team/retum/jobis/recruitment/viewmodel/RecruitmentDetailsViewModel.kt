@@ -74,6 +74,7 @@ internal data class RecruitmentDetailsState(
                 etc = null,
                 isApplicable = false,
                 bookmarked = false,
+                winterIntern = false,
             ),
             buttonEnabled = false,
         )
