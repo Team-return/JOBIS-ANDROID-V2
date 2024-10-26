@@ -15,8 +15,8 @@
     <string name="founded_at">설립일</string>
     <string name="worker_number">근로자 수</string>
     <string name="take">연매출</string>
-    <string name="main_address">주소(본사)</string>
-    <string name="sub_address">주소(지점)</string>
+    <string name="address">주소</string>
+    <string name="main_address">주소 (본사)</string>
     <string name="manager">담당자</string>
     <string name="represent_phone_number">대표 번호</string>
     <string name="email">이메일</string>

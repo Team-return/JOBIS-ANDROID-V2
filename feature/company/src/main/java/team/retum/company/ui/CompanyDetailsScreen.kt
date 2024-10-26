@@ -90,7 +90,10 @@ internal fun CompanyDetails(
             CompanyInfoData(R.string.founded_at, foundedAt),
             CompanyInfoData(R.string.worker_number, workerNumber),
             CompanyInfoData(R.string.take, take),
-            CompanyInfoData(R.string.main_address, mainAddress),
+            CompanyInfoData(
+                if (headquarter) R.string.main_address else R.string.address,
+                mainAddress,
+            ),
             CompanyInfoData(R.string.manager, managerName),
             CompanyInfoData(R.string.represent_phone_number, representativePhoneNo),
             CompanyInfoData(R.string.email, email),
