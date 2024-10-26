@@ -58,6 +58,10 @@ internal class SearchRecruitmentViewModel @Inject constructor(
         state.value.copy(name = name)
     }
 
+    internal fun setWinterIntern(isWinterIntern: Boolean) = setState {
+        state.value.copy(isWinterIntern = isWinterIntern)
+    }
+
     private fun fetchRecruitments() {
         with(state.value) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -128,6 +132,7 @@ internal data class SearchRecruitmentState(
     val name: String?,
     val page: Long,
     val runPaging: Boolean,
+    val isWinterIntern: Boolean,
 ) {
     companion object {
         fun getInitialState() = SearchRecruitmentState(
@@ -135,6 +140,7 @@ internal data class SearchRecruitmentState(
             name = null,
             page = 0,
             runPaging = true,
+            isWinterIntern = false,
         )
     }
 }

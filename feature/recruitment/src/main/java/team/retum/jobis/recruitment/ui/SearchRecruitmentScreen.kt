@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,9 +27,14 @@ import team.retum.usecase.entity.RecruitmentsEntity
 internal fun SearchRecruitment(
     onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
+    isWinterIntern: Boolean,
     recruitmentsViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
     val state by recruitmentsViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        recruitmentsViewModel.setWinterIntern(isWinterIntern = isWinterIntern)
+    }
 
     SearchRecruitmentScreen(
         recruitments = recruitmentsViewModel.recruitments.toPersistentList(),
