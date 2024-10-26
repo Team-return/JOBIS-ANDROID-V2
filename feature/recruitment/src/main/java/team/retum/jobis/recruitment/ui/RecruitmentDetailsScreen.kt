@@ -221,7 +221,7 @@ private fun RecruitmentDetailInfo(
                 content = exceptBracket(requiredLicenses.toString()),
             )
             Detail(
-                title = stringResource(id = if (winterIntern) R.string.Selection_procedures else R.string.recruitment_procedure),
+                title = stringResource(id = if (winterIntern) R.string.selection_procedures else R.string.recruitment_procedure),
                 content = StringBuilder().apply {
                     hiringProgress.forEachIndexed { index, it ->
                         append("${index + 1}. ${it.value}")
