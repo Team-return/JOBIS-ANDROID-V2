@@ -32,12 +32,8 @@ data class CompanyDetailsEntity(
     val companyProfileUrl: String,
     val companyIntroduce: String,
     val mainAddress: String?,
-    val subAddress: String?,
     val managerName: String?,
-    val managerPhoneNo: String?,
-    val subManagerName: String?,
-    val subManagerPhoneNo: String?,
-    val fax: String?,
+    val representativePhoneNo: String?,
     val email: String?,
     val representativeName: String?,
     val foundedAt: String,
@@ -47,6 +43,7 @@ data class CompanyDetailsEntity(
     val attachments: List<String>?,
     val serviceName: String?,
     val businessArea: String?,
+    val headquarter: Boolean,
 )
 
 fun FetchCompanyDetailsResponse.toEntity() = CompanyDetailsEntity(
@@ -55,12 +52,8 @@ fun FetchCompanyDetailsResponse.toEntity() = CompanyDetailsEntity(
     companyProfileUrl = ResourceKeys.IMAGE_URL + this.companyProfileUrl,
     companyIntroduce = this.companyIntroduce,
     mainAddress = "${this.mainAddress} ${this.mainAddressDetail}",
-    subAddress = this.subAddress?.apply { plus(this@toEntity.subAddressDetail) },
     managerName = this.managerName,
-    managerPhoneNo = this.managerPhoneNo?.toPhoneNumber(),
-    subManagerName = this.subManagerName,
-    subManagerPhoneNo = this.subManagerPhoneNo?.toPhoneNumber(),
-    fax = this.fax,
+    representativePhoneNo = this.representativePhoneNo?.toPhoneNumber(),
     email = this.email,
     representativeName = this.representativeName,
     foundedAt = this.foundedAt,
@@ -70,6 +63,7 @@ fun FetchCompanyDetailsResponse.toEntity() = CompanyDetailsEntity(
     attachments = this.attachments,
     serviceName = this.serviceName,
     businessArea = this.businessArea,
+    headquarter = this.headquarter,
 )
 
 private fun Double.toTake(): String {

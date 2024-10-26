@@ -16,7 +16,7 @@ fun NavGraphBuilder.root(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
     onRecruitmentFilterClick: () -> Unit,
-    onSearchRecruitmentClick: () -> Unit,
+    onSearchRecruitmentClick: (Boolean) -> Unit,
     onNotificationSettingClick: () -> Unit,
     onNoticeClick: () -> Unit,
     onSelectInterestClick: () -> Unit,

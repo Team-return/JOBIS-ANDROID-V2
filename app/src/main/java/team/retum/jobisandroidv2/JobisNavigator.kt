@@ -110,8 +110,8 @@ internal class JobisNavigator(
         navController.navigateToReportBug()
     }
 
-    fun navigateToSearchRecruitment() {
-        navController.navigateToSearchRecruitment()
+    fun navigateToSearchRecruitment(isWinterIntern: Boolean) {
+        navController.navigateToSearchRecruitment(isWinterIntern = isWinterIntern)
     }
 
     fun navigateToNotificationSetting() {

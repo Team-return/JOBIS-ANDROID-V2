@@ -10,7 +10,7 @@ const val NAVIGATION_RECRUITMENTS = "recruitments"
 fun NavGraphBuilder.recruitments(
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
-    onSearchRecruitmentClick: () -> Unit,
+    onSearchRecruitmentClick: (Boolean) -> Unit,
 ) {
     composable(NAVIGATION_RECRUITMENTS) {
         Recruitments(
