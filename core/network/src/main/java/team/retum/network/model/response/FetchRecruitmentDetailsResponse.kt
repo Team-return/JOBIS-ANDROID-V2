@@ -24,6 +24,7 @@ data class FetchRecruitmentDetailsResponse(
     @Json(name = "etc") val etc: String?,
     @Json(name = "is_applicable") val isApplicable: Boolean,
     @Json(name = "bookmarked") val bookmarked: Boolean,
+    @Json(name = "winter_intern") val winterIntern: Boolean,
 )
 
 @JsonClass(generateAdapter = true)
