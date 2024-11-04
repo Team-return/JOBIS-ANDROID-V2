@@ -85,8 +85,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenInterceptor(localUserDataSource: LocalUserDataSource): Interceptor {
-        return TokenInterceptor(localUserDataSource = localUserDataSource)
+    fun provideTokenInterceptor(
+        localUserDataSource: LocalUserDataSource,
+    ): Interceptor {
+        return TokenInterceptor(
+            localUserDataSource = localUserDataSource,
+        )
     }
 
     @Provides
