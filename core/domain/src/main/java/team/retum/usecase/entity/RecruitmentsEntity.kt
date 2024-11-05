@@ -15,7 +15,7 @@ data class RecruitmentsEntity(
         val companyName: String,
         val companyProfileUrl: String,
         val trainPay: Long,
-        val militarySupport: MilitarySupport,
+        val militarySupport: MilitarySupport?,
         val hiringJobs: String,
         val bookmarked: Boolean,
     ) {
@@ -46,6 +46,7 @@ private fun FetchRecruitmentsResponse.RecruitmentResponse.toEntity() =
         militarySupport = when (this.militarySupport) {
             true -> MilitarySupport.TRUE
             false -> MilitarySupport.FALSE
+            else -> null
         },
         hiringJobs = this.hiringJobs,
         bookmarked = this.bookmarked,
