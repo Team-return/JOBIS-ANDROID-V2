@@ -40,7 +40,7 @@ object RefreshTokenService {
         }.onSuccess { token ->
             return token
         }.onFailure {
-            throw IllegalStateException("Fail refresh")
+            throw IllegalStateException("Fail refresh: ${it.message}")
         }.getOrThrow()
     }
 }
