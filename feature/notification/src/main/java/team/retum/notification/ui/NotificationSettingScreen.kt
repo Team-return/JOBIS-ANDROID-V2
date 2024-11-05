@@ -117,25 +117,25 @@ private fun NotificationSettingScreen(
         )
         NotificationDetailLayout(
             title = stringResource(id = R.string.notice_notification),
-            topic = NotificationTopic.NEW_NOTICE,
+            topic = NotificationTopic.NOTICE,
             isSubscribe = state.isNoticeSubscribe,
             onCheckChange = onTopicChange,
         )
         NotificationDetailLayout(
             title = stringResource(id = R.string.application_notification),
-            topic = NotificationTopic.APPLICATION_STATUS_CHANGED,
+            topic = NotificationTopic.APPLICATION,
             isSubscribe = state.isApplicationSubscribe,
             onCheckChange = onTopicChange,
         )
         NotificationDetailLayout(
             title = stringResource(id = R.string.recruitment_notification),
-            topic = NotificationTopic.RECRUITMENT_DONE,
+            topic = NotificationTopic.RECRUITMENT,
             isSubscribe = state.isRecruitmentSubscribe,
             onCheckChange = onTopicChange,
         )
         NotificationDetailLayout(
             title = stringResource(id = R.string.winter_intern_notification),
-            topic = NotificationTopic.WINTER_INTERN_STATUS_CHANGED,
+            topic = NotificationTopic.WINTER_INTERN,
             isSubscribe = state.isWinterInternSubscribe,
             onCheckChange = onTopicChange,
         )

@@ -12,14 +12,13 @@
     <string name="company_details">기업 상세</string>
 
     <string name="representative_name">대표자</string>
+    <string name="service_name">서비스 이름</string>
     <string name="founded_at">설립일</string>
     <string name="worker_number">근로자 수</string>
     <string name="take">연매출</string>
     <string name="address">주소</string>
     <string name="main_address">주소 (본사)</string>
-    <string name="manager">담당자</string>
-    <string name="represent_phone_number">대표 번호</string>
-    <string name="email">이메일</string>
+    <string name="businessArea">사업분야</string>
 
     <string name="review">면접 후기</string>
     <string name="show_more_reviews">더 많은 후기 보기</string>

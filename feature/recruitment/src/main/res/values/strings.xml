@@ -14,7 +14,6 @@
     <string name="show_company_detail_info">기업 상세 정보 보기</string>
     <string name="recruitment_period">모집기간</string>
     <string name="special_military_service_whether">병역특례 여부</string>
-    <string name="industrial_technical_personnel_whether">산업기능 요원 근무 여부</string>
     <string name="job_position">모집분야</string>
     <string name="preferential_treatment">우대사항</string>
     <string name="technology_used">사용 기술</string>
@@ -26,6 +25,7 @@
     <string name="wage_and_benefits">복리후생</string>
     <string name="submission_document">제출 서류</string>
     <string name="etc">기타 사항</string>
+    <string name="integration_plan">현장실습 연계 계획</string>
     <string name="apply">지원하기</string>
     <string name="can_do_not_apply">지원할 수 없어요</string>
     <string name="major_task">주요 업무</string>
