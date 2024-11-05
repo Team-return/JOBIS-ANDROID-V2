@@ -31,7 +31,7 @@ class TokenInterceptor @Inject constructor(
         var request = chain.request()
         val path = request.url.encodedPath
 
-        var response =  chain.proceed(
+        var response = chain.proceed(
             if (ignorePaths.contains(path) || checkS3Request(url = request.url.toString())) {
                 request
             } else {
@@ -42,7 +42,7 @@ class TokenInterceptor @Inject constructor(
             },
         )
 
-        if(response.code == 401 && !ignorePaths.contains(path)) {
+        if (response.code == 401 && !ignorePaths.contains(path)) {
             response.close()
 
             val refreshToken = localUserDataSource.getRefreshToken()

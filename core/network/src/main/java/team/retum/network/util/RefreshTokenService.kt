@@ -43,5 +43,4 @@ object RefreshTokenService {
             throw IllegalStateException("Fail refresh")
         }.getOrThrow()
     }
-
 }
