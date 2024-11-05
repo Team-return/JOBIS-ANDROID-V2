@@ -21,7 +21,7 @@ data class RecruitmentDetailsEntity(
     val trainPay: Long,
     val pay: String?,
     val benefits: String?,
-    val militarySupport: Boolean,
+    val militarySupport: Boolean?,
     val submitDocument: String,
     val startDate: String?,
     val endDate: String?,
@@ -29,6 +29,7 @@ data class RecruitmentDetailsEntity(
     val isApplicable: Boolean,
     val bookmarked: Boolean,
     val winterIntern: Boolean,
+    val integrationPlan: Boolean,
 )
 
 @Immutable
@@ -71,6 +72,7 @@ internal fun FetchRecruitmentDetailsResponse.toEntity() = RecruitmentDetailsEnti
     isApplicable = this.isApplicable,
     bookmarked = this.bookmarked,
     winterIntern = this.winterIntern,
+    integrationPlan = this.integrationPlan,
 )
 
 private fun Areas.toEntity() = AreasEntity(

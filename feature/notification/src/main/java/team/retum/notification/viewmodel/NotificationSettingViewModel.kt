@@ -40,12 +40,10 @@ internal class NotificationSettingViewModel @Inject constructor(
             fetchNotificationSettingsStatusesUseCase()
                 .onSuccess { topics ->
                     topics.topics.forEach {
-                        if (it.topic != NotificationTopic.NEW_INTERESTED_RECRUITMENT) {
-                            changeSubscribeState(
-                                topic = it.topic,
-                                isSubscribed = it.subscribed,
-                            )
-                        }
+                        changeSubscribeState(
+                            topic = it.topic,
+                            isSubscribed = it.subscribed,
+                        )
                     }
                 }
                 .onFailure {
@@ -96,11 +94,10 @@ internal class NotificationSettingViewModel @Inject constructor(
     ) {
         with(state.value) {
             val subscribeState = when (topic) {
-                NotificationTopic.NEW_NOTICE -> copy(isNoticeSubscribe = isSubscribed)
-                NotificationTopic.APPLICATION_STATUS_CHANGED -> copy(isApplicationSubscribe = isSubscribed)
-                NotificationTopic.RECRUITMENT_DONE -> copy(isRecruitmentSubscribe = isSubscribed)
-                NotificationTopic.WINTER_INTERN_STATUS_CHANGED -> copy(isWinterInternSubscribe = isSubscribed)
-                NotificationTopic.NEW_INTERESTED_RECRUITMENT -> copy()
+                NotificationTopic.NOTICE -> copy(isNoticeSubscribe = isSubscribed)
+                NotificationTopic.APPLICATION -> copy(isApplicationSubscribe = isSubscribed)
+                NotificationTopic.RECRUITMENT -> copy(isRecruitmentSubscribe = isSubscribed)
+                NotificationTopic.WINTER_INTERN -> copy(isWinterInternSubscribe = isSubscribed)
             }
             setState { subscribeState }
         }

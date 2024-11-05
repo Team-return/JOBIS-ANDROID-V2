@@ -83,7 +83,7 @@ jobs:
         id: discord-success
         run: |
           curl -H "Content-Type: application/json" \
-               -d '{"content": "🚀 앱이 배포되었습니다.\nTag: ${{ github.ref_name }}\n Version: ${{ steps.get_tag.outputs.name }}\nRelease Note: ${{ env.RELEASE_NOTE }}"}' \
+               -d '{"content": "🚀 앱이 배포되었습니다.\n🏷️ Tag: ${{ github.ref_name }}\n⚙️ Version: ${{ steps.get_tag.outputs.name }}\n📄 Release Note:\n${{ env.RELEASE_NOTE }}"}' \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Notify Discord on Failure

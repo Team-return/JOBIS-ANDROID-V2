@@ -87,6 +87,7 @@ internal fun CompanyDetails(
     val companyInfo = with(state.companyDetailsEntity) {
         listOf(
             CompanyInfoData(R.string.representative_name, representativeName),
+            CompanyInfoData(R.string.service_name, serviceName),
             CompanyInfoData(R.string.founded_at, foundedAt),
             CompanyInfoData(R.string.worker_number, workerNumber),
             CompanyInfoData(R.string.take, take),
@@ -94,9 +95,7 @@ internal fun CompanyDetails(
                 if (headquarter) R.string.main_address else R.string.address,
                 mainAddress,
             ),
-            CompanyInfoData(R.string.manager, managerName),
-            CompanyInfoData(R.string.represent_phone_number, representativePhoneNo),
-            CompanyInfoData(R.string.email, email),
+            CompanyInfoData(R.string.businessArea, businessArea),
         )
     }
 
