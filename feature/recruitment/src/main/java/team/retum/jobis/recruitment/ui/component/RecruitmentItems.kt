@@ -133,7 +133,7 @@ private fun RecruitmentItem(
                         .fillMaxWidth(DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED)
                         .clip(RoundedCornerShape(4.dp))
                         .background(
-                            if (whetherMilitarySupported.isBlank()) {
+                            if (recruitment.militarySupport == MilitarySupport.LOADING) {
                                 JobisTheme.colors.surfaceVariant
                             } else {
                                 Color.Unspecified

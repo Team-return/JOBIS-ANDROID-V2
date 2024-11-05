@@ -211,10 +211,12 @@ private fun RecruitmentDetailInfo(
                     endDate = endDate,
                 ),
             )
-            Detail(
-                title = stringResource(id = if (winterIntern) R.string.industrial_technical_personnel_whether else R.string.special_military_service_whether),
-                content = "${if (winterIntern) "산업기능 요원 근무" else "병역특례"} ${if (militarySupport) "" else "불"}가능",
-            )
+            if(!winterIntern && militarySupport != null) {
+                Detail(
+                    title = stringResource(id = R.string.special_military_service_whether),
+                    content = "병역특례 ${if (militarySupport!!) "" else "불"}가능",
+                )
+            }
             Position(areas = recruitmentDetail.areas.toPersistentList())
             Detail(
                 title = stringResource(id = R.string.certificate),
@@ -251,6 +253,12 @@ private fun RecruitmentDetailInfo(
                 title = stringResource(id = R.string.etc),
                 content = etc,
             )
+            if(winterIntern) {
+                Detail(
+                    title = stringResource(id = R.string.integration_plan),
+                    content = "${if (integrationPlan) "있" else "없"}음",
+                )
+            }
         }
     }
 }
