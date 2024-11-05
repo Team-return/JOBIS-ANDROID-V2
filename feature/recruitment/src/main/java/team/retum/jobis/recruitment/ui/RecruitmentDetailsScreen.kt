@@ -211,7 +211,7 @@ private fun RecruitmentDetailInfo(
                     endDate = endDate,
                 ),
             )
-            if(!winterIntern && militarySupport != null) {
+            if (!winterIntern && militarySupport != null) {
                 Detail(
                     title = stringResource(id = R.string.special_military_service_whether),
                     content = "병역특례 ${if (militarySupport!!) "" else "불"}가능",
@@ -253,7 +253,7 @@ private fun RecruitmentDetailInfo(
                 title = stringResource(id = R.string.etc),
                 content = etc,
             )
-            if(winterIntern) {
+            if (winterIntern) {
                 Detail(
                     title = stringResource(id = R.string.integration_plan),
                     content = "${if (integrationPlan) "있" else "없"}음",
