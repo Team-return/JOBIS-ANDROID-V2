@@ -259,7 +259,7 @@ private fun RecruitmentDetailInfo(
                     content = "${if (integrationPlan!!) "있" else "없"}음",
                 )
             }
-            if(!winterIntern && hireConvertible != null) {
+            if (!winterIntern && hireConvertible != null) {
                 Detail(
                     title = stringResource(id = R.string.hireConvertible),
                     content = "${if (hireConvertible!!) "있" else "없"}음",
