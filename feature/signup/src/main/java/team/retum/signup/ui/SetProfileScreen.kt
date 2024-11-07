@@ -41,6 +41,7 @@ import coil.compose.AsyncImage
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -82,6 +83,7 @@ internal fun SetProfile(
     SetProfileScreen(
         onBackPressed = onBackPressed,
         onNextClick = setProfileViewModel::onNextClick,
+        onImgChangeClick = setProfileViewModel::onImgChangeClick,
         activityResultLauncher = activityResultLauncher,
         state = state,
     )
@@ -91,6 +93,7 @@ internal fun SetProfile(
 private fun SetProfileScreen(
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
+    onImgChangeClick: () -> Unit,
     activityResultLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
     state: SetProfileState,
 ) {
@@ -104,26 +107,26 @@ private fun SetProfileScreen(
             onBackPressed = onBackPressed,
         )
         SetImage(
-            uri = state.uri.toString(),
+            uri = state.uri,
             onClick = {
                 val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
                 val request = PickVisualMediaRequest(mediaType)
                 activityResultLauncher.launch(request)
+                onImgChangeClick()
             },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            text = stringResource(id = R.string.next),
+            text = stringResource(id = if (state.uri == null) R.string.skip else R.string.next),
             onClick = onNextClick,
             color = ButtonColor.Primary,
-            enabled = state.buttonEnabled,
         )
     }
 }
 
 @Composable
 private fun SetImage(
-    uri: String?,
+    uri: Uri?,
     onClick: () -> Unit,
 ) {
     Column(
@@ -137,7 +140,7 @@ private fun SetImage(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape),
-            model = uri ?: team.retum.common.R.drawable.ic_person,
+            model = uri ?: JobisIcon.Person,
             contentDescription = "user profile",
             contentScale = ContentScale.Crop,
         )

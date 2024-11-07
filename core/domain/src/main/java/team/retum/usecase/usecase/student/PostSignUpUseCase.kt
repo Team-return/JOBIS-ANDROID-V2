@@ -17,7 +17,7 @@ class PostSignUpUseCase @Inject constructor(
         gender: Gender,
         classRoom: Long,
         number: Long,
-        profileImageUrl: String,
+        profileImageUrl: String?,
         deviceToken: String,
     ) = runCatching {
         studentRepository.postSignUp(

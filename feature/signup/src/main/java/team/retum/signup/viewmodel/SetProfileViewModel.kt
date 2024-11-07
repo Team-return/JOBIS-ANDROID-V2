@@ -40,6 +40,11 @@ internal class SetProfileViewModel @Inject constructor(
     }
 
     internal fun onNextClick() {
+        val profileImageUrl = state.value.profileImageUrl
+        postSideEffect(SetProfileSideEffect.MoveToNext(profileImageUrl = profileImageUrl))
+    }
+
+    internal fun onImgChangeClick() {
         viewModelScope.launch(Dispatchers.IO) {
             createPresignedUrlUseCase(files = listOf(state.value.image?.name ?: "")).onSuccess {
                 val response = it.urls.first()
@@ -60,7 +65,7 @@ internal class SetProfileViewModel @Inject constructor(
             file = state.value.image!!,
         ).onSuccess {
             val encodedImageUrl = URLEncoder.encode(fileUrl, "UTF8")
-            postSideEffect(SetProfileSideEffect.MoveToNext(profileImageUrl = encodedImageUrl))
+            setState { state.value.copy(profileImageUrl = encodedImageUrl) }
         }
     }
 }
@@ -70,6 +75,7 @@ internal data class SetProfileState(
     val image: File?,
     val imageUrl: String,
     val uri: Uri?,
+    val profileImageUrl: String?,
     val buttonEnabled: Boolean,
 ) {
     companion object {
@@ -77,11 +83,12 @@ internal data class SetProfileState(
             image = null,
             imageUrl = "",
             uri = null,
+            profileImageUrl = null,
             buttonEnabled = false,
         )
     }
 }
 
 internal sealed interface SetProfileSideEffect {
-    data class MoveToNext(val profileImageUrl: String) : SetProfileSideEffect
+    data class MoveToNext(val profileImageUrl: String?) : SetProfileSideEffect
 }
