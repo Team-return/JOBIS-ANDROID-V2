@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
         }
 
         Thread.setDefaultUncaughtExceptionHandler(
-            JobisExceptionHandler(context = this),
+            JobisExceptionHandler(context = applicationContext),
         )
     }
 

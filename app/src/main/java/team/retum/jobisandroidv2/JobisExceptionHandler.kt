@@ -22,10 +22,11 @@ class JobisExceptionHandler(
             is ConnectionTimeOutException -> makeToast(TimeoutErrorMsg)
             is ReissueException -> makeToast(LoginErrorMsg)
             is UnknownException -> makeToast(UnknownErrorMsg)
+            else -> makeToast(UnknownErrorMsg)
         }
     }
 
-    fun makeToast(message: String) {
+    private fun makeToast(message: String) {
         JobisToast.create(
             context = context,
             message = message,
