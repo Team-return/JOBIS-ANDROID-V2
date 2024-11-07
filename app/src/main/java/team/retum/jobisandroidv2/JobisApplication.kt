@@ -32,9 +32,11 @@ class JobisApplication : Application() {
                 is UnknownException -> makeToast(UnknownErrorMsg)
                 else -> makeToast(UnknownErrorMsg)
             }
-            startActivity(Intent(this, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+            startActivity(
+                Intent(this, MainActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                },
+            )
             exitProcess(0)
         }
     }
