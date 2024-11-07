@@ -1,12 +1,11 @@
 package team.retum.jobisandroidv2
 
 import android.content.Context
+import android.widget.Toast
 import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.OfflineException
 import team.retum.common.exception.ReissueException
 import team.retum.common.exception.UnknownException
-import team.retum.jobisdesignsystemv2.foundation.JobisIcon
-import team.retum.jobisdesignsystemv2.toast.JobisToast
 
 private const val InternetErrorMsg = "인터넷 연결을 확인해주세요."
 private const val TimeoutErrorMsg = "요청 시간이 초과되었습니다.\n다시 시도해주세요."
@@ -27,10 +26,10 @@ class JobisExceptionHandler(
     }
 
     private fun makeToast(message: String) {
-        JobisToast.create(
-            context = context,
-            message = message,
-            drawable = JobisIcon.Error,
-        )
+        Toast.makeText(
+            context,
+            message,
+            Toast.LENGTH_SHORT,
+        ).show()
     }
 }
