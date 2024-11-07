@@ -49,10 +49,6 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             deviceTokenManager.fetchDeviceToken()
         }
-
-        Thread.setDefaultUncaughtExceptionHandler(
-            JobisExceptionHandler(context = applicationContext),
-        )
     }
 
     private fun setBackHandler() {
