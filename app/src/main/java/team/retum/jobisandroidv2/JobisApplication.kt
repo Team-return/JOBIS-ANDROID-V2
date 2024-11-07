@@ -32,7 +32,7 @@ class JobisApplication : Application() {
                 is UnknownException -> makeToast(UnknownErrorMsg)
                 else -> makeToast(UnknownErrorMsg)
             }
-            
+
             val intent = this.packageManager.getLaunchIntentForPackage(this.packageName)
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
