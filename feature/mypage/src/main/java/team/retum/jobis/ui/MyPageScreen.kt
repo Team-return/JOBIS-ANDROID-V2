@@ -186,7 +186,7 @@ private fun MyPageScreen(
             with(state.studentInformation) {
                 StudentInfo(
                     modifier = Modifier.padding(vertical = 12.dp),
-                    profileImageUrl = state.studentInformation.profileImageUrl,
+                    profileImageUrl = profileImageUrl,
                     number = studentGcn,
                     name = studentName,
                     department = department.value,

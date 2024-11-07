@@ -40,7 +40,10 @@ internal class TermsViewModel @Inject constructor(
     internal fun onCompleteClick(signUpData: SignUpData) {
         with(signUpData) {
             val decodedPassword = URLDecoder.decode(password, "UTF8")
-            val decodedImageUrl = URLDecoder.decode(profileImageUrl, "UTF8")
+            val decodedImageUrl = if (profileImageUrl.isNullOrEmpty()) null else URLDecoder.decode(
+                profileImageUrl,
+                "UTF8",
+            )
             viewModelScope.launch(Dispatchers.IO) {
                 postSignUpUseCase(
                     email = email,

@@ -87,10 +87,11 @@ internal class MyPageViewModel @Inject constructor(
 
     private fun fetchStudentInformation() {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchStudentInformationUseCase().onSuccess {
-                val profileImageUrl = ResourceKeys.IMAGE_URL + it.profileImageUrl
-                setState { state.value.copy(studentInformation = it.copy(profileImageUrl = profileImageUrl)) }
-            }
+            fetchStudentInformationUseCase()
+                .onSuccess {
+                    val profileImageUrl = ResourceKeys.IMAGE_URL + it.profileImageUrl
+                    setState { state.value.copy(studentInformation = it.copy(profileImageUrl = profileImageUrl)) }
+                }
         }
     }
 

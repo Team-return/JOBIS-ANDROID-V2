@@ -36,4 +36,5 @@ object JobisIcon {
     val SnowMan = R.drawable.ic_snow_man
     val Notification = R.drawable.ic_notification
     val Empty = R.drawable.ic_empty
+    val Person = R.drawable.ic_person
 }
