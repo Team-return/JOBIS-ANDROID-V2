@@ -22,7 +22,7 @@ class JobisApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Thread.setDefaultUncaughtExceptionHandler { t, e ->
+        Thread.setDefaultUncaughtExceptionHandler { _, e ->
             Firebase.crashlytics.recordException(e)
 
             when (e) {
