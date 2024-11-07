@@ -14,7 +14,7 @@ data class PostSignUpRequest(
     @Json(name = "gender") val gender: Gender,
     @Json(name = "class_room") val classRoom: Long,
     @Json(name = "number") val number: Long,
-    @Json(name = "profile_image_url") val profileImageUrl: String,
+    @Json(name = "profile_image_url") val profileImageUrl: String?,
     @Json(name = "platform_type") val platformType: PlatformType,
     @Json(name = "device_token") val deviceToken: String,
 )

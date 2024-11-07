@@ -14,7 +14,7 @@ data class SignUpData(
     val gender: Gender? = null,
     val classRoom: String = "",
     val number: String = "",
-    val profileImageUrl: String = "",
+    val profileImageUrl: String? = null,
 )
 
 internal fun SignUpData.toJsonString() = Json.encodeToString(this)

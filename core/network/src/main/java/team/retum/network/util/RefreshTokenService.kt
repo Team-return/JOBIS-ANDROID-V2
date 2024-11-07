@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import team.retum.common.enums.PlatformType
+import team.retum.common.exception.ReissueException
 import team.retum.network.BuildConfig
 import team.retum.network.api.AuthApi
 import team.retum.network.model.response.TokenResponse
@@ -40,7 +41,7 @@ object RefreshTokenService {
         }.onSuccess { token ->
             return token
         }.onFailure {
-            throw IllegalStateException("Fail refresh: ${it.message}")
+            throw ReissueException
         }.getOrThrow()
     }
 }
