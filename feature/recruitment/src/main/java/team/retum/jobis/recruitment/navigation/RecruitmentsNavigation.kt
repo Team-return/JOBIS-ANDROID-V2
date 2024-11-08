@@ -22,5 +22,11 @@ fun NavGraphBuilder.recruitments(
 }
 
 fun NavHostController.navigateToRecruitments() {
-    navigate(NAVIGATION_RECRUITMENTS)
+    navigate(NAVIGATION_RECRUITMENTS) {
+        popUpTo(0) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
