@@ -94,10 +94,12 @@ internal class InputEmailViewModel @Inject constructor(
                     }
 
                     is ConflictException -> {
-                        setState { state.value.copy(
-                            emailDescriptionType = DescriptionType.Error,
-                            showEmailDescription = true
-                        ) }
+                        setState {
+                            state.value.copy(
+                                emailDescriptionType = DescriptionType.Error,
+                                showEmailDescription = true,
+                            )
+                        }
                     }
                 }
             }
