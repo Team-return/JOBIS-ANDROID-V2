@@ -55,14 +55,17 @@ internal class MyPageViewModel @Inject constructor(
                 uri = uri,
             )
             viewModelScope.launch(Dispatchers.IO) {
-                createPresignedUrlUseCase(files = listOf(file.name)).onSuccess {
-                    uploadFileUseCase(
-                        presignedUrl = it.urls.first().preSignedUrl,
-                        file = file,
-                    )
-                    val profileImageUrl = it.urls.first().filePath
-                    editProfileImage(profileImageUrl = profileImageUrl)
-                }
+                createPresignedUrlUseCase(files = listOf(file.name))
+                    .onSuccess {
+                        uploadFileUseCase(
+                            presignedUrl = it.urls.first().preSignedUrl,
+                            file = file,
+                        )
+                        val profileImageUrl = it.urls.first().filePath
+                        editProfileImage(profileImageUrl = profileImageUrl)
+                    }.onFailure {
+                        postSideEffect(MyPageSideEffect.BadEditProfileImage)
+                    }
             }
         }
     }
