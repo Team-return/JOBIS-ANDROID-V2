@@ -41,26 +41,17 @@ fun TabBar(
             .horizontalScroll(rememberScrollState()),
     ) {
         tabs.forEachIndexed { index, category ->
-            val textColor by animateColorAsState(
-                targetValue = if (index == selectedTabIndex) {
-                    JobisTheme.colors.onBackground
-                } else {
-                    JobisTheme.colors.onSurfaceVariant
-                },
-                label = "",
-            )
-            val backgroundColor by animateColorAsState(
-                targetValue = if (index == selectedTabIndex) {
-                    JobisTheme.colors.background
-                } else {
-                    JobisTheme.colors.inverseSurface
-                },
-                label = "",
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioHighBouncy,
-                    stiffness = Spring.StiffnessVeryLow,
-                ),
-            )
+            val textColor = if (index == selectedTabIndex) {
+                JobisTheme.colors.onBackground
+
+            } else {
+                JobisTheme.colors.onSurfaceVariant
+            }
+            val backgroundColor = if (index == selectedTabIndex) {
+                JobisTheme.colors.background
+            } else {
+                JobisTheme.colors.inverseSurface
+            }
 
             JobisText(
                 modifier = Modifier
