@@ -39,7 +39,6 @@ fun TabBar(
         tabs.forEachIndexed { index, category ->
             val textColor = if (index == selectedTabIndex) {
                 JobisTheme.colors.onBackground
-
             } else {
                 JobisTheme.colors.onSurfaceVariant
             }
