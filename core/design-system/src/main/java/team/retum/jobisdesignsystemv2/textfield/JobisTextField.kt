@@ -108,15 +108,10 @@ private fun JobisVerificationButton(
     isSendAuthenticationCode: Boolean,
     enabled: Boolean = false,
 ) {
-    val backgroundColor = if (enabled) {
-        JobisTheme.colors.onPrimary
+    val (textColor, backgroundColor) = if (enabled) {
+        JobisTheme.colors.primary to JobisTheme.colors.onPrimary
     } else {
-        JobisTheme.colors.surfaceVariant
-    }
-    val textColor = if (enabled) {
-        JobisTheme.colors.primary
-    } else {
-        JobisTheme.colors.onSurfaceVariant
+        JobisTheme.colors.onSurfaceVariant to JobisTheme.colors.surfaceVariant
     }
 
     Box(
