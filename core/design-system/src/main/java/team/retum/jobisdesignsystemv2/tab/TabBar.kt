@@ -37,15 +37,10 @@ fun TabBar(
             .horizontalScroll(rememberScrollState()),
     ) {
         tabs.forEachIndexed { index, category ->
-            val textColor = if (index == selectedTabIndex) {
-                JobisTheme.colors.onBackground
+            val (textColor, backgroundColor) = if (index == selectedTabIndex) {
+                JobisTheme.colors.onBackground to JobisTheme.colors.background
             } else {
-                JobisTheme.colors.onSurfaceVariant
-            }
-            val backgroundColor = if (index == selectedTabIndex) {
-                JobisTheme.colors.background
-            } else {
-                JobisTheme.colors.inverseSurface
+                JobisTheme.colors.onSurfaceVariant to JobisTheme.colors.inverseSurface
             }
 
             JobisText(
