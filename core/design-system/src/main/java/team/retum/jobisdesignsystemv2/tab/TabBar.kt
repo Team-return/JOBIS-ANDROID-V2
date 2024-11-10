@@ -1,8 +1,5 @@
 package team.retum.jobisdesignsystemv2.tab
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
@@ -11,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
@@ -41,26 +37,11 @@ fun TabBar(
             .horizontalScroll(rememberScrollState()),
     ) {
         tabs.forEachIndexed { index, category ->
-            val textColor by animateColorAsState(
-                targetValue = if (index == selectedTabIndex) {
-                    JobisTheme.colors.onBackground
-                } else {
-                    JobisTheme.colors.onSurfaceVariant
-                },
-                label = "",
-            )
-            val backgroundColor by animateColorAsState(
-                targetValue = if (index == selectedTabIndex) {
-                    JobisTheme.colors.background
-                } else {
-                    JobisTheme.colors.inverseSurface
-                },
-                label = "",
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioHighBouncy,
-                    stiffness = Spring.StiffnessVeryLow,
-                ),
-            )
+            val (textColor, backgroundColor) = if (index == selectedTabIndex) {
+                JobisTheme.colors.onBackground to JobisTheme.colors.background
+            } else {
+                JobisTheme.colors.onSurfaceVariant to JobisTheme.colors.inverseSurface
+            }
 
             JobisText(
                 modifier = Modifier
