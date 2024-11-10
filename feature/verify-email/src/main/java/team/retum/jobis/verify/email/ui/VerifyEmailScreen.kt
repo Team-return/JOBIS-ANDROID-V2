@@ -68,7 +68,7 @@ internal fun VerifyEmail(
                 is VerifyEmailSideEffect.NotFoundStudent -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.toast_check_email),
+                        message = context.getString(R.string.toast_not_found_email),
                         drawable = JobisIcon.Error,
                     ).show()
                 }
