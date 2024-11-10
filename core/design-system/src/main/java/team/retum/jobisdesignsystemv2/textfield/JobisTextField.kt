@@ -106,11 +106,23 @@ private fun JobisVerificationButton(
     modifier: Modifier = Modifier,
     onVerificationClick: () -> Unit,
     isSendAuthenticationCode: Boolean,
+    enabled: Boolean = false,
 ) {
+    val backgroundColor = if (enabled) {
+        JobisTheme.colors.onPrimary
+    } else {
+        JobisTheme.colors.surfaceVariant
+    }
+    val textColor = if (enabled) {
+        JobisTheme.colors.primary
+    } else {
+        JobisTheme.colors.onSurfaceVariant
+    }
+
     Box(
         modifier = modifier
             .background(
-                color = JobisTheme.colors.primary,
+                color = backgroundColor,
                 shape = RoundedCornerShape(8.dp),
             )
             .padding(
@@ -119,6 +131,7 @@ private fun JobisVerificationButton(
             )
             .clickable(
                 onClick = onVerificationClick,
+                enabled = enabled,
             ),
     ) {
         JobisText(
@@ -130,7 +143,7 @@ private fun JobisVerificationButton(
                 },
             ),
             style = JobisTypography.Body,
-            color = JobisTheme.colors.onSurfaceVariant,
+            color = textColor,
         )
     }
 }
@@ -235,6 +248,7 @@ private fun TextField(
                         JobisVerificationButton(
                             onVerificationClick = onVerificationClick,
                             isSendAuthenticationCode = isSendAuthenticationCode,
+                            enabled = value().isNotEmpty(),
                         )
                     }
                     content()
