@@ -119,7 +119,7 @@ private fun NoticeDetailsScreen(
                 .verticalScroll(scrollState),
         ) {
             Notice(noticeDetailsEntity = state.noticeDetailsEntity)
-            state.noticeDetailsEntity.attachments.forEach {
+            state.noticeDetailsEntity.attachments?.forEach {
                 AttachFile(
                     fileName = it.url,
                     saveFileData = saveFileData,

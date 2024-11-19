@@ -9,7 +9,7 @@ data class FetchNoticeDetailsResponse(
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
     @Json(name = "created_at") val createdAt: String,
-    @Json(name = "attachments") val attachments: List<AttachmentResponse>,
+    @Json(name = "attachments") val attachments: List<AttachmentResponse>?,
 ) {
     @JsonClass(generateAdapter = true)
     data class AttachmentResponse(
