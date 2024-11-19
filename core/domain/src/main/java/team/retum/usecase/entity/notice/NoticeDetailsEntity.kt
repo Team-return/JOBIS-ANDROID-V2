@@ -11,7 +11,7 @@ data class NoticeDetailsEntity(
     val title: String,
     val content: String,
     val createdAt: String,
-    val attachments: List<AttachmentEntity>,
+    val attachments: List<AttachmentEntity>?,
 ) {
     data class AttachmentEntity(
         val url: String,
@@ -29,7 +29,7 @@ internal fun FetchNoticeDetailsResponse.toEntity() = NoticeDetailsEntity(
     title = this.title,
     content = this.content,
     createdAt = outputFormat.format(inputFormat.parse(this.createdAt)!!),
-    attachments = this.attachments.map { it.toEntity() },
+    attachments = this.attachments?.map { it.toEntity() },
 )
 
 private fun FetchNoticeDetailsResponse.AttachmentResponse.toEntity() =
