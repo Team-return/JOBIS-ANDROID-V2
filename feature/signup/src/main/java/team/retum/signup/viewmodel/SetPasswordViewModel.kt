@@ -4,7 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import team.retum.common.base.BaseViewModel
 import team.retum.common.utils.Regex
 import team.retum.jobisdesignsystemv2.textfield.DescriptionType
-import java.net.URLEncoder
+import java.util.Base64
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -55,8 +55,8 @@ internal class SetPasswordViewModel @Inject constructor() :
 
     internal fun onNextClick() {
         setState { state.value.copy(buttonEnabled = false) }
-        val encodedPassword = URLEncoder.encode(state.value.password, "UTF8")
-        postSideEffect(SetPasswordSideEffect.MoveToNext(password = encodedPassword))
+        val encodedPassword = Base64.getEncoder().encodeToString(state.value.password.toByteArray())
+        postSideEffect(SetPasswordSideEffect.MoveToNext(password = encodedPassword.toString()))
     }
 }
 

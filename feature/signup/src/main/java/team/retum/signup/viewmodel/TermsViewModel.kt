@@ -11,6 +11,7 @@ import team.retum.signup.model.SignUpData
 import team.retum.usecase.usecase.student.PostSignUpUseCase
 import team.retum.usecase.usecase.user.GetDeviceTokenUseCase
 import java.net.URLDecoder
+import java.util.Base64
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +40,7 @@ internal class TermsViewModel @Inject constructor(
 
     internal fun onCompleteClick(signUpData: SignUpData) {
         with(signUpData) {
-            val decodedPassword = URLDecoder.decode(password, "UTF8")
+            val decodedPassword = String(Base64.getDecoder().decode(password))
             val decodedImageUrl = if (profileImageUrl.isNullOrEmpty()) {
                 null
             } else {
