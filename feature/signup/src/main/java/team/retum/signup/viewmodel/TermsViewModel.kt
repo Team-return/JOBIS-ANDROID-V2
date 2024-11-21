@@ -40,7 +40,7 @@ internal class TermsViewModel @Inject constructor(
 
     internal fun onCompleteClick(signUpData: SignUpData) {
         with(signUpData) {
-            val decodedPassword = String(Base64.getDecoder().decode(password))
+            val decodedPassword = String(Base64.getDecoder().decode(password), Charsets.UTF_8)
             val decodedImageUrl = if (profileImageUrl.isNullOrEmpty()) {
                 null
             } else {
