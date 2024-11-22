@@ -56,7 +56,7 @@ internal class SetPasswordViewModel @Inject constructor() :
     internal fun onNextClick() {
         setState { state.value.copy(buttonEnabled = false) }
         val encodedPassword = Base64.getEncoder().encodeToString(state.value.password.toByteArray(Charsets.UTF_8))
-        postSideEffect(SetPasswordSideEffect.MoveToNext(password = encodedPassword.toString()))
+        postSideEffect(SetPasswordSideEffect.MoveToNext(password = encodedPassword))
     }
 }
 
