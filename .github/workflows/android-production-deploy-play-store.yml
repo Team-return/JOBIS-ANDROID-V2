@@ -78,6 +78,7 @@ jobs:
           tag_name: ${{ steps.get_tag.outputs.name }}
           draft: false
           prerelease: false
+          generate_release_notes: true
 
       - name: Notify Discord on Success
         if: success()

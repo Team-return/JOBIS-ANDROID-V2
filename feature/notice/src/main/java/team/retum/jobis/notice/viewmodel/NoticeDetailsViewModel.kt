@@ -98,7 +98,7 @@ internal data class NoticeDetailsState(
                 title = "",
                 content = "",
                 createdAt = "",
-                attachments = emptyList(),
+                attachments = null,
             ),
             filePath = "",
         )
