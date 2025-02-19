@@ -50,6 +50,7 @@ triplet-play = "3.8.4"
 kotlin-ksp = "1.9.21-1.0.16"
 core-ktx = "1.15.0"
 appcompat = "1.7.0"
+tiles-tooling-preview = "1.4.1"
 
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
@@ -117,6 +118,7 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit-ktx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-tiles-tooling-preview = { group = "androidx.wear.tiles", name = "tiles-tooling-preview", version.ref = "tiles-tooling-preview" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

@@ -21,4 +21,5 @@ android {
 dependencies {
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.collections.immutable)
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.8")
 }
