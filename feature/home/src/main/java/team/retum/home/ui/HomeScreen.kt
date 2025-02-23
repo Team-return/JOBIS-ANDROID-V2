@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -28,7 +29,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,16 +36,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -61,7 +58,9 @@ import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.button.JobisSmallButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -81,6 +80,7 @@ internal fun Home(
     onAlarmClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
@@ -127,6 +127,7 @@ internal fun Home(
         onAlarmClick = onAlarmClick,
         onCompaniesClick = onCompaniesClick,
         onWinterInternClick = onWinterInternClick,
+        onEmploymentClick = onEmploymentClick,
         onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
         state = state,
         banners = state.banners.toPersistentList(),
@@ -150,6 +151,7 @@ private fun HomeScreen(
     scrollState: ScrollState,
     onAlarmClick: () -> Unit,
     onCompaniesClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
@@ -181,6 +183,7 @@ private fun HomeScreen(
             Banner(
                 state = state,
                 banners = banners,
+                onEmploymentClick = onEmploymentClick
             )
             StudentInformation(
                 modifier = Modifier.padding(
@@ -222,6 +225,7 @@ private fun HomeScreen(
 private fun Banner(
     state: HomeState,
     banners: ImmutableList<BannersEntity.BannerEntity>,
+    onEmploymentClick: () -> Unit,
 ) {
     val pagerState = rememberPagerState { banners.size + 1 }
     val coroutineScope = rememberCoroutineScope()
@@ -263,8 +267,7 @@ private fun Banner(
                 EmploymentRate(
                     term = state.term,
                     rate = state.rate,
-                    passCount = state.passCount,
-                    totalStudentCount = state.totalStudentCount,
+                    onEmploymentClick = onEmploymentClick
                 )
             } else {
                 AsyncImage(
@@ -303,8 +306,7 @@ private fun Banner(
 private fun EmploymentRate(
     term: Int,
     rate: String,
-    passCount: Long,
-    totalStudentCount: Long,
+    onEmploymentClick: () -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.padding(24.dp)) {
@@ -318,19 +320,14 @@ private fun EmploymentRate(
                 color = JobisTheme.colors.onPrimary,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
-                        append(stringResource(id = R.string.today))
-                    }
-                    withStyle(SpanStyle(JobisTheme.colors.inverseOnSurface)) {
-                        append(" $passCount/$totalStudentCount ")
-                    }
-                    withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
-                        append(stringResource(id = R.string.get_a_job))
-                    }
-                },
-                style = JobisTypography.Description,
+            JobisSmallButton(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .background(Color.Transparent)
+                    .fillMaxWidth(0.4f),
+                text = "현황 보러 가기 ->",
+                color = ButtonColor.Primary,
+                onClick = {},
             )
         }
         Image(
@@ -540,9 +537,16 @@ private fun ApplyStatus(
     }
 }
 
-@Preview
-@Composable
-fun screen() {
-
-}
+//@Preview
+//@Composable
+//fun Screen() {
+//    JobisDesignSystemV2Theme {
+//        EmploymentRate(
+//            term = 1,
+//            rate = "11",
+//            passCount = 2,
+//            totalStudentCount = 16,
+//        )
+//    }
+//}
 
