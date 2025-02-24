@@ -34,6 +34,7 @@ internal fun NavGraphBuilder.mainNavigation(
     ) {
         root(
             onAlarmClick = navigator::navigateToNotification,
+            onEmploymentClick = navigator::navigateToEmployment,
             onWinterInternClick = navigator::navigateToWinterIntern,
             onRecruitmentDetailsClick = navigator::navigateToRecruitmentDetails,
             onCompaniesClick = navigator::navigateToCompanies,

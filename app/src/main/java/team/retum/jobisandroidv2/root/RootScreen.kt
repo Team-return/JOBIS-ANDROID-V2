@@ -46,6 +46,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 internal fun Root(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
@@ -79,6 +80,7 @@ internal fun Root(
                 sheetState.show()
             }
         },
+        onEmploymentClick = onEmploymentClick,
         onWinterInternClick = onWinterInternClick,
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
         onCompaniesClick = onCompaniesClick,
@@ -112,6 +114,7 @@ private fun RootScreen(
     sheetState: ModalBottomSheetState,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -157,6 +160,7 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
+                    onEmploymentClick = onEmploymentClick,
                     onWinterInternClick = onWinterInternClick,
                     navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                     navigatedFromNotifications = navigatedFromNotifications,
