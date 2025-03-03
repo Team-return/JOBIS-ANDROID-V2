@@ -108,12 +108,12 @@ internal fun Home(
                 }
 
                 is HomeSideEffect.NotFoundApplication -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.toast_not_found_application),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_not_found_application),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
 
                 is HomeSideEffect.ScrollToApplication -> {
                     scrollState.animateScrollTo(it.sectionOneCoordinates)
@@ -327,7 +327,7 @@ private fun EmploymentRate(
                     .fillMaxWidth(0.4f),
                 text = "현황 보러 가기 ->",
                 color = ButtonColor.Primary,
-                onClick = {},
+                onClick = onEmploymentClick,
             )
         }
         Image(
@@ -536,17 +536,3 @@ private fun ApplyStatus(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun Screen() {
-//    JobisDesignSystemV2Theme {
-//        EmploymentRate(
-//            term = 1,
-//            rate = "11",
-//            passCount = 2,
-//            totalStudentCount = 16,
-//        )
-//    }
-//}
-

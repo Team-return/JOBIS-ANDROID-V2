@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="employment_status">취업 현황</string>
+
+    <string name="employment_completed">취업 완료</string>
+    <string name="before_employment">취업 전</string>
+</resources>

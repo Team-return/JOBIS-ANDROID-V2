@@ -1,20 +1,47 @@
 package team.retum.employment.viewmodel
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
+import team.retum.usecase.usecase.application.FetchEmploymentStatusUseCase
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 class EmploymentViewModel @Inject constructor(
-    // TODO : 필요로 하는 유즈케이스(데이터) 작성
+    private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
 ) : BaseViewModel<EmploymentState, EmploymentSideEffect>(EmploymentState.getDefaultState()) {
-
+    internal fun fetchEmploymentCount() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchEmploymentCountUseCase().onSuccess {
+                setState {
+                    val rate = if (it.passCount == 0L || it.totalStudentCount == 0L) {
+                        0f
+                    } else {
+                        it.passCount.toFloat() / it.totalStudentCount.toFloat() * 100f
+                    }
+                    state.value.copy(
+                        rate = DecimalFormat("##.#").format(rate),
+                        totalStudentCount = it.totalStudentCount,
+                        passCount = it.passCount,
+                    )
+                }
+            }
+        }
+    }
 }
 
 data class EmploymentState(
-    val employment: Int // TODO : 상태 보완 필요
+    val rate: String,
+    val totalStudentCount: Long,
+    val passCount: Long,
 ) {
     companion object {
         fun getDefaultState() = EmploymentState(
-            employment = 1
+            rate = "",
+            totalStudentCount = 0,
+            passCount = 0,
         )
     }
 }
