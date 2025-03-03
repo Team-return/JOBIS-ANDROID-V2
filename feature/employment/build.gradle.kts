@@ -9,8 +9,14 @@ apply<ComposeGradlePlugin>()
 
 android {
     namespace = "team.retum.employment"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
 }
 
 dependencies {
 
+    implementation(libs.androidx.ui.tooling.preview.android)
 }
