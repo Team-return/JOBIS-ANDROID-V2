@@ -53,10 +53,10 @@ android {
             )
         }
         debug {
-            splits.abi.isEnable = false
-            aaptOptions.cruncherEnabled = false
-            splits.density.isEnable = false
-            aaptOptions.cruncherEnabled = false
+//            splits.abi.isEnable = false
+//            aaptOptions.cruncherEnabled = false
+//            splits.density.isEnable = false
+//            aaptOptions.cruncherEnabled = false
         }
     }
     compileOptions {
