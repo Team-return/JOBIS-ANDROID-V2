@@ -6,6 +6,7 @@ import team.retum.bug.navigation.reportBug
 import team.retum.company.navigation.companies
 import team.retum.company.navigation.companyDetails
 import team.retum.company.navigation.searchCompanies
+import team.retum.employment.navigation.employment
 import team.retum.jobis.application.navigation.application
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.notice.navigation.noticeDetails
@@ -103,6 +104,10 @@ internal fun NavGraphBuilder.mainNavigation(
         reviews(
             navigator::popBackStackIfNotHome,
             navigateToReviewDetails = navigator::navigateToReviewDetails,
+        )
+        employment(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onClassClick = navigator::navigateToEmployment,
         )
     }
 }

@@ -39,7 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import team.retum.employment.R
+import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
@@ -48,20 +50,42 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
-fun Employment(percentage: Float) { // TODO :: 네비게이션 추가 및 부수
+fun Employment(
+    onBackPressed: () -> Unit,
+    onClassClick: () -> Unit,
+    rate: Float,
+    totalStudentCount: Long,
+    passCount: Long,
+    employmentViewModel: EmploymentViewModel = hiltViewModel()
+) { // TODO :: 네비게이션 추가 및 부수
 
-    val animatedValue = remember { Animatable(percentage) }
+    val animatedValue = remember { Animatable(rate) }
     LaunchedEffect(Unit) {
         animatedValue.animateTo(
-            targetValue = percentage,
+            targetValue = rate,
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing)
         )
+        with(employmentViewModel) {
+            fetchEmploymentCount()
+        }
     }
+
+    EmploymentScreen(
+        onBackPressed = onBackPressed,
+        onClassClick = onClassClick,
+        rate = rate,
+        totalStudentCount = totalStudentCount,
+        passCount = passCount,
+    )
 }
 
 @Composable
 fun EmploymentScreen(
     onBackPressed: () -> Unit,
+    onClassClick: () -> Unit,
+    rate: Float,
+    totalStudentCount: Long,
+    passCount: Long,
 ) { // TODO :: UI 퍼블리싱
     Column(
         modifier = Modifier
@@ -148,8 +172,12 @@ fun EmploymentScreen(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    CircleProgress(80f)
-                    Spacer(modifier = Modifier.padding(start = 16.dp, end = 20.dp).width(1.dp).height(30.dp).background(JobisTheme.colors.error))
+                    CircleProgress(percentage = rate)
+                    Spacer(modifier = Modifier
+                        .padding(start = 16.dp, end = 20.dp)
+                        .width(1.dp)
+                        .height(30.dp)
+                        .background(JobisTheme.colors.surfaceVariant))
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
@@ -161,12 +189,61 @@ fun EmploymentScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         JobisText(
-                            text = "59/64명",
+                            text = "$passCount/$totalStudentCount",
                             style = JobisTypography.HeadLine,
                             color = JobisTheme.colors.onPrimary
                         )
                     }
                 }
+            }
+        }
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+        ) {
+            JobisText(
+                modifier = Modifier
+                    .padding(vertical = 8.dp),
+                text = stringResource(id = R.string.check_employment_status),
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onSurfaceVariant
+            )
+        }
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                ClassEmploymentButton(
+                    onClassClick = onClassClick,
+                    image = team.retum.design_system.R.drawable.ic_computer,
+                    text = "1반",
+                )
+                ClassEmploymentButton(
+                    onClassClick = onClassClick,
+                    image = team.retum.design_system.R.drawable.ic_computer,
+                    text = "2반",
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                ClassEmploymentButton(
+                    onClassClick = onClassClick,
+                    image = team.retum.design_system.R.drawable.ic_spanner,
+                    text = "3반",
+                )
+                ClassEmploymentButton(
+                    onClassClick = onClassClick,
+                    image = team.retum.design_system.R.drawable.ic_robot,
+                    text = "4반",
+                )
             }
         }
     }
@@ -234,37 +311,51 @@ fun CircleProgress(
 fun ClassEmploymentButton(
     onClassClick: () -> Unit,
     @DrawableRes image: Int,
-    description: String,
+    description: String = "",
     text: String,
 ) {
-    Surface (
+    Surface(
+        modifier = Modifier.padding(),
         onClick = onClassClick,
         color = JobisTheme.colors.inverseSurface,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     ) {
-        Column {
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(start = 34.dp, end = 34.dp, top = 20.dp)
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(1000.dp)),
-                painter = painterResource(image),
-                contentDescription = description,
-                tint = Color.Unspecified
-            )
+        Column(
+            modifier = Modifier.background(color = JobisTheme.colors.inverseSurface)
+        ) {
+            Column(
+                modifier = Modifier.padding(top = 20.dp, start = 34.dp, end = 34.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .background(JobisTheme.colors.background),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(48.dp),
+                        painter = painterResource(image),
+                        contentDescription = description,
+                        tint = Color.Unspecified
+                    )
+                }
+            }
             Surface(
+                color = JobisTheme.colors.surfaceTint,
+                shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
-                    .padding(top = 20.dp, bottom = 16.dp, start = 16.dp)
-                    .clip(RoundedCornerShape(12.dp)),
-                color = JobisTheme.colors.onSurfaceVariant,
+                    .padding(top = 16.dp, start = 12.dp, bottom = 12.dp),
             ) {
                 JobisText(
-                    modifier = Modifier
-                        .padding(vertical = 10.dp, horizontal = 16.dp),
                     text = text,
                     style = JobisTypography.SubBody,
-                    color = JobisTheme.colors.background
+                    color = JobisTheme.colors.background,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
         }
@@ -275,6 +366,25 @@ fun ClassEmploymentButton(
 @Composable
 fun EmploymentPreview() {
     JobisDesignSystemV2Theme {
-        EmploymentScreen(onBackPressed = {})
+        EmploymentScreen(
+            onBackPressed = {},
+            onClassClick = {},
+            rate = 11f,
+            passCount = 5,
+            totalStudentCount = 64
+        )
+    }
+}
+
+@Preview
+@Composable
+fun Preview() {
+    JobisDesignSystemV2Theme {
+        ClassEmploymentButton(
+            onClassClick = {},
+            image = team.retum.design_system.R.drawable.ic_computer,
+            description = "",
+            text = "1반"
+        )
     }
 }

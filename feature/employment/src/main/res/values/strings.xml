@@ -4,4 +4,6 @@
 
     <string name="employment_completed">취업 완료</string>
     <string name="before_employment">취업 전</string>
+    
+    <string name="check_employment_status">반별 취업 현황 확인하기</string>
 </resources>
