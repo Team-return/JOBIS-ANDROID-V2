@@ -1,5 +1,7 @@
 package team.retum.common.utils
 
+import android.provider.Telephony.Mms.Rate
+
 object ResourceKeys {
     const val ACCESS_TOKEN = "accessToken"
     const val ACCESS_EXPIRES_AT = "accessExpiresAt"
@@ -21,4 +23,7 @@ object ResourceKeys {
     const val IS_WINTER_INTERN = "isWinterIntern"
     const val EMAIL = "@dsm.hs.kr"
     const val DATABASE_NAME = "jobis-database"
+    const val RATE = "employmentRate"
+    const val TOTAL_STUDENT_COUNT = "totalStudentCount"
+    const val PASS_COUNT = "passCount"
 }
