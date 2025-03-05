@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
-import team.retum.usecase.usecase.application.FetchEmploymentStatusUseCase
 import java.text.DecimalFormat
 import javax.inject.Inject
 

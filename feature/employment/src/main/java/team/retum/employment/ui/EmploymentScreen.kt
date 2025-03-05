@@ -369,8 +369,8 @@ fun EmploymentPreview() {
         EmploymentScreen(
             onBackPressed = {},
             onClassClick = {},
-            rate = 11f,
-            passCount = 5,
+            rate = 9f,
+            passCount = 6,
             totalStudentCount = 64
         )
     }
