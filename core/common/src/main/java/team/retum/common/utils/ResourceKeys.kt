@@ -1,7 +1,5 @@
 package team.retum.common.utils
 
-import android.provider.Telephony.Mms.Rate
-
 object ResourceKeys {
     const val ACCESS_TOKEN = "accessToken"
     const val ACCESS_EXPIRES_AT = "accessExpiresAt"

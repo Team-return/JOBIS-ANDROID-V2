@@ -1,18 +1,19 @@
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
+    id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.kotlin.ksp.get().pluginId)
+    id(libs.plugins.ktlint.gradle.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
 apply<ComposeGradlePlugin>()
 
 android {
-    namespace = "team.retum.employment"
+    namespace = "team.retum.jobis.employment"
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+    kotlinOptions {
+        jvmTarget = ProjectProperties.JVM_TARGET
     }
 }
 
