@@ -9,7 +9,7 @@ import team.retum.usecase.usecase.application.FetchEmploymentStatusUseCase
 import javax.inject.Inject
 
 class EmploymentDetailViewModel @Inject constructor(
-    private val fetchEmploymentStatusUseCase: FetchEmploymentStatusUseCase
+    private val fetchEmploymentStatusUseCase: FetchEmploymentStatusUseCase,
 ) : BaseViewModel<EmploymentDetailState, EmploymentDetailSideEffect>(EmploymentDetailState.getDefaultState()) {
     internal fun fetchEmploymentStatus() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -20,10 +20,10 @@ class EmploymentDetailViewModel @Inject constructor(
                             classInfo.employmentRateList.map { employmentRate ->
                                 CompanyItem(
                                     companyName = employmentRate.companyName,
-                                    logoUrl = employmentRate.logoUrl
+                                    logoUrl = employmentRate.logoUrl,
                                 )
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -35,7 +35,7 @@ data class EmploymentDetailState(
     val classId: Long,
     val totalStudent: Long,
     val passStudent: Long,
-    val companyInfo: List<CompanyItem>
+    val companyInfo: List<CompanyItem>,
 ) {
     companion object {
         fun getDefaultState() = EmploymentDetailState(
@@ -45,7 +45,6 @@ data class EmploymentDetailState(
             companyInfo = emptyList(),
         )
     }
-
 }
 
 sealed interface EmploymentDetailSideEffect {

@@ -39,8 +39,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import team.retum.employment.R
 import team.retum.employment.viewmodel.EmploymentViewModel
+import team.retum.jobis.employment.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -54,14 +54,14 @@ fun Employment(
     rate: Float,
     totalStudentCount: Long,
     passCount: Long,
-    employmentViewModel: EmploymentViewModel = hiltViewModel()
+    employmentViewModel: EmploymentViewModel = hiltViewModel(),
 ) { // TODO :: 네비게이션 추가 및 부수
 
     val animatedValue = remember { Animatable(rate) }
     LaunchedEffect(Unit) {
         animatedValue.animateTo(
             targetValue = rate,
-            animationSpec = tween(durationMillis = 1000, easing = LinearEasing)
+            animationSpec = tween(durationMillis = 1000, easing = LinearEasing),
         )
         with(employmentViewModel) {
             fetchEmploymentCount()
@@ -88,7 +88,7 @@ fun EmploymentScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
+            .background(JobisTheme.colors.background),
     ) {
         JobisSmallTopAppBar(
             title = stringResource(id = R.string.employment_status),
@@ -102,7 +102,7 @@ fun EmploymentScreen(
                     vertical = 12.dp,
                 )
                 .clip(RoundedCornerShape(12.dp))
-                .background(JobisTheme.colors.inverseSurface)
+                .background(JobisTheme.colors.inverseSurface),
         ) {
             Column(
                 modifier = Modifier
@@ -111,14 +111,14 @@ fun EmploymentScreen(
                         top = 20.dp,
                         start = 16.dp,
                         end = 16.dp,
-                    )
+                    ),
             ) {
                 Row {
                     JobisText(
                         text = stringResource(id = R.string.employment_status),
                         style = JobisTypography.SubBody,
                         color = JobisTheme.colors.onPrimary,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
                     )
                     Spacer(modifier = Modifier.fillMaxWidth(0.78f))
                     Column(
@@ -133,14 +133,14 @@ fun EmploymentScreen(
                                         color = JobisTheme.colors.onPrimary,
                                         shape = CircleShape,
                                     )
-                                    .align(Alignment.CenterVertically)
+                                    .align(Alignment.CenterVertically),
                             )
                             Spacer(modifier = Modifier.size(6.dp))
                             JobisText(
                                 text = stringResource(id = R.string.employment_completed),
                                 style = JobisTypography.Caption,
                                 textAlign = TextAlign.End,
-                                color = JobisTheme.colors.onPrimary
+                                color = JobisTheme.colors.onPrimary,
                             )
                         }
                         Row {
@@ -151,14 +151,14 @@ fun EmploymentScreen(
                                         color = JobisTheme.colors.secondaryContainer,
                                         shape = CircleShape,
                                     )
-                                    .align(Alignment.CenterVertically)
+                                    .align(Alignment.CenterVertically),
                             )
                             Spacer(modifier = Modifier.size(6.dp))
                             JobisText(
                                 text = stringResource(id = R.string.before_employment),
                                 style = JobisTypography.Caption,
                                 textAlign = TextAlign.End,
-                                color = JobisTheme.colors.onSurfaceVariant
+                                color = JobisTheme.colors.onSurfaceVariant,
                             )
                         }
                     }
@@ -281,7 +281,7 @@ fun CircleProgress(
                 size = Size(arcRadius * 2, arcRadius * 2),
                 topLeft = Offset(
                     (size.width - arcRadius * 2) / 2,
-                    (size.height - arcRadius * 2) / 2
+                    (size.height - arcRadius * 2) / 2,
                 ),
             )
 
@@ -294,7 +294,7 @@ fun CircleProgress(
                 size = Size(arcRadius * 2, arcRadius * 2),
                 topLeft = Offset(
                     (size.width - arcRadius * 2) / 2,
-                    (size.height - arcRadius * 2) / 2
+                    (size.height - arcRadius * 2) / 2,
                 ),
             )
         }
@@ -302,7 +302,7 @@ fun CircleProgress(
         JobisText(
             text = "${animatedValue.value.toInt()}%",
             style = JobisTypography.Body,
-            color = JobisTheme.colors.onPrimary
+            color = JobisTheme.colors.onPrimary,
         )
     }
 }

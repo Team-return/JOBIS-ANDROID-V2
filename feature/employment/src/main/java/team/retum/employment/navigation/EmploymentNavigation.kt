@@ -15,12 +15,12 @@ fun NavGraphBuilder.employment(
     onClassClick: () -> Unit,
 ) {
     composable(
-        route = "$NAVIGATION_EMPLOYMENT/${ResourceKeys}",
+        route = "$NAVIGATION_EMPLOYMENT/$ResourceKeys",
         arguments = listOf(
-            navArgument(ResourceKeys.RATE) { NavType.FloatType},
-            navArgument(ResourceKeys.TOTAL_STUDENT_COUNT) { NavType.LongType},
-            navArgument(ResourceKeys.PASS_COUNT) { NavType.LongType }
-        )
+            navArgument(ResourceKeys.RATE) { NavType.FloatType },
+            navArgument(ResourceKeys.TOTAL_STUDENT_COUNT) { NavType.LongType },
+            navArgument(ResourceKeys.PASS_COUNT) { NavType.LongType },
+        ),
     ) {
         val rate = it.arguments?.getFloat(ResourceKeys.RATE) ?: 0f
         val totalStudentCount = it.arguments?.getLong(ResourceKeys.RATE) ?: 0
@@ -30,7 +30,7 @@ fun NavGraphBuilder.employment(
             onClassClick = onClassClick,
             rate = rate,
             totalStudentCount = totalStudentCount,
-            passCount = passCount
+            passCount = passCount,
         )
     }
 }

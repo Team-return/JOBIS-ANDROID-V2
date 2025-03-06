@@ -108,12 +108,12 @@ internal fun Home(
                 }
 
                 is HomeSideEffect.NotFoundApplication -> {
-                JobisToast.create(
-                    context = context,
-                    message = context.getString(R.string.toast_not_found_application),
-                    drawable = JobisIcon.Error,
-                ).show()
-            }
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_not_found_application),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
 
                 is HomeSideEffect.ScrollToApplication -> {
                     scrollState.animateScrollTo(it.sectionOneCoordinates)
@@ -183,7 +183,7 @@ private fun HomeScreen(
             Banner(
                 state = state,
                 banners = banners,
-                onEmploymentClick = onEmploymentClick
+                onEmploymentClick = onEmploymentClick,
             )
             StudentInformation(
                 modifier = Modifier.padding(
@@ -267,7 +267,7 @@ private fun Banner(
                 EmploymentRate(
                     term = state.term,
                     rate = state.rate,
-                    onEmploymentClick = onEmploymentClick
+                    onEmploymentClick = onEmploymentClick,
                 )
             } else {
                 AsyncImage(
@@ -306,7 +306,7 @@ private fun Banner(
 private fun EmploymentRate(
     term: Int,
     rate: String,
-    onEmploymentClick: () -> Unit
+    onEmploymentClick: () -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.padding(24.dp)) {

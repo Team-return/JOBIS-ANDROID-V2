@@ -3,8 +3,8 @@ package team.retum.usecase.entity.application
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.application.FetchEmploymentStatusResponse
 
-data class EmploymentStatusEntity (
-    val classes: List<ClassEmploymentStatusEntity>
+data class EmploymentStatusEntity(
+    val classes: List<ClassEmploymentStatusEntity>,
 ) {
     data class ClassEmploymentStatusEntity(
         val classId: Int,
@@ -21,7 +21,7 @@ data class EmploymentStatusEntity (
 }
 
 internal fun FetchEmploymentStatusResponse.toEntity() = EmploymentStatusEntity(
-    classes = this.classes.map { it.toEntity() } // TODO :: 이 구조 이해 필요
+    classes = this.classes.map { it.toEntity() }, // TODO :: 이 구조 이해 필요
 )
 
 private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.toEntity() =
@@ -29,7 +29,7 @@ private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.toEntity
         classId = this.classId,
         employmentRateList = this.employmentRateList.map { it.toEntity() },
         totalStudents = this.totalStudents,
-        passedStudents = this.passedStudents
+        passedStudents = this.passedStudents,
     )
 
 private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.GetEmploymentRateList.toEntity() =

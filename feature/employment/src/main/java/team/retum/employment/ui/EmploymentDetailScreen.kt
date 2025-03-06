@@ -13,13 +13,12 @@ import team.retum.employment.viewmodel.EmploymentDetailViewModel
 
 @Composable
 fun EmploymentDetail(
-    employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel()
+    employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     EmploymentDetailScreen(
-        companyItem = emptyList()
+        companyItem = emptyList(),
     )
 }
-
 
 @Composable
 fun EmploymentDetailScreen(
@@ -27,23 +26,19 @@ fun EmploymentDetailScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
-        val arr: List<CompanyItem> = listOf(CompanyItem(
-            companyName = "",
-            logoUrl = ""
-        ))
+        val arr: List<CompanyItem> = listOf(
+            CompanyItem(
+                companyName = "",
+                logoUrl = "",
+            ),
+        )
         LazyHorizontalGrid(
-            rows = GridCells.Fixed(4)
+            rows = GridCells.Fixed(4),
         ) {
             items(items = arr) { person ->
-
             }
         }
     }
-}
-
-@Composable
-fun CompanyIcon() {
-    
 }
