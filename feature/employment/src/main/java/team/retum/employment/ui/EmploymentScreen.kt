@@ -36,15 +36,13 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import team.retum.employment.R
 import team.retum.employment.viewmodel.EmploymentViewModel
-import team.retum.jobis.employment.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
-import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -173,14 +171,16 @@ fun EmploymentScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     CircleProgress(percentage = rate)
-                    Spacer(modifier = Modifier
-                        .padding(start = 16.dp, end = 20.dp)
-                        .width(1.dp)
-                        .height(30.dp)
-                        .background(JobisTheme.colors.surfaceVariant))
+                    Spacer(
+                        modifier = Modifier
+                            .padding(start = 16.dp, end = 20.dp)
+                            .width(1.dp)
+                            .height(30.dp)
+                            .background(JobisTheme.colors.surfaceVariant),
+                    )
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.Center,
                     ) {
                         JobisText(
                             text = "전체 통계",
@@ -191,7 +191,7 @@ fun EmploymentScreen(
                         JobisText(
                             text = "$passCount/$totalStudentCount",
                             style = JobisTypography.HeadLine,
-                            color = JobisTheme.colors.onPrimary
+                            color = JobisTheme.colors.onPrimary,
                         )
                     }
                 }
@@ -199,25 +199,25 @@ fun EmploymentScreen(
         }
         Column(
             modifier = Modifier
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp),
         ) {
             JobisText(
                 modifier = Modifier
                     .padding(vertical = 8.dp),
                 text = stringResource(id = R.string.check_employment_status),
                 style = JobisTypography.Description,
-                color = JobisTheme.colors.onSurfaceVariant
+                color = JobisTheme.colors.onSurfaceVariant,
             )
         }
         Column(
             modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 ClassEmploymentButton(
                     onClassClick = onClassClick,
@@ -232,7 +232,7 @@ fun EmploymentScreen(
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 ClassEmploymentButton(
                     onClassClick = onClassClick,
@@ -256,18 +256,18 @@ fun CircleProgress(
     radius: Dp = 120.dp,
     strokeWidth: Dp = 25.dp,
     primaryColor: Color = JobisTheme.colors.secondaryContainer,
-    secondaryColor: Color = JobisTheme.colors.onPrimary
+    secondaryColor: Color = JobisTheme.colors.onPrimary,
 ) {
     val animatedValue = remember { Animatable(percentage) }
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.size(radius)
+        modifier = modifier.size(radius),
     ) {
         Canvas(
             modifier = Modifier
                 .size(radius)
-                .scale(scaleX = -1f, scaleY = 1f)
+                .scale(scaleX = -1f, scaleY = 1f),
         ) {
             val canvasSize = size.minDimension
             val arcRadius = canvasSize / 2 - strokeWidth.toPx() / 2
@@ -282,7 +282,7 @@ fun CircleProgress(
                 topLeft = Offset(
                     (size.width - arcRadius * 2) / 2,
                     (size.height - arcRadius * 2) / 2
-                )
+                ),
             )
 
             drawArc(
@@ -295,7 +295,7 @@ fun CircleProgress(
                 topLeft = Offset(
                     (size.width - arcRadius * 2) / 2,
                     (size.height - arcRadius * 2) / 2
-                )
+                ),
             )
         }
 
@@ -321,26 +321,26 @@ fun ClassEmploymentButton(
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier = Modifier.background(color = JobisTheme.colors.inverseSurface)
+            modifier = Modifier.background(color = JobisTheme.colors.inverseSurface),
         ) {
             Column(
                 modifier = Modifier.padding(top = 20.dp, start = 34.dp, end = 34.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
                         .clip(CircleShape)
                         .background(JobisTheme.colors.background),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         modifier = Modifier
                             .size(48.dp),
                         painter = painterResource(image),
                         contentDescription = description,
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
                 }
             }
@@ -355,36 +355,9 @@ fun ClassEmploymentButton(
                     style = JobisTypography.SubBody,
                     color = JobisTheme.colors.background,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun EmploymentPreview() {
-    JobisDesignSystemV2Theme {
-        EmploymentScreen(
-            onBackPressed = {},
-            onClassClick = {},
-            rate = 9f,
-            passCount = 6,
-            totalStudentCount = 64
-        )
-    }
-}
-
-@Preview
-@Composable
-fun Preview() {
-    JobisDesignSystemV2Theme {
-        ClassEmploymentButton(
-            onClassClick = {},
-            image = team.retum.design_system.R.drawable.ic_computer,
-            description = "",
-            text = "1반"
-        )
     }
 }
