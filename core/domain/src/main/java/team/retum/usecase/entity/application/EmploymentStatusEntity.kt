@@ -21,7 +21,7 @@ data class EmploymentStatusEntity(
 }
 
 internal fun FetchEmploymentStatusResponse.toEntity() = EmploymentStatusEntity(
-    classes = this.classes.map { it.toEntity() }, // TODO :: 이 구조 이해 필요
+    classes = this.classes.map { it.toEntity() },
 )
 
 private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.toEntity() =

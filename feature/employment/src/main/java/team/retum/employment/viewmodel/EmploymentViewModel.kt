@@ -45,7 +45,7 @@ data class EmploymentState(
     }
 }
 
-sealed interface EmploymentSideEffect { // 익셉션의 집합
+sealed interface EmploymentSideEffect {
     data object BadRequest : EmploymentSideEffect
     data object Success : EmploymentSideEffect
 }

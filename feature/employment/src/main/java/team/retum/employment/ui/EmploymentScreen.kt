@@ -55,7 +55,7 @@ fun Employment(
     totalStudentCount: Long,
     passCount: Long,
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
-) { // TODO :: 네비게이션 추가 및 부수
+) {
 
     val animatedValue = remember { Animatable(rate) }
     LaunchedEffect(Unit) {
@@ -84,7 +84,7 @@ fun EmploymentScreen(
     rate: Float,
     totalStudentCount: Long,
     passCount: Long,
-) { // TODO :: UI 퍼블리싱
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()

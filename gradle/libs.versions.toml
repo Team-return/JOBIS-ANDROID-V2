@@ -119,8 +119,6 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit-ktx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-tiles-tooling-preview = { group = "androidx.wear.tiles", name = "tiles-tooling-preview", version.ref = "tiles-tooling-preview" }
-androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "ui-tooling-preview-android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
