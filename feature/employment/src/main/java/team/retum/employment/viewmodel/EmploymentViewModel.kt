@@ -1,6 +1,7 @@
 package team.retum.employment.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
@@ -8,6 +9,7 @@ import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
 import java.text.DecimalFormat
 import javax.inject.Inject
 
+@HiltViewModel
 class EmploymentViewModel @Inject constructor(
     private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
 ) : BaseViewModel<EmploymentState, EmploymentSideEffect>(EmploymentState.getDefaultState()) {

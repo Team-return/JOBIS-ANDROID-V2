@@ -56,7 +56,6 @@ fun Employment(
     passCount: Long,
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
 ) {
-
     val animatedValue = remember { Animatable(rate) }
     LaunchedEffect(Unit) {
         animatedValue.animateTo(
