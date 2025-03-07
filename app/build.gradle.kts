@@ -13,11 +13,11 @@ plugins {
 }
 
 android {
-    namespace = "team.retum.jobisandroidv2"
+    namespace = "team.retum.jobis"
     compileSdk = ProjectProperties.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "team.retum.jobisandroidv2"
+        applicationId = "team.retum.jobis"
         minSdk = ProjectProperties.MIN_SDK
         targetSdk = ProjectProperties.TARGET_SDK
         versionCode = ProjectProperties.VERSION_CODE
