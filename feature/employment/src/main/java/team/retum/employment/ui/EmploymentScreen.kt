@@ -182,7 +182,7 @@ fun EmploymentScreen(
                         verticalArrangement = Arrangement.Center,
                     ) {
                         JobisText(
-                            text = "전체 통계",
+                            text = stringResource(R.string.all_statistics),
                             style = JobisTypography.Body,
                             color = JobisTheme.colors.onPrimaryContainer,
                         )

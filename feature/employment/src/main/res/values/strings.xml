@@ -6,4 +6,6 @@
     <string name="before_employment">취업 전</string>
     
     <string name="check_employment_status">반별 취업 현황 확인하기</string>
+
+    <string name="all_statistics">전체 통계</string>
 </resources>
