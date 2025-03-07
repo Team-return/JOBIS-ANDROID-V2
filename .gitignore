@@ -36,3 +36,5 @@ google-cloud-platform.json
 *.hprof
 
 .DS_Store
+
+*.aab
