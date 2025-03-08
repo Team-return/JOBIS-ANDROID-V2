@@ -103,21 +103,11 @@ fun EmploymentScreen(
                 .clip(RoundedCornerShape(12.dp))
                 .background(JobisTheme.colors.inverseSurface),
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 20.dp,
-                        start = 16.dp,
-                        end = 16.dp,
-                    ),
-            ) {
-                EmploymentCard(
-                    passCount = passCount,
-                    totalStudentCount = totalStudentCount,
-                    rate = rate,
-                )
-            }
+            EmploymentRate(
+                passCount = passCount,
+                totalStudentCount = totalStudentCount,
+                rate = rate,
+            )
         }
         Column(
             modifier = Modifier
@@ -131,132 +121,108 @@ fun EmploymentScreen(
                 color = JobisTheme.colors.onSurfaceVariant,
             )
         }
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                ClassEmploymentButton(
-                    onClassClick = onClassClick,
-                    image = team.retum.design_system.R.drawable.ic_computer,
-                    text = "1반",
-                )
-                ClassEmploymentButton(
-                    onClassClick = onClassClick,
-                    image = team.retum.design_system.R.drawable.ic_computer,
-                    text = "2반",
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                ClassEmploymentButton(
-                    onClassClick = onClassClick,
-                    image = team.retum.design_system.R.drawable.ic_spanner,
-                    text = "3반",
-                )
-                ClassEmploymentButton(
-                    onClassClick = onClassClick,
-                    image = team.retum.design_system.R.drawable.ic_robot,
-                    text = "4반",
-                )
-            }
-        }
+        ClassRate(
+            onClassClick = onClassClick
+        )
     }
 }
 
 @Composable
-fun EmploymentCard(
+fun EmploymentRate(
     rate: String,
     totalStudentCount: Long,
     passCount: Long,
 ) {
-    Row {
-        JobisText(
-            text = stringResource(id = R.string.employment_status),
-            style = JobisTypography.SubBody,
-            color = JobisTheme.colors.onPrimary,
-            textAlign = TextAlign.Start,
-        )
-        Spacer(modifier = Modifier.fillMaxWidth(0.78f))
-        Column(
-            verticalArrangement = Arrangement
-                .spacedBy(space = 4.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 20.dp,
+                start = 16.dp,
+                end = 16.dp,
+            ),
+    ) {
+        Row {
+            JobisText(
+                text = stringResource(id = R.string.employment_status),
+                style = JobisTypography.SubBody,
+                color = JobisTheme.colors.onPrimary,
+                textAlign = TextAlign.Start,
+            )
+            Spacer(modifier = Modifier.fillMaxWidth(0.78f))
+            Column(
+                verticalArrangement = Arrangement
+                    .spacedBy(space = 4.dp),
+            ) {
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .background(
+                                color = JobisTheme.colors.onPrimary,
+                                shape = CircleShape,
+                            )
+                            .align(Alignment.CenterVertically),
+                    )
+                    Spacer(modifier = Modifier.size(6.dp))
+                    JobisText(
+                        text = stringResource(id = R.string.employment_completed),
+                        style = JobisTypography.Caption,
+                        textAlign = TextAlign.End,
+                        color = JobisTheme.colors.onPrimary,
+                    )
+                }
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .background(
+                                color = JobisTheme.colors.secondaryContainer,
+                                shape = CircleShape,
+                            )
+                            .align(Alignment.CenterVertically),
+                    )
+                    Spacer(modifier = Modifier.size(6.dp))
+                    JobisText(
+                        text = stringResource(id = R.string.before_employment),
+                        style = JobisTypography.Caption,
+                        textAlign = TextAlign.End,
+                        color = JobisTheme.colors.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 34.dp, bottom = 82.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row {
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(
-                            color = JobisTheme.colors.onPrimary,
-                            shape = CircleShape,
-                        )
-                        .align(Alignment.CenterVertically),
-                )
-                Spacer(modifier = Modifier.size(6.dp))
+            CircleProgress(percentage = rate)
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 20.dp)
+                    .width(1.dp)
+                    .height(30.dp)
+                    .background(JobisTheme.colors.surfaceVariant),
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
                 JobisText(
-                    text = stringResource(id = R.string.employment_completed),
-                    style = JobisTypography.Caption,
-                    textAlign = TextAlign.End,
+                    text = stringResource(R.string.all_statistics),
+                    style = JobisTypography.Body,
+                    color = JobisTheme.colors.onPrimaryContainer,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                JobisText(
+                    text = "$passCount/$totalStudentCount",
+                    style = JobisTypography.HeadLine,
                     color = JobisTheme.colors.onPrimary,
                 )
             }
-            Row {
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(
-                            color = JobisTheme.colors.secondaryContainer,
-                            shape = CircleShape,
-                        )
-                        .align(Alignment.CenterVertically),
-                )
-                Spacer(modifier = Modifier.size(6.dp))
-                JobisText(
-                    text = stringResource(id = R.string.before_employment),
-                    style = JobisTypography.Caption,
-                    textAlign = TextAlign.End,
-                    color = JobisTheme.colors.onSurfaceVariant,
-                )
-            }
-        }
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 34.dp, bottom = 82.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        CircleProgress(percentage = rate)
-        Spacer(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 20.dp)
-                .width(1.dp)
-                .height(30.dp)
-                .background(JobisTheme.colors.surfaceVariant),
-        )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            JobisText(
-                text = stringResource(R.string.all_statistics),
-                style = JobisTypography.Body,
-                color = JobisTheme.colors.onPrimaryContainer,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            JobisText(
-                text = "$passCount/$totalStudentCount",
-                style = JobisTypography.HeadLine,
-                color = JobisTheme.colors.onPrimary,
-            )
         }
     }
 }
@@ -370,6 +336,49 @@ fun ClassEmploymentButton(
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ClassRate(
+    onClassClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 24.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            ClassEmploymentButton(
+                onClassClick = onClassClick,
+                image = team.retum.design_system.R.drawable.ic_computer,
+                text = "1반",
+            )
+            ClassEmploymentButton(
+                onClassClick = onClassClick,
+                image = team.retum.design_system.R.drawable.ic_computer,
+                text = "2반",
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            ClassEmploymentButton(
+                onClassClick = onClassClick,
+                image = team.retum.design_system.R.drawable.ic_spanner,
+                text = "3반",
+            )
+            ClassEmploymentButton(
+                onClassClick = onClassClick,
+                image = team.retum.design_system.R.drawable.ic_robot,
+                text = "4반",
+            )
         }
     }
 }
