@@ -13,7 +13,7 @@ import team.retum.usecase.usecase.application.FetchEmploymentStatusUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class EmploymentDetailViewModel @Inject constructor(
+internal class EmploymentDetailViewModel @Inject constructor(
     private val fetchEmploymentStatusUseCase: FetchEmploymentStatusUseCase,
 ) : BaseViewModel<EmploymentDetailState, EmploymentDetailSideEffect>(EmploymentDetailState.getDefaultState()) {
     internal fun fetchEmploymentStatus() {
@@ -36,7 +36,7 @@ class EmploymentDetailViewModel @Inject constructor(
     }
 }
 
-data class EmploymentDetailState(
+internal data class EmploymentDetailState(
     val classId: Long,
     val totalStudent: Long,
     val passStudent: Long,
@@ -52,7 +52,7 @@ data class EmploymentDetailState(
     }
 }
 
-sealed interface EmploymentDetailSideEffect {
+internal sealed interface EmploymentDetailSideEffect {
     data object BadRequest : EmploymentDetailSideEffect
     data object Success : EmploymentDetailSideEffect
 }

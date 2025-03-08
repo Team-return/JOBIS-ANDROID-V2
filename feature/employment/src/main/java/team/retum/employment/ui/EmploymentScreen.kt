@@ -50,7 +50,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
-fun Employment(
+internal fun Employment(
     onBackPressed: () -> Unit,
     onClassClick: () -> Unit,
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
@@ -77,7 +77,7 @@ fun Employment(
 }
 
 @Composable
-fun EmploymentScreen(
+private fun EmploymentScreen(
     onBackPressed: () -> Unit,
     onClassClick: () -> Unit,
     rate: String,
@@ -122,13 +122,13 @@ fun EmploymentScreen(
             )
         }
         ClassRate(
-            onClassClick = onClassClick
+            onClassClick = onClassClick,
         )
     }
 }
 
 @Composable
-fun EmploymentRate(
+private fun EmploymentRate(
     rate: String,
     totalStudentCount: Long,
     passCount: Long,
@@ -228,7 +228,7 @@ fun EmploymentRate(
 }
 
 @Composable
-fun CircleProgress(
+private fun CircleProgress(
     percentage: String,
     modifier: Modifier = Modifier,
     radius: Dp = 120.dp,
@@ -286,7 +286,7 @@ fun CircleProgress(
 }
 
 @Composable
-fun ClassEmploymentButton(
+private fun ClassEmploymentButton(
     onClassClick: () -> Unit,
     @DrawableRes image: Int,
     description: String = "",
@@ -341,7 +341,7 @@ fun ClassEmploymentButton(
 }
 
 @Composable
-fun ClassRate(
+private fun ClassRate(
     onClassClick: () -> Unit,
 ) {
     Column(
