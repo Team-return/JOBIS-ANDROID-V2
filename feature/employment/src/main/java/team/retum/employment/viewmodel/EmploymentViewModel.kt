@@ -10,7 +10,7 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 
 @HiltViewModel
-class EmploymentViewModel @Inject constructor(
+internal class EmploymentViewModel @Inject constructor(
     private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
 ) : BaseViewModel<EmploymentState, EmploymentSideEffect>(EmploymentState.getDefaultState()) {
     internal fun fetchEmploymentCount() {
@@ -37,7 +37,7 @@ class EmploymentViewModel @Inject constructor(
     }
 }
 
-data class EmploymentState(
+internal data class EmploymentState(
     val rate: String,
     val totalStudentCount: Long,
     val passCount: Long,
@@ -51,6 +51,6 @@ data class EmploymentState(
     }
 }
 
-sealed interface EmploymentSideEffect {
+internal sealed interface EmploymentSideEffect {
     data object FetchEmploymentCountError : EmploymentSideEffect
 }

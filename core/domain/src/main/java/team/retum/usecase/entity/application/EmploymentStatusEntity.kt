@@ -32,7 +32,7 @@ private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.toEntity
         passedStudents = this.passedStudents,
     )
 
-private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.GetEmploymentRateList.toEntity() =
+private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.FetchEmploymentRate.toEntity() =
     EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList(
         id = this.id,
         companyName = this.companyName,

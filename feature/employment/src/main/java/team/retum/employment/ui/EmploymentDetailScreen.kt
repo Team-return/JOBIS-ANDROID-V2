@@ -12,7 +12,7 @@ import team.retum.employment.model.CompanyItem
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
 
 @Composable
-fun EmploymentDetail(
+internal fun EmploymentDetail(
     employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     EmploymentDetailScreen(
@@ -21,7 +21,7 @@ fun EmploymentDetail(
 }
 
 @Composable
-fun EmploymentDetailScreen(
+private fun EmploymentDetailScreen(
     companyItem: List<CompanyItem>,
 ) {
     Column(
