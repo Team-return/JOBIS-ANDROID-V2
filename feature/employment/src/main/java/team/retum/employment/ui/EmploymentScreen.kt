@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobis.employment.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -51,15 +53,13 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 fun Employment(
     onBackPressed: () -> Unit,
     onClassClick: () -> Unit,
-    rate: Float,
-    totalStudentCount: Long,
-    passCount: Long,
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
 ) {
-    val animatedValue = remember { Animatable(rate) }
+    val state by employmentViewModel.state.collectAsStateWithLifecycle()
+    val animatedValue = remember { Animatable(state.rate.toFloat()) }
     LaunchedEffect(Unit) {
         animatedValue.animateTo(
-            targetValue = rate,
+            targetValue = state.rate.toFloat(),
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing),
         )
         with(employmentViewModel) {
@@ -70,9 +70,9 @@ fun Employment(
     EmploymentScreen(
         onBackPressed = onBackPressed,
         onClassClick = onClassClick,
-        rate = rate,
-        totalStudentCount = totalStudentCount,
-        passCount = passCount,
+        rate = state.rate,
+        totalStudentCount = state.totalStudentCount,
+        passCount = state.passCount,
     )
 }
 
@@ -80,7 +80,7 @@ fun Employment(
 fun EmploymentScreen(
     onBackPressed: () -> Unit,
     onClassClick: () -> Unit,
-    rate: Float,
+    rate: String,
     totalStudentCount: Long,
     passCount: Long,
 ) {
@@ -173,7 +173,7 @@ fun EmploymentScreen(
 
 @Composable
 fun EmploymentCard(
-    rate: Float,
+    rate: String,
     totalStudentCount: Long,
     passCount: Long,
 ) {
@@ -263,14 +263,14 @@ fun EmploymentCard(
 
 @Composable
 fun CircleProgress(
-    percentage: Float,
+    percentage: String,
     modifier: Modifier = Modifier,
     radius: Dp = 120.dp,
     strokeWidth: Dp = 25.dp,
     primaryColor: Color = JobisTheme.colors.secondaryContainer,
     secondaryColor: Color = JobisTheme.colors.onPrimary,
 ) {
-    val animatedValue = remember { Animatable(percentage) }
+    val animatedValue = remember { Animatable(percentage.toFloat()) }
 
     Box(
         contentAlignment = Alignment.Center,
