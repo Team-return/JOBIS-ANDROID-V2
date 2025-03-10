@@ -21,5 +21,5 @@ object ResourceKeys {
     const val IS_WINTER_INTERN = "isWinterIntern"
     const val EMAIL = "@dsm.hs.kr"
     const val DATABASE_NAME = "jobis-database"
-    const val CLASS_ID = "0"
+    const val CLASS_ID = "classId"
 }

@@ -122,7 +122,7 @@ private fun EmploymentScreen(
             )
         }
         ClassRate(
-            onClassClick = onClassClick,
+            onClassClick = { onClassClick },
         )
     }
 }
@@ -342,7 +342,7 @@ private fun ClassEmploymentButton(
 
 @Composable
 private fun ClassRate(
-    onClassClick: () -> Unit,
+    onClassClick: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -355,12 +355,12 @@ private fun ClassRate(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             ClassEmploymentButton(
-                onClassClick = onClassClick,
+                onClassClick = { onClassClick("1") },
                 image = team.retum.design_system.R.drawable.ic_computer,
                 text = "1반",
             )
             ClassEmploymentButton(
-                onClassClick = onClassClick,
+                onClassClick = { onClassClick("2") },
                 image = team.retum.design_system.R.drawable.ic_computer,
                 text = "2반",
             )
@@ -370,12 +370,12 @@ private fun ClassRate(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             ClassEmploymentButton(
-                onClassClick = onClassClick,
+                onClassClick = { onClassClick("3") },
                 image = team.retum.design_system.R.drawable.ic_spanner,
                 text = "3반",
             )
             ClassEmploymentButton(
-                onClassClick = onClassClick,
+                onClassClick = { onClassClick("4") },
                 image = team.retum.design_system.R.drawable.ic_robot,
                 text = "4반",
             )

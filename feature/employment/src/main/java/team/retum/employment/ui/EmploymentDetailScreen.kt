@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -35,6 +34,8 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
 internal fun EmploymentDetail(
+    classId: String,
+    onBackPressed: () -> Unit,
     employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
@@ -42,8 +43,8 @@ internal fun EmploymentDetail(
     EmploymentDetailScreen(
         passStudent = state.passStudent.toString(),
         totalStudent = state.totalStudent.toString(),
-        companyList = listOf(state.companyInfo[0]),
-        onBackPressed = {},
+        companyList = listOf(state.companyInfo[classId.toInt() - 1]),
+        onBackPressed = onBackPressed,
     )
 }
 
@@ -78,14 +79,13 @@ private fun EmploymentDetailScreen(
         }
         Row(
             modifier = Modifier
-                .align(Alignment.End)
                 .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
         ) {
             JobisText(
                 modifier = Modifier
-                    .padding(vertical = 10.dp),
+                    .padding(vertical = 10.dp, horizontal = 24.dp),
                 text = stringResource(R.string.class_employment, passStudent, totalStudent),
-
                 style = JobisTypography.Body,
                 color = JobisTheme.colors.onPrimary,
             )
@@ -101,7 +101,7 @@ private fun CompanyCard(
     Box(
         modifier = Modifier
             .size(80.dp)
-            .shadow(elevation = 4.dp)
+            .shadow(elevation = 12.dp)
             .clip(RoundedCornerShape(6.dp))
             .background(color = JobisTheme.colors.inverseSurface),
     ) {
