@@ -122,7 +122,7 @@ private fun EmploymentScreen(
             )
         }
         ClassRate(
-            onClassClick = { onClassClick },
+            onClassClick = { onClassClick() },
         )
     }
 }
