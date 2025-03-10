@@ -15,7 +15,7 @@ fun NavGraphBuilder.employmentDetail(
 ) {
     composable(
         route = "$EMPLOYMENT_DETAIL/${ResourceKeys.CLASS_ID}",
-        arguments = listOf(navArgument(ResourceKeys.CLASS_ID) { type = NavType.StringType })
+        arguments = listOf(navArgument(ResourceKeys.CLASS_ID) { type = NavType.StringType }),
     ) {
         val classId = it.arguments?.getString(ResourceKeys.CLASS_ID) ?: ""
         EmploymentDetail(
@@ -25,6 +25,6 @@ fun NavGraphBuilder.employmentDetail(
     }
 }
 
-fun NavController.navigateToEmploymentDetail(classId: Long) {
+fun NavController.navigateToEmploymentDetail(classId: String) {
     navigate(EMPLOYMENT_DETAIL + classId)
 }
