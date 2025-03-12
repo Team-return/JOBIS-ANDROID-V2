@@ -25,14 +25,14 @@ android {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = properties.getProperty("BASE_URL_PROD", "\"\""),
+                value = properties.getProperty("BASE_URL_PROD", "\"https://prod-server.team-return.com\""),
             )
         }
         debug {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = properties.getProperty("BASE_URL_DEV", "\"\""),
+                value = properties.getProperty("BASE_URL_DEV", "\"https://dev-server.team-return.com\""),
             )
         }
     }

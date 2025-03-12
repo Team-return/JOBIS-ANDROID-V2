@@ -41,7 +41,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun Root(
     applicationId: Long?,
@@ -106,7 +105,6 @@ internal fun Root(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun RootScreen(

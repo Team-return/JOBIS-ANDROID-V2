@@ -66,6 +66,13 @@ internal fun NavGraphBuilder.mainNavigation(
             onApplyClick = navigator::navigateToApplication,
             navigateToCompanyDetails = navigator::navigateToCompanyDetails,
         )
+        employment(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onClassClick = navigator::navigateToEmploymentDetail,
+        )
+        employmentDetail(
+            onBackPressed = navigator::popBackStackIfNotHome
+        )
         reportBug(onBackPressed = navigator::popBackStackIfNotHome)
         interests(onBackPressed = navigator::popBackStackIfNotHome)
         noticeDetails(onBackPressed = navigator::popBackStackIfNotHome)
@@ -105,13 +112,6 @@ internal fun NavGraphBuilder.mainNavigation(
         reviews(
             navigator::popBackStackIfNotHome,
             navigateToReviewDetails = navigator::navigateToReviewDetails,
-        )
-        employment(
-            onBackPressed = navigator::popBackStackIfNotHome,
-            onClassClick = navigator::navigateToEmploymentDetail,
-        )
-        employmentDetail(
-            onBackPressed = navigator::popBackStackIfNotHome,
         )
     }
 }

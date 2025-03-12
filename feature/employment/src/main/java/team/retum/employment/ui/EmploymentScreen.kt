@@ -52,7 +52,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 @Composable
 internal fun Employment(
     onBackPressed: () -> Unit,
-    onClassClick: () -> Unit,
+    onClassClick: (String) -> Unit,
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
 ) {
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
@@ -69,7 +69,7 @@ internal fun Employment(
 
     EmploymentScreen(
         onBackPressed = onBackPressed,
-        onClassClick = onClassClick,
+        onClassClick = { onClassClick("0") },
         rate = state.rate,
         totalStudentCount = state.totalStudentCount,
         passCount = state.passCount,
@@ -79,7 +79,7 @@ internal fun Employment(
 @Composable
 private fun EmploymentScreen(
     onBackPressed: () -> Unit,
-    onClassClick: () -> Unit,
+    onClassClick: (String) -> Unit,
     rate: String,
     totalStudentCount: Long,
     passCount: Long,
@@ -122,7 +122,7 @@ private fun EmploymentScreen(
             )
         }
         ClassRate(
-            onClassClick = { onClassClick() },
+            onClassClick = { onClassClick("0") },
         )
     }
 }
@@ -287,14 +287,14 @@ private fun CircleProgress(
 
 @Composable
 private fun ClassEmploymentButton(
-    onClassClick: () -> Unit,
+    onClassClick: (String) -> Unit,
     @DrawableRes image: Int,
     description: String = "",
     text: String,
 ) {
     Surface(
         modifier = Modifier.padding(),
-        onClick = onClassClick,
+        onClick = { onClassClick("0") },
         color = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(8.dp),
     ) {

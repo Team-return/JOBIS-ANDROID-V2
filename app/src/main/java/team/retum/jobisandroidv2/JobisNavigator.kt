@@ -140,7 +140,7 @@ internal class JobisNavigator(
         navController.navigateToEmployment()
     }
 
-    fun navigateToEmploymentDetail(classId: String = "0") {
+    fun navigateToEmploymentDetail(classId: String) {
         navController.navigateToEmploymentDetail(classId = classId)
     }
 

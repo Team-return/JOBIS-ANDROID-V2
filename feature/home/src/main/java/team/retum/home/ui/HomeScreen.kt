@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,8 +20,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -36,7 +37,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
@@ -58,9 +58,7 @@ import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
-import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
-import team.retum.jobisdesignsystemv2.button.JobisSmallButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -92,14 +90,14 @@ internal fun Home(
     val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
-        with(homeViewModel) {
-            calculateTerm()
-            fetchStudentInformation()
-            fetchAppliedCompanies()
-            fetchEmploymentCount()
-            fetchBanners()
-            fetchWinterIntern()
-        }
+            with(homeViewModel) {
+                calculateTerm()
+                fetchStudentInformation()
+                fetchAppliedCompanies()
+                fetchEmploymentCount()
+                fetchBanners()
+                fetchWinterIntern()
+            }
 
         homeViewModel.sideEffect.collect {
             when (it) {
@@ -220,7 +218,6 @@ private fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Banner(
     state: HomeState,
@@ -320,15 +317,30 @@ private fun EmploymentRate(
                 color = JobisTheme.colors.onPrimary,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            JobisSmallButton(
+            Box(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .background(Color.Transparent)
-                    .fillMaxWidth(0.4f),
-                text = "현황 보러 가기 ->",
-                color = ButtonColor.Primary,
-                onClick = onEmploymentClick,
-            )
+                    .background(
+                        color = JobisTheme.colors.onPrimary,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .width(138.dp)
+                    .height(40.dp)
+                    .clickable(onClick = onEmploymentClick),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    JobisText(
+                        modifier = Modifier
+                            .background(JobisTheme.colors.onPrimary),
+                        text = stringResource(R.string.check_employment),
+                        style = JobisTypography.Body,
+                        color = JobisTheme.colors.surface,
+                    )
+                }
+            }
         }
         Image(
             painter = painterResource(id = JobisIcon.File),

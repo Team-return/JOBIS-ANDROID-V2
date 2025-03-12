@@ -14,10 +14,10 @@ fun NavGraphBuilder.employmentDetail(
     onBackPressed: () -> Unit,
 ) {
     composable(
-        route = "$EMPLOYMENT_DETAIL/${ResourceKeys.CLASS_ID}",
+        route = "$EMPLOYMENT_DETAIL/{${ResourceKeys.CLASS_ID}}",
         arguments = listOf(navArgument(ResourceKeys.CLASS_ID) { type = NavType.StringType }),
     ) {
-        val classId = it.arguments?.getString(ResourceKeys.CLASS_ID) ?: ""
+        val classId = it.arguments?.getString(ResourceKeys.CLASS_ID) ?: throw NullPointerException()
         EmploymentDetail(
             onBackPressed = onBackPressed,
             classId = classId,
@@ -26,5 +26,5 @@ fun NavGraphBuilder.employmentDetail(
 }
 
 fun NavController.navigateToEmploymentDetail(classId: String) {
-    navigate(EMPLOYMENT_DETAIL + classId)
+    navigate("$EMPLOYMENT_DETAIL/$classId")
 }
