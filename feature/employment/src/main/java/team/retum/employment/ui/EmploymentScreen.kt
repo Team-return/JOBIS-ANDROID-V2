@@ -288,7 +288,7 @@ private fun CircleProgress(
 @Composable
 private fun ClassEmploymentButton(
     onClassClick: (String) -> Unit,
-    @DrawableRes image: Int,
+    image: Int,
     description: String = "",
     text: String,
 ) {
