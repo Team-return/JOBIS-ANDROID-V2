@@ -2,7 +2,6 @@ package team.retum.home.ui
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -90,14 +89,14 @@ internal fun Home(
     val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
-            with(homeViewModel) {
-                calculateTerm()
-                fetchStudentInformation()
-                fetchAppliedCompanies()
-                fetchEmploymentCount()
-                fetchBanners()
-                fetchWinterIntern()
-            }
+        with(homeViewModel) {
+            calculateTerm()
+            fetchStudentInformation()
+            fetchAppliedCompanies()
+            fetchEmploymentCount()
+            fetchBanners()
+            fetchWinterIntern()
+        }
 
         homeViewModel.sideEffect.collect {
             when (it) {
@@ -326,11 +325,11 @@ private fun EmploymentRate(
                     .width(138.dp)
                     .height(40.dp)
                     .clickable(onClick = onEmploymentClick),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     JobisText(
                         modifier = Modifier

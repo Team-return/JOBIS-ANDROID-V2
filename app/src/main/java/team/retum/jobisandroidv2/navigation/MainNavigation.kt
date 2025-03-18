@@ -71,7 +71,7 @@ internal fun NavGraphBuilder.mainNavigation(
             onClassClick = navigator::navigateToEmploymentDetail,
         )
         employmentDetail(
-            onBackPressed = navigator::popBackStackIfNotHome
+            onBackPressed = navigator::popBackStackIfNotHome,
         )
         reportBug(onBackPressed = navigator::popBackStackIfNotHome)
         interests(onBackPressed = navigator::popBackStackIfNotHome)
