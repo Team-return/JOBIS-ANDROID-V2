@@ -17,7 +17,7 @@ firebase-messaging = "23.4.1"
 
 hilt-android-gradle-plugin = "2.51.1"
 junit = "4.13.2"
-android-gradle = "8.7.0"
+android-gradle = "8.2.2"
 kotlin = "1.9.21"
 kotlinx-collections-immutable = "0.3.7"
 lottie-compose = "6.3.0"
