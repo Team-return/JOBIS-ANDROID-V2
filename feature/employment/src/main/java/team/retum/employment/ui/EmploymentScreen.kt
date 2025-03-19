@@ -1,5 +1,6 @@
 package team.retum.employment.ui
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -47,11 +48,12 @@ import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import kotlin.math.log
 
 @Composable
 internal fun Employment(
     onBackPressed: () -> Unit,
-    onClassClick: (Int) -> Unit,
+    onClassClick: (Long) -> Unit,
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
 ) {
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
@@ -68,7 +70,7 @@ internal fun Employment(
 
     EmploymentScreen(
         onBackPressed = onBackPressed,
-        onClassClick = { onClassClick(1) },
+        onClassClick = onClassClick,
         rate = state.rate,
         totalStudentCount = state.totalStudentCount,
         passCount = state.passCount,
@@ -78,7 +80,7 @@ internal fun Employment(
 @Composable
 private fun EmploymentScreen(
     onBackPressed: () -> Unit,
-    onClassClick: (Int) -> Unit,
+    onClassClick: (Long) -> Unit,
     rate: Long,
     totalStudentCount: Long,
     passCount: Long,
@@ -120,9 +122,53 @@ private fun EmploymentScreen(
                 color = JobisTheme.colors.onSurfaceVariant,
             )
         }
-        ClassRate(
-            onClassClick = { onClassClick(1) },
-        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                ClassEmploymentButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
+                    onClassClick = { onClassClick(1) },
+                    image = team.retum.design_system.R.drawable.ic_computer,
+                    text = "1반",
+                )
+                ClassEmploymentButton(
+                    modifier = Modifier
+                        .weight(1f),
+                    onClassClick = { onClassClick(2) },
+                    image = team.retum.design_system.R.drawable.ic_computer,
+                    text = "2반",
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                ClassEmploymentButton(
+                    modifier = Modifier
+                        .weight(1f),
+                    onClassClick = { onClassClick(3) },
+                    image = team.retum.design_system.R.drawable.ic_spanner,
+                    text = "3반",
+                )
+                ClassEmploymentButton(
+                    modifier = Modifier
+                        .weight(1f),
+                    onClassClick = { onClassClick(4) },
+                    image = team.retum.design_system.R.drawable.ic_robot,
+                    text = "4반",
+                )
+            }
+        }
     }
 }
 
@@ -286,14 +332,15 @@ private fun CircleProgress(
 
 @Composable
 private fun ClassEmploymentButton(
+    modifier: Modifier = Modifier,
     onClassClick: (Int) -> Unit,
     image: Int,
     description: String = "",
     text: String,
 ) {
     Surface(
-        modifier = Modifier.padding(),
-        onClick = { onClassClick(1) },
+        modifier = modifier,
+        onClick = { onClassClick(4) },
         color = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(8.dp),
     ) {
@@ -339,45 +386,3 @@ private fun ClassEmploymentButton(
     }
 }
 
-@Composable
-private fun ClassRate(
-    onClassClick: (Int) -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 24.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            ClassEmploymentButton(
-                onClassClick = { onClassClick(1) },
-                image = team.retum.design_system.R.drawable.ic_computer,
-                text = "1반",
-            )
-            ClassEmploymentButton(
-                onClassClick = { onClassClick(2) },
-                image = team.retum.design_system.R.drawable.ic_computer,
-                text = "2반",
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            ClassEmploymentButton(
-                onClassClick = { onClassClick(3) },
-                image = team.retum.design_system.R.drawable.ic_spanner,
-                text = "3반",
-            )
-            ClassEmploymentButton(
-                onClassClick = { onClassClick(4) },
-                image = team.retum.design_system.R.drawable.ic_robot,
-                text = "4반",
-            )
-        }
-    }
-}
