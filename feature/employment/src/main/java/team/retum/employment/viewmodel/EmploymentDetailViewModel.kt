@@ -25,6 +25,7 @@ internal class EmploymentDetailViewModel @Inject constructor(
             fetchEmploymentStatusUseCase().onSuccess {
                 setState {
                     state.value.copy(
+                        totalStudent = it.classes.firstOrNull { it.classId == 1 }?.totalStudents,
                         companyInfo = it.classes.flatMap { classInfo ->
                             classInfo.employmentRateList.map { employmentRate ->
                                 CompanyItem(
@@ -32,8 +33,18 @@ internal class EmploymentDetailViewModel @Inject constructor(
                                     logoUrl = employmentRate.logoUrl,
                                 )
                             }
+                        }.apply {
+                            if (isNullOrEmpty()) listOf(
+                                state.value.totalStudent?.let {
+                                    repeat(it){
+                                        CompanyItem(
+                                            companyName = "",
+                                            logoUrl = "",
+                                        )
+                                    }
+                                }
+                            )
                         }.toImmutableList(),
-                        totalStudent = it.classes.firstOrNull { it.classId == 1 }?.totalStudents
                     )
                 }
             }
@@ -46,14 +57,12 @@ internal class EmploymentDetailViewModel @Inject constructor(
 }
 
 internal data class EmploymentDetailState(
-    val classId: Long,
     val totalStudent: Int?,
     val passStudent: Long,
     val companyInfo: ImmutableList<CompanyItem>,
 ) {
     companion object {
         fun getDefaultState() = EmploymentDetailState(
-            classId = 0,
             totalStudent = 0,
             passStudent = 0,
             companyInfo = persistentListOf(),
