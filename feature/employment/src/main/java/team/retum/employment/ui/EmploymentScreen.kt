@@ -51,7 +51,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 @Composable
 internal fun Employment(
     onBackPressed: () -> Unit,
-    onClassClick: (String) -> Unit,
+    onClassClick: (Int) -> Unit,
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
 ) {
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
@@ -68,7 +68,7 @@ internal fun Employment(
 
     EmploymentScreen(
         onBackPressed = onBackPressed,
-        onClassClick = { onClassClick("0") },
+        onClassClick = { onClassClick(1) },
         rate = state.rate,
         totalStudentCount = state.totalStudentCount,
         passCount = state.passCount,
@@ -78,8 +78,8 @@ internal fun Employment(
 @Composable
 private fun EmploymentScreen(
     onBackPressed: () -> Unit,
-    onClassClick: (String) -> Unit,
-    rate: String,
+    onClassClick: (Int) -> Unit,
+    rate: Long,
     totalStudentCount: Long,
     passCount: Long,
 ) {
@@ -121,14 +121,14 @@ private fun EmploymentScreen(
             )
         }
         ClassRate(
-            onClassClick = { onClassClick("0") },
+            onClassClick = { onClassClick(1) },
         )
     }
 }
 
 @Composable
 private fun EmploymentRate(
-    rate: String,
+    rate: Long,
     totalStudentCount: Long,
     passCount: Long,
 ) {
@@ -228,7 +228,7 @@ private fun EmploymentRate(
 
 @Composable
 private fun CircleProgress(
-    percentage: String,
+    percentage: Long,
     modifier: Modifier = Modifier,
     radius: Dp = 120.dp,
     strokeWidth: Dp = 25.dp,
@@ -286,14 +286,14 @@ private fun CircleProgress(
 
 @Composable
 private fun ClassEmploymentButton(
-    onClassClick: (String) -> Unit,
+    onClassClick: (Int) -> Unit,
     image: Int,
     description: String = "",
     text: String,
 ) {
     Surface(
         modifier = Modifier.padding(),
-        onClick = { onClassClick("0") },
+        onClick = { onClassClick(1) },
         color = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(8.dp),
     ) {
@@ -341,7 +341,7 @@ private fun ClassEmploymentButton(
 
 @Composable
 private fun ClassRate(
-    onClassClick: (String) -> Unit,
+    onClassClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -354,12 +354,12 @@ private fun ClassRate(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             ClassEmploymentButton(
-                onClassClick = { onClassClick("1") },
+                onClassClick = { onClassClick(1) },
                 image = team.retum.design_system.R.drawable.ic_computer,
                 text = "1반",
             )
             ClassEmploymentButton(
-                onClassClick = { onClassClick("2") },
+                onClassClick = { onClassClick(2) },
                 image = team.retum.design_system.R.drawable.ic_computer,
                 text = "2반",
             )
@@ -369,12 +369,12 @@ private fun ClassRate(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             ClassEmploymentButton(
-                onClassClick = { onClassClick("3") },
+                onClassClick = { onClassClick(3) },
                 image = team.retum.design_system.R.drawable.ic_spanner,
                 text = "3반",
             )
             ClassEmploymentButton(
-                onClassClick = { onClassClick("4") },
+                onClassClick = { onClassClick(4) },
                 image = team.retum.design_system.R.drawable.ic_robot,
                 text = "4반",
             )

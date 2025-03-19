@@ -1,5 +1,6 @@
 package team.retum.employment.navigation
 
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -15,9 +16,11 @@ fun NavGraphBuilder.employmentDetail(
 ) {
     composable(
         route = "$EMPLOYMENT_DETAIL/{${ResourceKeys.CLASS_ID}}",
-        arguments = listOf(navArgument(ResourceKeys.CLASS_ID) { type = NavType.StringType }),
+        arguments = listOf(
+            navArgument(ResourceKeys.CLASS_ID) { NavType.IntType }),
     ) {
-        val classId = it.arguments?.getString(ResourceKeys.CLASS_ID) ?: throw NullPointerException()
+        val classId = it.arguments?.getInt(ResourceKeys.CLASS_ID) ?: 0
+
         EmploymentDetail(
             onBackPressed = onBackPressed,
             classId = classId,
@@ -25,6 +28,6 @@ fun NavGraphBuilder.employmentDetail(
     }
 }
 
-fun NavController.navigateToEmploymentDetail(classId: String) {
+fun NavController.navigateToEmploymentDetail(classId: Int) {
     navigate("$EMPLOYMENT_DETAIL/$classId")
 }
