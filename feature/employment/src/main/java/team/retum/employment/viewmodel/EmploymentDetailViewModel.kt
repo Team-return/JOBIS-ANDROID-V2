@@ -16,7 +16,11 @@ import javax.inject.Inject
 internal class EmploymentDetailViewModel @Inject constructor(
     private val fetchEmploymentStatusUseCase: FetchEmploymentStatusUseCase,
 ) : BaseViewModel<EmploymentDetailState, EmploymentDetailSideEffect>(EmploymentDetailState.getDefaultState()) {
-    internal fun fetchEmploymentStatus() {
+    init {
+        fetchEmploymentStatus()
+    }
+
+    private fun fetchEmploymentStatus() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchEmploymentStatusUseCase().onSuccess {
                 setState {
@@ -29,16 +33,21 @@ internal class EmploymentDetailViewModel @Inject constructor(
                                 )
                             }
                         }.toImmutableList(),
+                        totalStudent = it.classes.firstOrNull { it.classId == 1 }?.totalStudents
                     )
                 }
             }
         }
     }
+
+    private fun upDateClassEmployment() {
+
+    }
 }
 
 internal data class EmploymentDetailState(
     val classId: Long,
-    val totalStudent: Long,
+    val totalStudent: Int?,
     val passStudent: Long,
     val companyInfo: ImmutableList<CompanyItem>,
 ) {

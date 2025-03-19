@@ -34,22 +34,24 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
 internal fun EmploymentDetail(
-    classId: String,
+    classId: Int,
     onBackPressed: () -> Unit,
     employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
 
     EmploymentDetailScreen(
+        classId = classId.toLong(),
         passStudent = state.passStudent.toString(),
         totalStudent = state.totalStudent.toString(),
-        companyList = listOf(state.companyInfo[classId.toInt() - 1]),
+        companyList = listOf(),
         onBackPressed = onBackPressed,
     )
 }
 
 @Composable
 private fun EmploymentDetailScreen(
+    classId: Long,
     passStudent: String,
     totalStudent: String,
     companyList: List<CompanyItem>,
@@ -61,7 +63,7 @@ private fun EmploymentDetailScreen(
             .background(JobisTheme.colors.background),
     ) {
         JobisSmallTopAppBar(
-            title = "소프트웨어 개발 1반",
+            title = "소프트웨어 개발 ${classId}반",
             onBackPressed = onBackPressed,
         )
         LazyVerticalGrid(
@@ -85,7 +87,7 @@ private fun EmploymentDetailScreen(
             JobisText(
                 modifier = Modifier
                     .padding(vertical = 10.dp, horizontal = 24.dp),
-                text = stringResource(R.string.class_employment, passStudent, totalStudent),
+                text = "$passStudent/$totalStudent",
                 style = JobisTypography.Body,
                 color = JobisTheme.colors.onPrimary,
             )
