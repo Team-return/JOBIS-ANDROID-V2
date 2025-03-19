@@ -9,16 +9,14 @@ const val NAVIGATION_EMPLOYMENT = "employment"
 
 fun NavGraphBuilder.employment(
     onBackPressed: () -> Unit,
-    onClassClick: (Int) -> Unit,
+    onClassClick: (Long) -> Unit,
 ) {
     composable(
         route = NAVIGATION_EMPLOYMENT,
     ) {
         Employment(
             onBackPressed = onBackPressed,
-            onClassClick = {
-                onClassClick(0)
-            },
+            onClassClick = onClassClick,
         )
     }
 }

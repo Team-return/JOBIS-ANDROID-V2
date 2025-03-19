@@ -19,14 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.employment.model.CompanyItem
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
-import team.retum.jobis.employment.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -41,17 +39,17 @@ internal fun EmploymentDetail(
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
 
     EmploymentDetailScreen(
-        classId = classId.toLong(),
+        classId = classId,
         passStudent = state.passStudent.toString(),
         totalStudent = state.totalStudent.toString(),
-        companyList = listOf(),
+        companyList = listOf(state.companyInfo[classId]),
         onBackPressed = onBackPressed,
     )
 }
 
 @Composable
 private fun EmploymentDetailScreen(
-    classId: Long,
+    classId: Int,
     passStudent: String,
     totalStudent: String,
     companyList: List<CompanyItem>,
