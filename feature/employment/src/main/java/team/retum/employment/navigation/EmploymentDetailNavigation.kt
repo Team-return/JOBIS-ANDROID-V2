@@ -17,10 +17,10 @@ fun NavGraphBuilder.employmentDetail(
     composable(
         route = "$EMPLOYMENT_DETAIL/{${ResourceKeys.CLASS_ID}}",
         arguments = listOf(
-            navArgument(ResourceKeys.CLASS_ID) { NavType.IntType }),
+            navArgument(ResourceKeys.CLASS_ID) { type = NavType.StringType }),
     ) {
-        val classId = it.arguments?.getInt(ResourceKeys.CLASS_ID) ?: 0
-
+        val classId = it.arguments?.getString(ResourceKeys.CLASS_ID)?.toInt() ?: 0
+        Log.d("TEST", "employmentNavigation : $classId")
         EmploymentDetail(
             onBackPressed = onBackPressed,
             classId = classId,
@@ -28,6 +28,6 @@ fun NavGraphBuilder.employmentDetail(
     }
 }
 
-fun NavController.navigateToEmploymentDetail(classId: Int) {
+fun NavController.navigateToEmploymentDetail(classId: Long) {
     navigate("$EMPLOYMENT_DETAIL/$classId")
 }

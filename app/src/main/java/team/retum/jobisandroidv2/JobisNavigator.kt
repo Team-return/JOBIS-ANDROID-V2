@@ -1,5 +1,6 @@
 package team.retum.jobisandroidv2
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
@@ -140,7 +141,8 @@ internal class JobisNavigator(
         navController.navigateToEmployment()
     }
 
-    fun navigateToEmploymentDetail(classId: Int) {
+    fun navigateToEmploymentDetail(classId: Long) {
+        Log.d("TEST", "JobisNavigator : ${classId.toString()}")
         navController.navigateToEmploymentDetail(classId = classId)
     }
 
