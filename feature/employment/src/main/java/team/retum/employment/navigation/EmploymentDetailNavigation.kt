@@ -16,7 +16,7 @@ fun NavGraphBuilder.employmentDetail(
     composable(
         route = "$EMPLOYMENT_DETAIL/{${ResourceKeys.CLASS_ID}}",
         arguments = listOf(
-            navArgument(ResourceKeys.CLASS_ID) { type = NavType.StringType }
+            navArgument(ResourceKeys.CLASS_ID) { type = NavType.StringType },
         ),
     ) {
         val classId = it.arguments?.getString(ResourceKeys.CLASS_ID)?.toLong() ?: 0

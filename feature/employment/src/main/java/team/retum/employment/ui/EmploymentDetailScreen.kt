@@ -93,7 +93,7 @@ private fun EmploymentDetailScreen(
                 val list = List(totalStudent) {
                     CompanyItem(
                         companyName = "",
-                        logoUrl = ""
+                        logoUrl = "",
                     )
                 }
                 items(items = list) { company ->
