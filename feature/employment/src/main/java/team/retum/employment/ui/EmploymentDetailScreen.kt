@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +40,15 @@ internal fun EmploymentDetail(
 ) {
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
     val classNameList = listOf("소프트웨어 1반", "소프트웨어 2반", "임베디드 3반", "인공지능 4반")
+
+    Log.d("TEST", "detail classId: $classId")
+    LaunchedEffect(Unit) {
+        with(employmentDetailViewModel) {
+            setClassId(classId = classId.toInt() - 1)
+            upDateClassEmployment()
+            fetchEmploymentStatus()
+        }
+    }
 
     EmploymentDetailScreen(
         classId = classId,
