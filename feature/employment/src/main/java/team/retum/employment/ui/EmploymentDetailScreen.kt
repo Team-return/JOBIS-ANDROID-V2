@@ -1,5 +1,6 @@
 package team.retum.employment.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,27 +33,32 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
 internal fun EmploymentDetail(
-    classId: Int,
+    classId: Long,
     onBackPressed: () -> Unit,
     employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
+    val classNameList = listOf("소프트웨어 1반", "소프트웨어 2반", "임베디드 3반", "인공지능 4반")
 
     EmploymentDetailScreen(
         classId = classId,
-        passStudent = state.passStudent.toString(),
-        totalStudent = state.totalStudent.toString(),
-        companyList = listOf(state.companyInfo[classId]),
+        passStudent = state.passStudent,
+        totalStudent = state.totalStudent,
+        companyList = state.companyInfo,
+        classNameList = classNameList,
         onBackPressed = onBackPressed,
     )
+
+    Log.d("TEST", state.totalStudent.toString())
 }
 
 @Composable
 private fun EmploymentDetailScreen(
-    classId: Int,
-    passStudent: String,
-    totalStudent: String,
+    classId: Long,
+    passStudent: Int,
+    totalStudent: Int,
     companyList: List<CompanyItem>,
+    classNameList: List<String>,
     onBackPressed: () -> Unit,
 ) {
     Column(
@@ -61,7 +67,7 @@ private fun EmploymentDetailScreen(
             .background(JobisTheme.colors.background),
     ) {
         JobisSmallTopAppBar(
-            title = "소프트웨어 개발 ${classId}반",
+            title = classNameList[classId.toInt() - 1],
             onBackPressed = onBackPressed,
         )
         LazyVerticalGrid(
@@ -70,11 +76,26 @@ private fun EmploymentDetailScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp),
             contentPadding = PaddingValues(top = 32.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
         ) {
-            items(items = companyList) { company ->
-                CompanyCard(
-                    imageUrl = company.logoUrl,
-                    companyName = company.companyName,
-                )
+            if (companyList.isNotEmpty()) {
+                items(items = companyList) { company ->
+                    CompanyCard(
+                        imageUrl = company.logoUrl,
+                        companyName = company.companyName,
+                    )
+                }
+            } else {
+                val list = List(totalStudent) {
+                    CompanyItem(
+                        companyName = "",
+                        logoUrl = ""
+                    )
+                }
+                items(items = list) { company ->
+                    CompanyCard(
+                        imageUrl = company.logoUrl,
+                        companyName = company.companyName,
+                    )
+                }
             }
         }
         Row(
