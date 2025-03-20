@@ -1,6 +1,5 @@
 package team.retum.employment.ui
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -48,7 +47,6 @@ import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
-import kotlin.math.log
 
 @Composable
 internal fun Employment(
@@ -385,4 +383,3 @@ private fun ClassEmploymentButton(
         }
     }
 }
-
