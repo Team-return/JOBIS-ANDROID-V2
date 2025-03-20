@@ -1,6 +1,5 @@
 package team.retum.employment.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,7 +40,6 @@ internal fun EmploymentDetail(
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
     val classNameList = listOf("소프트웨어 1반", "소프트웨어 2반", "임베디드 3반", "인공지능 4반")
 
-    Log.d("TEST", "detail classId: $classId")
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {
             setClassId(classId = classId.toInt() - 1)
@@ -58,8 +56,6 @@ internal fun EmploymentDetail(
         classNameList = classNameList,
         onBackPressed = onBackPressed,
     )
-
-    Log.d("TEST", state.totalStudent.toString())
 }
 
 @Composable

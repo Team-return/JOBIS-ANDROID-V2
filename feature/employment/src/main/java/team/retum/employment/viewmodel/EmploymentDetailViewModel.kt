@@ -1,6 +1,5 @@
 package team.retum.employment.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -12,7 +11,6 @@ import team.retum.common.base.BaseViewModel
 import team.retum.employment.model.CompanyItem
 import team.retum.usecase.usecase.application.FetchEmploymentStatusUseCase
 import javax.inject.Inject
-import kotlin.experimental.ExperimentalTypeInference
 
 @HiltViewModel
 internal class EmploymentDetailViewModel @Inject constructor(

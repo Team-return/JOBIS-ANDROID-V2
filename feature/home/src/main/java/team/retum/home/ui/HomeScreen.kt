@@ -320,7 +320,7 @@ private fun EmploymentRate(
                 modifier = Modifier
                     .background(
                         color = JobisTheme.colors.onPrimary,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
                     )
                     .width(138.dp)
                     .height(40.dp)
