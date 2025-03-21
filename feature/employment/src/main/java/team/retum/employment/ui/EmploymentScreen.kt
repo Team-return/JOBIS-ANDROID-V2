@@ -344,7 +344,7 @@ private fun ClassEmploymentButton(
     ) {
         Column(
             modifier = Modifier.background(color = JobisTheme.colors.inverseSurface),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(
                 modifier = Modifier.padding(top = 20.dp, start = 34.dp, end = 34.dp),

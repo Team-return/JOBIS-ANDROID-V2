@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -24,12 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import team.retum.employment.model.CompanyItem
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.usecase.entity.application.EmploymentStatusEntity
+
+const val MAX_STUDENT = 16
 
 @Composable
 internal fun EmploymentDetail(
@@ -38,7 +41,7 @@ internal fun EmploymentDetail(
     employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
-    val classNameList = listOf("소프트웨어 1반", "소프트웨어 2반", "임베디드 3반", "인공지능 4반")
+    val classNameList = listOf("소프트웨어 개발 1반", "소프트웨어 개발 2반", "임베디드 개발 3반", "인공지능 개발 4반")
 
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {
@@ -52,8 +55,8 @@ internal fun EmploymentDetail(
         classId = classId,
         passStudent = state.passStudent,
         totalStudent = state.totalStudent,
-        companyList = state.companyInfo,
         classNameList = classNameList,
+        classInfoList = state.classInfoList.toMutableList(),
         onBackPressed = onBackPressed,
     )
 }
@@ -63,8 +66,8 @@ private fun EmploymentDetailScreen(
     classId: Long,
     passStudent: Int,
     totalStudent: Int,
-    companyList: List<CompanyItem>,
     classNameList: List<String>,
+    classInfoList: MutableList<EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList>,
     onBackPressed: () -> Unit,
 ) {
     Column(
@@ -82,24 +85,22 @@ private fun EmploymentDetailScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp),
             contentPadding = PaddingValues(top = 32.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
         ) {
-            if (companyList.isNotEmpty()) {
-                items(items = companyList) { company ->
-                    CompanyCard(
-                        imageUrl = company.logoUrl,
-                        companyName = company.companyName,
+            classInfoList.apply {
+                repeat(MAX_STUDENT - passStudent) {
+                    add(
+                        EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList(
+                            id = 0,
+                            companyName = "",
+                            logoUrl = "",
+                        ),
                     )
                 }
-            } else {
-                val list = List(totalStudent) {
-                    CompanyItem(
-                        companyName = "",
-                        logoUrl = "",
-                    )
-                }
-                items(items = list) { company ->
+            }
+            if (classInfoList.isNotEmpty()) {
+                items(items = classInfoList) { company ->
                     CompanyCard(
-                        imageUrl = company.logoUrl,
                         companyName = company.companyName,
+                        imageUrl = company.logoUrl,
                     )
                 }
             }
@@ -133,6 +134,8 @@ private fun CompanyCard(
             .background(color = JobisTheme.colors.inverseSurface),
     ) {
         AsyncImage(
+            modifier = Modifier
+                .align(Alignment.Center),
             model = imageUrl,
             contentDescription = companyName,
         )
