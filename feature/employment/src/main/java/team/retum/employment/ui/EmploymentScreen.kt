@@ -344,6 +344,7 @@ private fun ClassEmploymentButton(
     ) {
         Column(
             modifier = Modifier.background(color = JobisTheme.colors.inverseSurface),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
                 modifier = Modifier.padding(top = 20.dp, start = 34.dp, end = 34.dp),
@@ -370,7 +371,8 @@ private fun ClassEmploymentButton(
                 color = JobisTheme.colors.surfaceTint,
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
-                    .padding(top = 16.dp, start = 12.dp, bottom = 12.dp),
+                    .padding(top = 16.dp, start = 12.dp, bottom = 12.dp)
+                    .align(Alignment.Start),
             ) {
                 JobisText(
                     text = text,
