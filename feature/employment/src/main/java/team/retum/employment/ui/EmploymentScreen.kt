@@ -57,13 +57,13 @@ internal fun Employment(
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
     val animatedValue = remember { Animatable(state.rate.toFloat()) }
     LaunchedEffect(Unit) {
+        with(employmentViewModel) {
+            fetchEmploymentCount()
+        }
         animatedValue.animateTo(
             targetValue = state.rate.toFloat(),
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing),
         )
-        with(employmentViewModel) {
-            fetchEmploymentCount()
-        }
     }
 
     EmploymentScreen(
@@ -192,7 +192,7 @@ private fun EmploymentRate(
                 color = JobisTheme.colors.onPrimary,
                 textAlign = TextAlign.Start,
             )
-            Spacer(modifier = Modifier.fillMaxWidth(0.78f))
+            Spacer(modifier = Modifier.fillMaxWidth(0.75f))
             Column(
                 verticalArrangement = Arrangement
                     .spacedBy(space = 4.dp),

@@ -41,7 +41,7 @@ internal fun EmploymentDetail(
     employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
-    val classNameList = listOf("소프트웨어 개발 1반", "소프트웨어 개발 2반", "임베디드 개발 3반", "인공지능 개발 4반")
+    val classNameList = listOf("소프트웨어 개발 1반", "소프트웨어 개발 2반", "임베디드 소프트웨어 3반", "인공지능 소프트웨어 4반")
 
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {
