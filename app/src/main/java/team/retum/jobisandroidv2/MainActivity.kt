@@ -13,6 +13,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import team.retum.device.DeviceTokenManager
+import team.retum.jobis.R
 import team.retum.jobisandroidv2.ui.JobisApp
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
