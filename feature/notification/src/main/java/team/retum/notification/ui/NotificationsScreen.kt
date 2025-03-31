@@ -75,7 +75,7 @@ internal fun Notifications(
                 is NotificationsSideEffect.CanNotCurrentNotifications -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.cannot_current_notifications)
+                        message = context.getString(R.string.cannot_current_notifications),
                     ).show()
                 }
             }
