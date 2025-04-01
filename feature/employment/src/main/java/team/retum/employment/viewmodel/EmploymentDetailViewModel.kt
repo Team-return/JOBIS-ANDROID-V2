@@ -35,7 +35,7 @@ internal class EmploymentDetailViewModel @Inject constructor(
             fetchEmploymentStatusUseCase().onSuccess {
                 setState {
                     state.value.copy(
-                        classInfoList = it.classes[state.value.classId].employmentRateList,
+                        classInfoList = it.classes[state.value.classId].employmentRateList.toMutableList(),
                     )
                 }
             }
@@ -47,7 +47,7 @@ internal data class EmploymentDetailState(
     val classId: Int,
     val totalStudent: Int,
     val passStudent: Int,
-    val classInfoList: List<EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList>,
+    val classInfoList: MutableList<EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList>,
 ) {
     companion object {
         fun getDefaultState() = EmploymentDetailState(
