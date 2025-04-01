@@ -13,6 +13,13 @@ import javax.inject.Inject
 internal class EmploymentDetailViewModel @Inject constructor(
     private val fetchEmploymentStatusUseCase: FetchEmploymentStatusUseCase,
 ) : BaseViewModel<EmploymentDetailState, EmploymentDetailSideEffect>(EmploymentDetailState.getDefaultState()) {
+
+    init {
+        setClassId(classId = state.value.classId)
+        upDateClassEmployment()
+        fetchEmploymentStatus()
+    }
+
     internal fun setClassId(classId: Int) = setState {
         state.value.copy(classId = classId)
     }
