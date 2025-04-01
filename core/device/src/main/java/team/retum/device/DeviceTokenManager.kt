@@ -18,7 +18,7 @@ class DeviceTokenManager @Inject constructor(
     suspend fun fetchDeviceToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.d("DeviceTokenManager", "Fetching FCM registration token failed", task.exception,)
+                Log.d("DeviceTokenManager", "Fetching FCM registration token failed", task.exception)
                 return@addOnCompleteListener
             }
             CoroutineScope(Dispatchers.IO).launch {
