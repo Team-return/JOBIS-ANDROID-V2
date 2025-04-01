@@ -21,11 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
+import team.retum.jobis.employment.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -41,7 +43,7 @@ internal fun EmploymentDetail(
     employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
-    val classNameList = listOf("소프트웨어 개발 1반", "소프트웨어 개발 2반", "임베디드 소프트웨어 3반", "인공지능 소프트웨어 4반")
+    val classNameList = listOf(stringResource(R.string.soft_ware_first_class), stringResource(R.string.soft_ware_second_class), stringResource(R.string.soft_ware_embedded), stringResource(R.string.ai_class))
 
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {

@@ -9,4 +9,9 @@
     <string name="all_statistics">전체 통계</string>
 
     <string name="class_employment">%s/%s</string>
+
+    <string name="soft_ware_first_class">소프트웨어 개발 1반</string>
+    <string name="soft_ware_second_class">소프트웨어 개발 2반</string>
+    <string name="soft_ware_embedded">임베디드 소프트웨어 3반</string>
+    <string name="ai_class">인공지능 소프트웨어 4반</string>
 </resources>
