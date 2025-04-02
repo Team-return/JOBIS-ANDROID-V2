@@ -137,14 +137,14 @@ private fun EmploymentScreen(
                         .weight(1f),
                     onClassClick = { onClassClick(1) },
                     image = team.retum.design_system.R.drawable.ic_computer,
-                    text = "1반",
+                    text = stringResource(R.string.first_class),
                 )
                 ClassEmploymentButton(
                     modifier = Modifier
                         .weight(1f),
                     onClassClick = { onClassClick(2) },
                     image = team.retum.design_system.R.drawable.ic_computer,
-                    text = "2반",
+                    text = stringResource(R.string.second_class),
                 )
             }
             Row(
@@ -156,14 +156,14 @@ private fun EmploymentScreen(
                         .weight(1f),
                     onClassClick = { onClassClick(3) },
                     image = team.retum.design_system.R.drawable.ic_spanner,
-                    text = "3반",
+                    text = stringResource(R.string.third_class),
                 )
                 ClassEmploymentButton(
                     modifier = Modifier
                         .weight(1f),
                     onClassClick = { onClassClick(4) },
                     image = team.retum.design_system.R.drawable.ic_robot,
-                    text = "4반",
+                    text = stringResource(R.string.fourth_class),
                 )
             }
         }
