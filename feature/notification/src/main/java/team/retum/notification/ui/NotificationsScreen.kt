@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,6 +34,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.notification.model.NotificationDetailData
 import team.retum.notification.viewmodel.NotificationsSideEffect
@@ -44,8 +46,10 @@ internal fun Notifications(
     onBackPressed: () -> Unit,
     navigateToRecruitment: (Long) -> Unit,
     navigateToHome: (Long) -> Unit,
+    navigateToNotice: (Long) -> Unit,
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val state by notificationsViewModel.state.collectAsStateWithLifecycle()
     val tabs = listOf(
         stringResource(id = R.string.all),
@@ -56,12 +60,23 @@ internal fun Notifications(
     LaunchedEffect(notificationsViewModel.sideEffect) {
         notificationsViewModel.sideEffect.collect {
             when (it) {
-                is NotificationsSideEffect.MoveToRecruitment -> {
+                is NotificationsSideEffect.MoveToRecruitmentDetail -> {
                     navigateToRecruitment(it.recruitmentId)
                 }
 
                 is NotificationsSideEffect.MoveToHome -> {
                     navigateToHome(it.applicationId)
+                }
+
+                is NotificationsSideEffect.MoveToNoticeDetail -> {
+                    navigateToNotice(it.noticeId)
+                }
+
+                is NotificationsSideEffect.CanNotCurrentNotifications -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.cannot_current_notifications),
+                    ).show()
                 }
             }
         }

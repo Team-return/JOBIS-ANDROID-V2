@@ -32,6 +32,9 @@ internal class NotificationsViewModel @Inject constructor(
                         _notifications.clear()
                         _notifications.addAll(it.notifications)
                     }
+                    .onFailure {
+                        postSideEffect(NotificationsSideEffect.CanNotCurrentNotifications)
+                    }
             }
         }
     }
@@ -42,12 +45,16 @@ internal class NotificationsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             if (notificationDetailData.isNew) readNotificationUseCase(notificationDetailData.notificationId)
             when (notificationDetailData.topic) {
-                AlarmType.APPLICATION_STATUS_CHANGED -> {
+                AlarmType.APPLICATION -> {
                     postSideEffect(NotificationsSideEffect.MoveToHome(applicationId = notificationDetailData.detailId))
                 }
 
-                AlarmType.RECRUITMENT_DONE -> {
-                    postSideEffect(NotificationsSideEffect.MoveToRecruitment(recruitmentId = notificationDetailData.detailId))
+                AlarmType.RECRUITMENT -> {
+                    postSideEffect(NotificationsSideEffect.MoveToRecruitmentDetail(recruitmentId = notificationDetailData.detailId))
+                }
+
+                AlarmType.NOTICE -> {
+                    postSideEffect(NotificationsSideEffect.MoveToNoticeDetail(noticeId = notificationDetailData.detailId))
                 }
 
                 else -> {
@@ -79,6 +86,8 @@ internal data class NotificationsState(
 }
 
 internal sealed interface NotificationsSideEffect {
-    data class MoveToRecruitment(val recruitmentId: Long) : NotificationsSideEffect
+    data class MoveToRecruitmentDetail(val recruitmentId: Long) : NotificationsSideEffect
     data class MoveToHome(val applicationId: Long) : NotificationsSideEffect
+    data class MoveToNoticeDetail(val noticeId: Long) : NotificationsSideEffect
+    data object CanNotCurrentNotifications : NotificationsSideEffect
 }
