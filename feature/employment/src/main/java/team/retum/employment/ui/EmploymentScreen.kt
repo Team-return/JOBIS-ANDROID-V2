@@ -220,7 +220,7 @@ private fun EmploymentRate(
                         modifier = Modifier
                             .size(6.dp)
                             .background(
-                                color = JobisTheme.colors.secondaryContainer,
+                                color = JobisTheme.colors.onSecondary,
                                 shape = CircleShape,
                             )
                             .align(Alignment.CenterVertically),
@@ -230,7 +230,7 @@ private fun EmploymentRate(
                         text = stringResource(id = R.string.before_employment),
                         style = JobisTypography.Caption,
                         textAlign = TextAlign.End,
-                        color = JobisTheme.colors.onSurfaceVariant,
+                        color = JobisTheme.colors.onSecondary,
                     )
                 }
             }
@@ -276,7 +276,7 @@ private fun CircleProgress(
     modifier: Modifier = Modifier,
     radius: Dp = 120.dp,
     strokeWidth: Dp = 24.dp,
-    primaryColor: Color = JobisTheme.colors.secondaryContainer,
+    primaryColor: Color = JobisTheme.colors.onSecondary,
     secondaryColor: Color = JobisTheme.colors.onPrimary,
 ) {
     val animatedValue = remember { Animatable(percentage.toFloat()) }
