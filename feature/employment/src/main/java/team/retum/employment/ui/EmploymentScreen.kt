@@ -192,7 +192,7 @@ private fun EmploymentRate(
                 color = JobisTheme.colors.onPrimary,
                 textAlign = TextAlign.Start,
             )
-            Spacer(modifier = Modifier.fillMaxWidth(0.75f))
+            Spacer(modifier = Modifier.weight(1f))
             Column(
                 verticalArrangement = Arrangement
                     .spacedBy(space = 4.dp),
@@ -275,7 +275,7 @@ private fun CircleProgress(
     percentage: Long,
     modifier: Modifier = Modifier,
     radius: Dp = 120.dp,
-    strokeWidth: Dp = 25.dp,
+    strokeWidth: Dp = 24.dp,
     primaryColor: Color = JobisTheme.colors.secondaryContainer,
     secondaryColor: Color = JobisTheme.colors.onPrimary,
 ) {
