@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
@@ -41,11 +40,11 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun Root(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
@@ -79,6 +78,7 @@ internal fun Root(
                 sheetState.show()
             }
         },
+        onEmploymentClick = onEmploymentClick,
         onWinterInternClick = onWinterInternClick,
         onRecruitmentDetailsClick = onRecruitmentDetailsClick,
         onCompaniesClick = onCompaniesClick,
@@ -104,7 +104,6 @@ internal fun Root(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun RootScreen(
@@ -112,6 +111,7 @@ private fun RootScreen(
     sheetState: ModalBottomSheetState,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -157,6 +157,7 @@ private fun RootScreen(
                     onAlarmClick = onAlarmClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
+                    onEmploymentClick = onEmploymentClick,
                     onWinterInternClick = onWinterInternClick,
                     navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                     navigatedFromNotifications = navigatedFromNotifications,

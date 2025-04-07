@@ -2,11 +2,11 @@ package team.retum.home.ui
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -28,7 +29,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,9 +42,6 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -80,6 +77,7 @@ internal fun Home(
     onAlarmClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
@@ -126,6 +124,7 @@ internal fun Home(
         onAlarmClick = onAlarmClick,
         onCompaniesClick = onCompaniesClick,
         onWinterInternClick = onWinterInternClick,
+        onEmploymentClick = onEmploymentClick,
         onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
         state = state,
         banners = state.banners.toPersistentList(),
@@ -149,6 +148,7 @@ private fun HomeScreen(
     scrollState: ScrollState,
     onAlarmClick: () -> Unit,
     onCompaniesClick: () -> Unit,
+    onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
@@ -180,6 +180,7 @@ private fun HomeScreen(
             Banner(
                 state = state,
                 banners = banners,
+                onEmploymentClick = onEmploymentClick,
             )
             StudentInformation(
                 modifier = Modifier.padding(
@@ -216,11 +217,11 @@ private fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Banner(
     state: HomeState,
     banners: ImmutableList<BannersEntity.BannerEntity>,
+    onEmploymentClick: () -> Unit,
 ) {
     val pagerState = rememberPagerState { banners.size + 1 }
     val coroutineScope = rememberCoroutineScope()
@@ -262,8 +263,7 @@ private fun Banner(
                 EmploymentRate(
                     term = state.term,
                     rate = state.rate,
-                    passCount = state.passCount,
-                    totalStudentCount = state.totalStudentCount,
+                    onEmploymentClick = onEmploymentClick,
                 )
             } else {
                 AsyncImage(
@@ -302,8 +302,7 @@ private fun Banner(
 private fun EmploymentRate(
     term: Int,
     rate: String,
-    passCount: Long,
-    totalStudentCount: Long,
+    onEmploymentClick: () -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.padding(24.dp)) {
@@ -317,20 +316,30 @@ private fun EmploymentRate(
                 color = JobisTheme.colors.onPrimary,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
-                        append(stringResource(id = R.string.today))
-                    }
-                    withStyle(SpanStyle(JobisTheme.colors.inverseOnSurface)) {
-                        append(" $passCount/$totalStudentCount ")
-                    }
-                    withStyle(SpanStyle(JobisTheme.colors.onSurfaceVariant)) {
-                        append(stringResource(id = R.string.get_a_job))
-                    }
-                },
-                style = JobisTypography.Description,
-            )
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = JobisTheme.colors.onPrimary,
+                        shape = RoundedCornerShape(12.dp),
+                    )
+                    .width(138.dp)
+                    .height(40.dp)
+                    .clickable(onClick = onEmploymentClick),
+                contentAlignment = Alignment.Center,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    JobisText(
+                        modifier = Modifier
+                            .background(JobisTheme.colors.onPrimary),
+                        text = stringResource(R.string.check_employment),
+                        style = JobisTypography.Body,
+                        color = JobisTheme.colors.surface,
+                    )
+                }
+            }
         }
         Image(
             painter = painterResource(id = JobisIcon.File),

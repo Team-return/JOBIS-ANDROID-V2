@@ -24,6 +24,7 @@ class JobisApplication : Application() {
 
         Thread.setDefaultUncaughtExceptionHandler { _, e ->
             Firebase.crashlytics.recordException(e)
+            // TODO : 에러 로그 메세지
 
             when (e) {
                 is OfflineException -> makeToast(InternetErrorMsg)
