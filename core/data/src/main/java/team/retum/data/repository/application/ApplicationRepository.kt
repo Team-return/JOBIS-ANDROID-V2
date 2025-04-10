@@ -3,6 +3,7 @@ package team.retum.data.repository.application
 import team.retum.network.model.request.application.ApplyCompanyRequest
 import team.retum.network.model.response.application.FetchAppliedCompaniesResponse
 import team.retum.network.model.response.application.FetchEmploymentCountResponse
+import team.retum.network.model.response.application.FetchEmploymentStatusResponse
 import team.retum.network.model.response.application.FetchRejectionReasonResponse
 
 interface ApplicationRepository {
@@ -21,4 +22,6 @@ interface ApplicationRepository {
         applicationId: Long,
         applyCompanyRequest: ApplyCompanyRequest,
     )
+
+    suspend fun fetchEmploymentStatus(): FetchEmploymentStatusResponse
 }

@@ -9,6 +9,7 @@ import team.retum.network.di.RequestUrls
 import team.retum.network.model.request.application.ApplyCompanyRequest
 import team.retum.network.model.response.application.FetchAppliedCompaniesResponse
 import team.retum.network.model.response.application.FetchEmploymentCountResponse
+import team.retum.network.model.response.application.FetchEmploymentStatusResponse
 import team.retum.network.model.response.application.FetchRejectionReasonResponse
 
 interface ApplicationApi {
@@ -34,4 +35,7 @@ interface ApplicationApi {
         @Path(RequestUrls.PATH.applicationId) applicationId: Long,
         @Body applyCompanyRequest: ApplyCompanyRequest,
     )
+
+    @GET(RequestUrls.Applications.employment)
+    suspend fun fetchEmploymentStatus(): FetchEmploymentStatusResponse
 }

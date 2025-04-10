@@ -13,11 +13,11 @@ plugins {
 }
 
 android {
-    namespace = "team.retum.jobisandroidv2"
+    namespace = "team.retum.jobis"
     compileSdk = ProjectProperties.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "team.retum.jobisandroidv2"
+        applicationId = "team.retum.jobis"
         minSdk = ProjectProperties.MIN_SDK
         targetSdk = ProjectProperties.TARGET_SDK
         versionCode = ProjectProperties.VERSION_CODE
@@ -114,6 +114,7 @@ dependencies {
     implementation(project(":feature:company"))
     implementation(project(":feature:review"))
     implementation(project(":feature:application"))
+    implementation(project(":feature:employment"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)

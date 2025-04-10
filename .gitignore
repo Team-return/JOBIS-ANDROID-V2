@@ -34,3 +34,7 @@ google-cloud-platform.json
 
 # Android Profiling
 *.hprof
+
+.DS_Store
+
+*.aab

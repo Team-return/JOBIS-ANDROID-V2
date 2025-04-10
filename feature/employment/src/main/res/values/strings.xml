@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="employment_status">취업 현황</string>
+
+    <string name="employment_completed">취업 완료</string>
+    <string name="before_employment">취업 전</string>
+    
+    <string name="check_employment_status">반별 취업 현황 확인하기</string>
+    <string name="all_statistics">전체 통계</string>
+
+    <string name="class_employment">%s/%s</string>
+
+    <string name="soft_ware_first_class">소프트웨어 개발 1반</string>
+    <string name="soft_ware_second_class">소프트웨어 개발 2반</string>
+    <string name="soft_ware_embedded">임베디드 소프트웨어 3반</string>
+    <string name="ai_class">인공지능 소프트웨어 4반</string>
+
+    <string name="first_class">1반</string>
+    <string name="second_class">2반</string>
+    <string name="third_class">3반</string>
+    <string name="fourth_class">4반</string>
+</resources>

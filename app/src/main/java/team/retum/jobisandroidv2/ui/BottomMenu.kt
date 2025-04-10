@@ -2,10 +2,11 @@ package team.retum.jobisandroidv2.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import team.retum.bookmark.navigation.NAVIGATION_BOOKMARK
 import team.retum.home.navigation.NAVIGATION_HOME
+import team.retum.jobis.R
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
-import team.retum.jobisandroidv2.R
 
 sealed class BottomMenu(
     val route: String,
@@ -25,7 +26,7 @@ sealed class BottomMenu(
     )
 
     data object Bookmark : BottomMenu(
-        route = "bookmark",
+        route = NAVIGATION_BOOKMARK,
         icon = R.drawable.ic_bookmark,
         title = R.string.bookmark,
     )

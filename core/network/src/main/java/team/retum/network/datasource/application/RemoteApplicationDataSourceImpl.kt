@@ -4,6 +4,7 @@ import team.retum.network.api.ApplicationApi
 import team.retum.network.model.request.application.ApplyCompanyRequest
 import team.retum.network.model.response.application.FetchAppliedCompaniesResponse
 import team.retum.network.model.response.application.FetchEmploymentCountResponse
+import team.retum.network.model.response.application.FetchEmploymentStatusResponse
 import team.retum.network.model.response.application.FetchRejectionReasonResponse
 import team.retum.network.util.RequestHandler
 import javax.inject.Inject
@@ -50,6 +51,12 @@ class RemoteApplicationDataSourceImpl @Inject constructor(
                 applicationId = applicationId,
                 applyCompanyRequest = applyCompanyRequest,
             )
+        }
+    }
+
+    override suspend fun fetchEmploymentStatus(): FetchEmploymentStatusResponse {
+        return RequestHandler<FetchEmploymentStatusResponse>().request {
+            applicationApi.fetchEmploymentStatus()
         }
     }
 }

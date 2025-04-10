@@ -11,12 +11,14 @@ fun NavGraphBuilder.notifications(
     onBackPressed: () -> Unit,
     navigateToRecruitment: (Long) -> Unit,
     navigateToHome: (Long) -> Unit,
+    navigateToNotice: (Long) -> Unit,
 ) {
     composable(NAVIGATION_NOTIFICATIONS) {
         Notifications(
             onBackPressed = onBackPressed,
             navigateToRecruitment = navigateToRecruitment,
             navigateToHome = navigateToHome,
+            navigateToNotice = navigateToNotice,
         )
     }
 }

@@ -10,6 +10,8 @@ import team.retum.common.model.ApplicationData
 import team.retum.company.navigation.navigateToCompanies
 import team.retum.company.navigation.navigateToCompanyDetails
 import team.retum.company.navigation.navigateToSearchCompanies
+import team.retum.employment.navigation.navigateToEmployment
+import team.retum.employment.navigation.navigateToEmploymentDetail
 import team.retum.jobis.application.navigation.navigateToApplication
 import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
@@ -132,6 +134,14 @@ internal class JobisNavigator(
 
     fun navigateToRoot(applicationId: Long = 0) {
         navController.navigateToRoot(applicationId = applicationId)
+    }
+
+    fun navigateToEmployment() {
+        navController.navigateToEmployment()
+    }
+
+    fun navigateToEmploymentDetail(classId: Long) {
+        navController.navigateToEmploymentDetail(classId = classId)
     }
 
     fun navigateToWinterIntern() {

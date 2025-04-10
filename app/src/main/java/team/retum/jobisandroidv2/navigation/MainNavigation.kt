@@ -6,6 +6,8 @@ import team.retum.bug.navigation.reportBug
 import team.retum.company.navigation.companies
 import team.retum.company.navigation.companyDetails
 import team.retum.company.navigation.searchCompanies
+import team.retum.employment.navigation.employment
+import team.retum.employment.navigation.employmentDetail
 import team.retum.jobis.application.navigation.application
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.notice.navigation.noticeDetails
@@ -34,6 +36,7 @@ internal fun NavGraphBuilder.mainNavigation(
     ) {
         root(
             onAlarmClick = navigator::navigateToNotification,
+            onEmploymentClick = navigator::navigateToEmployment,
             onWinterInternClick = navigator::navigateToWinterIntern,
             onRecruitmentDetailsClick = navigator::navigateToRecruitmentDetails,
             onCompaniesClick = navigator::navigateToCompanies,
@@ -57,11 +60,19 @@ internal fun NavGraphBuilder.mainNavigation(
             },
             navigateToRecruitment = navigator::navigateToRecruitmentDetails,
             navigateToHome = navigator::navigateToRoot,
+            navigateToNotice = navigator::navigateToNoticeDetails,
         )
         recruitmentDetails(
             onBackPressed = navigator::popBackStackIfNotHome,
             onApplyClick = navigator::navigateToApplication,
             navigateToCompanyDetails = navigator::navigateToCompanyDetails,
+        )
+        employment(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onClassClick = navigator::navigateToEmploymentDetail,
+        )
+        employmentDetail(
+            onBackPressed = navigator::popBackStackIfNotHome,
         )
         reportBug(onBackPressed = navigator::popBackStackIfNotHome)
         interests(onBackPressed = navigator::popBackStackIfNotHome)
