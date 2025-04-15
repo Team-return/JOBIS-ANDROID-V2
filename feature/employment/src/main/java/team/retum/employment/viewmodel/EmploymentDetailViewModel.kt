@@ -1,5 +1,6 @@
 package team.retum.employment.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,7 @@ internal class EmploymentDetailViewModel @Inject constructor(
 ) : BaseViewModel<EmploymentDetailState, EmploymentDetailSideEffect>(EmploymentDetailState.getDefaultState()) {
 
     init {
+        Log.d("TEST", "init 실행")
         setClassId(classId = state.value.classId)
         upDateClassEmployment()
         fetchEmploymentStatus()
@@ -40,6 +42,7 @@ internal class EmploymentDetailViewModel @Inject constructor(
     internal fun fetchEmploymentStatus() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchEmploymentStatusUseCase().onSuccess {
+                Log.d("TEST", "fetchemploymentStatus 실행")
                 setState {
                     state.value.copy(
                         classInfoList = it.classes[state.value.classId].employmentRateList.toMutableList(),
