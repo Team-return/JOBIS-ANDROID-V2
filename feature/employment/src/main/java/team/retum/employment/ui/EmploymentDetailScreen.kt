@@ -1,6 +1,5 @@
 package team.retum.employment.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,7 +48,6 @@ internal fun EmploymentDetail(
 
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {
-            Log.d("TEST", "launchedeffect 실행")
             setClassId(classId = classId.toInt() - 1)
             fetchEmploymentStatus()
         }
