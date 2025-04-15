@@ -18,25 +18,11 @@ internal class EmploymentDetailViewModel @Inject constructor(
     init {
         Log.d("TEST", "init 실행")
         setClassId(classId = state.value.classId)
-        upDateClassEmployment()
         fetchEmploymentStatus()
     }
 
     internal fun setClassId(classId: Int) = setState {
         state.value.copy(classId = classId)
-    }
-
-    internal fun upDateClassEmployment() {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchEmploymentStatusUseCase().onSuccess {
-                setState {
-                    state.value.copy(
-                        totalStudent = it.classes[state.value.classId].totalStudents,
-                        passStudent = it.classes[state.value.classId].passedStudents,
-                    )
-                }
-            }
-        }
     }
 
     internal fun fetchEmploymentStatus() {
@@ -46,6 +32,8 @@ internal class EmploymentDetailViewModel @Inject constructor(
                 setState {
                     state.value.copy(
                         classInfoList = it.classes[state.value.classId].employmentRateList.toMutableList(),
+                        totalStudent = it.classes[state.value.classId].totalStudents,
+                        passStudent = it.classes[state.value.classId].passedStudents,
                     )
                 }
             }
