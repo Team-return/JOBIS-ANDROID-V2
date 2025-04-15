@@ -18,7 +18,6 @@ internal class EmploymentDetailViewModel @Inject constructor(
     init {
         Log.d("TEST", "init 실행")
         setClassId(classId = state.value.classId)
-        fetchEmploymentStatus()
     }
 
     internal fun setClassId(classId: Int) = setState {

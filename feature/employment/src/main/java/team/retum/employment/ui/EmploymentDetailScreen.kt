@@ -51,6 +51,7 @@ internal fun EmploymentDetail(
         with(employmentDetailViewModel) {
             Log.d("TEST", "launchedeffect 실행")
             setClassId(classId = classId.toInt() - 1)
+            fetchEmploymentStatus()
         }
     }
 
