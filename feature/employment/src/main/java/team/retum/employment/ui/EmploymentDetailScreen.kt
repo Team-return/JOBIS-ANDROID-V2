@@ -49,6 +49,7 @@ internal fun EmploymentDetail(
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {
             setClassId(classId = classId.toInt() - 1)
+            fetchEmploymentStatus()
         }
     }
 
