@@ -10,7 +10,7 @@ apply<CommonGradlePlugin>()
 apply<ComposeGradlePlugin>()
 
 android {
-    namespace = "team.retum.jobis.employment"
+    namespace = "team.retum.employment"
 
     kotlinOptions {
         jvmTarget = ProjectProperties.JVM_TARGET
