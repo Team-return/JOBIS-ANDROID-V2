@@ -235,7 +235,7 @@ private fun MyPageScreen(
                             imageResource = painterResource(id = JobisIcon.Code),
                             description = "interest field icon",
                             contentTitle = stringResource(id = R.string.interest_field),
-                            onClick = showUpdateLaterToast,
+                            onClick = onSelectInterestClick,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                         ListItemInfo(
