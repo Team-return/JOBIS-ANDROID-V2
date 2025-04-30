@@ -133,4 +133,11 @@ internal object RequestUrls {
 
         const val checkServerStatus = path
     }
+
+    data object Interests {
+        private const val path = "/interests"
+
+        const val interests = path
+        const val interestsRecruitment = "$path/recruitment"
+    }
 }
