@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import team.retum.network.di.RequestUrls
 import team.retum.network.model.response.interests.FetchInterestsRecruitmentResponse
-import team.retum.network.model.response.interests.FetchSearchInterestsResponse
+import team.retum.network.model.response.interests.FetchInterestsResponse
 
 interface InterestsApi {
     @PATCH(RequestUrls.Interests.interests)
@@ -14,7 +14,7 @@ interface InterestsApi {
     )
 
     @GET(RequestUrls.Interests.interests)
-    suspend fun fetchInterests(): FetchSearchInterestsResponse
+    suspend fun fetchInterests(): FetchInterestsResponse
 
     @GET(RequestUrls.Interests.interestsRecruitment)
     suspend fun fetchInterestsSearchRecruitments(): FetchInterestsRecruitmentResponse
