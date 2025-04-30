@@ -4,7 +4,7 @@ import team.retum.network.model.response.interests.FetchInterestsRecruitmentResp
 import team.retum.network.model.response.interests.FetchInterestsResponse
 
 interface InterestsRepository {
-    suspend fun updateInterestsToggle(codes: List<Int>)
+    suspend fun setInterestsToggle(codes: List<Int>)
     suspend fun fetchInterests(): FetchInterestsResponse
     suspend fun fetchInterestsSearchRecruitments(): FetchInterestsRecruitmentResponse
 }

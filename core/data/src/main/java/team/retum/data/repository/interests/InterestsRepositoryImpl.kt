@@ -8,7 +8,7 @@ import javax.inject.Inject
 class InterestsRepositoryImpl @Inject constructor(
     private val dataSourceImpl: InterestsDataSourceImpl,
 ) : InterestsRepository {
-    override suspend fun updateInterestsToggle(codes: List<Int>) {
+    override suspend fun setInterestsToggle(codes: List<Int>) {
         dataSourceImpl.updateInterestsToggle(codes = codes)
     }
 

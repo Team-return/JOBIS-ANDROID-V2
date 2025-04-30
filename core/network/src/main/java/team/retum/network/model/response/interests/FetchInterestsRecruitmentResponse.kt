@@ -2,10 +2,10 @@ package team.retum.network.model.response.interests
 
 import com.squareup.moshi.Json
 
-data class FetchInterestsRecruitmentResponse(
-    @Json(name = "recruitments") val recruitments: List<InterestRecruitment>,
+data class FetchInterestsRecruitmentsResponse(
+    @Json(name = "recruitments") val recruitments: List<InterestRecruitments>,
 ) {
-    data class InterestRecruitment(
+    data class InterestRecruitments(
         @Json(name = "id") val id: Int,
         @Json(name = "company_id") val companyId: String,
         @Json(name = "company_profile_url") val companyProfileUrl: String,

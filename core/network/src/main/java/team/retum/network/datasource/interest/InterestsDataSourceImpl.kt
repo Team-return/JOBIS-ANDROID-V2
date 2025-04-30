@@ -9,9 +9,9 @@ import javax.inject.Inject
 class InterestsDataSourceImpl @Inject constructor(
     private val interestsApi: InterestsApi,
 ) : InterestsDataSource {
-    override suspend fun updateInterestsToggle(codes: List<Int>) {
+    override suspend fun setInterestsToggle(codes: List<Int>) {
         RequestHandler<Unit>().request {
-            interestsApi.updateInterestsToggle(codes = codes)
+            interestsApi.setInterestsToggle(codes = codes)
         }
     }
 
@@ -26,5 +26,4 @@ class InterestsDataSourceImpl @Inject constructor(
             interestsApi.fetchInterestsSearchRecruitments()
         }
     }
-
 }
