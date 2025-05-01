@@ -11,7 +11,7 @@ apply<CommonGradlePlugin>()
 apply<ComposeGradlePlugin>()
 
 android {
-    namespace = "team.retum.jobis.interests"
+    namespace = "team.retum.interests"
 
     kotlinOptions {
         jvmTarget = ProjectProperties.JVM_TARGET
@@ -21,6 +21,7 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
+    
 
     implementation(libs.kotlinx.collections.immutable)
 }
