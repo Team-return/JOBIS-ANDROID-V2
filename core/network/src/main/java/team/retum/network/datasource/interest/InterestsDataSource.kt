@@ -1,10 +1,10 @@
 package team.retum.network.datasource.interest
 
-import team.retum.network.model.response.interests.FetchInterestsRecruitmentResponse
+import team.retum.network.model.response.interests.FetchInterestsRecruitmentsResponse
 import team.retum.network.model.response.interests.FetchInterestsResponse
 
 interface InterestsDataSource {
-    suspend fun setInterestsToggle(codes: List<Int>)
+    suspend fun setInterestsToggle(codes: Int)
     suspend fun fetchInterests(): FetchInterestsResponse
-    suspend fun fetchInterestsSearchRecruitments(): FetchInterestsRecruitmentResponse
+    suspend fun fetchInterestsSearchRecruitments(): FetchInterestsRecruitmentsResponse
 }

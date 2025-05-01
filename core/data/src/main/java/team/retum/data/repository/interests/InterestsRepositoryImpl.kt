@@ -1,21 +1,20 @@
 package team.retum.data.repository.interests
 
-import team.retum.network.datasource.interest.InterestsDataSourceImpl
-import team.retum.network.model.response.interests.FetchInterestsRecruitmentResponse
+import team.retum.network.datasource.interest.InterestsDataSource
+import team.retum.network.model.response.interests.FetchInterestsRecruitmentsResponse
 import team.retum.network.model.response.interests.FetchInterestsResponse
 import javax.inject.Inject
 
 class InterestsRepositoryImpl @Inject constructor(
-    private val dataSourceImpl: InterestsDataSourceImpl,
+    private val interestsDataSource: InterestsDataSource,
 ) : InterestsRepository {
-    override suspend fun setInterestsToggle(codes: List<Int>) {
-        dataSourceImpl.updateInterestsToggle(codes = codes)
+    override suspend fun setInterestsToggle(codes: Int) {
+        interestsDataSource.setInterestsToggle(codes = codes)
     }
 
     override suspend fun fetchInterests(): FetchInterestsResponse =
-        dataSourceImpl.fetchInterests()
+        interestsDataSource.fetchInterests()
 
-    override suspend fun fetchInterestsSearchRecruitments(): FetchInterestsRecruitmentResponse =
-        dataSourceImpl.fetchInterestsSearchRecruitments()
-
+    override suspend fun fetchInterestsSearchRecruitments(): FetchInterestsRecruitmentsResponse =
+        interestsDataSource.fetchInterestsSearchRecruitments()
 }
