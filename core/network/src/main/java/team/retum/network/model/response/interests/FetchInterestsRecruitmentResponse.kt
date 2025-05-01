@@ -1,7 +1,9 @@
 package team.retum.network.model.response.interests
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FetchInterestsRecruitmentsResponse(
     @Json(name = "recruitments") val recruitments: List<InterestRecruitments>,
 ) {
