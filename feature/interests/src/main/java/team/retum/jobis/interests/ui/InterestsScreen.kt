@@ -2,8 +2,12 @@ package team.retum.jobis.interests.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -22,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.collections.immutable.toPersistentList
@@ -54,9 +60,12 @@ private fun InterestsScreen(onBackPressed: () -> Unit) {
     val checkedSkills = remember { mutableStateListOf<String>() }
     val categories = remember {
         mutableStateListOf(
+            "iOS",
             "Android",
-            "Back-end",
-            "Front-end",
+            "FrontEnd",
+            "BackEnd",
+            "Embedded",
+            "Security",
         )
     }
 
@@ -69,6 +78,7 @@ private fun InterestsScreen(onBackPressed: () -> Unit) {
             title = stringResource(id = R.string.set_interests),
             onBackPressed = onBackPressed,
         )
+        InterestsTitle()
         InterestsInput(
             content = { content },
             onContentChange = { content = it },
@@ -81,6 +91,7 @@ private fun InterestsScreen(onBackPressed: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InterestsInput(
     content: () -> String,
@@ -90,38 +101,51 @@ private fun InterestsInput(
     onSelectCategory: (Int) -> Unit,
     checkedSkills: SnapshotStateList<String>,
 ) {
-    Column(modifier = Modifier.padding(vertical = 16.dp)) {
-        JobisTextField(
-            hint = stringResource(id = R.string.hint_keyword),
-            value = content,
-            onValueChange = onContentChange,
+    FlowRow(
+        modifier = Modifier.padding(
+            horizontal = 24.dp,
+            vertical = 36.dp,
+        ),
+        maxItemsInEachRow = 5,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        categories.forEach {
+            MajorContent(
+                major = it,
+                selected = true,
+                onClick = {},
+            )
+        }
+    }
+}
+
+@Composable
+private fun InterestsTitle() {
+    Column(
+        modifier = Modifier.padding(
+            top = 34.dp,
         )
-        TabBar(
-            selectedTabIndex = selectedCategoryIndex,
-            tabs = categories.toPersistentList(),
-            onSelectTab = onSelectCategory,
+    ) {
+        JobisText(
+            modifier = Modifier.padding(
+                top = 20.dp,
+                bottom = 24.dp,
+                start = 24.dp,
+            ),
+            text = stringResource(R.string.interests_select_title, "윤유섭"),
+            style = JobisTypography.PageTitle,
+            color = JobisTheme.colors.onBackground,
         )
-        // TODO 더미 데이터 제거
-        Skills(
-            skills = listOf(
-                "Kotlin",
-                "Java",
-            ).toMutableStateList(),
-            checkedSkills = checkedSkills.toPersistentList(),
-            onCheckedChange = { index, checked, _ ->
-                // TODO 뷰모델로 함수 옮기기
-                checkedSkills.run {
-                    when (checked) {
-                        true -> add(index)
-                        false -> remove(index)
-                    }
-                }
-            },
-        )
-        MajorContent(
-            major = "채도훈과",
-            selected = true,
-            onClick = {},
+        JobisText(
+            modifier = Modifier.padding(
+                top = 8.dp,
+                bottom = 20.dp,
+                start = 24.dp,
+                end = 24.dp,
+            ),
+            text = stringResource(R.string.interests_alarm),
+            style = JobisTypography.SubBody
         )
     }
 }
@@ -162,8 +186,8 @@ private fun MajorContent(
     ) {
         JobisText(
             modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
+                horizontal = 16.dp,
+                vertical = 6.dp,
             ),
             text = major,
             style = JobisTypography.Body,
