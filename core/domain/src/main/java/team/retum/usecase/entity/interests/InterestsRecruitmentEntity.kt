@@ -5,16 +5,16 @@ import team.retum.network.model.response.interests.FetchInterestsRecruitmentsRes
 
 @Immutable
 data class InterestsRecruitmentsEntity(
-    val recruitments : List<InterestsRecruitmentEntity>
+    val recruitments: List<InterestsRecruitmentEntity>,
 ) {
     data class InterestsRecruitmentEntity(
-        val id : Int,
-        val companyId : String,
-        val companyProfileUrl : String,
-        val trainPay : Int,
-        val militarySupport : Boolean,
-        val hiringJobs : String,
-        val bookmarked : Boolean,
+        val id: Int,
+        val companyId: String,
+        val companyProfileUrl: String,
+        val trainPay: Int,
+        val militarySupport: Boolean,
+        val hiringJobs: String,
+        val bookmarked: Boolean,
     )
 }
 

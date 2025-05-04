@@ -1,6 +1,5 @@
 package team.retum.jobis.interests.ui
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.interests.R
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
@@ -123,11 +121,10 @@ private fun InterestsInput(
         MajorContent(
             major = "채도훈과",
             selected = true,
-            onClick = {}
+            onClick = {},
         )
     }
 }
-
 
 @Composable
 private fun MajorContent(
