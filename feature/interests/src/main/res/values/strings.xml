@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="set_interests">관심사 설정</string>
-    <string name="hint_keyword">검색어를 입력해주세요</string>
+    <string name="set_interests">관심 분야 설정</string>
+    <string name="interests_select_title">%s님의\n관심사를 선택해주세요</string>
+    <string name="interests_check_title">%s님의\n관심사를 확인했어요!</string>
+    <string name="interests_alarm">관심사에 맞는 모집 의뢰서가 업로드되면 \n알림을 드립니다!</string>
 </resources>
