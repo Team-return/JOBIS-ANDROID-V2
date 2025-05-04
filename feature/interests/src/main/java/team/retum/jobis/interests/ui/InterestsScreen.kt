@@ -34,6 +34,11 @@ import kotlinx.collections.immutable.toPersistentList
 import team.retum.interests.R
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.button.JobisDialogButton
+import team.retum.jobisdesignsystemv2.button.JobisMediumButton
+import team.retum.jobisdesignsystemv2.button.JobisSmallButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.skills.Skills
@@ -87,7 +92,12 @@ private fun InterestsScreen(onBackPressed: () -> Unit) {
             onSelectCategory = { selectedCategoryIndex = it },
             checkedSkills = checkedSkills,
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.weight(1f))
+        JobisButton(
+            text = stringResource(R.string.select_interests_button),
+            color = ButtonColor.Primary,
+            onClick = {},
+        )
     }
 }
 
@@ -130,8 +140,8 @@ private fun InterestsTitle() {
         JobisText(
             modifier = Modifier.padding(
                 top = 20.dp,
-                bottom = 24.dp,
                 start = 24.dp,
+                end = 24.dp,
             ),
             text = stringResource(R.string.interests_select_title, "윤유섭"),
             style = JobisTypography.PageTitle,
