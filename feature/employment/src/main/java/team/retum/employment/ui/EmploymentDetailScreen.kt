@@ -148,8 +148,8 @@ private fun CompanyCard(
                 contentScale = ContentScale.Crop,
             )
         }
-        Spacer(modifier = Modifier.padding(top = 8.dp))
         JobisText(
+            modifier = Modifier.padding(top = 8.dp),
             text = companyName,
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
