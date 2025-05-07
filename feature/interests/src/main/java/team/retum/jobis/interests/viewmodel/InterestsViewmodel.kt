@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.network.model.response.interests.FetchInterestsResponse
+import team.retum.usecase.entity.interests.InterestsEntity
 import team.retum.usecase.usecase.interests.FetchInterestsUseCase
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ internal class InterestsViewmodel @Inject constructor(
 
 @Immutable
 internal data class InterestsState(
-    val interestsList: FetchInterestsResponse?,
+    val interestsList: InterestsEntity?,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
