@@ -130,24 +130,29 @@ private fun CompanyCard(
     imageUrl: String,
     companyName: String,
 ) {
-    Box(
-        modifier = Modifier
-            .size(80.dp)
-            .shadow(elevation = 12.dp)
-            .clip(RoundedCornerShape(6.dp))
-            .background(color = JobisTheme.colors.inverseSurface),
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AsyncImage(
+        Box(
             modifier = Modifier
-                .align(Alignment.Center),
-            model = imageUrl,
-            contentDescription = companyName,
-            contentScale = ContentScale.Crop,
-        )
-        Spacer(modifier = Modifier.padding(8.dp))
+                .size(80.dp)
+                .shadow(elevation = 18.dp)
+                .clip(RoundedCornerShape(6.dp))
+                .background(color = JobisTheme.colors.inverseSurface),
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .align(Alignment.Center),
+                model = imageUrl,
+                contentDescription = companyName,
+                contentScale = ContentScale.Crop,
+            )
+        }
+        Spacer(modifier = Modifier.padding(top = 8.dp))
         JobisText(
             text = companyName,
             style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
     }
