@@ -6,7 +6,7 @@ import javax.inject.Inject
 class SetInterestsToggleUseCase @Inject constructor(
     private val interestsRepository: InterestsRepository,
 ) {
-    suspend operator fun invoke(codes: Int) = runCatching {
+    suspend operator fun invoke(codes: List<Int>) = runCatching {
         interestsRepository.setInterestsToggle(codes = codes)
     }
 }

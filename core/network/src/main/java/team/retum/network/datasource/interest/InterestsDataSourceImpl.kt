@@ -9,7 +9,7 @@ import javax.inject.Inject
 class InterestsDataSourceImpl @Inject constructor(
     private val interestsApi: InterestsApi,
 ) : InterestsDataSource {
-    override suspend fun setInterestsToggle(codes: Int) {
+    override suspend fun setInterestsToggle(codes: List<Int>) {
         RequestHandler<Unit>().request {
             interestsApi.setInterestsToggle(codes = codes)
         }

@@ -10,7 +10,7 @@ import team.retum.network.model.response.interests.FetchInterestsResponse
 interface InterestsApi {
     @PATCH(RequestUrls.Interests.interests)
     suspend fun setInterestsToggle(
-        @Body codes: Int,
+        @Body codes: List<Int>,
     )
 
     @GET(RequestUrls.Interests.interests)
