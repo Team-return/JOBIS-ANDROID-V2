@@ -58,16 +58,17 @@ internal class InterestsViewmodel @Inject constructor(
         }
     }
 
-    internal fun setMajorId(majorId: Int) {
+    internal fun setMajor(major: String) {
         viewModelScope.launch(Dispatchers.IO) {
             setState {
                 state.value.copy(
-                    majorId = majorId,
+                    selectedMajor = major,
                 )
             }
         }
     }
 
+    // TODO : 단순 대입이 아닌 해당하는 전공을 해제 하거나 추가해야함
     internal fun updateCodeIds(codeIds: List<Int>) {
         viewModelScope.launch {
             setState {
@@ -82,18 +83,18 @@ internal class InterestsViewmodel @Inject constructor(
 @Immutable
 internal data class InterestsState(
     val studentName: String,
-    val interestsMajorList: List<InterestsEntity.InterestMajorEntity>?,
+    val interestsMajorList: List<InterestsEntity.InterestMajorEntity>,
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val codeIds: List<Int>,
-    val majorId: Int?,
+    val selectedMajor: String,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
             studentName = "",
-            interestsMajorList = null,
+            interestsMajorList = emptyList(),
             interestsRecruitments = null,
             codeIds = emptyList(),
-            majorId = null,
+            selectedMajor = "",
         )
     }
 }

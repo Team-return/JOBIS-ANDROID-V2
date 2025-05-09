@@ -26,6 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.interests.R
 import team.retum.jobis.interests.viewmodel.InterestsState
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
@@ -36,6 +38,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.usecase.entity.interests.InterestsEntity
 
 @Composable
 internal fun Interests(
@@ -47,6 +50,7 @@ internal fun Interests(
     InterestsScreen(
         onBackPressed = onBackPressed,
         state = state,
+        setSelectedMajor = interestsViewmodel::setMajor
     )
 }
 
@@ -54,9 +58,9 @@ internal fun Interests(
 private fun InterestsScreen(
     onBackPressed: () -> Unit,
     state: InterestsState,
+    setSelectedMajor: (String) -> Unit,
 ) {
     // TODO 뷰모델로 옮기기
-    var content by remember { mutableStateOf("") }
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
     val checkedSkills = remember { mutableStateListOf<String>() }
     val categories = remember {
@@ -81,12 +85,12 @@ private fun InterestsScreen(
         )
         InterestsTitle(studentName = state.studentName)
         InterestsInput(
-            content = { content },
-            onContentChange = { content = it },
+            selectedMajor = state.selectedMajor,
             categories = categories,
-            selectedCategoryIndex = selectedCategoryIndex,
-            onSelectCategory = { selectedCategoryIndex = it },
-            checkedSkills = checkedSkills,
+            onSelectCategory = setSelectedMajor,
+            onUnselectCategory = {
+                setSelectedMajor(it)
+            },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
@@ -100,12 +104,10 @@ private fun InterestsScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InterestsInput(
-    content: () -> String,
-    onContentChange: (String) -> Unit,
-    selectedCategoryIndex: Int,
+    selectedMajor: String,
     categories: SnapshotStateList<String>,
-    onSelectCategory: (Int) -> Unit,
-    checkedSkills: SnapshotStateList<String>,
+    onSelectCategory: (String) -> Unit,
+    onUnselectCategory: (String) -> Unit,
 ) {
     FlowRow(
         modifier = Modifier.padding(
@@ -119,8 +121,13 @@ private fun InterestsInput(
         categories.forEach {
             MajorContent(
                 major = it,
-                selected = true,
-                onClick = {},
+                selected = selectedMajor == it,
+                onClick = { major ->
+                    when (selectedMajor == it) {
+                        true -> onUnselectCategory(major)
+                        false -> onSelectCategory(major)
+                    }
+                },
             )
         }
     }
