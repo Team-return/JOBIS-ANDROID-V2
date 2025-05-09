@@ -1,4 +1,4 @@
-package team.retum.network.datasource.interest
+package team.retum.network.datasource.interests
 
 import team.retum.network.api.InterestsApi
 import team.retum.network.model.response.interests.FetchInterestsRecruitmentsResponse

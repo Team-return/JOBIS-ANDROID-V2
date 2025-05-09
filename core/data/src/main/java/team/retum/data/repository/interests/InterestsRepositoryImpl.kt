@@ -1,6 +1,6 @@
 package team.retum.data.repository.interests
 
-import team.retum.network.datasource.interest.InterestsDataSource
+import team.retum.network.datasource.interests.InterestsDataSource
 import team.retum.network.model.response.interests.FetchInterestsRecruitmentsResponse
 import team.retum.network.model.response.interests.FetchInterestsResponse
 import javax.inject.Inject

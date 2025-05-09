@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.usecase.entity.interests.InterestsEntity
 import team.retum.usecase.entity.interests.InterestsRecruitmentsEntity
-import team.retum.usecase.usecase.interests.FetchInterestsSearchRecruitmentsUseCase
+import team.retum.usecase.usecase.interests.FetchInterestsSearchRecruitmentUseCase
 import team.retum.usecase.usecase.interests.FetchInterestsUseCase
 import team.retum.usecase.usecase.interests.SetInterestsToggleUseCase
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class InterestsViewmodel @Inject constructor(
     private val fetchInterestsUseCase: FetchInterestsUseCase,
-    private val fetchInterestsSearchRecruitmentsUseCase: FetchInterestsSearchRecruitmentsUseCase,
+    private val fetchInterestsSearchRecruitmentsUseCase: FetchInterestsSearchRecruitmentUseCase,
     private val setInterestsToggleUseCase: SetInterestsToggleUseCase,
 ) : BaseViewModel<InterestsState, InterestsSideEffect>(InterestsState.getInitialState()) {
     init {

@@ -22,8 +22,8 @@ import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.datasource.company.CompanyDataSourceImpl
 import team.retum.network.datasource.file.RemoteFileDataSource
 import team.retum.network.datasource.file.RemoteFileDataSourceImpl
-import team.retum.network.datasource.interest.InterestsDataSource
-import team.retum.network.datasource.interest.InterestsDataSourceImpl
+import team.retum.network.datasource.interests.InterestsDataSource
+import team.retum.network.datasource.interests.InterestsDataSourceImpl
 import team.retum.network.datasource.notice.NoticeDataSource
 import team.retum.network.datasource.notice.NoticeDataSourceImpl
 import team.retum.network.datasource.notification.NotificationDataSource
