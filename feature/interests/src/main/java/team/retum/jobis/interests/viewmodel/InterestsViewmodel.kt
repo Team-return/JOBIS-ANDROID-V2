@@ -29,7 +29,8 @@ internal class InterestsViewmodel @Inject constructor(
             fetchInterestsUseCase().onSuccess {
                 setState {
                     state.value.copy(
-                        interestsMajorList = it,
+                        studentName = it.studentName,
+                        interestsMajorList = it.interests,
                     )
                 }
             }
@@ -80,13 +81,15 @@ internal class InterestsViewmodel @Inject constructor(
 
 @Immutable
 internal data class InterestsState(
-    val interestsMajorList: InterestsEntity?,
+    val studentName: String,
+    val interestsMajorList: List<InterestsEntity.InterestMajorEntity>?,
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val codeIds: List<Int>,
     val majorId: Int?,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
+            studentName = "",
             interestsMajorList = null,
             interestsRecruitments = null,
             codeIds = emptyList(),

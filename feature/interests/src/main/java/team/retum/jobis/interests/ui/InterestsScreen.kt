@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -21,30 +19,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.collections.immutable.toPersistentList
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.interests.R
+import team.retum.jobis.interests.viewmodel.InterestsState
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
-import team.retum.jobisdesignsystemv2.button.JobisDialogButton
-import team.retum.jobisdesignsystemv2.button.JobisMediumButton
-import team.retum.jobisdesignsystemv2.button.JobisSmallButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
-import team.retum.jobisdesignsystemv2.skills.Skills
-import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
-import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
@@ -52,13 +42,19 @@ internal fun Interests(
     onBackPressed: () -> Unit,
     interestsViewmodel: InterestsViewmodel = hiltViewModel(),
 ) {
+    val state by interestsViewmodel.state.collectAsStateWithLifecycle()
+
     InterestsScreen(
         onBackPressed = onBackPressed,
+        state = state,
     )
 }
 
 @Composable
-private fun InterestsScreen(onBackPressed: () -> Unit) {
+private fun InterestsScreen(
+    onBackPressed: () -> Unit,
+    state: InterestsState,
+) {
     // TODO 뷰모델로 옮기기
     var content by remember { mutableStateOf("") }
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
@@ -83,7 +79,7 @@ private fun InterestsScreen(onBackPressed: () -> Unit) {
             title = stringResource(id = R.string.set_interests),
             onBackPressed = onBackPressed,
         )
-        InterestsTitle()
+        InterestsTitle(studentName = state.studentName)
         InterestsInput(
             content = { content },
             onContentChange = { content = it },
@@ -131,7 +127,9 @@ private fun InterestsInput(
 }
 
 @Composable
-private fun InterestsTitle() {
+private fun InterestsTitle(
+    studentName: String,
+) {
     Column(
         modifier = Modifier.padding(
             top = 34.dp,
@@ -143,7 +141,7 @@ private fun InterestsTitle() {
                 start = 24.dp,
                 end = 24.dp,
             ),
-            text = stringResource(R.string.interests_select_title, "윤유섭"),
+            text = stringResource(R.string.interests_select_title, studentName),
             style = JobisTypography.PageTitle,
             color = JobisTheme.colors.onBackground,
         )
