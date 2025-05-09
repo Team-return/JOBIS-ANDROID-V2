@@ -138,6 +138,6 @@ internal object RequestUrls {
         private const val path = "/interests"
 
         const val interests = path
-        const val interestsRecruitment = "$path/recruitment"
+        const val interestsRecruitments = "$path/recruitment"
     }
 }

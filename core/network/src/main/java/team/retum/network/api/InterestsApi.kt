@@ -16,6 +16,6 @@ interface InterestsApi {
     @GET(RequestUrls.Interests.interests)
     suspend fun fetchInterests(): FetchInterestsResponse
 
-    @GET(RequestUrls.Interests.interestsRecruitment)
+    @GET(RequestUrls.Interests.interestsRecruitments)
     suspend fun fetchInterestsSearchRecruitments(): FetchInterestsRecruitmentsResponse
 }
