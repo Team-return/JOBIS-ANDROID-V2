@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -128,19 +129,30 @@ private fun CompanyCard(
     imageUrl: String,
     companyName: String,
 ) {
-    Box(
-        modifier = Modifier
-            .size(80.dp)
-            .shadow(elevation = 12.dp)
-            .clip(RoundedCornerShape(6.dp))
-            .background(color = JobisTheme.colors.inverseSurface),
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AsyncImage(
+        Box(
             modifier = Modifier
-                .align(Alignment.Center),
-            model = imageUrl,
-            contentDescription = companyName,
-            contentScale = ContentScale.Crop,
+                .size(80.dp)
+                .shadow(elevation = 18.dp)
+                .clip(RoundedCornerShape(6.dp))
+                .background(color = JobisTheme.colors.inverseSurface),
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .align(Alignment.Center),
+                model = imageUrl,
+                contentDescription = companyName,
+                contentScale = ContentScale.Crop,
+            )
+        }
+        JobisText(
+            modifier = Modifier.padding(top = 8.dp),
+            text = companyName,
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+            textAlign = TextAlign.Center,
         )
     }
 }
