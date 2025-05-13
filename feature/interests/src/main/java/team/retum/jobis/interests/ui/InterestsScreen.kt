@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -38,19 +37,20 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.retum.usecase.entity.interests.InterestsEntity
 
 @Composable
 internal fun Interests(
     onBackPressed: () -> Unit,
     interestsViewmodel: InterestsViewmodel = hiltViewModel(),
+    navigateToInterestsComplete: () -> Unit,
 ) {
     val state by interestsViewmodel.state.collectAsStateWithLifecycle()
 
     InterestsScreen(
         onBackPressed = onBackPressed,
         state = state,
-        setSelectedMajor = interestsViewmodel::setMajor
+        setSelectedMajor = interestsViewmodel::setMajor,
+        navigateToInterestsComplete = navigateToInterestsComplete,
     )
 }
 
@@ -59,6 +59,7 @@ private fun InterestsScreen(
     onBackPressed: () -> Unit,
     state: InterestsState,
     setSelectedMajor: (String) -> Unit,
+    navigateToInterestsComplete: () -> Unit,
 ) {
     // TODO 뷰모델로 옮기기
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
@@ -96,7 +97,7 @@ private fun InterestsScreen(
         JobisButton(
             text = stringResource(R.string.select_interests_button),
             color = ButtonColor.Primary,
-            onClick = {},
+            onClick = navigateToInterestsComplete,
         )
     }
 }
