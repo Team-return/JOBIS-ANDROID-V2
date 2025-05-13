@@ -16,6 +16,7 @@ import team.retum.jobis.application.navigation.navigateToApplication
 import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
 import team.retum.jobis.interests.navigation.navigateToInterests
+import team.retum.jobis.interests.navigation.navigateToInterestsComplete
 import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
@@ -102,6 +103,9 @@ internal class JobisNavigator(
 
     fun navigateToInterests() {
         navController.navigateToInterests()
+    }
+    fun navigateToInterestsComplete() {
+        navController.navigateToInterestsComplete()
     }
 
     fun navigateToComparePassword() {
