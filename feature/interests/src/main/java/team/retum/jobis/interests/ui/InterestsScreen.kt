@@ -1,5 +1,7 @@
 package team.retum.jobis.interests.ui
 
+import android.util.Log
+import android.view.MotionEvent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,14 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.interests.R
 import team.retum.jobis.interests.viewmodel.InterestsState
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
@@ -74,6 +76,12 @@ private fun InterestsScreen(
             "Security",
         )
     }
+    val selectedMajorCount = state.selectedMajorCodes.size
+    val buttonText = if (selectedMajorCount > 0) {
+        stringResource(R.string.select_interests_button_count, selectedMajorCount)
+    } else {
+        stringResource(R.string.select_interests_button)
+    }
 
     Column(
         modifier = Modifier
@@ -86,6 +94,7 @@ private fun InterestsScreen(
         )
         InterestsTitle(studentName = state.studentName)
         InterestsInput(
+            text = buttonText,
             selectedMajor = state.selectedMajor,
             categories = categories,
             onSelectCategory = setSelectedMajor,
@@ -95,16 +104,19 @@ private fun InterestsScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            text = stringResource(R.string.select_interests_button),
+            text = buttonText,
             color = ButtonColor.Primary,
-            onClick = navigateToInterestsComplete,
+            onClick = {
+                navigateToInterestsComplete()
+            },
         )
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun InterestsInput(
+    text: String,
     selectedMajor: String,
     categories: SnapshotStateList<String>,
     onSelectCategory: (String) -> Unit,
@@ -121,12 +133,25 @@ private fun InterestsInput(
     ) {
         categories.forEach {
             MajorContent(
+                modifier = Modifier.pointerInteropFilter {
+                    when (it.action) {
+                        MotionEvent.ACTION_UP -> {
+                            Log.d("test", text)
+                            true
+                        }
+                        else -> false
+                    }
+                },
                 major = it,
                 selected = selectedMajor == it,
                 onClick = { major ->
                     when (selectedMajor == it) {
-                        true -> onUnselectCategory(major)
-                        false -> onSelectCategory(major)
+                        true -> {
+                            onUnselectCategory(major)
+                        }
+                        false -> {
+                            onSelectCategory(major)
+                        }
                     }
                 },
             )
@@ -168,6 +193,7 @@ private fun InterestsTitle(
 
 @Composable
 private fun MajorContent(
+    modifier: Modifier = Modifier,
     major: String,
     selected: Boolean,
     onClick: (String) -> Unit,
@@ -190,7 +216,7 @@ private fun MajorContent(
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clickable(
                 enabled = true,
                 onClick = { onClick(major) },
@@ -201,7 +227,7 @@ private fun MajorContent(
         contentAlignment = Alignment.Center,
     ) {
         JobisText(
-            modifier = Modifier.padding(
+            modifier = modifier.padding(
                 horizontal = 16.dp,
                 vertical = 6.dp,
             ),
