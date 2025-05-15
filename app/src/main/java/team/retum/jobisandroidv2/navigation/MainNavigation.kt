@@ -80,7 +80,10 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
             navigateToInterestsComplete = navigator::navigateToInterestsComplete
         )
-        interestsComplete(onBackPressed = navigator::popBackStackIfNotHome)
+        interestsComplete(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            navigateToMyPage = navigator::navigateToMyPage,
+        )
         noticeDetails(onBackPressed = navigator::popBackStackIfNotHome)
         companies(
             onBackPressed = navigator::popBackStackIfNotHome,

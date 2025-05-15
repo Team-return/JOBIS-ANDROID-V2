@@ -7,9 +7,15 @@ import team.retum.jobis.interests.ui.Interests
 import team.retum.jobis.interests.ui.InterestsComplete
 
 const val NAVIGATION_INTERESTS_COMPLETE = "interestsComplete"
-fun NavGraphBuilder.interestsComplete(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.interestsComplete(
+    onBackPressed: () -> Unit,
+    navigateToMyPage: () -> Unit,
+) {
     composable(NAVIGATION_INTERESTS_COMPLETE) {
-        InterestsComplete(onBackPressed = onBackPressed)
+        InterestsComplete(
+            onBackPressed = onBackPressed,
+            navigateToMyPage = navigateToMyPage,
+        )
     }
 }
 
