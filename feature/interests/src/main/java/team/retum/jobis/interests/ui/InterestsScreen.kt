@@ -1,7 +1,5 @@
 package team.retum.jobis.interests.ui
 
-import android.util.Log
-import android.view.MotionEvent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,10 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -77,9 +73,12 @@ private fun InterestsScreen(
         )
     }
     val selectedMajorCount = state.selectedMajorCodes.size
+    val buttonEnable: Boolean
     val buttonText = if (selectedMajorCount > 0) {
+        buttonEnable = true
         stringResource(R.string.select_interests_button_count, selectedMajorCount)
     } else {
+        buttonEnable = false
         stringResource(R.string.select_interests_button)
     }
 
@@ -109,11 +108,12 @@ private fun InterestsScreen(
             onClick = {
                 navigateToInterestsComplete()
             },
+            enabled = buttonEnable
         )
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InterestsInput(
     text: String,
@@ -133,15 +133,6 @@ private fun InterestsInput(
     ) {
         categories.forEach {
             MajorContent(
-                modifier = Modifier.pointerInteropFilter {
-                    when (it.action) {
-                        MotionEvent.ACTION_UP -> {
-                            Log.d("test", text)
-                            true
-                        }
-                        else -> false
-                    }
-                },
                 major = it,
                 selected = selectedMajor == it,
                 onClick = { major ->
