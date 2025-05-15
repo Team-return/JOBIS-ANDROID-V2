@@ -6,8 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.CodeType
 import team.retum.usecase.entity.interests.InterestsEntity
 import team.retum.usecase.entity.interests.InterestsRecruitmentsEntity
+import team.retum.usecase.usecase.code.FetchCodeUseCase
 import team.retum.usecase.usecase.interests.FetchInterestsSearchRecruitmentUseCase
 import team.retum.usecase.usecase.interests.FetchInterestsUseCase
 import team.retum.usecase.usecase.interests.SetInterestsToggleUseCase
@@ -15,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class InterestsViewmodel @Inject constructor(
+    private val fetchCodeUseCase: FetchCodeUseCase,
     private val fetchInterestsUseCase: FetchInterestsUseCase,
     private val fetchInterestsSearchRecruitmentsUseCase: FetchInterestsSearchRecruitmentUseCase,
     private val setInterestsToggleUseCase: SetInterestsToggleUseCase,
@@ -22,6 +25,25 @@ internal class InterestsViewmodel @Inject constructor(
     init {
         fetchInterests()
         fetchInterestsSearchRecruitments()
+        fetchCodes()
+    }
+
+    private fun fetchCodes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchCodeUseCase(
+                keyword = "",
+                type = CodeType.JOB,
+                parentCode = 0,
+            ).onSuccess {
+//                if (state.value.type == CodeType.JOB) {
+////                    setType()
+////                    _majors.addAll(it.codes)
+//                } else {
+////                    _techs.clear()
+////                    _techs.addAll(it.codes)
+//                }
+            }
+        }
     }
 
     private fun fetchInterests() {
@@ -49,10 +71,10 @@ internal class InterestsViewmodel @Inject constructor(
         }
     }
 
-    internal fun setInterestsToggle(codes: List<Int>) {
+    internal fun setInterestsToggle() {
         viewModelScope.launch(Dispatchers.IO) {
             setInterestsToggleUseCase(
-                codes = codes,
+                codes = state.value.codeIds,
             ).onSuccess {
             }
         }
@@ -60,20 +82,16 @@ internal class InterestsViewmodel @Inject constructor(
 
     internal fun setMajor(major: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            val currentSelected = state.value.selectedMajorCodes.toMutableList()
+            if (currentSelected.contains(major)) {
+                currentSelected.remove(major)
+            } else {
+                currentSelected.add(major)
+            }
             setState {
                 state.value.copy(
                     selectedMajor = major,
-                )
-            }
-        }
-    }
-
-    // TODO : 단순 대입이 아닌 해당하는 전공을 해제 하거나 추가해야함
-    internal fun updateCodeIds(codeIds: List<Int>) {
-        viewModelScope.launch {
-            setState {
-                state.value.copy(
-                    codeIds = codeIds,
+                    selectedMajorCodes = currentSelected,
                 )
             }
         }
@@ -87,6 +105,7 @@ internal data class InterestsState(
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val codeIds: List<Int>,
     val selectedMajor: String,
+    val selectedMajorCodes: List<String>,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
@@ -95,6 +114,7 @@ internal data class InterestsState(
             interestsRecruitments = null,
             codeIds = emptyList(),
             selectedMajor = "",
+            selectedMajorCodes = emptyList(),
         )
     }
 }
