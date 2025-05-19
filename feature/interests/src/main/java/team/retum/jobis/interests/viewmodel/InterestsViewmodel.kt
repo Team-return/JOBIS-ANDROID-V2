@@ -7,10 +7,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.interests.InterestsEntity
 import team.retum.usecase.entity.interests.InterestsRecruitmentsEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
-import team.retum.usecase.usecase.interests.FetchInterestsSearchRecruitmentUseCase
+import team.retum.usecase.usecase.interests.FetchInterestsSearchRecruitmentsUseCase
 import team.retum.usecase.usecase.interests.FetchInterestsUseCase
 import team.retum.usecase.usecase.interests.SetInterestsToggleUseCase
 import javax.inject.Inject
@@ -19,7 +20,7 @@ import javax.inject.Inject
 internal class InterestsViewmodel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
     private val fetchInterestsUseCase: FetchInterestsUseCase,
-    private val fetchInterestsSearchRecruitmentsUseCase: FetchInterestsSearchRecruitmentUseCase,
+    private val fetchInterestsSearchRecruitmentsUseCase: FetchInterestsSearchRecruitmentsUseCase,
     private val setInterestsToggleUseCase: SetInterestsToggleUseCase,
 ) : BaseViewModel<InterestsState, InterestsSideEffect>(InterestsState.getInitialState()) {
     init {
@@ -31,17 +32,15 @@ internal class InterestsViewmodel @Inject constructor(
     private fun fetchCodes() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase(
-                keyword = "",
+                keyword = null,
                 type = CodeType.JOB,
-                parentCode = 0,
+                parentCode = null,
             ).onSuccess {
-//                if (state.value.type == CodeType.JOB) {
-////                    setType()
-////                    _majors.addAll(it.codes)
-//                } else {
-////                    _techs.clear()
-////                    _techs.addAll(it.codes)
-//                }
+                setState {
+                    state.value.copy(
+                        majorList = it.codes,
+                    )
+                }
             }
         }
     }
@@ -101,6 +100,7 @@ internal class InterestsViewmodel @Inject constructor(
 @Immutable
 internal data class InterestsState(
     val studentName: String,
+    val majorList: List<CodesEntity.CodeEntity>,
     val interestsMajorList: List<InterestsEntity.InterestMajorEntity>,
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val codeIds: List<Int>,
@@ -110,6 +110,7 @@ internal data class InterestsState(
     companion object {
         fun getInitialState() = InterestsState(
             studentName = "",
+            majorList = emptyList(),
             interestsMajorList = emptyList(),
             interestsRecruitments = null,
             codeIds = emptyList(),
