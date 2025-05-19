@@ -1,5 +1,6 @@
 package team.retum.jobis.interests.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.network.model.request.interests.InterestsToggleRequest
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.interests.InterestsEntity
 import team.retum.usecase.entity.interests.InterestsRecruitmentsEntity
@@ -70,26 +72,26 @@ internal class InterestsViewmodel @Inject constructor(
         }
     }
 
-    internal fun setInterestsToggle() {
+    internal fun patchInterestsMajor() {
         viewModelScope.launch(Dispatchers.IO) {
             setInterestsToggleUseCase(
-                codes = state.value.codeIds,
+                codes = state.value.selectedMajorCodes.toMutableList(),
             ).onSuccess {
             }
         }
     }
 
-    internal fun setMajor(major: String) {
+    internal fun setMajor(majorId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val currentSelected = state.value.selectedMajorCodes.toMutableList()
-            if (currentSelected.contains(major)) {
-                currentSelected.remove(major)
+            if (currentSelected.contains(majorId)) {
+                currentSelected.remove(majorId)
             } else {
-                currentSelected.add(major)
+                currentSelected.add(majorId)
             }
             setState {
                 state.value.copy(
-                    selectedMajor = major,
+                    selectedMajorId = majorId,
                     selectedMajorCodes = currentSelected,
                 )
             }
@@ -104,8 +106,8 @@ internal data class InterestsState(
     val interestsMajorList: List<InterestsEntity.InterestMajorEntity>,
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val codeIds: List<Int>,
-    val selectedMajor: String,
-    val selectedMajorCodes: List<String>,
+    val selectedMajorId: Long,
+    val selectedMajorCodes: List<Long>,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
@@ -114,7 +116,7 @@ internal data class InterestsState(
             interestsMajorList = emptyList(),
             interestsRecruitments = null,
             codeIds = emptyList(),
-            selectedMajor = "",
+            selectedMajorId = 0,
             selectedMajorCodes = emptyList(),
         )
     }

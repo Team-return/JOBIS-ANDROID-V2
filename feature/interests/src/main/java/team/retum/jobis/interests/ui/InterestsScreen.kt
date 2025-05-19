@@ -14,11 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.selects.select
 import team.retum.jobis.interests.R
 import team.retum.jobis.interests.viewmodel.InterestsState
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
@@ -37,12 +33,14 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.usecase.entity.CodesEntity
 
 @Composable
 internal fun Interests(
     onBackPressed: () -> Unit,
-    interestsViewmodel: InterestsViewmodel = hiltViewModel(),
     navigateToInterestsComplete: () -> Unit,
+
+    interestsViewmodel: InterestsViewmodel = hiltViewModel(),
 ) {
     val state by interestsViewmodel.state.collectAsStateWithLifecycle()
 
@@ -50,6 +48,7 @@ internal fun Interests(
         onBackPressed = onBackPressed,
         state = state,
         setSelectedMajor = interestsViewmodel::setMajor,
+        patchInterestsMajor = interestsViewmodel::patchInterestsMajor,
         navigateToInterestsComplete = navigateToInterestsComplete,
     )
 }
@@ -58,22 +57,11 @@ internal fun Interests(
 private fun InterestsScreen(
     onBackPressed: () -> Unit,
     state: InterestsState,
-    setSelectedMajor: (String) -> Unit,
+    setSelectedMajor: (Long) -> Unit,
+    patchInterestsMajor: () -> Unit,
     navigateToInterestsComplete: () -> Unit,
 ) {
     // TODO 뷰모델로 옮기기
-    var selectedCategoryIndex by remember { mutableIntStateOf(0) }
-    val checkedSkills = remember { mutableStateListOf<String>() }
-    val categories = remember {
-        mutableStateListOf(
-            "iOS",
-            "Android",
-            "FrontEnd",
-            "BackEnd",
-            "Embedded",
-            "Security",
-        )
-    }
     val selectedMajorCount = state.selectedMajorCodes.size
     val buttonEnable: Boolean
     val buttonText = if (selectedMajorCount > 0) {
@@ -95,8 +83,8 @@ private fun InterestsScreen(
         )
         InterestsTitle(studentName = state.studentName)
         InterestsInput(
-            selectedMajor = state.selectedMajor,
-            categories = categories,
+            selectedMajor = state.selectedMajorId,
+            categories = state.majorList,
             selectedMajorCodes = state.selectedMajorCodes,
             onSelectCategory = setSelectedMajor,
             onUnselectCategory = {
@@ -107,7 +95,10 @@ private fun InterestsScreen(
         JobisButton(
             text = buttonText,
             color = ButtonColor.Primary,
-            onClick = navigateToInterestsComplete,
+            onClick = {
+                setInterestsMajor()
+                navigateToInterestsComplete()
+            },
             enabled = buttonEnable,
         )
     }
@@ -116,11 +107,11 @@ private fun InterestsScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InterestsInput(
-    selectedMajor: String,
-    categories: SnapshotStateList<String>,
-    selectedMajorCodes: List<String>,
-    onSelectCategory: (String) -> Unit,
-    onUnselectCategory: (String) -> Unit,
+    selectedMajor: Long,
+    categories: List<CodesEntity.CodeEntity>,
+    selectedMajorCodes: List<Long>,
+    onSelectCategory: (Long) -> Unit,
+    onUnselectCategory: (Long) -> Unit,
 ) {
     FlowRow(
         modifier = Modifier.padding(
@@ -131,12 +122,14 @@ private fun InterestsInput(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        Log.d("TEST", selectedMajorCodes.toString())
         categories.forEach {
             MajorContent(
-                major = it,
-                selected = selectedMajorCodes.contains(it),
+                major = it.keyword,
+                majorId = it.code,
+                selected = selectedMajorCodes.contains(it.code),
                 onClick = { major ->
-                    when (selectedMajor == it) {
+                    when (selectedMajor == it.code) {
                         true -> { onUnselectCategory(major) }
                         false -> { onSelectCategory(major) }
                     }
@@ -180,8 +173,9 @@ private fun InterestsTitle(
 private fun MajorContent(
     modifier: Modifier = Modifier,
     major: String,
+    majorId: Long,
     selected: Boolean,
-    onClick: (String) -> Unit,
+    onClick: (Long) -> Unit,
 ) {
     val background by animateColorAsState(
         targetValue = if (selected) {
@@ -204,7 +198,7 @@ private fun MajorContent(
         modifier = modifier
             .clickable(
                 enabled = true,
-                onClick = { onClick(major) },
+                onClick = { onClick(majorId) },
                 onPressed = {},
             )
             .clip(RoundedCornerShape(30.dp))
