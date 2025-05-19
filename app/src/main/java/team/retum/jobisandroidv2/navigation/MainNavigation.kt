@@ -78,7 +78,7 @@ internal fun NavGraphBuilder.mainNavigation(
         reportBug(onBackPressed = navigator::popBackStackIfNotHome)
         interests(
             onBackPressed = navigator::popBackStackIfNotHome,
-            navigateToInterestsComplete = navigator::navigateToInterestsComplete
+            navigateToInterestsComplete = navigator::navigateToInterestsComplete,
         )
         interestsComplete(
             onBackPressed = navigator::popBackStackIfNotHome,
