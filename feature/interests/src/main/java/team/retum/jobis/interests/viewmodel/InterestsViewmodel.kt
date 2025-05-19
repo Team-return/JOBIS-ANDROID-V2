@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
-import team.retum.network.model.request.interests.InterestsToggleRequest
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.interests.InterestsEntity
 import team.retum.usecase.entity.interests.InterestsRecruitmentsEntity

@@ -39,7 +39,6 @@ import team.retum.usecase.entity.CodesEntity
 internal fun Interests(
     onBackPressed: () -> Unit,
     navigateToInterestsComplete: () -> Unit,
-
     interestsViewmodel: InterestsViewmodel = hiltViewModel(),
 ) {
     val state by interestsViewmodel.state.collectAsStateWithLifecycle()
@@ -96,7 +95,7 @@ private fun InterestsScreen(
             text = buttonText,
             color = ButtonColor.Primary,
             onClick = {
-                setInterestsMajor()
+                patchInterestsMajor()
                 navigateToInterestsComplete()
             },
             enabled = buttonEnable,
