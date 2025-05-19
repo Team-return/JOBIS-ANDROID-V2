@@ -1,5 +1,6 @@
 package team.retum.jobis.interests.ui
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.selects.select
 import team.retum.jobis.interests.R
 import team.retum.jobis.interests.viewmodel.InterestsState
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
@@ -93,9 +95,9 @@ private fun InterestsScreen(
         )
         InterestsTitle(studentName = state.studentName)
         InterestsInput(
-            text = buttonText,
             selectedMajor = state.selectedMajor,
             categories = categories,
+            selectedMajorCodes = state.selectedMajorCodes,
             onSelectCategory = setSelectedMajor,
             onUnselectCategory = {
                 setSelectedMajor(it)
@@ -105,10 +107,8 @@ private fun InterestsScreen(
         JobisButton(
             text = buttonText,
             color = ButtonColor.Primary,
-            onClick = {
-                navigateToInterestsComplete()
-            },
-            enabled = buttonEnable
+            onClick = navigateToInterestsComplete,
+            enabled = buttonEnable,
         )
     }
 }
@@ -116,9 +116,9 @@ private fun InterestsScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InterestsInput(
-    text: String,
     selectedMajor: String,
     categories: SnapshotStateList<String>,
+    selectedMajorCodes: List<String>,
     onSelectCategory: (String) -> Unit,
     onUnselectCategory: (String) -> Unit,
 ) {
@@ -134,15 +134,11 @@ private fun InterestsInput(
         categories.forEach {
             MajorContent(
                 major = it,
-                selected = selectedMajor == it,
+                selected = selectedMajorCodes.contains(it),
                 onClick = { major ->
                     when (selectedMajor == it) {
-                        true -> {
-                            onUnselectCategory(major)
-                        }
-                        false -> {
-                            onSelectCategory(major)
-                        }
+                        true -> { onUnselectCategory(major) }
+                        false -> { onSelectCategory(major) }
                     }
                 },
             )
@@ -155,9 +151,7 @@ private fun InterestsTitle(
     studentName: String,
 ) {
     Column(
-        modifier = Modifier.padding(
-            top = 34.dp,
-        )
+        modifier = Modifier.padding(top = 34.dp),
     ) {
         JobisText(
             modifier = Modifier.padding(
@@ -177,7 +171,7 @@ private fun InterestsTitle(
                 end = 24.dp,
             ),
             text = stringResource(R.string.interests_alarm),
-            style = JobisTypography.SubBody
+            style = JobisTypography.SubBody,
         )
     }
 }
