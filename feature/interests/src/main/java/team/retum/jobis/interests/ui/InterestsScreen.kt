@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -86,9 +84,7 @@ private fun InterestsScreen(
             categories = state.majorList,
             selectedMajorCodes = state.selectedMajorCodes,
             onSelectCategory = setSelectedMajor,
-            onUnselectCategory = {
-                setSelectedMajor(it)
-            },
+            onUnselectCategory = { setSelectedMajor(it) },
         )
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
@@ -121,7 +117,6 @@ private fun InterestsInput(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Log.d("TEST", selectedMajorCodes.toString())
         categories.forEach {
             MajorContent(
                 major = it.keyword,

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.network.model.request.interests.InterestsToggleRequest
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.interests.InterestsEntity
 import team.retum.usecase.entity.interests.InterestsRecruitmentsEntity
@@ -74,7 +75,7 @@ internal class InterestsViewmodel @Inject constructor(
     internal fun patchInterestsMajor() {
         viewModelScope.launch(Dispatchers.IO) {
             setInterestsToggleUseCase(
-                codes = state.value.selectedMajorCodes.toMutableList(),
+                codes = InterestsToggleRequest(codeIds = state.value.selectedMajorCodes.toMutableList()),
             ).onSuccess {
             }
         }
@@ -104,7 +105,6 @@ internal data class InterestsState(
     val majorList: List<CodesEntity.CodeEntity>,
     val interestsMajorList: List<InterestsEntity.InterestMajorEntity>,
     val interestsRecruitments: InterestsRecruitmentsEntity?,
-    val codeIds: List<Int>,
     val selectedMajorId: Long,
     val selectedMajorCodes: List<Long>,
 ) {
@@ -114,7 +114,6 @@ internal data class InterestsState(
             majorList = emptyList(),
             interestsMajorList = emptyList(),
             interestsRecruitments = null,
-            codeIds = emptyList(),
             selectedMajorId = 0,
             selectedMajorCodes = emptyList(),
         )
