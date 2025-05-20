@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.interests.R
 import team.retum.jobis.interests.viewmodel.InterestsCompleteViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -25,15 +26,11 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 @Composable
 internal fun InterestsComplete(
     onBackPressed: () -> Unit,
-    navigateToMyPage: () -> Unit,
-    interestsCompleteViewmodel: InterestsCompleteViewModel = hiltViewModel(),
+    studentName: String,
 ) {
-    val state by interestsCompleteViewmodel.state.collectAsStateWithLifecycle()
-
     InterestsCompleteScreen(
-        studentName = state.studentName,
+        studentName = studentName,
         onBackPressed = onBackPressed,
-        navigateToMyPage = navigateToMyPage,
     )
 }
 
@@ -41,7 +38,6 @@ internal fun InterestsComplete(
 private fun InterestsCompleteScreen(
     studentName: String,
     onBackPressed: () -> Unit,
-    navigateToMyPage: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),

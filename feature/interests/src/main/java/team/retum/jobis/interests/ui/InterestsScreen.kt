@@ -1,6 +1,5 @@
 package team.retum.jobis.interests.ui
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +35,7 @@ import team.retum.usecase.entity.CodesEntity
 @Composable
 internal fun Interests(
     onBackPressed: () -> Unit,
-    navigateToInterestsComplete: () -> Unit,
+    navigateToInterestsComplete: (String) -> Unit,
     interestsViewmodel: InterestsViewmodel = hiltViewModel(),
 ) {
     val state by interestsViewmodel.state.collectAsStateWithLifecycle()
@@ -46,7 +45,7 @@ internal fun Interests(
         state = state,
         setSelectedMajor = interestsViewmodel::setMajor,
         patchInterestsMajor = interestsViewmodel::patchInterestsMajor,
-        navigateToInterestsComplete = navigateToInterestsComplete,
+        navigateToInterestsComplete = { navigateToInterestsComplete(state.studentName) },
     )
 }
 

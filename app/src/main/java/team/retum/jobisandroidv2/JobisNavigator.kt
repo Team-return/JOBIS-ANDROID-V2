@@ -134,10 +134,6 @@ internal class JobisNavigator(
         navController.navigateToLanding(popUpRoute = popUpRoute)
     }
 
-    fun navigateToMyPage() {
-        navController.navigateToMyPage()
-    }
-
     fun navigateToPostReview(companyId: Long) {
         navController.navigateToPostReview(companyId = companyId)
     }

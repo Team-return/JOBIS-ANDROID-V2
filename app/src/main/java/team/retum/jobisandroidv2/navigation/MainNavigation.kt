@@ -82,7 +82,6 @@ internal fun NavGraphBuilder.mainNavigation(
         )
         interestsComplete(
             onBackPressed = navigator::popBackStackIfNotHome,
-            navigateToMyPage = navigator::navigateToMyPage,
         )
         noticeDetails(onBackPressed = navigator::popBackStackIfNotHome)
         companies(

@@ -11,7 +11,6 @@ import team.retum.jobis.interests.ui.InterestsComplete
 const val NAVIGATION_INTERESTS_COMPLETE = "interestsComplete"
 fun NavGraphBuilder.interestsComplete(
     onBackPressed: () -> Unit,
-    navigateToMyPage: () -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_INTERESTS_COMPLETE/{${ResourceKeys.STUDENT_NAME}}",
@@ -23,7 +22,6 @@ fun NavGraphBuilder.interestsComplete(
 
         InterestsComplete(
             onBackPressed = onBackPressed,
-            navigateToMyPage = navigateToMyPage,
             studentName = studentName,
         )
     }
