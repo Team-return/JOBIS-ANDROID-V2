@@ -15,8 +15,8 @@ fun NavGraphBuilder.interestsComplete(
     composable(
         route = "$NAVIGATION_INTERESTS_COMPLETE/{${ResourceKeys.STUDENT_NAME}}",
         arguments = listOf(
-            navArgument(ResourceKeys.STUDENT_NAME) { type = NavType.StringType }
-        )
+            navArgument(ResourceKeys.STUDENT_NAME) { type = NavType.StringType },
+        ),
     ) {
         val studentName = it.arguments?.getString(ResourceKeys.STUDENT_NAME) ?: ""
 
@@ -28,5 +28,5 @@ fun NavGraphBuilder.interestsComplete(
 }
 
 fun NavController.navigateToInterestsComplete(studentName: String) {
-    navigate("${NAVIGATION_INTERESTS_COMPLETE}/$studentName")
+    navigate("$NAVIGATION_INTERESTS_COMPLETE/$studentName")
 }
