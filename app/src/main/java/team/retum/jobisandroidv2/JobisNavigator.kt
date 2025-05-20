@@ -106,8 +106,8 @@ internal class JobisNavigator(
         navController.navigateToInterests()
     }
 
-    fun navigateToInterestsComplete() {
-        navController.navigateToInterestsComplete()
+    fun navigateToInterestsComplete(studentName: String) {
+        navController.navigateToInterestsComplete(studentName = studentName)
     }
 
     fun navigateToComparePassword() {

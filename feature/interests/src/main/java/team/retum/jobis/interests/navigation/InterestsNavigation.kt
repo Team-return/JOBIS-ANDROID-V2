@@ -8,7 +8,7 @@ import team.retum.jobis.interests.ui.Interests
 const val NAVIGATION_INTERESTS = "interests"
 fun NavGraphBuilder.interests(
     onBackPressed: () -> Unit,
-    navigateToInterestsComplete: () -> Unit,
+    navigateToInterestsComplete: (String) -> Unit,
 ) {
     composable(NAVIGATION_INTERESTS) {
         Interests(
