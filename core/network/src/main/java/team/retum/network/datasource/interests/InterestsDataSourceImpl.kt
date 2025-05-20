@@ -1,6 +1,7 @@
 package team.retum.network.datasource.interests
 
 import team.retum.network.api.InterestsApi
+import team.retum.network.model.request.interests.InterestsToggleRequest
 import team.retum.network.model.response.interests.FetchInterestsRecruitmentsResponse
 import team.retum.network.model.response.interests.FetchInterestsResponse
 import team.retum.network.util.RequestHandler
@@ -9,7 +10,7 @@ import javax.inject.Inject
 class InterestsDataSourceImpl @Inject constructor(
     private val interestsApi: InterestsApi,
 ) : InterestsDataSource {
-    override suspend fun setInterestsToggle(codes: List<Long>) {
+    override suspend fun setInterestsToggle(codes: InterestsToggleRequest) {
         RequestHandler<Unit>().request {
             interestsApi.setInterestsToggle(codes = codes)
         }
