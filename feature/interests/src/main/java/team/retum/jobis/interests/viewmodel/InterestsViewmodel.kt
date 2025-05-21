@@ -1,6 +1,5 @@
 package team.retum.jobis.interests.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
