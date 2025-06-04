@@ -90,7 +90,6 @@ internal class InterestsViewmodel @Inject constructor(
             }
             setState {
                 state.value.copy(
-                    selectedMajorId = majorId,
                     selectedMajorCodes = currentSelected,
                 )
             }
@@ -104,7 +103,6 @@ internal data class InterestsState(
     val majorList: List<CodesEntity.CodeEntity>,
     val interestsMajorList: List<InterestsEntity.InterestMajorEntity>,
     val interestsRecruitments: InterestsRecruitmentsEntity?,
-    val selectedMajorId: Long,
     val selectedMajorCodes: List<Long>,
 ) {
     companion object {
@@ -113,7 +111,6 @@ internal data class InterestsState(
             majorList = emptyList(),
             interestsMajorList = emptyList(),
             interestsRecruitments = null,
-            selectedMajorId = 0,
             selectedMajorCodes = emptyList(),
         )
     }

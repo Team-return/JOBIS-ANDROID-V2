@@ -79,7 +79,6 @@ private fun InterestsScreen(
         )
         InterestsTitle(studentName = state.studentName)
         InterestsInput(
-            selectedMajor = state.selectedMajorId,
             categories = state.majorList,
             selectedMajorCodes = state.selectedMajorCodes,
             onSelectCategory = setSelectedMajor,
@@ -101,7 +100,6 @@ private fun InterestsScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InterestsInput(
-    selectedMajor: Long,
     categories: List<CodesEntity.CodeEntity>,
     selectedMajorCodes: List<Long>,
     onSelectCategory: (Long) -> Unit,
@@ -122,7 +120,7 @@ private fun InterestsInput(
                 majorId = it.code,
                 selected = selectedMajorCodes.contains(it.code),
                 onClick = { major ->
-                    when (selectedMajor == it.code) {
+                    when (selectedMajorCodes.contains(it.code)) {
                         true -> { onUnselectCategory(major) }
                         false -> { onSelectCategory(major) }
                     }
