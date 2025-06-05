@@ -69,7 +69,7 @@ internal fun Interests(
         state = state,
         setSelectedMajor = interestsViewmodel::setMajor,
         patchInterestsMajor = interestsViewmodel::patchInterestsMajor,
-        setButtonState = interestsViewmodel::setButtonState
+        setButtonState = interestsViewmodel::setButtonState,
     )
 }
 

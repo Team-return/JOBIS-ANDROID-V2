@@ -85,7 +85,7 @@ internal class InterestsViewmodel @Inject constructor(
     }
 
     internal fun setMajor(majorId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currentSelected = state.value.selectedMajorCodes.toMutableList()
             if (currentSelected.contains(majorId)) {
                 currentSelected.remove(majorId)
@@ -104,7 +104,7 @@ internal class InterestsViewmodel @Inject constructor(
     internal fun setButtonState(buttonState: Boolean) {
         setState {
             state.value.copy(
-                buttonEnable = buttonState
+                buttonEnable = buttonState,
             )
         }
     }
