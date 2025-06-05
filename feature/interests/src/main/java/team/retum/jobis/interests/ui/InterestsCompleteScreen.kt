@@ -39,7 +39,7 @@ private fun InterestsCompleteScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         JobisSmallTopAppBar(
-            title = "관심 분야 설정",
+            title = stringResource(R.string.set_interests),
             onBackPressed = onBackPressed,
         )
         Spacer(modifier = Modifier.padding(top = 188.dp))
