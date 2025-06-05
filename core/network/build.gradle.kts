@@ -32,7 +32,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = properties.getProperty("BASE_URL_DEV", "\"https://dev-server.team-return.com\""),
+                value = properties.getProperty("BASE_URL_DEV", "\"\""),
             )
         }
     }
