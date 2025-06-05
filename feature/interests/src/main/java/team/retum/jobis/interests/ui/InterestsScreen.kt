@@ -69,6 +69,7 @@ internal fun Interests(
         state = state,
         setSelectedMajor = interestsViewmodel::setMajor,
         patchInterestsMajor = interestsViewmodel::patchInterestsMajor,
+        setButtonState = interestsViewmodel::setButtonState
     )
 }
 
@@ -78,12 +79,13 @@ private fun InterestsScreen(
     state: InterestsState,
     setSelectedMajor: (Long) -> Unit,
     patchInterestsMajor: () -> Unit,
+    setButtonState: (Boolean) -> Unit,
 ) {
     val buttonText = if (state.selectedMajorCount > 0) {
-        state.buttonEnable = true
+        setButtonState(true)
         stringResource(R.string.select_interests_button_count, state.selectedMajorCount)
     } else {
-        state.buttonEnable = false
+        setButtonState(false)
         stringResource(R.string.select_interests_button)
     }
 

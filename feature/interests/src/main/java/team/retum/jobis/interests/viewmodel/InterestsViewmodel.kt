@@ -24,6 +24,7 @@ internal class InterestsViewmodel @Inject constructor(
     private val fetchInterestsSearchRecruitmentsUseCase: FetchInterestsSearchRecruitmentsUseCase,
     private val setInterestsToggleUseCase: SetInterestsToggleUseCase,
 ) : BaseViewModel<InterestsState, InterestsSideEffect>(InterestsState.getInitialState()) {
+
     init {
         fetchInterests()
         fetchInterestsSearchRecruitments()
@@ -99,6 +100,14 @@ internal class InterestsViewmodel @Inject constructor(
             }
         }
     }
+
+    internal fun setButtonState(buttonState: Boolean) {
+        setState {
+            state.value.copy(
+                buttonEnable = buttonState
+            )
+        }
+    }
 }
 
 @Immutable
@@ -109,7 +118,7 @@ internal data class InterestsState(
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val selectedMajorCodes: List<Long>,
     val selectedMajorCount: Int,
-    var buttonEnable: Boolean,
+    val buttonEnable: Boolean,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
