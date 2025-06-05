@@ -76,6 +76,9 @@ internal class InterestsViewmodel @Inject constructor(
             setInterestsToggleUseCase(
                 codes = InterestsToggleRequest(codeIds = state.value.selectedMajorCodes.toMutableList()),
             ).onSuccess {
+                postSideEffect(sideEffect = InterestsSideEffect.MoveToInterestsComplete(state.value.studentName))
+            }.onFailure {
+                postSideEffect(sideEffect = InterestsSideEffect.PatchMajorFail)
             }
         }
     }
@@ -121,4 +124,7 @@ internal data class InterestsState(
     }
 }
 
-internal sealed class InterestsSideEffect
+internal sealed class InterestsSideEffect {
+    data class MoveToInterestsComplete(val studentName: String) : InterestsSideEffect()
+    data object PatchMajorFail : InterestsSideEffect()
+}

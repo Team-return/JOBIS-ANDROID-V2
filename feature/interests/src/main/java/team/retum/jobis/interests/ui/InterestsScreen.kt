@@ -12,23 +12,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobis.interests.R
+import team.retum.jobis.interests.viewmodel.InterestsSideEffect
 import team.retum.jobis.interests.viewmodel.InterestsState
 import team.retum.jobis.interests.viewmodel.InterestsViewmodel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CodesEntity
 
@@ -39,13 +44,31 @@ internal fun Interests(
     interestsViewmodel: InterestsViewmodel = hiltViewModel(),
 ) {
     val state by interestsViewmodel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        interestsViewmodel.sideEffect.collect {
+            when (it) {
+                is InterestsSideEffect.PatchMajorFail -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.cannot_submit_interests_major),
+                        drawable = JobisIcon.Error,
+                    )
+                }
+
+                is InterestsSideEffect.MoveToInterestsComplete -> {
+                    navigateToInterestsComplete(it.studentName)
+                }
+            }
+        }
+    }
 
     InterestsScreen(
         onBackPressed = onBackPressed,
         state = state,
         setSelectedMajor = interestsViewmodel::setMajor,
         patchInterestsMajor = interestsViewmodel::patchInterestsMajor,
-        navigateToInterestsComplete = { navigateToInterestsComplete(state.studentName) },
     )
 }
 
@@ -55,7 +78,6 @@ private fun InterestsScreen(
     state: InterestsState,
     setSelectedMajor: (Long) -> Unit,
     patchInterestsMajor: () -> Unit,
-    navigateToInterestsComplete: () -> Unit,
 ) {
     val buttonText = if (state.selectedMajorCount > 0) {
         state.buttonEnable = true
@@ -85,10 +107,7 @@ private fun InterestsScreen(
         JobisButton(
             text = buttonText,
             color = ButtonColor.Primary,
-            onClick = {
-                patchInterestsMajor()
-                navigateToInterestsComplete()
-            },
+            onClick = { patchInterestsMajor() },
             enabled = state.buttonEnable,
         )
     }

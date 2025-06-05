@@ -6,4 +6,6 @@
     <string name="select_interests_button">관심 분야를 선택해주세요!</string>
     <string name="select_interests_button_count">%s개 선택</string>
     <string name="interests_alarm">관심사에 맞는 모집 의뢰서가 업로드되면 \n알림을 드립니다!</string>
+
+    <string name="cannot_submit_interests_major">관심 분야를 등록하지 못했어요</string>
 </resources>
