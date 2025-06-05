@@ -91,6 +91,7 @@ internal class InterestsViewmodel @Inject constructor(
             setState {
                 state.value.copy(
                     selectedMajorCodes = currentSelected,
+                    selectedMajorCount = currentSelected.size,
                 )
             }
         }
@@ -104,6 +105,8 @@ internal data class InterestsState(
     val interestsMajorList: List<InterestsEntity.InterestMajorEntity>,
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val selectedMajorCodes: List<Long>,
+    val selectedMajorCount: Int,
+    var buttonEnable: Boolean,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
@@ -112,6 +115,8 @@ internal data class InterestsState(
             interestsMajorList = emptyList(),
             interestsRecruitments = null,
             selectedMajorCodes = emptyList(),
+            selectedMajorCount = 0,
+            buttonEnable = false,
         )
     }
 }

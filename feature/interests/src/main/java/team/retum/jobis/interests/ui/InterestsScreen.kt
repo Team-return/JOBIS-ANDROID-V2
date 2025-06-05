@@ -57,14 +57,11 @@ private fun InterestsScreen(
     patchInterestsMajor: () -> Unit,
     navigateToInterestsComplete: () -> Unit,
 ) {
-    // TODO 뷰모델로 옮기기
-    val selectedMajorCount = state.selectedMajorCodes.size
-    val buttonEnable: Boolean
-    val buttonText = if (selectedMajorCount > 0) {
-        buttonEnable = true
-        stringResource(R.string.select_interests_button_count, selectedMajorCount)
+    val buttonText = if (state.selectedMajorCount > 0) {
+        state.buttonEnable = true
+        stringResource(R.string.select_interests_button_count, state.selectedMajorCount)
     } else {
-        buttonEnable = false
+        state.buttonEnable = false
         stringResource(R.string.select_interests_button)
     }
 
@@ -92,7 +89,7 @@ private fun InterestsScreen(
                 patchInterestsMajor()
                 navigateToInterestsComplete()
             },
-            enabled = buttonEnable,
+            enabled = state.buttonEnable,
         )
     }
 }
