@@ -1,8 +1,11 @@
 package team.retum.jobis.interests.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -42,32 +45,37 @@ private fun InterestsCompleteScreen(
             title = stringResource(R.string.set_interests),
             onBackPressed = onBackPressed,
         )
-        Spacer(modifier = Modifier.padding(top = 188.dp))
-        Image(
-            painter = painterResource(team.retum.design_system.R.drawable.success),
-            contentDescription = "major_check_success",
-        )
-        JobisText(
-            modifier = Modifier.padding(
-                top = 20.dp,
-                start = 24.dp,
-                end = 24.dp,
-            ),
-            text = stringResource(R.string.interests_check_title, studentName),
-            textAlign = TextAlign.Center,
-            style = JobisTypography.PageTitle,
-            color = JobisTheme.colors.onBackground,
-        )
-        JobisText(
-            modifier = Modifier.padding(
-                top = 8.dp,
-                bottom = 20.dp,
-                start = 24.dp,
-                end = 24.dp,
-            ),
-            text = stringResource(R.string.interests_alarm),
-            textAlign = TextAlign.Center,
-            style = JobisTypography.SubBody,
-        )
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Image(
+                painter = painterResource(team.retum.design_system.R.drawable.success),
+                contentDescription = "major_check_success",
+            )
+            JobisText(
+                modifier = Modifier.padding(
+                    top = 20.dp,
+                    start = 24.dp,
+                    end = 24.dp,
+                ),
+                text = stringResource(R.string.interests_check_title, studentName),
+                textAlign = TextAlign.Center,
+                style = JobisTypography.PageTitle,
+                color = JobisTheme.colors.onBackground,
+            )
+            JobisText(
+                modifier = Modifier.padding(
+                    top = 8.dp,
+                    bottom = 20.dp,
+                    start = 24.dp,
+                    end = 24.dp,
+                ),
+                text = stringResource(R.string.interests_alarm),
+                textAlign = TextAlign.Center,
+                style = JobisTypography.SubBody,
+            )
+        }
     }
 }
