@@ -30,5 +30,11 @@ fun NavGraphBuilder.myPage(
 }
 
 fun NavController.navigateToMyPage() {
-    navigate(NAVIGATION_MY_PAGE)
+    navigate(NAVIGATION_MY_PAGE) {
+        popUpTo(0) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
