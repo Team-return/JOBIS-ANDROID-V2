@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.employment.R
 import team.retum.employment.viewmodel.EmploymentViewModel
-import team.retum.jobis.employment.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -61,7 +61,7 @@ internal fun Employment(
             fetchEmploymentCount()
         }
         animatedValue.animateTo(
-            targetValue = state.rate.toFloat(),
+            targetValue = state.rate,
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing),
         )
     }
@@ -79,9 +79,9 @@ internal fun Employment(
 private fun EmploymentScreen(
     onBackPressed: () -> Unit,
     onClassClick: (Long) -> Unit,
-    rate: Long,
-    totalStudentCount: Long,
-    passCount: Long,
+    rate: Float,
+    totalStudentCount: String,
+    passCount: String,
 ) {
     Column(
         modifier = Modifier
@@ -172,9 +172,9 @@ private fun EmploymentScreen(
 
 @Composable
 private fun EmploymentRate(
-    rate: Long,
-    totalStudentCount: Long,
-    passCount: Long,
+    rate: Float,
+    totalStudentCount: String,
+    passCount: String,
 ) {
     Column(
         modifier = Modifier
@@ -272,14 +272,14 @@ private fun EmploymentRate(
 
 @Composable
 private fun CircleProgress(
-    percentage: Long,
+    percentage: Float,
     modifier: Modifier = Modifier,
     radius: Dp = 120.dp,
     strokeWidth: Dp = 24.dp,
     primaryColor: Color = JobisTheme.colors.onSecondary,
     secondaryColor: Color = JobisTheme.colors.onPrimary,
 ) {
-    val animatedValue = remember { Animatable(percentage.toFloat()) }
+    val animatedValue = remember { Animatable(percentage) }
 
     Box(
         contentAlignment = Alignment.Center,

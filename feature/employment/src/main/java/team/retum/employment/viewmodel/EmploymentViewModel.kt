@@ -24,9 +24,9 @@ internal class EmploymentViewModel @Inject constructor(
                             it.passCount.toFloat() / it.totalStudentCount.toFloat() * 100f
                         }
                         state.value.copy(
-                            rate = DecimalFormat("##.#").format(rate).toLong(),
-                            totalStudentCount = it.totalStudentCount,
-                            passCount = it.passCount,
+                            rate = DecimalFormat("##.#").format(rate).toFloat(),
+                            totalStudentCount = it.totalStudentCount.toString(),
+                            passCount = it.passCount.toString(),
                         )
                     }
                 }
@@ -38,15 +38,15 @@ internal class EmploymentViewModel @Inject constructor(
 }
 
 internal data class EmploymentState(
-    val rate: Long,
-    val totalStudentCount: Long,
-    val passCount: Long,
+    val rate: Float,
+    val totalStudentCount: String,
+    val passCount: String,
 ) {
     companion object {
         fun getDefaultState() = EmploymentState(
-            rate = 0,
-            totalStudentCount = 0,
-            passCount = 0,
+            rate = 0F,
+            totalStudentCount = "",
+            passCount = "",
         )
     }
 }
