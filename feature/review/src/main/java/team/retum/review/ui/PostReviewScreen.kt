@@ -1,8 +1,6 @@
 package team.retum.review.ui
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +24,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -43,8 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,7 +55,6 @@ import kotlinx.coroutines.launch
 import team.retum.common.enums.ReviewProcess
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
-import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -93,6 +86,7 @@ internal fun PostReview(
     val sheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val sheetScope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(pageCount = { 5 })
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -117,6 +111,7 @@ internal fun PostReview(
         hideModalBottomSheet = { sheetScope.launch { sheetState.hide() } },
         onSheetShow = { sheetScope.launch { sheetState.show() } },
         sheetState = sheetState,
+        pagerState = pagerState,
         addQuestion = {
             reviewViewModel.addReview()
             reviewViewModel.keywords.add(state.keyword)
@@ -146,6 +141,7 @@ private fun PostReviewScreen(
     hideModalBottomSheet: () -> Unit,
     onSheetShow: () -> Unit,
     sheetState: ModalBottomSheetState,
+    pagerState: PagerState,
     addQuestion: () -> Unit,
     state: ReviewState,
     setQuestion: (String) -> Unit,
@@ -161,7 +157,6 @@ private fun PostReviewScreen(
     setInit: () -> Unit,
     keywords: SnapshotStateList<String>,
 ) {
-    val pagerState = rememberPagerState(pageCount = { 5 })
     ModalBottomSheetLayout(
         modifier = Modifier
             .background(JobisTheme.colors.background)
@@ -244,20 +239,6 @@ private fun PostReviewScreen(
                     onSheetShow()
                     //setInit()
                 },
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            JobisButton(
-                text = if (reviewProcess == ReviewProcess.FINISH) {
-                    stringResource(id = R.string.finish)
-                } else {
-                    stringResource(id = R.string.please_write_review)
-                },
-                onClick = {
-                    fetchQuestion()
-                    onBackPressed()
-                },
-                enabled = reviews.isNotEmpty(),
-                color = ButtonColor.Primary,
             )
         }
     }
