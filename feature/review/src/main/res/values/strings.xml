@@ -12,6 +12,10 @@
     <string name="please_write_review">후기를 작성해주세요</string>
     <string name="search">검색어를 입력해주세요</string>
     <string name="example">example</string>
+    <string name="review_category">면접 구분</string>
+    <string name="individual_review">개인 면접</string>
+    <string name="group_review">단체 면접</string>
+    <string name="other_review">기타 면접</string>
 
     <!--Review Details Screen-->
     <string name="review_questions">받은 면접 질문</string>
