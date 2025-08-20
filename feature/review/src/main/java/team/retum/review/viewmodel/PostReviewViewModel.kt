@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
 import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.CodesEntity
@@ -125,6 +126,15 @@ internal class ReviewViewModel @Inject constructor(
 //        setState { state.value.copy(checked = checked) }
 //        setButtonEnabled()
 //    }
+
+    internal fun setInterviewType(interviewType: InterviewType) {
+        setState {
+            state.value.copy(
+                interviewType = interviewType,
+                buttonEnabled = true
+            )
+        }
+    }
 }
 
 internal data class ReviewState(
@@ -136,6 +146,7 @@ internal data class ReviewState(
     val tech: String?,
     val buttonEnabled: Boolean,
     val reviewProcess: ReviewProcess,
+    val interviewType: InterviewType,
 ) {
     companion object {
         fun getDefaultState() = ReviewState(
@@ -147,6 +158,7 @@ internal data class ReviewState(
             tech = null,
             buttonEnabled = false,
             reviewProcess = ReviewProcess.QUESTION,
+            interviewType = InterviewType.INDIVIDUAL, // TODO :: 널처리(선택 해제) 고려
         )
     }
 }

@@ -6,16 +6,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -25,41 +23,29 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
-import team.retum.jobisdesignsystemv2.card.JobisCard
-import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -70,8 +56,6 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.review.viewmodel.ReviewSideEffect
 import team.retum.review.viewmodel.ReviewState
 import team.retum.review.viewmodel.ReviewViewModel
-import team.retum.usecase.entity.CodesEntity
-import team.retum.usecase.entity.PostReviewEntity
 
 const val SEARCH_DELAY: Long = 200
 
@@ -114,6 +98,8 @@ internal fun PostReview(
         pagerState = pagerState,
         state = state,
         reviewProcess = state.reviewProcess,
+        setInterviewType = reviewViewModel::setInterviewType,
+        buttonEnabled = state.buttonEnabled
     )
 }
 
@@ -129,6 +115,8 @@ private fun PostReviewScreen(
     pagerState: PagerState,
     state: ReviewState,
     reviewProcess: ReviewProcess,
+    setInterviewType: (InterviewType) -> Unit,
+    buttonEnabled: Boolean,
 ) {
     ModalBottomSheetLayout(
         modifier = Modifier
@@ -144,6 +132,8 @@ private fun PostReviewScreen(
                     state = state,
                     pagerState = pagerState,
                     reviewProcess = reviewProcess,
+                    setInterviewType = setInterviewType,
+                    buttonEnabled = buttonEnabled
                 )
             }
         },
@@ -296,6 +286,8 @@ private fun AddQuestionBottomSheet(
     reviewProcess: ReviewProcess,
     state: ReviewState,
     pagerState: PagerState,
+    setInterviewType: (InterviewType) -> Unit,
+    buttonEnabled: Boolean,
 ) {
     HorizontalPager(
         state = pagerState,
@@ -308,7 +300,10 @@ private fun AddQuestionBottomSheet(
                 InterviewCategory(
                     onBackPressed = {},
                     pagerTotalCount = pagerState.pageCount,
-                    currentPager = page
+                    currentPager = page,
+                    onClick = { setInterviewType(it) },
+                    interviewType = state.interviewType!!,
+                    buttonEnabled = buttonEnabled
                 )
             }
             1 -> {
@@ -328,6 +323,7 @@ private fun AddQuestionBottomSheet(
             }
             else -> {
                 // TODO : 모달 입력 완료 했을 때 key 값으로 모달 초기화
+                // 기존 면접후기 추가 모달
                 Column {
                     JobisText(
                         text = if (reviewProcess == ReviewProcess.QUESTION) {
@@ -418,8 +414,11 @@ private fun AddQuestionBottomSheet(
 private fun InterviewCategory(
     onBackPressed: () -> Unit,
     pagerTotalCount: Int,
-    currentPager: Int
-) {
+    currentPager: Int,
+    onClick: (InterviewType) -> Unit,
+    interviewType: InterviewType,
+    buttonEnabled: Boolean,
+ ) {
     Column(
         modifier = Modifier.padding(
             top = 24.dp,
@@ -464,24 +463,21 @@ private fun InterviewCategory(
         ) {
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
-                borderColor = JobisTheme.colors.surfaceVariant,
-                textColor = JobisTheme.colors.onSurfaceVariant,
+                selected = interviewType == InterviewType.INDIVIDUAL,
                 text = stringResource(id = R.string.individual_review),
-                onButtonClick = {}
+                onButtonClick = { onClick(InterviewType.INDIVIDUAL) },
             )
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
-                borderColor = JobisTheme.colors.surfaceVariant,
-                textColor = JobisTheme.colors.onSurfaceVariant,
+                selected = interviewType == InterviewType.GROUP,
                 text = stringResource(id = R.string.group_review),
-                onButtonClick = {}
+                onButtonClick = { onClick(InterviewType.GROUP) }
             )
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
-                borderColor = JobisTheme.colors.surfaceVariant,
-                textColor = JobisTheme.colors.onSurfaceVariant,
+                selected = interviewType == InterviewType.OTHER,
                 text = stringResource(id = R.string.other_review),
-                onButtonClick = {}
+                onButtonClick = { onClick(InterviewType.OTHER) }
             )
         }
         JobisButton(
@@ -489,18 +485,29 @@ private fun InterviewCategory(
             text = stringResource(id = R.string.next),
             onClick = {},
             color = ButtonColor.Primary,
+            enabled = buttonEnabled,
         )
     }
 }
 
 @Composable
-private fun PostReviewOutlinedStrokeText(
+private fun ColumnScope.PostReviewOutlinedStrokeText(
     modifier: Modifier = Modifier,
-    borderColor: Color,
-    textColor: Color,
+    selected: Boolean,
     text: String,
     onButtonClick: () -> Unit,
 ) {
+    val borderColor = if (selected) {
+        JobisTheme.colors.onPrimary
+    } else {
+        JobisTheme.colors.surfaceVariant
+    }
+    val textColor = if (selected) {
+        JobisTheme.colors.onPrimary
+    } else {
+        JobisTheme.colors.onSurfaceVariant
+    }
+
     JobisText(
         modifier = modifier
             .border(
