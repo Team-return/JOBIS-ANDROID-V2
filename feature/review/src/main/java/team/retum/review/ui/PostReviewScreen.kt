@@ -71,7 +71,7 @@ internal fun PostReview(
     val sheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val sheetScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(pageCount = { 5 })
+    val pagerState = rememberPagerState(pageCount = { 4 })
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -350,15 +350,12 @@ private fun AddQuestionBottomSheet(
                 )
             }
             2 -> {
-                // 기업명 :: 기업명 조회 api 사용
-            }
-            3 -> {
                 // 지원 직무 :: 전공만 조회
             }
-            4 -> {
+            3 -> {
                 // 면접관 수 :: 숫자만 입력
             }
-            5 -> {
+            4 -> {
                 // 면접 환경 입력한 부분 확인 페이지
             }
             else -> {
