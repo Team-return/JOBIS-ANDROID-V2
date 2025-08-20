@@ -2,8 +2,12 @@ package team.retum.review.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.CodeType
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
@@ -54,7 +58,7 @@ internal class ReviewViewModel @Inject constructor(
     internal fun setKeyword(keyword: String) {
         techs.clear()
         setState { state.value.copy(keyword = keyword) }
-        //setButtonEnabled()
+        setButtonEnabled()
     }
 //
 //    internal fun addReview() {
@@ -67,8 +71,8 @@ internal class ReviewViewModel @Inject constructor(
 //        )
 //    }
 //
-//    internal fun setSelectedTech(selectedTech: Long) =
-//        setState { state.value.copy(selectedTech = selectedTech) }
+    internal fun setSelectedTech(selectedTech: Long) =
+        setState { state.value.copy(selectedTech = selectedTech) }
 //
 //    internal fun postReview(companyId: Long) {
 //        viewModelScope.launch(Dispatchers.IO) {
@@ -89,38 +93,38 @@ internal class ReviewViewModel @Inject constructor(
 //        }
 //    }
 //
-//    internal fun fetchCodes(keyword: String?) =
-//        viewModelScope.launch(Dispatchers.IO) {
-//            fetchCodeUseCase(
-//                keyword = keyword,
-//                type = CodeType.TECH,
-//                parentCode = null,
-//            ).onSuccess {
-//                techs.addAll(it.codes)
-//            }
-//        }
+    internal fun fetchCodes(keyword: String?) =
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchCodeUseCase(
+                keyword = keyword,
+                type = CodeType.TECH,
+                parentCode = null,
+            ).onSuccess {
+                techs.addAll(it.codes)
+            }
+        }
 //
 //    internal fun setReviewProcess(reviewProcess: ReviewProcess) {
 //        setState { state.value.copy(reviewProcess = reviewProcess) }
 //        setButtonEnabled()
 //    }
 //
-//    private fun setButtonEnabled() {
-//        when (state.value.reviewProcess) {
-//            ReviewProcess.QUESTION -> {
-//                setState { state.value.copy(buttonEnabled = state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) }
-//            }
+    private fun setButtonEnabled() {
+        when (state.value.reviewProcess) {
+            ReviewProcess.QUESTION -> {
+                setState { state.value.copy(buttonEnabled = state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) }
+            }
+
+            else -> {
+                setState { state.value.copy(buttonEnabled = state.value.checked.isNotEmpty()) }
+            }
+        }
+    }
 //
-//            else -> {
-//                setState { state.value.copy(buttonEnabled = state.value.checked.isNotEmpty()) }
-//            }
-//        }
-//    }
-//
-//    internal fun setChecked(checked: String) {
-//        setState { state.value.copy(checked = checked) }
-//        setButtonEnabled()
-//    }
+    internal fun setChecked(checked: String) {
+        setState { state.value.copy(checked = checked) }
+        setButtonEnabled()
+    }
 
     internal fun setInterviewType(interviewType: InterviewType) {
         setState {

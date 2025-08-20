@@ -1,6 +1,7 @@
 package team.retum.review.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -8,11 +9,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -27,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +51,7 @@ import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -57,6 +62,7 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.review.viewmodel.ReviewSideEffect
 import team.retum.review.viewmodel.ReviewState
 import team.retum.review.viewmodel.ReviewViewModel
+import team.retum.usecase.entity.CodesEntity
 
 const val SEARCH_DELAY: Long = 200
 
@@ -102,6 +108,10 @@ internal fun PostReview(
         setInterviewType = reviewViewModel::setInterviewType,
         setInterviewLocation = reviewViewModel::setInterviewLocation,
         setButtonClear = reviewViewModel::setButtonClear,
+        setChecked = reviewViewModel::setChecked,
+        setKeyword = reviewViewModel::setKeyword,
+        setSelectedTech = reviewViewModel::setSelectedTech,
+        techs = reviewViewModel.techs,
         buttonEnabled = state.buttonEnabled
     )
 }
@@ -118,6 +128,10 @@ private fun PostReviewScreen(
     pagerState: PagerState,
     state: ReviewState,
     reviewProcess: ReviewProcess,
+    setKeyword: (String) -> Unit,
+    setSelectedTech: (Long) -> Unit,
+    setChecked: (String) -> Unit,
+    techs: SnapshotStateList<CodesEntity.CodeEntity>,
     setInterviewType: (InterviewType) -> Unit,
     setInterviewLocation: (InterviewLocation) -> Unit,
     setButtonClear: () -> Unit,
@@ -133,7 +147,7 @@ private fun PostReviewScreen(
                 hideModalBottomSheet()
             } else {
                 AddQuestionBottomSheet(
-                    onReviewProcess = {  },
+                    onReviewProcess = { },
                     state = state,
                     pagerState = pagerState,
                     sheetState = sheetState,
@@ -141,7 +155,11 @@ private fun PostReviewScreen(
                     setInterviewType = setInterviewType,
                     setInterviewLocation = setInterviewLocation,
                     setButtonClear = setButtonClear,
-                    buttonEnabled = buttonEnabled
+                    setKeyword = setKeyword,
+                    setSelectedTech = setSelectedTech,
+                    setChecked = setChecked,
+                    techs = techs,
+                    buttonEnabled = buttonEnabled,
                 )
             }
         },
@@ -295,6 +313,10 @@ private fun AddQuestionBottomSheet(
     state: ReviewState,
     pagerState: PagerState,
     sheetState: ModalBottomSheetState,
+    setKeyword: (String) -> Unit,
+    setSelectedTech: (Long) -> Unit,
+    setChecked: (String) -> Unit,
+    techs: SnapshotStateList<CodesEntity.CodeEntity>,
     setInterviewType: (InterviewType) -> Unit,
     setInterviewLocation: (InterviewLocation) -> Unit,
     setButtonClear: () -> Unit,
@@ -351,9 +373,33 @@ private fun AddQuestionBottomSheet(
             }
             2 -> {
                 // 지원 직무 :: 전공만 조회
+                SupportPositionModal(
+                    onNextClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page + 1)
+                        }
+                    },
+                )
             }
             3 -> {
                 // 면접관 수 :: 숫자만 입력
+                InterviewerCountModal(
+                    onBackPressed = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page - 1)
+                        }
+                    },
+                    pagerTotalCount = pagerState.pageCount,
+                    currentPager = page,
+                    onClick = { 0 },
+                    onNextClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page + 1)
+                        }
+                    },
+                    interviewerCount = 0,
+                    buttonEnabled = buttonEnabled,
+                )
             }
             4 -> {
                 // 면접 환경 입력한 부분 확인 페이지
@@ -613,6 +659,120 @@ private fun InterviewLocationModal(
                 onButtonClick = { onClick(InterviewLocation.OTHER) }
             )
         }
+        JobisButton(
+            modifier = Modifier.padding(top = 12.dp),
+            text = stringResource(id = R.string.next),
+            onClick = onNextClick,
+            color = ButtonColor.Primary,
+            enabled = buttonEnabled,
+        )
+    }
+}
+
+@Composable
+private fun SupportPositionModal(
+    onNextClick: () -> Unit,
+) {
+    //                JobisTextField(
+//                    value = { state.keyword },
+//                    hint = stringResource(id = R.string.search),
+//                    drawableResId = JobisIcon.Search,
+//                    onValueChange = setKeyword,
+//                    fieldColor = JobisTheme.colors.background,
+//                )
+//                Column {
+//                    LazyColumn(modifier = Modifier.fillMaxHeight(0.3f)) {
+//                        items(techs.size) { index ->
+//                            val codes = techs[index]
+//                            Log.d("TEST", codes.toString())
+//                            Row(
+//                                modifier = Modifier.padding(
+//                                    horizontal = 24.dp,
+//                                    vertical = 12.dp,
+//                                ),
+//                            ) {
+//                                JobisCheckBox(
+//                                    checked = state.checked == codes.keyword,
+//                                    onClick = {
+//                                        setChecked(codes.keyword)
+//                                        setKeyword(codes.keyword)
+//                                        setSelectedTech(codes.code)
+//                                    },
+//                                )
+//                                Spacer(modifier = Modifier.width(8.dp))
+//                                JobisText(
+//                                    text = codes.keyword,
+//                                    style = JobisTypography.Body,
+//                                    color = JobisTheme.colors.inverseOnSurface,
+//                                    modifier = Modifier.align(Alignment.CenterVertically),
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+    JobisButton(
+        modifier = Modifier.padding(top = 12.dp),
+        text = stringResource(id = R.string.next),
+        onClick = onNextClick,
+        color = ButtonColor.Primary,
+        enabled = true,
+    )
+}
+
+@Composable
+private fun InterviewerCountModal(
+    onBackPressed: () -> Unit,
+    pagerTotalCount: Int,
+    currentPager: Int,
+    onNextClick: () -> Unit,
+    onClick: (Int) -> Unit,
+    interviewerCount: Int,
+    buttonEnabled: Boolean,
+) {
+    Column(
+        modifier = Modifier.padding(
+            top = 24.dp,
+            bottom = 12.dp,
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            JobisIconButton(
+                modifier = Modifier,
+                drawableResId = JobisIcon.Arrow,
+                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
+                contentDescription = stringResource(id = team.retum.design_system.R.string.content_description_arrow),
+                onClick = onBackPressed,
+            )
+            JobisText(
+                text = stringResource(id = R.string.review_category),
+                color = JobisTheme.colors.onSurfaceVariant,
+                style = JobisTypography.SubHeadLine,
+            )
+        }
+        Row(
+            modifier = Modifier.padding(top = 10.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            repeat(pagerTotalCount) {
+                val color = if (currentPager == it)
+                    JobisTheme.colors.onPrimary
+                else
+                    JobisTheme.colors.surfaceVariant
+                val multiple = if (currentPager == it)
+                    1.8f
+                else
+                    1f
+                Box(
+                    modifier = Modifier
+                        .background(color = color, shape = RoundedCornerShape(200.dp))
+                        .size(width = 12.dp * multiple, height = 6.dp)
+                )
+            }
+        }
+
         JobisButton(
             modifier = Modifier.padding(top = 12.dp),
             text = stringResource(id = R.string.next),
