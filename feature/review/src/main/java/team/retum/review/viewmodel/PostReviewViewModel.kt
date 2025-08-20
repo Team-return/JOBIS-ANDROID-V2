@@ -2,17 +2,12 @@ package team.retum.review.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.enums.CodeType
+import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
-import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.CodesEntity
-import team.retum.usecase.entity.PostReviewEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
 import team.retum.usecase.usecase.review.PostReviewUseCase
 import javax.inject.Inject
@@ -23,8 +18,8 @@ internal class ReviewViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
 ) : BaseViewModel<ReviewState, ReviewSideEffect>(ReviewState.getDefaultState()) {
 
-//    var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
-//        private set
+    var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
+        private set
 //
 //    var reviews: SnapshotStateList<PostReviewEntity.PostReviewContentEntity> = mutableStateListOf()
 //        private set
@@ -56,11 +51,11 @@ internal class ReviewViewModel @Inject constructor(
 //        setButtonEnabled()
 //    }
 //
-//    internal fun setKeyword(keyword: String) {
-//        techs.clear()
-//        setState { state.value.copy(keyword = keyword) }
-//        setButtonEnabled()
-//    }
+    internal fun setKeyword(keyword: String) {
+        techs.clear()
+        setState { state.value.copy(keyword = keyword) }
+        //setButtonEnabled()
+    }
 //
 //    internal fun addReview() {
 //        reviews.add(
@@ -131,7 +126,24 @@ internal class ReviewViewModel @Inject constructor(
         setState {
             state.value.copy(
                 interviewType = interviewType,
-                buttonEnabled = true
+                buttonEnabled = true,
+            )
+        }
+    }
+
+    internal fun setInterviewLocation(interviewLocation: InterviewLocation) {
+        setState {
+            state.value.copy(
+                interviewLocation = interviewLocation,
+                buttonEnabled = true,
+            )
+        }
+    }
+
+    internal fun setButtonClear() {
+        setState {
+            state.value.copy(
+                buttonEnabled = false,
             )
         }
     }
@@ -147,6 +159,7 @@ internal data class ReviewState(
     val buttonEnabled: Boolean,
     val reviewProcess: ReviewProcess,
     val interviewType: InterviewType,
+    val interviewLocation: InterviewLocation,
 ) {
     companion object {
         fun getDefaultState() = ReviewState(
@@ -158,7 +171,8 @@ internal data class ReviewState(
             tech = null,
             buttonEnabled = false,
             reviewProcess = ReviewProcess.QUESTION,
-            interviewType = InterviewType.INDIVIDUAL, // TODO :: 널처리(선택 해제) 고려
+            interviewType = InterviewType.INDIVIDUAL,
+            interviewLocation = InterviewLocation.DAEJEON, // TODO :: 널처리(선택 해제) 고려
         )
     }
 }

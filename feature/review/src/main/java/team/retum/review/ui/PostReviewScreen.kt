@@ -39,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
 import team.retum.jobis.review.R
@@ -99,6 +100,8 @@ internal fun PostReview(
         state = state,
         reviewProcess = state.reviewProcess,
         setInterviewType = reviewViewModel::setInterviewType,
+        setInterviewLocation = reviewViewModel::setInterviewLocation,
+        setButtonClear = reviewViewModel::setButtonClear,
         buttonEnabled = state.buttonEnabled
     )
 }
@@ -116,6 +119,8 @@ private fun PostReviewScreen(
     state: ReviewState,
     reviewProcess: ReviewProcess,
     setInterviewType: (InterviewType) -> Unit,
+    setInterviewLocation: (InterviewLocation) -> Unit,
+    setButtonClear: () -> Unit,
     buttonEnabled: Boolean,
 ) {
     ModalBottomSheetLayout(
@@ -131,8 +136,11 @@ private fun PostReviewScreen(
                     onReviewProcess = {  },
                     state = state,
                     pagerState = pagerState,
+                    sheetState = sheetState,
                     reviewProcess = reviewProcess,
                     setInterviewType = setInterviewType,
+                    setInterviewLocation = setInterviewLocation,
+                    setButtonClear = setButtonClear,
                     buttonEnabled = buttonEnabled
                 )
             }
@@ -286,9 +294,14 @@ private fun AddQuestionBottomSheet(
     reviewProcess: ReviewProcess,
     state: ReviewState,
     pagerState: PagerState,
+    sheetState: ModalBottomSheetState,
     setInterviewType: (InterviewType) -> Unit,
+    setInterviewLocation: (InterviewLocation) -> Unit,
+    setButtonClear: () -> Unit,
     buttonEnabled: Boolean,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     HorizontalPager(
         state = pagerState,
         userScrollEnabled = false,
@@ -297,17 +310,44 @@ private fun AddQuestionBottomSheet(
             0 -> {
                 // TODO :: 함수로 구분해서 분리
                 // 면접 구분(개인, 단체, 기타 면접)
-                InterviewCategory(
-                    onBackPressed = {},
+                InterviewCategoryModal(
+                    onBackPressed = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                        }
+                    },
                     pagerTotalCount = pagerState.pageCount,
                     currentPager = page,
                     onClick = { setInterviewType(it) },
-                    interviewType = state.interviewType!!,
-                    buttonEnabled = buttonEnabled
+                    onNextClick = {
+                        setButtonClear()
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page + 1)
+                        }
+                    },
+                    interviewType = state.interviewType,
+                    buttonEnabled = buttonEnabled,
                 )
             }
             1 -> {
                 // 면접 지역(대전, 서울, 경기, 기타)
+                InterviewLocationModal(
+                    onBackPressed = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page - 1)
+                        }
+                    },
+                    pagerTotalCount = pagerState.pageCount,
+                    currentPager = page,
+                    onClick = { setInterviewLocation(it) },
+                    onNextClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page + 1)
+                        }
+                    },
+                    interviewLocation = state.interviewLocation,
+                    buttonEnabled = buttonEnabled,
+                )
             }
             2 -> {
                 // 기업명 :: 기업명 조회 api 사용
@@ -411,10 +451,11 @@ private fun AddQuestionBottomSheet(
 }
 
 @Composable
-private fun InterviewCategory(
+private fun InterviewCategoryModal(
     onBackPressed: () -> Unit,
     pagerTotalCount: Int,
     currentPager: Int,
+    onNextClick: () -> Unit,
     onClick: (InterviewType) -> Unit,
     interviewType: InterviewType,
     buttonEnabled: Boolean,
@@ -451,10 +492,14 @@ private fun InterviewCategory(
                     JobisTheme.colors.onPrimary
                 else
                     JobisTheme.colors.surfaceVariant
+                val multiple = if (currentPager == it)
+                    1.8f
+                else
+                    1f
                 Box(
                     modifier = Modifier
                         .background(color = color, shape = RoundedCornerShape(200.dp))
-                        .size(width = 12.dp, height = 6.dp)
+                        .size(width = 12.dp * multiple, height = 6.dp)
                 )
             }
         }
@@ -483,7 +528,98 @@ private fun InterviewCategory(
         JobisButton(
             modifier = Modifier.padding(top = 12.dp),
             text = stringResource(id = R.string.next),
-            onClick = {},
+            onClick = onNextClick,
+            color = ButtonColor.Primary,
+            enabled = buttonEnabled,
+        )
+    }
+}
+
+@Composable
+private fun InterviewLocationModal(
+    onBackPressed: () -> Unit,
+    pagerTotalCount: Int,
+    currentPager: Int,
+    onNextClick: () -> Unit,
+    onClick: (InterviewLocation) -> Unit,
+    interviewLocation: InterviewLocation,
+    buttonEnabled: Boolean,
+) {
+    Column(
+        modifier = Modifier.padding(
+            top = 24.dp,
+            bottom = 12.dp,
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            JobisIconButton(
+                modifier = Modifier,
+                drawableResId = JobisIcon.Arrow,
+                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
+                contentDescription = stringResource(id = team.retum.design_system.R.string.content_description_arrow),
+                onClick = onBackPressed,
+            )
+            JobisText(
+                text = stringResource(id = R.string.review_category),
+                color = JobisTheme.colors.onSurfaceVariant,
+                style = JobisTypography.SubHeadLine,
+            )
+        }
+        Row(
+            modifier = Modifier.padding(top = 10.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            repeat(pagerTotalCount) {
+                val color = if (currentPager == it)
+                    JobisTheme.colors.onPrimary
+                else
+                    JobisTheme.colors.surfaceVariant
+                val multiple = if (currentPager == it)
+                    1.8f
+                else
+                    1f
+                Box(
+                    modifier = Modifier
+                        .background(color = color, shape = RoundedCornerShape(200.dp))
+                        .size(width = 12.dp * multiple, height = 6.dp)
+                )
+            }
+        }
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            PostReviewOutlinedStrokeText(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                selected = interviewLocation == InterviewLocation.DAEJEON,
+                text = stringResource(id = R.string.individual_review),
+                onButtonClick = { onClick(InterviewLocation.DAEJEON) },
+            )
+            PostReviewOutlinedStrokeText(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                selected = interviewLocation == InterviewLocation.SEOUL,
+                text = stringResource(id = R.string.group_review),
+                onButtonClick = { onClick(InterviewLocation.SEOUL) }
+            )
+            PostReviewOutlinedStrokeText(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                selected = interviewLocation == InterviewLocation.GYEONGGI,
+                text = stringResource(id = R.string.other_review),
+                onButtonClick = { onClick(InterviewLocation.GYEONGGI) }
+            )
+            PostReviewOutlinedStrokeText(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                selected = interviewLocation == InterviewLocation.OTHER,
+                text = stringResource(id = R.string.other_review),
+                onButtonClick = { onClick(InterviewLocation.OTHER) }
+            )
+        }
+        JobisButton(
+            modifier = Modifier.padding(top = 12.dp),
+            text = stringResource(id = R.string.next),
+            onClick = onNextClick,
             color = ButtonColor.Primary,
             enabled = buttonEnabled,
         )
