@@ -102,7 +102,7 @@ internal fun PostReview(
 
     LaunchedEffect(state.keyword) {
         delay(SEARCH_DELAY)
-        reviewViewModel.fetchCodes(state.keyword)
+//        reviewViewModel.fetchCodes(state.keyword)
     }
 
     PostReviewScreen(
@@ -112,23 +112,8 @@ internal fun PostReview(
         onSheetShow = { sheetScope.launch { sheetState.show() } },
         sheetState = sheetState,
         pagerState = pagerState,
-        addQuestion = {
-            reviewViewModel.addReview()
-            reviewViewModel.keywords.add(state.keyword)
-        },
         state = state,
-        setQuestion = reviewViewModel::setQuestion,
-        setAnswer = reviewViewModel::setAnswer,
-        setKeyword = reviewViewModel::setKeyword,
-        setSelectedTech = reviewViewModel::setSelectedTech,
-        setChecked = reviewViewModel::setChecked,
-        onReviewProcessChange = reviewViewModel::setReviewProcess,
         reviewProcess = state.reviewProcess,
-        techs = reviewViewModel.techs,
-        fetchQuestion = { reviewViewModel.postReview(companyId) },
-        reviews = reviewViewModel.reviews,
-        setInit = reviewViewModel::setInit,
-        keywords = reviewViewModel.keywords,
     )
 }
 
@@ -142,20 +127,8 @@ private fun PostReviewScreen(
     onSheetShow: () -> Unit,
     sheetState: ModalBottomSheetState,
     pagerState: PagerState,
-    addQuestion: () -> Unit,
     state: ReviewState,
-    setQuestion: (String) -> Unit,
-    setAnswer: (String) -> Unit,
-    setKeyword: (String) -> Unit,
-    setSelectedTech: (Long) -> Unit,
-    setChecked: (String) -> Unit,
-    onReviewProcessChange: (ReviewProcess) -> Unit,
     reviewProcess: ReviewProcess,
-    techs: SnapshotStateList<CodesEntity.CodeEntity>,
-    fetchQuestion: () -> Unit,
-    reviews: SnapshotStateList<PostReviewEntity.PostReviewContentEntity>,
-    setInit: () -> Unit,
-    keywords: SnapshotStateList<String>,
 ) {
     ModalBottomSheetLayout(
         modifier = Modifier
@@ -165,19 +138,12 @@ private fun PostReviewScreen(
         sheetContent = {
             if (reviewProcess == ReviewProcess.FINISH) {
                 hideModalBottomSheet()
-                addQuestion()
             } else {
                 AddQuestionBottomSheet(
-                    onReviewProcess = { onReviewProcessChange(it) },
+                    onReviewProcess = {  },
                     state = state,
                     pagerState = pagerState,
-                    setQuestion = setQuestion,
-                    setAnswer = setAnswer,
-                    setKeyword = setKeyword,
-                    setSelectedTech = setSelectedTech,
                     reviewProcess = reviewProcess,
-                    setChecked = setChecked,
-                    techs = techs,
                 )
             }
         },
@@ -196,7 +162,7 @@ private fun PostReviewScreen(
                 onBackPressed = onBackPressed,
                 title = stringResource(id = R.string.write_review),
             )
-            if (reviews.isEmpty()) {
+            //if (reviews.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -222,20 +188,20 @@ private fun PostReviewScreen(
                             ),
                     )
                 }
-            } else {
+            //} else {
                 LazyColumn {
-                    items(reviews.size) {
-                        ReviewContent(
-                            review = reviews[it],
-                            keyword = keywords[it],
-                        )
-                    }
+//                    items(reviews.size) {
+//                        ReviewContent(
+//                            review = reviews[it],
+//                            keyword = keywords[it],
+//                        )
+//                    }
                 }
-            }
+            //}
             JobisButton(
                 text = stringResource(id = R.string.add_question),
                 onClick = {
-                    onReviewProcessChange(ReviewProcess.QUESTION)
+//                    onReviewProcessChange(ReviewProcess.QUESTION)
                     onSheetShow()
                     //setInit()
                 },
@@ -244,85 +210,85 @@ private fun PostReviewScreen(
     }
 }
 
-@Composable
-private fun ReviewContent(
-    review: PostReviewEntity.PostReviewContentEntity,
-    keyword: String,
-) {
-    var showQuestionDetail by remember { mutableStateOf(false) }
-    JobisCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 24.dp,
-                vertical = 4.dp,
-            )
-            .clip(RoundedCornerShape(12.dp))
-            .background(JobisTheme.colors.surfaceVariant),
-        onClick = { showQuestionDetail = !showQuestionDetail },
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(
-                    vertical = 12.dp,
-                    horizontal = 16.dp,
-                ),
-        ) {
-            Column {
-                if (!showQuestionDetail) {
-                    JobisText(
-                        text = review.question,
-                        style = JobisTypography.SubHeadLine,
-                        modifier = Modifier.padding(bottom = 4.dp),
-                    )
-                    JobisText(
-                        text = keyword,
-                        style = JobisTypography.Description,
-                        color = JobisTheme.colors.onPrimary,
-                    )
-                } else {
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                append("Q ")
-                            }
-                            withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
-                                append(review.question)
-                            }
-                        },
-                        style = JobisTypography.SubHeadLine,
-                        modifier = Modifier.padding(bottom = 4.dp),
-                    )
-                    JobisText(
-                        text = keyword,
-                        style = JobisTypography.Description,
-                        color = JobisTheme.colors.onPrimary,
-                    )
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                append("A ")
-                            }
-                            withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface)) {
-                                append(review.answer)
-                            }
-                        },
-                        style = JobisTypography.Description,
-                        modifier = Modifier
-                            .padding(top = 12.dp)
-                            .fillMaxWidth(0.5f),
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_down),
-                contentDescription = "arrow_down",
-                modifier = Modifier.align(Alignment.CenterVertically),
-            )
-        }
-    }
-}
+//@Composable
+//private fun ReviewContent(
+//    review: PostReviewEntity.PostReviewContentEntity,
+//    keyword: String,
+//) {
+//    var showQuestionDetail by remember { mutableStateOf(false) }
+//    JobisCard(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(
+//                horizontal = 24.dp,
+//                vertical = 4.dp,
+//            )
+//            .clip(RoundedCornerShape(12.dp))
+//            .background(JobisTheme.colors.surfaceVariant),
+//        onClick = { showQuestionDetail = !showQuestionDetail },
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .padding(
+//                    vertical = 12.dp,
+//                    horizontal = 16.dp,
+//                ),
+//        ) {
+//            Column {
+//                if (!showQuestionDetail) {
+//                    JobisText(
+//                        text = review.question,
+//                        style = JobisTypography.SubHeadLine,
+//                        modifier = Modifier.padding(bottom = 4.dp),
+//                    )
+//                    JobisText(
+//                        text = keyword,
+//                        style = JobisTypography.Description,
+//                        color = JobisTheme.colors.onPrimary,
+//                    )
+//                } else {
+//                    Text(
+//                        text = buildAnnotatedString {
+//                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
+//                                append("Q ")
+//                            }
+//                            withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
+//                                append(review.question)
+//                            }
+//                        },
+//                        style = JobisTypography.SubHeadLine,
+//                        modifier = Modifier.padding(bottom = 4.dp),
+//                    )
+//                    JobisText(
+//                        text = keyword,
+//                        style = JobisTypography.Description,
+//                        color = JobisTheme.colors.onPrimary,
+//                    )
+//                    Text(
+//                        text = buildAnnotatedString {
+//                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
+//                                append("A ")
+//                            }
+//                            withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface)) {
+//                                append(review.answer)
+//                            }
+//                        },
+//                        style = JobisTypography.Description,
+//                        modifier = Modifier
+//                            .padding(top = 12.dp)
+//                            .fillMaxWidth(0.5f),
+//                    )
+//                }
+//            }
+//            Spacer(modifier = Modifier.weight(1f))
+//            Icon(
+//                painter = painterResource(id = R.drawable.ic_arrow_down),
+//                contentDescription = "arrow_down",
+//                modifier = Modifier.align(Alignment.CenterVertically),
+//            )
+//        }
+//    }
+//}
 
 @Composable
 private fun AddQuestionBottomSheet(
@@ -330,12 +296,6 @@ private fun AddQuestionBottomSheet(
     reviewProcess: ReviewProcess,
     state: ReviewState,
     pagerState: PagerState,
-    setQuestion: (String) -> Unit,
-    setAnswer: (String) -> Unit,
-    setKeyword: (String) -> Unit,
-    setSelectedTech: (Long) -> Unit,
-    setChecked: (String) -> Unit,
-    techs: SnapshotStateList<CodesEntity.CodeEntity>,
 ) {
     HorizontalPager(
         state = pagerState,
@@ -388,14 +348,14 @@ private fun AddQuestionBottomSheet(
                         JobisTextField(
                             value = { state.question },
                             hint = stringResource(id = R.string.example),
-                            onValueChange = setQuestion,
+                            onValueChange = {},
                             title = stringResource(id = R.string.question),
                             fieldColor = JobisTheme.colors.background,
                         )
                         JobisTextField(
                             value = { state.answer },
                             hint = stringResource(id = R.string.example),
-                            onValueChange = setAnswer,
+                            onValueChange = {},
                             title = stringResource(id = R.string.answer),
                             fieldColor = JobisTheme.colors.background,
                         )
@@ -404,35 +364,35 @@ private fun AddQuestionBottomSheet(
                             value = { state.keyword },
                             hint = stringResource(id = R.string.search),
                             drawableResId = JobisIcon.Search,
-                            onValueChange = setKeyword,
+                            onValueChange = {},
                             fieldColor = JobisTheme.colors.background,
                         )
                         LazyColumn(modifier = Modifier.fillMaxHeight(0.3f)) {
-                            items(techs) { codes ->
-                                Row(
-                                    modifier = Modifier.padding(
-                                        horizontal = 24.dp,
-                                        vertical = 12.dp,
-                                    ),
-                                ) {
-                                    JobisCheckBox(
-                                        checked = state.checked == codes.keyword,
-                                        onClick = {
-                                            setChecked(codes.keyword)
-                                            setKeyword(codes.keyword)
-                                            setSelectedTech(codes.code)
-                                        },
-                                        backgroundColor = JobisTheme.colors.background,
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    JobisText(
-                                        text = codes.keyword,
-                                        style = JobisTypography.Body,
-                                        color = JobisTheme.colors.inverseOnSurface,
-                                        modifier = Modifier.align(Alignment.CenterVertically),
-                                    )
-                                }
-                            }
+//                            items() { codes ->
+//                                Row(
+//                                    modifier = Modifier.padding(
+//                                        horizontal = 24.dp,
+//                                        vertical = 12.dp,
+//                                    ),
+//                                ) {
+//                                    JobisCheckBox(
+//                                        checked = state.checked == codes.keyword,
+//                                        onClick = {
+//                                            setChecked(codes.keyword)
+//                                            setKeyword(codes.keyword)
+//                                            setSelectedTech(codes.code)
+//                                        },
+//                                        backgroundColor = JobisTheme.colors.background,
+//                                    )
+//                                    Spacer(modifier = Modifier.width(8.dp))
+//                                    JobisText(
+//                                        text = codes.keyword,
+//                                        style = JobisTypography.Body,
+//                                        color = JobisTheme.colors.inverseOnSurface,
+//                                        modifier = Modifier.align(Alignment.CenterVertically),
+//                                    )
+//                                }
+//                            }
                         }
                     }
                     JobisButton(
