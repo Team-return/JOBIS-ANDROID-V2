@@ -1,5 +1,6 @@
 package team.retum.review.viewmodel
 
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
@@ -57,8 +58,13 @@ internal class ReviewViewModel @Inject constructor(
 //
     internal fun setKeyword(keyword: String) {
         techs.clear()
-        setState { state.value.copy(keyword = keyword) }
-        setButtonEnabled()
+        setState {
+            state.value.copy(
+                keyword = keyword,
+                buttonEnabled = true
+            )
+        }
+
     }
 //
 //    internal fun addReview() {
@@ -109,21 +115,25 @@ internal class ReviewViewModel @Inject constructor(
 //        setButtonEnabled()
 //    }
 //
-    private fun setButtonEnabled() {
-        when (state.value.reviewProcess) {
-            ReviewProcess.QUESTION -> {
-                setState { state.value.copy(buttonEnabled = state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) }
-            }
-
-            else -> {
-                setState { state.value.copy(buttonEnabled = state.value.checked.isNotEmpty()) }
-            }
-        }
-    }
+//    private fun setButtonEnabled() {
+//        when (state.value.reviewProcess) {
+//            ReviewProcess.QUESTION -> {
+//                setState { state.value.copy(buttonEnabled = state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) }
+//            }
+//
+//            else -> {
+//                setState { state.value.copy(buttonEnabled = !state.value.keyword.isNotEmpty()) }
+//            }
+//        }
+//    }
 //
     internal fun setChecked(checked: String) {
-        setState { state.value.copy(checked = checked) }
-        setButtonEnabled()
+        setState {
+            state.value.copy(
+                checked = checked,
+                buttonEnabled = true,
+            )
+        }
     }
 
     internal fun setInterviewType(interviewType: InterviewType) {
