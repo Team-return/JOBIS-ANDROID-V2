@@ -144,6 +144,16 @@ internal class ReviewViewModel @Inject constructor(
         }
     }
 
+    internal fun setInterviewerCount(count: String) {
+        techs.clear()
+        setState {
+            state.value.copy(
+                count = count,
+                buttonEnabled = true,
+            )
+        }
+    }
+
     internal fun setButtonClear() {
         setState {
             state.value.copy(
@@ -164,6 +174,7 @@ internal data class ReviewState(
     val reviewProcess: ReviewProcess,
     val interviewType: InterviewType,
     val interviewLocation: InterviewLocation,
+    val count: String,
 ) {
     companion object {
         fun getDefaultState() = ReviewState(
@@ -177,6 +188,7 @@ internal data class ReviewState(
             reviewProcess = ReviewProcess.QUESTION,
             interviewType = InterviewType.INDIVIDUAL,
             interviewLocation = InterviewLocation.DAEJEON, // TODO :: 널처리(선택 해제) 고려
+            count = "",
         )
     }
 }

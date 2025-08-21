@@ -105,6 +105,7 @@ internal fun PostReview(
         pagerState = pagerState,
         state = state,
         reviewProcess = state.reviewProcess,
+        setInterviewerCount = reviewViewModel::setInterviewerCount,
         setInterviewType = reviewViewModel::setInterviewType,
         setInterviewLocation = reviewViewModel::setInterviewLocation,
         setButtonClear = reviewViewModel::setButtonClear,
@@ -132,6 +133,7 @@ private fun PostReviewScreen(
     setSelectedTech: (Long) -> Unit,
     setChecked: (String) -> Unit,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
+    setInterviewerCount: (String) -> Unit,
     setInterviewType: (InterviewType) -> Unit,
     setInterviewLocation: (InterviewLocation) -> Unit,
     setButtonClear: () -> Unit,
@@ -154,6 +156,7 @@ private fun PostReviewScreen(
                     reviewProcess = reviewProcess,
                     setInterviewType = setInterviewType,
                     setInterviewLocation = setInterviewLocation,
+                    setInterviewerCount = setInterviewerCount,
                     setButtonClear = setButtonClear,
                     setKeyword = setKeyword,
                     setSelectedTech = setSelectedTech,
@@ -319,6 +322,7 @@ private fun AddQuestionBottomSheet(
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
     setInterviewType: (InterviewType) -> Unit,
     setInterviewLocation: (InterviewLocation) -> Unit,
+    setInterviewerCount: (String) -> Unit,
     setButtonClear: () -> Unit,
     buttonEnabled: Boolean,
 ) {
@@ -335,6 +339,7 @@ private fun AddQuestionBottomSheet(
                 InterviewCategoryModal(
                     onBackPressed = {
                         coroutineScope.launch {
+                            setButtonClear()
                             sheetState.hide()
                         }
                     },
@@ -356,6 +361,7 @@ private fun AddQuestionBottomSheet(
                 InterviewLocationModal(
                     onBackPressed = {
                         coroutineScope.launch {
+                            setButtonClear()
                             pagerState.animateScrollToPage(page - 1)
                         }
                     },
@@ -364,6 +370,7 @@ private fun AddQuestionBottomSheet(
                     onClick = { setInterviewLocation(it) },
                     onNextClick = {
                         coroutineScope.launch {
+                            setButtonClear()
                             pagerState.animateScrollToPage(page + 1)
                         }
                     },
@@ -374,11 +381,24 @@ private fun AddQuestionBottomSheet(
             2 -> {
                 // 지원 직무 :: 전공만 조회
                 SupportPositionModal(
+                    onBackPressed = {
+                        coroutineScope.launch {
+                            setButtonClear()
+                            pagerState.animateScrollToPage(page - 1)
+                        }
+                    },
+                    setKeyword = setKeyword,
+                    pagerTotalCount = pagerState.pageCount,
+                    currentPager = page,
+                    onClick = { 0 },
                     onNextClick = {
                         coroutineScope.launch {
+                            setButtonClear()
                             pagerState.animateScrollToPage(page + 1)
                         }
                     },
+                    state = state,
+                    buttonEnabled = buttonEnabled,
                 )
             }
             3 -> {
@@ -386,18 +406,21 @@ private fun AddQuestionBottomSheet(
                 InterviewerCountModal(
                     onBackPressed = {
                         coroutineScope.launch {
+                            setButtonClear()
                             pagerState.animateScrollToPage(page - 1)
                         }
                     },
+                    setInterviewerCount = setInterviewerCount,
                     pagerTotalCount = pagerState.pageCount,
                     currentPager = page,
                     onClick = { 0 },
                     onNextClick = {
                         coroutineScope.launch {
+                            setButtonClear()
                             pagerState.animateScrollToPage(page + 1)
                         }
                     },
-                    interviewerCount = 0,
+                    state = state,
                     buttonEnabled = buttonEnabled,
                 )
             }
@@ -671,62 +694,13 @@ private fun InterviewLocationModal(
 
 @Composable
 private fun SupportPositionModal(
-    onNextClick: () -> Unit,
-) {
-    //                JobisTextField(
-//                    value = { state.keyword },
-//                    hint = stringResource(id = R.string.search),
-//                    drawableResId = JobisIcon.Search,
-//                    onValueChange = setKeyword,
-//                    fieldColor = JobisTheme.colors.background,
-//                )
-//                Column {
-//                    LazyColumn(modifier = Modifier.fillMaxHeight(0.3f)) {
-//                        items(techs.size) { index ->
-//                            val codes = techs[index]
-//                            Log.d("TEST", codes.toString())
-//                            Row(
-//                                modifier = Modifier.padding(
-//                                    horizontal = 24.dp,
-//                                    vertical = 12.dp,
-//                                ),
-//                            ) {
-//                                JobisCheckBox(
-//                                    checked = state.checked == codes.keyword,
-//                                    onClick = {
-//                                        setChecked(codes.keyword)
-//                                        setKeyword(codes.keyword)
-//                                        setSelectedTech(codes.code)
-//                                    },
-//                                )
-//                                Spacer(modifier = Modifier.width(8.dp))
-//                                JobisText(
-//                                    text = codes.keyword,
-//                                    style = JobisTypography.Body,
-//                                    color = JobisTheme.colors.inverseOnSurface,
-//                                    modifier = Modifier.align(Alignment.CenterVertically),
-//                                )
-//                            }
-//                        }
-//                    }
-//                }
-    JobisButton(
-        modifier = Modifier.padding(top = 12.dp),
-        text = stringResource(id = R.string.next),
-        onClick = onNextClick,
-        color = ButtonColor.Primary,
-        enabled = true,
-    )
-}
-
-@Composable
-private fun InterviewerCountModal(
     onBackPressed: () -> Unit,
+    setKeyword: (String) -> Unit,
+    state: ReviewState,
     pagerTotalCount: Int,
     currentPager: Int,
     onNextClick: () -> Unit,
     onClick: (Int) -> Unit,
-    interviewerCount: Int,
     buttonEnabled: Boolean,
 ) {
     Column(
@@ -772,7 +746,85 @@ private fun InterviewerCountModal(
                 )
             }
         }
+        JobisTextField(
+            value = { state.keyword },
+            hint = stringResource(id = R.string.search),
+            drawableResId = JobisIcon.Search,
+            onValueChange = setKeyword,
+            fieldColor = JobisTheme.colors.background,
+        )
+        Log.d("TEST", buttonEnabled.toString())
+        JobisButton(
+            modifier = Modifier.padding(top = 12.dp),
+            text = stringResource(id = R.string.next),
+            onClick = onNextClick,
+            color = ButtonColor.Primary,
+            enabled = buttonEnabled,
+        )
+    }
+}
 
+@Composable
+private fun InterviewerCountModal(
+    onBackPressed: () -> Unit,
+    setInterviewerCount: (String) -> Unit,
+    state: ReviewState,
+    pagerTotalCount: Int,
+    currentPager: Int,
+    onNextClick: () -> Unit,
+    onClick: (Int) -> Unit,
+    buttonEnabled: Boolean,
+) {
+    Column(
+        modifier = Modifier.padding(
+            top = 24.dp,
+            bottom = 12.dp,
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            JobisIconButton(
+                modifier = Modifier,
+                drawableResId = JobisIcon.Arrow,
+                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
+                contentDescription = stringResource(id = team.retum.design_system.R.string.content_description_arrow),
+                onClick = onBackPressed,
+            )
+            JobisText(
+                text = stringResource(id = R.string.review_category),
+                color = JobisTheme.colors.onSurfaceVariant,
+                style = JobisTypography.SubHeadLine,
+            )
+        }
+        Row(
+            modifier = Modifier.padding(top = 10.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            repeat(pagerTotalCount) {
+                val color = if (currentPager == it)
+                    JobisTheme.colors.onPrimary
+                else
+                    JobisTheme.colors.surfaceVariant
+                val multiple = if (currentPager == it)
+                    1.8f
+                else
+                    1f
+                Box(
+                    modifier = Modifier
+                        .background(color = color, shape = RoundedCornerShape(200.dp))
+                        .size(width = 12.dp * multiple, height = 6.dp)
+                )
+            }
+        }
+        JobisTextField(
+            value = { state.keyword },
+            hint = stringResource(id = R.string.search),
+            drawableResId = JobisIcon.Search,
+            onValueChange = setInterviewerCount,
+            fieldColor = JobisTheme.colors.background,
+        )
         JobisButton(
             modifier = Modifier.padding(top = 12.dp),
             text = stringResource(id = R.string.next),
