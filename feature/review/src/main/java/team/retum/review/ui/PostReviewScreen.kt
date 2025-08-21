@@ -9,13 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -51,7 +48,6 @@ import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
-import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -77,7 +73,7 @@ internal fun PostReview(
     val sheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val sheetScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(pageCount = { 4 })
+    val pagerState = rememberPagerState(pageCount = { 5 })
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -218,7 +214,7 @@ private fun PostReviewScreen(
                 }
             //}
             JobisButton(
-                text = stringResource(id = R.string.add_question),
+                text = stringResource(id = R.string.add_review),
                 onClick = {
 //                    onReviewProcessChange(ReviewProcess.QUESTION)
                     onSheetShow()
@@ -327,7 +323,7 @@ private fun AddQuestionBottomSheet(
     buttonEnabled: Boolean,
 ) {
     val coroutineScope = rememberCoroutineScope()
-
+    val totalPage = pagerState.pageCount - 1
     HorizontalPager(
         state = pagerState,
         userScrollEnabled = false,
@@ -343,7 +339,7 @@ private fun AddQuestionBottomSheet(
                             sheetState.hide()
                         }
                     },
-                    pagerTotalCount = pagerState.pageCount,
+                    pagerTotalCount = totalPage,
                     currentPager = page,
                     onClick = { setInterviewType(it) },
                     onNextClick = {
@@ -356,6 +352,7 @@ private fun AddQuestionBottomSheet(
                     buttonEnabled = buttonEnabled,
                 )
             }
+
             1 -> {
                 // 면접 지역(대전, 서울, 경기, 기타)
                 InterviewLocationModal(
@@ -365,7 +362,7 @@ private fun AddQuestionBottomSheet(
                             pagerState.animateScrollToPage(page - 1)
                         }
                     },
-                    pagerTotalCount = pagerState.pageCount,
+                    pagerTotalCount = totalPage,
                     currentPager = page,
                     onClick = { setInterviewLocation(it) },
                     onNextClick = {
@@ -378,6 +375,7 @@ private fun AddQuestionBottomSheet(
                     buttonEnabled = buttonEnabled,
                 )
             }
+
             2 -> {
                 // 지원 직무 :: 전공만 조회
                 SupportPositionModal(
@@ -388,7 +386,7 @@ private fun AddQuestionBottomSheet(
                         }
                     },
                     setKeyword = setKeyword,
-                    pagerTotalCount = pagerState.pageCount,
+                    pagerTotalCount = totalPage,
                     currentPager = page,
                     onClick = { 0 },
                     onNextClick = {
@@ -411,7 +409,7 @@ private fun AddQuestionBottomSheet(
                         }
                     },
                     setInterviewerCount = setInterviewerCount,
-                    pagerTotalCount = pagerState.pageCount,
+                    pagerTotalCount = totalPage,
                     currentPager = page,
                     onClick = { 0 },
                     onNextClick = {
@@ -426,91 +424,15 @@ private fun AddQuestionBottomSheet(
             }
             4 -> {
                 // 면접 환경 입력한 부분 확인 페이지
-            }
-            else -> {
-                // TODO : 모달 입력 완료 했을 때 key 값으로 모달 초기화
-                // 기존 면접후기 추가 모달
-                Column {
-                    JobisText(
-                        text = if (reviewProcess == ReviewProcess.QUESTION) {
-                            stringResource(id = R.string.add_question)
-                        } else {
-                            stringResource(id = R.string.tech)
-                        },
-                        color = JobisTheme.colors.onSurfaceVariant,
-                        style = JobisTypography.SubBody,
-                        modifier = Modifier.padding(
-                            top = 24.dp,
-                            bottom = 16.dp,
-                            start = 24.dp,
-                            end = 24.dp,
-                        ),
-                    )
-                    if (reviewProcess == ReviewProcess.QUESTION) {
-                        JobisTextField(
-                            value = { state.question },
-                            hint = stringResource(id = R.string.example),
-                            onValueChange = {},
-                            title = stringResource(id = R.string.question),
-                            fieldColor = JobisTheme.colors.background,
-                        )
-                        JobisTextField(
-                            value = { state.answer },
-                            hint = stringResource(id = R.string.example),
-                            onValueChange = {},
-                            title = stringResource(id = R.string.answer),
-                            fieldColor = JobisTheme.colors.background,
-                        )
-                    } else {
-                        JobisTextField(
-                            value = { state.keyword },
-                            hint = stringResource(id = R.string.search),
-                            drawableResId = JobisIcon.Search,
-                            onValueChange = {},
-                            fieldColor = JobisTheme.colors.background,
-                        )
-                        LazyColumn(modifier = Modifier.fillMaxHeight(0.3f)) {
-//                            items() { codes ->
-//                                Row(
-//                                    modifier = Modifier.padding(
-//                                        horizontal = 24.dp,
-//                                        vertical = 12.dp,
-//                                    ),
-//                                ) {
-//                                    JobisCheckBox(
-//                                        checked = state.checked == codes.keyword,
-//                                        onClick = {
-//                                            setChecked(codes.keyword)
-//                                            setKeyword(codes.keyword)
-//                                            setSelectedTech(codes.code)
-//                                        },
-//                                        backgroundColor = JobisTheme.colors.background,
-//                                    )
-//                                    Spacer(modifier = Modifier.width(8.dp))
-//                                    JobisText(
-//                                        text = codes.keyword,
-//                                        style = JobisTypography.Body,
-//                                        color = JobisTheme.colors.inverseOnSurface,
-//                                        modifier = Modifier.align(Alignment.CenterVertically),
-//                                    )
-//                                }
-//                            }
-                        }
-                    }
-                    JobisButton(
-                        text = stringResource(id = R.string.next),
-                        onClick = {
-                            onReviewProcess(
-                                when (reviewProcess) {
-                                    ReviewProcess.QUESTION -> ReviewProcess.TECH
-                                    else -> ReviewProcess.FINISH
-                                },
-                            )
-                        },
-                        color = ButtonColor.Primary,
-                        enabled = state.buttonEnabled,
-                    )
-                }
+                InterviewSummary(
+                    onBackPressed = {},
+                    state = state,
+                    pagerTotalCount = pagerState.pageCount,
+                    currentPager = page,
+                    onNextClick = {},
+                    onClick = {},
+                    buttonEnabled = buttonEnabled
+                )
             }
         }
     }
@@ -615,7 +537,7 @@ private fun InterviewLocationModal(
         modifier = Modifier.padding(
             top = 24.dp,
             bottom = 12.dp,
-        )
+        ),
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 24.dp),
@@ -629,7 +551,7 @@ private fun InterviewLocationModal(
                 onClick = onBackPressed,
             )
             JobisText(
-                text = stringResource(id = R.string.review_category),
+                text = stringResource(id = R.string.review_location),
                 color = JobisTheme.colors.onSurfaceVariant,
                 style = JobisTypography.SubHeadLine,
             )
@@ -650,7 +572,7 @@ private fun InterviewLocationModal(
                 Box(
                     modifier = Modifier
                         .background(color = color, shape = RoundedCornerShape(200.dp))
-                        .size(width = 12.dp * multiple, height = 6.dp)
+                        .size(width = 12.dp * multiple, height = 6.dp),
                 )
             }
         }
@@ -660,25 +582,25 @@ private fun InterviewLocationModal(
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.DAEJEON,
-                text = stringResource(id = R.string.individual_review),
+                text = stringResource(id = R.string.deajeon),
                 onButtonClick = { onClick(InterviewLocation.DAEJEON) },
             )
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.SEOUL,
-                text = stringResource(id = R.string.group_review),
+                text = stringResource(id = R.string.seoul),
                 onButtonClick = { onClick(InterviewLocation.SEOUL) }
             )
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.GYEONGGI,
-                text = stringResource(id = R.string.other_review),
+                text = stringResource(id = R.string.gyeonggi),
                 onButtonClick = { onClick(InterviewLocation.GYEONGGI) }
             )
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.OTHER,
-                text = stringResource(id = R.string.other_review),
+                text = stringResource(id = R.string.other),
                 onButtonClick = { onClick(InterviewLocation.OTHER) }
             )
         }
@@ -703,6 +625,7 @@ private fun SupportPositionModal(
     onClick: (Int) -> Unit,
     buttonEnabled: Boolean,
 ) {
+    // TODO :: 리팩토링 우선
     Column(
         modifier = Modifier.padding(
             top = 24.dp,
@@ -721,7 +644,7 @@ private fun SupportPositionModal(
                 onClick = onBackPressed,
             )
             JobisText(
-                text = stringResource(id = R.string.review_category),
+                text = stringResource(id = R.string.support_position),
                 color = JobisTheme.colors.onSurfaceVariant,
                 style = JobisTypography.SubHeadLine,
             )
@@ -753,7 +676,6 @@ private fun SupportPositionModal(
             onValueChange = setKeyword,
             fieldColor = JobisTheme.colors.background,
         )
-        Log.d("TEST", buttonEnabled.toString())
         JobisButton(
             modifier = Modifier.padding(top = 12.dp),
             text = stringResource(id = R.string.next),
@@ -793,7 +715,7 @@ private fun InterviewerCountModal(
                 onClick = onBackPressed,
             )
             JobisText(
-                text = stringResource(id = R.string.review_category),
+                text = stringResource(id = R.string.interviewer_count),
                 color = JobisTheme.colors.onSurfaceVariant,
                 style = JobisTypography.SubHeadLine,
             )
@@ -819,7 +741,7 @@ private fun InterviewerCountModal(
             }
         }
         JobisTextField(
-            value = { state.keyword },
+            value = { state.count },
             hint = stringResource(id = R.string.search),
             drawableResId = JobisIcon.Search,
             onValueChange = setInterviewerCount,
@@ -831,6 +753,106 @@ private fun InterviewerCountModal(
             onClick = onNextClick,
             color = ButtonColor.Primary,
             enabled = buttonEnabled,
+        )
+    }
+}
+
+@Composable
+private fun InterviewSummary(
+    onBackPressed: () -> Unit,
+    state: ReviewState,
+    pagerTotalCount: Int,
+    currentPager: Int,
+    onNextClick: () -> Unit,
+    onClick: (Int) -> Unit,
+    buttonEnabled: Boolean,
+) {
+    val interviewType = when (state.interviewType) {
+        InterviewType.INDIVIDUAL -> "개인 면접"
+        InterviewType.GROUP -> "단체 면접"
+        InterviewType.OTHER -> "기타 면접"
+    }
+    val interviewLocation = when (state.interviewLocation) {
+        InterviewLocation.DAEJEON -> "대전"
+        InterviewLocation.SEOUL -> "서울"
+        InterviewLocation.GYEONGGI -> "경기"
+        InterviewLocation.OTHER -> "기타"
+    }
+    Column(
+        modifier = Modifier.padding(
+            top = 24.dp,
+            bottom = 12.dp,
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            JobisIconButton(
+                modifier = Modifier,
+                drawableResId = JobisIcon.Arrow,
+                defaultBackgroundColor = JobisTheme.colors.inverseSurface,
+                contentDescription = stringResource(id = team.retum.design_system.R.string.content_description_arrow),
+                onClick = onBackPressed,
+            )
+            JobisText(
+                text = stringResource(id = R.string.review_category),
+                color = JobisTheme.colors.onSurfaceVariant,
+                style = JobisTypography.SubHeadLine,
+            )
+        }
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            TopBottomText(
+                topText = "면접 구분",
+                bottomText = interviewType,
+            )
+            TopBottomText(
+                topText = "면접 지역",
+                bottomText = interviewLocation
+            )
+            TopBottomText(
+                topText = "업체명",
+                bottomText = "토스",
+            )
+            TopBottomText(
+                topText = "지원 직무",
+                bottomText = state.keyword,
+            )
+            TopBottomText(
+                topText = "면접관 수",
+                bottomText = state.count,
+            )
+        }
+        JobisButton(
+            modifier = Modifier.padding(top = 12.dp),
+            text = stringResource(id = R.string.next),
+            onClick = onNextClick,
+            color = ButtonColor.Primary,
+            enabled = buttonEnabled,
+        )
+    }
+}
+
+@Composable
+private fun TopBottomText(
+    topText: String,
+    bottomText: String,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        JobisText(
+            text = topText,
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+        JobisText(
+            text = bottomText,
+            style = JobisTypography.HeadLine,
+            color = JobisTheme.colors.onPrimary
         )
     }
 }

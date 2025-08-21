@@ -155,7 +155,7 @@ internal class ReviewViewModel @Inject constructor(
     }
 
     internal fun setInterviewerCount(count: String) {
-        techs.clear()
+        //techs.clear()
         setState {
             state.value.copy(
                 count = count,
