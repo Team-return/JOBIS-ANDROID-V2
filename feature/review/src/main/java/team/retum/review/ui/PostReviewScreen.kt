@@ -9,19 +9,26 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -48,6 +56,7 @@ import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -89,7 +98,7 @@ internal fun PostReview(
 
     LaunchedEffect(state.keyword) {
         delay(SEARCH_DELAY)
-//        reviewViewModel.fetchCodes(state.keyword)
+        reviewViewModel.fetchCodes(state.keyword)
     }
 
     PostReviewScreen(
@@ -324,6 +333,7 @@ private fun AddQuestionBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val totalPage = pagerState.pageCount - 1
+
     HorizontalPager(
         state = pagerState,
         userScrollEnabled = false,
@@ -379,16 +389,16 @@ private fun AddQuestionBottomSheet(
             2 -> {
                 // 지원 직무 :: 전공만 조회
                 SupportPositionModal(
-                    onBackPressed = {
-                        coroutineScope.launch {
-                            setButtonClear()
-                            pagerState.animateScrollToPage(page - 1)
-                        }
-                    },
+                    onBackPressed = {},
                     setKeyword = setKeyword,
+                    setChecked = setChecked,
+                    setSelectedTech = setSelectedTech,
                     pagerTotalCount = totalPage,
                     currentPager = page,
-                    onClick = { 0 },
+                    onClick = { code, keyword ->
+                        setSelectedTech(code)
+                        setChecked(keyword)
+                    },
                     onNextClick = {
                         coroutineScope.launch {
                             setButtonClear()
@@ -397,6 +407,11 @@ private fun AddQuestionBottomSheet(
                     },
                     state = state,
                     buttonEnabled = buttonEnabled,
+                    techs = techs,
+                    onReviewProcess = onReviewProcess,
+                    reviewProcess = ReviewProcess.QUESTION,
+                    setQuestion = {""},
+                    setAnswer = {""}
                 )
             }
             3 -> {
@@ -615,23 +630,25 @@ private fun InterviewLocationModal(
 }
 
 @Composable
-private fun SupportPositionModal(
+private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역할을 하는 지 우선 ex) 지원 직무 x -> 전공 조회 o
     onBackPressed: () -> Unit,
+    onReviewProcess: (ReviewProcess) -> Unit,
+    reviewProcess: ReviewProcess,
+    setQuestion: (String) -> Unit,
+    setAnswer: (String) -> Unit,
     setKeyword: (String) -> Unit,
+    setSelectedTech: (Long) -> Unit,
+    setChecked: (String) -> Unit,
     state: ReviewState,
     pagerTotalCount: Int,
     currentPager: Int,
     onNextClick: () -> Unit,
-    onClick: (Int) -> Unit,
+    onClick: (Long, String) -> Unit,
     buttonEnabled: Boolean,
+    techs: List<CodesEntity.CodeEntity>,
 ) {
     // TODO :: 리팩토링 우선
-    Column(
-        modifier = Modifier.padding(
-            top = 24.dp,
-            bottom = 12.dp,
-        )
-    ) {
+    Column {
         Row(
             modifier = Modifier.padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -644,7 +661,7 @@ private fun SupportPositionModal(
                 onClick = onBackPressed,
             )
             JobisText(
-                text = stringResource(id = R.string.support_position),
+                text = stringResource(id = R.string.review_category),
                 color = JobisTheme.colors.onSurfaceVariant,
                 style = JobisTypography.SubHeadLine,
             )
@@ -676,12 +693,48 @@ private fun SupportPositionModal(
             onValueChange = setKeyword,
             fieldColor = JobisTheme.colors.background,
         )
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(techs.size) {index ->
+                val codes = techs[index]
+                Row(
+                    modifier = Modifier.padding(
+                        vertical = 12.dp,
+                    ),
+                ) {
+                    JobisCheckBox(
+                        checked = state.checked == codes.keyword,
+                        onClick = {
+                            setChecked(codes.keyword)
+                            setKeyword(codes.keyword)
+                            setSelectedTech(codes.code)
+                        },
+                        backgroundColor = JobisTheme.colors.background,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    JobisText(
+                        text = codes.keyword,
+                        style = JobisTypography.Body,
+                        color = JobisTheme.colors.inverseOnSurface,
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                    )
+                }
+            }
+        }
         JobisButton(
-            modifier = Modifier.padding(top = 12.dp),
             text = stringResource(id = R.string.next),
-            onClick = onNextClick,
+            onClick = {
+                onReviewProcess(
+                    when (reviewProcess) {
+                        ReviewProcess.QUESTION -> ReviewProcess.TECH
+                        else -> ReviewProcess.FINISH
+                    },
+                )
+            },
             color = ButtonColor.Primary,
-            enabled = buttonEnabled,
+            enabled = state.buttonEnabled,
         )
     }
 }
@@ -740,10 +793,27 @@ private fun InterviewerCountModal(
                 )
             }
         }
+        Row(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            JobisText(
+                text = "답변",
+                color = JobisTheme.colors.onSurface,
+                style = JobisTypography.Description
+            )
+            Icon(
+                painter = painterResource(JobisIcon.Asterisk),
+                contentDescription = "Required",
+                tint = Color(0xFF1E88E5), // 파란색 별
+                modifier = Modifier
+                    .size(14.dp)
+                    .padding(start = 2.dp)
+            )
+        }
         JobisTextField(
             value = { state.count },
             hint = stringResource(id = R.string.search),
-            drawableResId = JobisIcon.Search,
             onValueChange = setInterviewerCount,
             fieldColor = JobisTheme.colors.background,
         )
