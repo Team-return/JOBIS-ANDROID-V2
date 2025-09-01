@@ -1,5 +1,7 @@
 package team.retum.data.repository.review
 
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.network.datasource.review.ReviewDataSource
 import team.retum.network.model.request.PostReviewRequest
 import team.retum.network.model.response.FetchReviewDetailResponse
@@ -12,8 +14,24 @@ class ReviewRepositoryImpl @Inject constructor(
     override suspend fun postReview(reviewRequest: PostReviewRequest) =
         reviewDataSource.postReview(reviewRequest)
 
-    override suspend fun fetchReviews(companyId: Long): FetchReviewsResponse =
-        reviewDataSource.fetchReviews(companyId)
+    override suspend fun fetchReviews(
+        page: Int?,
+        location: InterviewLocation?,
+        interviewType: InterviewType?,
+        keyword: String?,
+        year: Int?,
+        companyId: Long?,
+        jobCode: Long?
+    ): FetchReviewsResponse =
+        reviewDataSource.fetchReviews(
+            page = page,
+            location = location,
+            interviewType = interviewType,
+            keyword = keyword,
+            year = year,
+            companyId = companyId,
+            jobCode = jobCode,
+        )
 
     override suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse =
         reviewDataSource.fetchReviewDetail(reviewId)

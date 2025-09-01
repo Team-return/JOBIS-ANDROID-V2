@@ -1,5 +1,7 @@
 package team.retum.network.datasource.review
 
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.network.api.ReviewApi
 import team.retum.network.model.request.PostReviewRequest
 import team.retum.network.model.response.FetchReviewDetailResponse
@@ -13,8 +15,26 @@ class ReviewDataSourceImpl @Inject constructor(
     override suspend fun postReview(postReviewRequest: PostReviewRequest) =
         RequestHandler<Unit>().request { reviewApi.postReview(postReviewRequest) }
 
-    override suspend fun fetchReviews(companyId: Long): FetchReviewsResponse =
-        RequestHandler<FetchReviewsResponse>().request { reviewApi.fetchReviews(companyId) }
+    override suspend fun fetchReviews(
+        page: Int?,
+        location: InterviewLocation?,
+        interviewType: InterviewType?,
+        keyword: String?,
+        year: Int?,
+        companyId: Long?,
+        jobCode: Long?,
+    ): FetchReviewsResponse =
+        RequestHandler<FetchReviewsResponse>().request {
+            reviewApi.fetchReviews(
+                page = page,
+                location = location,
+                interviewType = interviewType,
+                companyId = companyId,
+                keyword = keyword,
+                year = year,
+                jobCode = jobCode,
+            )
+        }
 
     override suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse =
         RequestHandler<FetchReviewDetailResponse>().request { reviewApi.fetchReviewDetail(reviewId) }

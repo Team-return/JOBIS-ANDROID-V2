@@ -20,7 +20,15 @@ internal class ReviewsViewModel @Inject constructor(
 
     internal fun fetchReviews() {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchReviewsUseCase(companyId = state.value.companyId).onSuccess {
+            fetchReviewsUseCase(
+                companyId = state.value.companyId,
+                page = null,
+                location = null,
+                interviewType = null,
+                keyword = null,
+                year = null,
+                jobCode = null
+            ).onSuccess {
                 setState { state.value.copy(reviews = it.reviews) }
             }
         }
