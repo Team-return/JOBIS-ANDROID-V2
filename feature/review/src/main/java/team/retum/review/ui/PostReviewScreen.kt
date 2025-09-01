@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,12 +22,14 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberModalBottomSheetState
@@ -41,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -334,120 +338,127 @@ private fun AddQuestionBottomSheet(
     val coroutineScope = rememberCoroutineScope()
     val totalPage = pagerState.pageCount - 1
 
-    HorizontalPager(
-        state = pagerState,
-        userScrollEnabled = false,
-    ) { page ->
-        when(page) {
-            0 -> {
-                // TODO :: 함수로 구분해서 분리
-                // 면접 구분(개인, 단체, 기타 면접)
-                InterviewCategoryModal(
-                    onBackPressed = {
-                        coroutineScope.launch {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = false,
+        ) { page ->
+            when (page) {
+                0 -> {
+                    // TODO :: 함수로 구분해서 분리
+                    // 면접 구분(개인, 단체, 기타 면접)
+                    InterviewCategoryModal(
+                        onBackPressed = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                sheetState.hide()
+                            }
+                        },
+                        pagerTotalCount = totalPage,
+                        currentPager = page,
+                        onClick = { setInterviewType(it) },
+                        onNextClick = {
                             setButtonClear()
-                            sheetState.hide()
-                        }
-                    },
-                    pagerTotalCount = totalPage,
-                    currentPager = page,
-                    onClick = { setInterviewType(it) },
-                    onNextClick = {
-                        setButtonClear()
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(page + 1)
-                        }
-                    },
-                    interviewType = state.interviewType,
-                    buttonEnabled = buttonEnabled,
-                )
-            }
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(page + 1)
+                            }
+                        },
+                        interviewType = state.interviewType,
+                        buttonEnabled = buttonEnabled,
+                    )
+                }
 
-            1 -> {
-                // 면접 지역(대전, 서울, 경기, 기타)
-                InterviewLocationModal(
-                    onBackPressed = {
-                        coroutineScope.launch {
-                            setButtonClear()
-                            pagerState.animateScrollToPage(page - 1)
-                        }
-                    },
-                    pagerTotalCount = totalPage,
-                    currentPager = page,
-                    onClick = { setInterviewLocation(it) },
-                    onNextClick = {
-                        coroutineScope.launch {
-                            setButtonClear()
-                            pagerState.animateScrollToPage(page + 1)
-                        }
-                    },
-                    interviewLocation = state.interviewLocation,
-                    buttonEnabled = buttonEnabled,
-                )
-            }
+                1 -> {
+                    // 면접 지역(대전, 서울, 경기, 기타)
+                    InterviewLocationModal(
+                        onBackPressed = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                pagerState.animateScrollToPage(page - 1)
+                            }
+                        },
+                        pagerTotalCount = totalPage,
+                        currentPager = page,
+                        onClick = { setInterviewLocation(it) },
+                        onNextClick = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                pagerState.animateScrollToPage(page + 1)
+                            }
+                        },
+                        interviewLocation = state.interviewLocation,
+                        buttonEnabled = buttonEnabled,
+                    )
+                }
 
-            2 -> {
-                // 지원 직무 :: 전공만 조회
-                SupportPositionModal(
-                    onBackPressed = {},
-                    setKeyword = setKeyword,
-                    setChecked = setChecked,
-                    setSelectedTech = setSelectedTech,
-                    pagerTotalCount = totalPage,
-                    currentPager = page,
-                    onClick = { code, keyword ->
-                        setSelectedTech(code)
-                        setChecked(keyword)
-                    },
-                    onNextClick = {
-                        coroutineScope.launch {
-                            setButtonClear()
-                            pagerState.animateScrollToPage(page + 1)
-                        }
-                    },
-                    state = state,
-                    buttonEnabled = buttonEnabled,
-                    techs = techs,
-                    onReviewProcess = onReviewProcess,
-                    reviewProcess = ReviewProcess.QUESTION,
-                    setQuestion = {""},
-                    setAnswer = {""}
-                )
-            }
-            3 -> {
-                // 면접관 수 :: 숫자만 입력
-                InterviewerCountModal(
-                    onBackPressed = {
-                        coroutineScope.launch {
-                            setButtonClear()
-                            pagerState.animateScrollToPage(page - 1)
-                        }
-                    },
-                    setInterviewerCount = setInterviewerCount,
-                    pagerTotalCount = totalPage,
-                    currentPager = page,
-                    onClick = { 0 },
-                    onNextClick = {
-                        coroutineScope.launch {
-                            setButtonClear()
-                            pagerState.animateScrollToPage(page + 1)
-                        }
-                    },
-                    state = state,
-                    buttonEnabled = buttonEnabled,
-                )
-            }
-            4 -> {
-                // 면접 환경 입력한 부분 확인 페이지
-                InterviewSummary(
-                    onBackPressed = {},
-                    state = state,
-                    pagerTotalCount = pagerState.pageCount,
-                    currentPager = page,
-                    onNextClick = {},
-                    onClick = {},
-                    buttonEnabled = buttonEnabled
-                )
+                2 -> {
+                    // 지원 직무 :: 전공만 조회
+                    SupportPositionModal(
+                        onBackPressed = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                pagerState.animateScrollToPage(page - 1)
+                            }
+                        },
+                        setKeyword = setKeyword,
+                        setChecked = setChecked,
+                        setSelectedTech = setSelectedTech,
+                        pagerTotalCount = totalPage,
+                        currentPager = page,
+                        onClick = { code, keyword ->
+                            setSelectedTech(code)
+                            setChecked(keyword)
+                        },
+                        onNextClick = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                pagerState.animateScrollToPage(page + 1)
+                            }
+                        },
+                        state = state,
+                        buttonEnabled = buttonEnabled,
+                        techs = techs,
+                        onReviewProcess = onReviewProcess,
+                        reviewProcess = ReviewProcess.QUESTION,
+                        setQuestion = {""},
+                        setAnswer = {""}
+                    )
+                }
+                3 -> {
+                    // 면접관 수 :: 숫자만 입력
+                    InterviewerCountModal(
+                        onBackPressed = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                pagerState.animateScrollToPage(page - 1)
+                            }
+                        },
+                        setInterviewerCount = setInterviewerCount,
+                        pagerTotalCount = totalPage,
+                        currentPager = page,
+                        onClick = { 0 },
+                        onNextClick = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                pagerState.animateScrollToPage(page + 1)
+                            }
+                        },
+                        state = state,
+                        buttonEnabled = buttonEnabled,
+                    )
+                }
+                4 -> {
+                    // 면접 환경 입력한 부분 확인 페이지
+                    InterviewSummary(
+                        onBackPressed = {},
+                        state = state,
+                        pagerTotalCount = pagerState.pageCount,
+                        currentPager = page,
+                        onNextClick = {},
+                        onClick = {},
+                        buttonEnabled = buttonEnabled
+                    )
+                }
             }
         }
     }
@@ -648,7 +659,12 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
     techs: List<CodesEntity.CodeEntity>,
 ) {
     // TODO :: 리팩토링 우선
-    Column {
+    Column(
+        modifier = Modifier.padding(
+            top = 24.dp,
+            bottom = 12.dp,
+        ),
+    ) {
         Row(
             modifier = Modifier.padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -661,7 +677,7 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
                 onClick = onBackPressed,
             )
             JobisText(
-                text = stringResource(id = R.string.review_category),
+                text = stringResource(id = R.string.support_position),
                 color = JobisTheme.colors.onSurfaceVariant,
                 style = JobisTypography.SubHeadLine,
             )
@@ -694,7 +710,9 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
             fieldColor = JobisTheme.colors.background,
         )
         LazyColumn(
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(techs.size) {index ->
@@ -725,14 +743,7 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
         }
         JobisButton(
             text = stringResource(id = R.string.next),
-            onClick = {
-                onReviewProcess(
-                    when (reviewProcess) {
-                        ReviewProcess.QUESTION -> ReviewProcess.TECH
-                        else -> ReviewProcess.FINISH
-                    },
-                )
-            },
+            onClick = onNextClick,
             color = ButtonColor.Primary,
             enabled = state.buttonEnabled,
         )
@@ -795,7 +806,6 @@ private fun InterviewerCountModal(
         }
         Row(
             modifier = Modifier.padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             JobisText(
                 text = "답변",
@@ -805,10 +815,8 @@ private fun InterviewerCountModal(
             Icon(
                 painter = painterResource(JobisIcon.Asterisk),
                 contentDescription = "Required",
-                tint = Color(0xFF1E88E5), // 파란색 별
-                modifier = Modifier
-                    .size(14.dp)
-                    .padding(start = 2.dp)
+                tint = JobisTheme.colors.secondary,
+                modifier = Modifier.size(12.dp)
             )
         }
         JobisTextField(
@@ -816,6 +824,7 @@ private fun InterviewerCountModal(
             hint = stringResource(id = R.string.search),
             onValueChange = setInterviewerCount,
             fieldColor = JobisTheme.colors.background,
+            keyboardType = KeyboardType.Number,
         )
         JobisButton(
             modifier = Modifier.padding(top = 12.dp),
