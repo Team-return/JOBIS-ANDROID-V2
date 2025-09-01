@@ -83,7 +83,7 @@ internal object RequestUrls {
         private const val path = "/reviews"
 
         const val details = "$path/details/{${PATH.reviewId}}"
-        const val reviews = "$path/{${PATH.companyId}}"
+        const val reviews = "$path/{${PATH.reviewId}}"
         const val post = path
     }
 
