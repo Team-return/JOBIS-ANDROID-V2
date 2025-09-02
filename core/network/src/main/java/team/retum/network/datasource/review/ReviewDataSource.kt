@@ -3,7 +3,9 @@ package team.retum.network.datasource.review
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.network.model.request.PostReviewRequest
+import team.retum.network.model.response.FetchQuestionsResponse
 import team.retum.network.model.response.FetchReviewDetailResponse
+import team.retum.network.model.response.FetchReviewsCountResponse
 import team.retum.network.model.response.FetchReviewsResponse
 
 interface ReviewDataSource {
@@ -20,4 +22,8 @@ interface ReviewDataSource {
     ): FetchReviewsResponse
 
     suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse
+
+    suspend fun fetchQuestions(): FetchQuestionsResponse
+
+    suspend fun fetchReviewsCount(): FetchReviewsCountResponse
 }
