@@ -9,6 +9,7 @@ import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.network.di.RequestUrls
 import team.retum.network.model.request.PostReviewRequest
+import team.retum.network.model.response.FetchQuestionsResponse
 import team.retum.network.model.response.FetchReviewDetailResponse
 import team.retum.network.model.response.FetchReviewsResponse
 
@@ -33,4 +34,9 @@ interface ReviewApi {
     suspend fun fetchReviewDetail(
         @Path(RequestUrls.PATH.reviewId) reviewId: String,
     ): FetchReviewDetailResponse
+
+    @GET(RequestUrls.Reviews.questions)
+    suspend fun fetchQuestions(): FetchQuestionsResponse
+
+    
 }
