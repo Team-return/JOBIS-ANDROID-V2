@@ -4,7 +4,9 @@ import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.network.datasource.review.ReviewDataSource
 import team.retum.network.model.request.PostReviewRequest
+import team.retum.network.model.response.FetchQuestionsResponse
 import team.retum.network.model.response.FetchReviewDetailResponse
+import team.retum.network.model.response.FetchReviewsCountResponse
 import team.retum.network.model.response.FetchReviewsResponse
 import javax.inject.Inject
 
@@ -35,4 +37,10 @@ class ReviewRepositoryImpl @Inject constructor(
 
     override suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse =
         reviewDataSource.fetchReviewDetail(reviewId)
+
+    override suspend fun fetchQuestions(): FetchQuestionsResponse =
+        reviewDataSource.fetchQuestions()
+
+    override suspend fun fetchReviewsCount(): FetchReviewsCountResponse =
+        reviewDataSource.fetchReviewsCount()
 }
