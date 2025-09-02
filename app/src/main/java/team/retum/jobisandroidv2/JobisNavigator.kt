@@ -180,24 +180,15 @@ internal class JobisNavigator(
         navController.navigateToNoticeDetails(noticeId = noticeId)
     }
 
-    fun navigateToReviewDetails(
-        reviewId: String,
-        writer: String,
-    ) {
-        navController.navigateToReviewDetails(
-            reviewId = reviewId,
-            writer = writer,
-        )
+    fun navigateToReviewDetails() {
+        navController.navigateToReviewDetails()
     }
 
     fun navigateToReviews(
         companyId: Long,
         companyName: String,
     ) {
-        navController.navigateToReviews(
-            companyId = companyId,
-            companyName = companyName,
-        )
+        navController.navigateToReviews()
     }
 
     fun navigatedFromNotifications(): Boolean {
