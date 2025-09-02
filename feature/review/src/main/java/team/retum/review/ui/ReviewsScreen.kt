@@ -22,55 +22,12 @@ import team.retum.usecase.entity.FetchReviewsEntity
 
 @Composable
 internal fun Reviews(
-    onBackPressed: () -> Unit,
-    companyId: Long,
-    companyName: String,
-    navigateToReviewDetails: (String, String) -> Unit,
-    reviewsViewModel: ReviewsViewModel = hiltViewModel(),
+
 ) {
-    val state by reviewsViewModel.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        reviewsViewModel.setCompanyId(companyId = companyId)
-        reviewsViewModel.fetchReviews()
-    }
-
-    ReviewsScreen(
-        onBackPressed = onBackPressed,
-        companyName = companyName,
-        onReviewContentClick = navigateToReviewDetails,
-        reviews = state.reviews.toPersistentList(),
-    )
 }
 
 @Composable
 private fun ReviewsScreen(
-    onBackPressed: () -> Unit,
-    companyName: String,
-    onReviewContentClick: (String, String) -> Unit,
-    reviews: ImmutableList<FetchReviewsEntity.Review>,
+
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(JobisTheme.colors.background),
-    ) {
-        JobisLargeTopAppBar(
-            onBackPressed = onBackPressed,
-            title = "${companyName}의 면접 후기",
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            reviews.forEach {
-                ReviewContent(
-                    onClick = onReviewContentClick,
-                    reviewId = it.reviewId,
-                    writer = it.writer,
-                    year = it.year,
-                )
-            }
-        }
-    }
 }
