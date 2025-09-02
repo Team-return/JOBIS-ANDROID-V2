@@ -90,7 +90,7 @@ private fun ReviewDetailsScreen(
                     val (showAnswer, setShowAnswer) = remember { mutableStateOf(false) }
                     ReviewQuestionContent(
                         question = it.question,
-                        area = it.area,
+                        //area = it.area,
                         answer = it.answer,
                         showAnswer = showAnswer,
                         onShowAnswerClick = setShowAnswer,
@@ -104,7 +104,7 @@ private fun ReviewDetailsScreen(
 @Composable
 private fun ReviewQuestionContent(
     question: String,
-    area: String,
+//    area: String,
     answer: String,
     showAnswer: Boolean,
     onShowAnswerClick: (Boolean) -> Unit,
@@ -132,7 +132,7 @@ private fun ReviewQuestionContent(
             ) {
                 Question(
                     question = question,
-                    area = area,
+//                    area = area,
                 )
                 Icon(
                     modifier = Modifier.rotate(rotate),
@@ -151,7 +151,7 @@ private fun ReviewQuestionContent(
 @Composable
 private fun RowScope.Question(
     question: String,
-    area: String,
+//    area: String,
 ) {
     Row(
         modifier = Modifier.weight(1f),
@@ -167,11 +167,11 @@ private fun RowScope.Question(
                 text = question,
                 style = JobisTypography.SubHeadLine,
             )
-            JobisText(
-                text = area,
-                style = JobisTypography.Description,
-                color = JobisTheme.colors.secondary,
-            )
+//            JobisText(
+//                text = area,
+//                style = JobisTypography.Description,
+//                color = JobisTheme.colors.secondary,
+//            )
         }
     }
 }
