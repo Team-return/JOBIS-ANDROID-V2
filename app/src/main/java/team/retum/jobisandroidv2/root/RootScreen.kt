@@ -39,6 +39,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.review.navigation.reviews
 
 @Composable
 internal fun Root(
@@ -171,6 +172,10 @@ private fun RootScreen(
                 bookmarks(
                     onRecruitmentsClick = navController::navigateToRecruitments,
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
+                )
+                reviews(
+                    onBackPressed = {},
+                    navigateToReviewDetails = {},
                 )
                 myPage(
                     onSelectInterestClick = onSelectInterestClick,
