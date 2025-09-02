@@ -21,5 +21,3 @@ private fun FetchQuestionsResponse.Question.toEntity() = QuestionsEntity.Questio
     id = this.id,
     question = this.question,
 )
-
-
