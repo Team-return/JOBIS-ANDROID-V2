@@ -85,6 +85,7 @@ internal object RequestUrls {
         const val details = "$path/details/{${PATH.reviewId}}"
         const val reviews = "$path/{${PATH.reviewId}}"
         const val questions = "$path/questions"
+        const val count = "$path/count"
         const val post = path
     }
 
