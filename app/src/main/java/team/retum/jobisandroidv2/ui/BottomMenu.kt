@@ -7,6 +7,7 @@ import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobis.R
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
+import team.retum.review.navigation.NAVIGATION_REVIEWS
 
 sealed class BottomMenu(
     val route: String,
@@ -23,6 +24,12 @@ sealed class BottomMenu(
         route = NAVIGATION_RECRUITMENTS,
         icon = R.drawable.ic_recruitment,
         title = R.string.recruitment,
+    )
+
+    data object Review : BottomMenu(
+        route = NAVIGATION_REVIEWS,
+        icon = R.drawable.ic_review,
+        title = R.string.review,
     )
 
     data object Bookmark : BottomMenu(
