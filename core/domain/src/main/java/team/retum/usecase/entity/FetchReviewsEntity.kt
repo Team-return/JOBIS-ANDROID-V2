@@ -27,5 +27,5 @@ private fun FetchReviewsResponse.Review.toEntity() = FetchReviewsEntity.Review(
     companyLogoUrl = this.companyLogoUrl,
     major = this.major,
     year = this.year.toString(),
-    writer = "${this.writer}님의 후기",
+    writer = this.writer,
 )
