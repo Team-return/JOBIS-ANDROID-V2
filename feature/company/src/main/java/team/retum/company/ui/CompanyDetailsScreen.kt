@@ -50,7 +50,7 @@ import team.retum.usecase.entity.FetchReviewsEntity
 internal fun CompanyDetails(
     companyId: Long,
     onBackPressed: () -> Unit,
-    navigateToReviewDetails: () -> Unit,
+    navigateToReviewDetails: (Long) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
     navigateToRecruitmentDetails: (Long, Boolean) -> Unit,
     isMovedRecruitmentDetails: Boolean,
@@ -114,7 +114,7 @@ internal fun CompanyDetails(
 private fun CompanyDetailsScreen(
     companyId: Long,
     onBackPressed: () -> Unit,
-    navigateToReviewDetails: () -> Unit,
+    navigateToReviewDetails: (Long) -> Unit,
     navigateToReviews: (Long, String) -> Unit,
     onMoveToRecruitmentButtonClick: () -> Unit,
     isMovedRecruitmentDetails: Boolean,
@@ -252,7 +252,7 @@ private fun CompanyInformation(
 @Composable
 private fun Reviews(
     reviews: ImmutableList<FetchReviewsEntity.Review>,
-    navigateToReviewDetails: () -> Unit,
+    navigateToReviewDetails: (Long) -> Unit,
     showMoreReviews: Boolean,
     onShowMoreReviewClick: () -> Unit,
 ) {

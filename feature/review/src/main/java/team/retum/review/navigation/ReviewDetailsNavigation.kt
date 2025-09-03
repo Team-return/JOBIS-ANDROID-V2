@@ -15,12 +15,20 @@ fun NavGraphBuilder.reviewDetails(
     onBackPressed: () -> Unit,
 ) {
     composable(
-        route = NAVIGATION_REVIEW_DETAILS,
+        route = "$NAVIGATION_REVIEW_DETAILS/{${ResourceKeys.REVIEW_ID}}",
+        arguments = listOf(
+            navArgument(ResourceKeys.REVIEW_ID) { type = NavType.LongType },
+        ),
     ) {
-        ReviewDetails(onBackPressed = onBackPressed)
+        val reviewId = it.arguments?.getLong(ResourceKeys.REVIEW_ID) ?: 0
+
+        ReviewDetails(
+            reviewId = reviewId,
+            onBackPressed = onBackPressed,
+        )
     }
 }
 
-fun NavController.navigateToReviewDetails() {
-    navigate(NAVIGATION_REVIEW_DETAILS)
+fun NavController.navigateToReviewDetails(reviewId: Long) {
+    navigate("$NAVIGATION_REVIEW_DETAILS/$reviewId")
 }
