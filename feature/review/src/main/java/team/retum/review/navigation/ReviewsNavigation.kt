@@ -8,13 +8,16 @@ import team.retum.review.ui.Reviews
 const val NAVIGATION_REVIEWS = "reviews"
 
 fun NavGraphBuilder.reviews(
-    onBackPressed: () -> Unit,
+    onReviewFilterClick: () -> Unit,
+    onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
 ) {
     composable(
         route = NAVIGATION_REVIEWS,
     ) {
         Reviews(
+            onReviewFilterClick = onReviewFilterClick,
+            onSearchReviewClick = onSearchReviewClick,
             onReviewDetailClick = onReviewDetailClick
         )
     }

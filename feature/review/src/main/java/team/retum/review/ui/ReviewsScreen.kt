@@ -40,6 +40,8 @@ import team.retum.usecase.entity.FetchReviewsEntity
 
 @Composable
 internal fun Reviews(
+    onReviewFilterClick: () -> Unit,
+    onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
     reviewsViewModel: ReviewsViewModel = hiltViewModel(),
 ) {
@@ -51,8 +53,8 @@ internal fun Reviews(
 
     ReviewsScreen(
         state = state,
-        onReviewFilterClick = {},
-        onSearchReviewClick = {},
+        onReviewFilterClick = onReviewFilterClick,
+        onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick
     )
 }
@@ -61,7 +63,7 @@ internal fun Reviews(
 private fun ReviewsScreen(
     state: ReviewsState,
     onReviewFilterClick: () -> Unit,
-    onSearchReviewClick: (Boolean) -> Unit,
+    onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit
 ) {
     Column(
@@ -79,7 +81,7 @@ private fun ReviewsScreen(
             JobisIconButton(
                 drawableResId = JobisIcon.Search,
                 contentDescription = "search",
-                onClick = { onSearchReviewClick(false) },
+                onClick = onSearchReviewClick,
             )
         }
         LazyColumn {
