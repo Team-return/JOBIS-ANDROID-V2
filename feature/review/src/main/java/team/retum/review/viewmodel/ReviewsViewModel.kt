@@ -21,7 +21,7 @@ internal class ReviewsViewModel @Inject constructor(
     internal fun fetchReviews() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewsUseCase(
-                companyId = state.value.companyId,
+                companyId = null,
                 page = null,
                 location = null,
                 interviewType = null,
