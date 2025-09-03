@@ -1,4 +1,4 @@
-package team.retum.review.navigation
+package team.retum.review.navigation.review_read
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -6,7 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import team.retum.common.utils.ResourceKeys
-import team.retum.review.ui.ReviewDetails
+import team.retum.review.ui.review_read.ReviewDetails
 
 const val NAVIGATION_REVIEW_DETAILS = "reviewDetails"
 const val WRITER = "writer"

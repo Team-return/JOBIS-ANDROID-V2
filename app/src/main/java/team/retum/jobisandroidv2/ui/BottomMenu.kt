@@ -7,7 +7,7 @@ import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobis.R
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
-import team.retum.review.navigation.NAVIGATION_REVIEWS
+import team.retum.review.navigation.review_read.NAVIGATION_REVIEWS
 
 sealed class BottomMenu(
     val route: String,

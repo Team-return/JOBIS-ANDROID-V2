@@ -30,9 +30,9 @@ import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.NAVIGATION_NOTIFICATIONS
 import team.retum.notification.navigation.navigateToNotification
 import team.retum.notification.navigation.navigateToNotificationSetting
-import team.retum.review.navigation.navigateToPostReview
-import team.retum.review.navigation.navigateToReviewDetails
-import team.retum.review.navigation.navigateToReviews
+import team.retum.review.navigation.review_write.navigateToPostReview
+import team.retum.review.navigation.review_read.navigateToReviewDetails
+import team.retum.review.navigation.review_read.navigateToReviews
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signup.model.SignUpData
 import team.retum.signup.navigation.navigateToInputEmail

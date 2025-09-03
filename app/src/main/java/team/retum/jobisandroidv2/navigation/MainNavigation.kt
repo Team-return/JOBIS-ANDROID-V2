@@ -21,9 +21,8 @@ import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
-import team.retum.review.navigation.postReview
-import team.retum.review.navigation.reviewDetails
-import team.retum.review.navigation.reviews
+import team.retum.review.navigation.review_write.postReview
+import team.retum.review.navigation.review_read.reviewDetails
 
 const val NAVIGATION_MAIN = "main"
 
