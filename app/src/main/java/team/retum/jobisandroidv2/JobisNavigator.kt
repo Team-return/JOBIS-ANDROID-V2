@@ -180,8 +180,8 @@ internal class JobisNavigator(
         navController.navigateToNoticeDetails(noticeId = noticeId)
     }
 
-    fun navigateToReviewDetails() {
-        navController.navigateToReviewDetails()
+    fun navigateToReviewDetails(reviewId: Long) {
+        navController.navigateToReviewDetails(reviewId = reviewId)
     }
 
     fun navigateToReviews(

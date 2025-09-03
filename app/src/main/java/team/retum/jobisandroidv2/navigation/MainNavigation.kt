@@ -49,6 +49,7 @@ internal fun NavGraphBuilder.mainNavigation(
             onNoticeClick = navigator::navigateToNotices,
             navigateToLanding = { navigator.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navigator::navigateToPostReview,
+            onReviewDetailClick = navigator::navigateToReviewDetails,
             navigateToApplication = navigator::navigateToApplication,
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
             navigatedFromNotifications = navigator.navigatedFromNotifications(),
@@ -110,9 +111,5 @@ internal fun NavGraphBuilder.mainNavigation(
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
         )
         reviewDetails(navigator::popBackStackIfNotHome)
-        reviews(
-            navigator::popBackStackIfNotHome,
-            navigateToReviewDetails = navigator::navigateToReviewDetails,
-        )
     }
 }
