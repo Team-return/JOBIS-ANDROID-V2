@@ -1,5 +1,6 @@
 package team.retum.review.ui
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ScrollState
@@ -37,7 +38,19 @@ import team.retum.review.viewmodel.ReviewDetailsViewModel
 
 @Composable
 internal fun ReviewDetails(
-    onBackPressed: () -> Unit
+    reviewId: Long,
+    onBackPressed: () -> Unit,
+    reviewDetailsViewModel: ReviewDetailsViewModel = hiltViewModel(),
 ) {
+    LaunchedEffect(Unit) {
+        reviewDetailsViewModel.setReviewId(reviewId.toString())
+        reviewDetailsViewModel.fetchReviewDetails()
+    }
+
+    ReviewDetailsScreen()
+}
+
+@Composable
+private fun ReviewDetailsScreen() {
 
 }
