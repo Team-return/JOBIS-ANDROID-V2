@@ -28,4 +28,7 @@
 
     <!--Review Details Screen-->
     <string name="review_questions">받은 면접 질문</string>
+
+    <!--Review Screen-->
+    <string name="review">후기</string>
 </resources>
