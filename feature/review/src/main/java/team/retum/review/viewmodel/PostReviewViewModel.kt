@@ -105,7 +105,7 @@ internal class ReviewViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase(
                 keyword = keyword,
-                type = CodeType.TECH,
+                type = CodeType.JOB,
                 parentCode = null,
             ).onSuccess {
                 techs.addAll(it.codes)
