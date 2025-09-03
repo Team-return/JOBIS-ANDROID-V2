@@ -40,6 +40,7 @@ import team.retum.usecase.entity.FetchReviewsEntity
 
 @Composable
 internal fun Reviews(
+    onReviewDetailClick: (Long) -> Unit,
     reviewsViewModel: ReviewsViewModel = hiltViewModel(),
 ) {
     val state by reviewsViewModel.state.collectAsStateWithLifecycle()
@@ -52,6 +53,7 @@ internal fun Reviews(
         state = state,
         onReviewFilterClick = {},
         onSearchReviewClick = {},
+        onReviewDetailClick = onReviewDetailClick
     )
 }
 
@@ -60,6 +62,7 @@ private fun ReviewsScreen(
     state: ReviewsState,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: (Boolean) -> Unit,
+    onReviewDetailClick: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -88,7 +91,7 @@ private fun ReviewsScreen(
                     reviewId = review.reviewId.toLong(),
                     writer = review.writer,
                     major = review.major,
-                    onReviewDetailClick = {}
+                    onReviewDetailClick = onReviewDetailClick,
                 )
             }
         }

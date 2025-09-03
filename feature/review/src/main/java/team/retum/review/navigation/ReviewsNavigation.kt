@@ -9,12 +9,14 @@ const val NAVIGATION_REVIEWS = "reviews"
 
 fun NavGraphBuilder.reviews(
     onBackPressed: () -> Unit,
-    navigateToReviewDetails: () -> Unit,
+    onReviewDetailClick: (Long) -> Unit,
 ) {
     composable(
         route = NAVIGATION_REVIEWS,
     ) {
-        Reviews()
+        Reviews(
+            onReviewDetailClick = onReviewDetailClick
+        )
     }
 }
 
