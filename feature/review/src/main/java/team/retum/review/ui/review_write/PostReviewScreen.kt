@@ -72,6 +72,7 @@ const val SEARCH_DELAY: Long = 200
 internal fun PostReview(
     onBackPressed: () -> Unit,
     companyId: Long,
+    onPostNextClick: () -> Unit,
     reviewViewModel: ReviewViewModel = hiltViewModel(),
 ) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
@@ -114,7 +115,8 @@ internal fun PostReview(
         setKeyword = reviewViewModel::setKeyword,
         setSelectedTech = reviewViewModel::setSelectedTech,
         techs = reviewViewModel.techs,
-        buttonEnabled = state.buttonEnabled
+        buttonEnabled = state.buttonEnabled,
+        onPostNextClick = onPostNextClick
     )
 }
 
@@ -139,6 +141,7 @@ private fun PostReviewScreen(
     setInterviewLocation: (InterviewLocation) -> Unit,
     setButtonClear: () -> Unit,
     buttonEnabled: Boolean,
+    onPostNextClick: () -> Unit
 ) {
     ModalBottomSheetLayout(
         modifier = Modifier
@@ -164,6 +167,7 @@ private fun PostReviewScreen(
                     setChecked = setChecked,
                     techs = techs,
                     buttonEnabled = buttonEnabled,
+                    onNextClick = onPostNextClick
                 )
             }
         },
@@ -325,6 +329,7 @@ private fun AddQuestionBottomSheet(
     setInterviewLocation: (InterviewLocation) -> Unit,
     setInterviewerCount: (String) -> Unit,
     setButtonClear: () -> Unit,
+    onNextClick: () -> Unit,
     buttonEnabled: Boolean,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -446,7 +451,7 @@ private fun AddQuestionBottomSheet(
                         state = state,
                         pagerTotalCount = pagerState.pageCount,
                         currentPager = page,
-                        onNextClick = {},
+                        onNextClick = onNextClick,
                         onClick = {},
                         buttonEnabled = buttonEnabled
                     )
@@ -901,7 +906,7 @@ private fun InterviewSummary(
             text = stringResource(id = R.string.next),
             onClick = onNextClick,
             color = ButtonColor.Primary,
-            enabled = buttonEnabled,
+            enabled = true,
         )
     }
 }
