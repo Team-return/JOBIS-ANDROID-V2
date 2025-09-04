@@ -26,15 +26,21 @@ internal class ReviewDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    internal fun setTabIndex(tabIndex: Int) {
+        setState { state.value.copy(selectedTabIndex = tabIndex) }
+    }
 }
 
 @Immutable
 internal data class ReviewDetailsState(
+    val selectedTabIndex: Int,
     val reviewId: String,
     val questions: List<FetchReviewDetailEntity.Detail>,
 ) {
     companion object {
         fun getInitialState() = ReviewDetailsState(
+            selectedTabIndex = 0,
             reviewId = "",
             questions = emptyList(),
         )
