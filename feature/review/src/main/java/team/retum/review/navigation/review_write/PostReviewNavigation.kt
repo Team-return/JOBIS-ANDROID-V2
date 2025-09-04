@@ -10,13 +10,17 @@ import team.retum.review.ui.review_write.PostReview
 const val NAVIGATION_POST_REVIEW = "postReview"
 
 private const val COMPANY_ID = "companyId"
-fun NavGraphBuilder.postReview(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.postReview(
+    onBackPressed: () -> Unit,
+    onPostNextClick: () -> Unit,
+) {
     composable(
         route = "$NAVIGATION_POST_REVIEW/{$COMPANY_ID}",
         arguments = listOf(navArgument(COMPANY_ID) { NavType.StringType }),
     ) {
         PostReview(
             onBackPressed = onBackPressed,
+            onPostNextClick = onPostNextClick,
             companyId = it.arguments?.getString(COMPANY_ID)?.toLong()
                 ?: throw NullPointerException(),
         )
