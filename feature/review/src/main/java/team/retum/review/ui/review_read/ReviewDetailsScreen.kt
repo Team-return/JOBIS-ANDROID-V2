@@ -1,7 +1,10 @@
 package team.retum.review.ui.review_read
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,11 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
@@ -86,9 +91,55 @@ private fun ReviewDetailsScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun StudentInfo() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            JobisText(
+                text = "손희찬님의 면접 후기",
+                style = JobisTypography.PageTitle,
+            )
+            JobisText(
+                text = "Design",
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onPrimary,
+            )
+            JobisText(
+                text = "2025",
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.inverseOnSurface,
+            )
+        }
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            val items = listOf("ibk 기업은행", "대전", "개인 면접", "면접관 수 : 11명")
 
+            items.forEachIndexed { index, item ->
+                JobisText(
+                    text = item,
+                    style = JobisTypography.SubBody,
+                    color = JobisTheme.colors.inverseOnSurface,
+                )
+
+                if (index < items.size - 1) {
+                    JobisText(
+                        text = "•",
+                        style = JobisTypography.SubBody,
+                        color = JobisTheme.colors.inverseOnSurface,
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -105,7 +156,6 @@ private fun InterviewReview() {
 
 @Composable
 private fun ExpectedReview() {
-
 }
 
 @Composable
