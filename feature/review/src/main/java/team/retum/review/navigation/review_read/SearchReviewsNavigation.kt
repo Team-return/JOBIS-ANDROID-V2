@@ -14,10 +14,10 @@ fun NavGraphBuilder.searchReviews(
     composable(
         route = NAVIGATION_SEARCH_REVIEWS,
     ) {
-        SearchReviews()
+        SearchReviews(onBackPressed = onBackPressed)
     }
 }
 
 fun NavController.navigateToSearchReviews() {
-    navigate(NAVIGATION_REVIEWS_FILTER)
+    navigate(NAVIGATION_SEARCH_REVIEWS)
 }
