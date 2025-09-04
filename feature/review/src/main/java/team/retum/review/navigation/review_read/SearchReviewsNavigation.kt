@@ -9,6 +9,7 @@ import team.retum.review.ui.review_read.SearchReviews
 const val NAVIGATION_SEARCH_REVIEWS = "search_reviews"
 
 fun NavGraphBuilder.searchReviews(
+    onBackPressed: () -> Unit,
 ) {
     composable(
         route = NAVIGATION_SEARCH_REVIEWS,
