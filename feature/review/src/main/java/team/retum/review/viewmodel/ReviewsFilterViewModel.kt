@@ -9,12 +9,18 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 internal class ReviewsFilterViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
 ) : BaseViewModel<ReviewsFilterState, Unit>(initialState = ReviewsFilterState.getDefaultState()) {
+
+    init {
+        fetchCodes()
+    }
+
     private fun fetchCodes() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase(
@@ -30,14 +36,28 @@ internal class ReviewsFilterViewModel @Inject constructor(
             }
         }
     }
+
+    internal fun getLocalYears() {
+        val startYear = 2020
+        val endYear = LocalDate.now().year + 1
+        viewModelScope.launch(Dispatchers.IO) {
+            setState {
+                state.value.copy(
+                    years = (startYear..endYear).toList(),
+                )
+            }
+        }
+    }
 }
 
 @Immutable
 data class ReviewsFilterState(
+    val years: List<Int>,
     val majorList: List<CodesEntity.CodeEntity>,
 ) {
     companion object {
         fun getDefaultState() = ReviewsFilterState(
+            years = emptyList(),
             majorList = emptyList(),
         )
     }
