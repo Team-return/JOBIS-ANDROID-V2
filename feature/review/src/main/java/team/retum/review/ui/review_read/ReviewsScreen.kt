@@ -132,7 +132,7 @@ private fun ReviewItem(
                 JobisText(
                     text = "$major•$writer",
                     style = JobisTypography.Description,
-                    color = JobisTheme.colors.inverseOnSurface,
+                    color = JobisTheme.colors.onPrimary,
                 )
             }
         }
