@@ -33,6 +33,9 @@ import team.retum.notification.navigation.navigateToNotificationSetting
 import team.retum.review.navigation.review_write.navigateToPostReview
 import team.retum.review.navigation.review_read.navigateToReviewDetails
 import team.retum.review.navigation.review_read.navigateToReviews
+import team.retum.review.navigation.review_read.navigateToReviewsFilter
+import team.retum.review.navigation.review_read.navigateToSearchReviews
+import team.retum.review.navigation.review_write.navigateToPostNextReview
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signup.model.SignUpData
 import team.retum.signup.navigation.navigateToInputEmail
@@ -132,6 +135,10 @@ internal class JobisNavigator(
         navController.navigateToPostReview(companyId = companyId)
     }
 
+    fun navigateToPostNextReview() {
+        navController.navigateToPostNextReview()
+    }
+
     fun navigateToRoot(applicationId: Long = 0) {
         navController.navigateToRoot(applicationId = applicationId)
     }
@@ -182,6 +189,14 @@ internal class JobisNavigator(
 
     fun navigateToReviewDetails(reviewId: Long) {
         navController.navigateToReviewDetails(reviewId = reviewId)
+    }
+
+    fun navigateToSearchReview() {
+        navController.navigateToSearchReviews()
+    }
+
+    fun navigateToReviewFilter() {
+        navController.navigateToReviewsFilter()
     }
 
     fun navigateToReviews(

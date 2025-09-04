@@ -23,6 +23,9 @@ import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
 import team.retum.review.navigation.review_write.postReview
 import team.retum.review.navigation.review_read.reviewDetails
+import team.retum.review.navigation.review_read.reviewsFilter
+import team.retum.review.navigation.review_read.searchReviews
+import team.retum.review.navigation.review_write.postNextReview
 
 const val NAVIGATION_MAIN = "main"
 
@@ -48,6 +51,8 @@ internal fun NavGraphBuilder.mainNavigation(
             onNoticeClick = navigator::navigateToNotices,
             navigateToLanding = { navigator.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navigator::navigateToPostReview,
+            onSearchReviewClick = navigator::navigateToSearchReview,
+            onReviewFilterClick = navigator::navigateToReviewFilter,
             onReviewDetailClick = navigator::navigateToReviewDetails,
             navigateToApplication = navigator::navigateToApplication,
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
@@ -102,13 +107,19 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
             navigateToDetails = navigator::navigateToNoticeDetails,
         )
-        postReview(onBackPressed = navigator::popBackStackIfNotHome)
         companyDetails(
             onBackPressed = navigator::popBackStackIfNotHome,
             navigateToReviewDetails = navigator::navigateToReviewDetails,
             navigateToReviews = navigator::navigateToReviews,
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
         )
+        postReview(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onPostNextClick = navigator::navigateToPostNextReview
+        )
+        postNextReview(onBackPressed = navigator::popBackStackIfNotHome)
         reviewDetails(navigator::popBackStackIfNotHome)
+        reviewsFilter(onBackPressed = navigator::popBackStackIfNotHome)
+        searchReviews(onBackPressed = navigator::popBackStackIfNotHome)
     }
 }

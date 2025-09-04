@@ -57,6 +57,8 @@ internal fun Root(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    onReviewFilterClick: () -> Unit,
+    onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
@@ -94,6 +96,8 @@ internal fun Root(
         rejectionReason = applicationData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
+        onReviewFilterClick = onReviewFilterClick,
+        onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
             coroutineScope.launch {
@@ -129,6 +133,8 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (Long) -> Unit,
+    onReviewFilterClick: () -> Unit,
+    onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
     navigateToApplicationByRejectionBottomSheet: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
@@ -177,7 +183,8 @@ private fun RootScreen(
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
                 )
                 reviews(
-                    onBackPressed = {},
+                    onReviewFilterClick =  onReviewFilterClick,
+                    onSearchReviewClick = onSearchReviewClick,
                     onReviewDetailClick = onReviewDetailClick,
                 )
                 myPage(
