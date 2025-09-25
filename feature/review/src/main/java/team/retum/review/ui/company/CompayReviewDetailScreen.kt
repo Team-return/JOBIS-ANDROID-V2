@@ -86,16 +86,16 @@ private fun ReviewDetailsScreen(
                 style = JobisTypography.Description,
             )
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                state.questions.forEach {
-                    val (showAnswer, setShowAnswer) = remember { mutableStateOf(false) }
-                    ReviewQuestionContent(
-                        question = it.question,
-                        //area = it.area,
-                        answer = it.answer,
-                        showAnswer = showAnswer,
-                        onShowAnswerClick = setShowAnswer,
-                    )
-                }
+//                state.questions.forEach {
+//                    val (showAnswer, setShowAnswer) = remember { mutableStateOf(false) }
+//                    ReviewQuestionContent(
+//                        question = it.question,
+//                        //area = it.area,
+//                        answer = it.answer,
+//                        showAnswer = showAnswer,
+//                        onShowAnswerClick = setShowAnswer,
+//                    )
+//                }
             }
         }
     }
