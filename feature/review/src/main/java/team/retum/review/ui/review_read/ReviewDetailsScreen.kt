@@ -303,26 +303,22 @@ private fun ReviewContent(
                         }
                     } else {
                         Row(
+                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(
-                                modifier = Modifier.weight(1f),
-                                verticalAlignment = Alignment.Top
-                            ) {
-                                JobisText(
-                                    text = "Q",
-                                    color = JobisTheme.colors.onPrimary,
-                                    style = JobisTypography.SubHeadLine.copy(fontSize = 24.sp),
-                                    modifier = Modifier.alignByBaseline()
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                JobisText(
-                                    text = reviewItem.question,
-                                    color = JobisTheme.colors.onBackground,
-                                    style = JobisTypography.SubHeadLine,
-                                    modifier = Modifier.alignByBaseline()
-                                )
-                            }
+                            JobisText(
+                                text = "Q",
+                                color = JobisTheme.colors.onPrimary,
+                                style = JobisTypography.SubHeadLine.copy(fontSize = 24.sp),
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            JobisText(
+                                text = reviewItem.question,
+                                color = JobisTheme.colors.onBackground,
+                                style = JobisTypography.SubHeadLine,
+                                textAlign = TextAlign.Center,
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_arrow_down),
                                 contentDescription = "arrow_down",
@@ -330,20 +326,20 @@ private fun ReviewContent(
                         }
                         Row(
                             modifier = Modifier.padding(top = 12.dp),
-                            verticalAlignment = Alignment.Top,
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             JobisText(
                                 text = "A",
                                 color = JobisTheme.colors.onPrimary,
                                 style = JobisTypography.Description.copy(fontSize = 24.sp),
-                                modifier = Modifier.alignByBaseline()
+                                textAlign = TextAlign.Center,
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             JobisText(
                                 text = reviewItem.answer,
                                 color = JobisTheme.colors.inverseOnSurface,
                                 style = JobisTypography.Description,
-                                modifier = Modifier.alignByBaseline(),
+                                textAlign = TextAlign.Center,
                                 maxLines = 3,
                             )
                         }
