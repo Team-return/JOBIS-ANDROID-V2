@@ -69,7 +69,7 @@ internal fun ReviewsFilter(
 private fun ReviewsFilterScreen(
     state: ReviewsFilterState,
     onBackPressed: () -> Unit,
-    onMajorSelected: (Long?) -> Unit,
+    onMajorSelected: (String?) -> Unit,
     onYearSelected: (Int?) -> Unit,
     onInterviewTypeSelected: (InterviewType?) -> Unit,
     onLocationSelected: (InterviewLocation?) -> Unit,
@@ -85,7 +85,7 @@ private fun ReviewsFilterScreen(
             ) {
                 Skills(
                     majorList = state.majorList,
-                    selectedMajorCode = state.selectedMajorCode,
+                    selectedMajor = state.selectedMajor,
                     onMajorSelected = onMajorSelected
                 )
                 Years(
@@ -106,6 +106,7 @@ private fun ReviewsFilterScreen(
         JobisButton(
             text = stringResource(id = R.string.appliance),
             onClick = {
+                keyword = state.selectedMajor
                 year = state.selectedYear
                 location = state.selectedLocation
                 interviewType = state.selectedInterviewType
@@ -121,8 +122,8 @@ private fun ReviewsFilterScreen(
 @Composable
 private fun Skills(
     majorList: List<CodesEntity.CodeEntity>,
-    selectedMajorCode: Long?,
-    onMajorSelected: (Long?) -> Unit,
+    selectedMajor: String?,
+    onMajorSelected: (String?) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp)
@@ -143,7 +144,7 @@ private fun Skills(
                 MajorContent(
                     major = it.keyword,
                     majorId = it.code,
-                    selected = selectedMajorCode == it.code,
+                    selected = selectedMajor == it.keyword,
                     onClick = { onMajorSelected(it) }
                 )
             }
@@ -271,7 +272,7 @@ private fun MajorContent(
     major: String,
     majorId: Long,
     selected: Boolean,
-    onClick: (Long?) -> Unit,
+    onClick: (String?) -> Unit,
 ) {
     val background by animateColorAsState(
         targetValue = if (selected) {
@@ -294,7 +295,7 @@ private fun MajorContent(
         modifier = modifier
             .clickable(
                 enabled = true,
-                onClick = { onClick(majorId) },
+                onClick = { onClick(major) },
                 onPressed = {},
             )
             .clip(RoundedCornerShape(30.dp))

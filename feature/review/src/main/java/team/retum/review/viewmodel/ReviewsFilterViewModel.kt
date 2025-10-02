@@ -58,10 +58,10 @@ internal class ReviewsFilterViewModel @Inject constructor(
         }
     }
 
-    internal fun setSelectedMajor(majorCode: Long?) {
+    internal fun setSelectedMajor(major: String?) {
         setState {
             state.value.copy(
-                selectedMajorCode = if (state.value.selectedMajorCode == majorCode) null else majorCode
+                selectedMajor = if (state.value.selectedMajor == major) null else major
             )
         }
     }
@@ -95,7 +95,7 @@ internal class ReviewsFilterViewModel @Inject constructor(
 data class ReviewsFilterState(
     val years: List<Int>,
     val majorList: List<CodesEntity.CodeEntity>,
-    val selectedMajorCode: Long? = null,
+    val selectedMajor: String? = null,
     val selectedYear: Int? = null,
     val selectedInterviewType: InterviewType? = null,
     val selectedLocation: InterviewLocation? = null,
@@ -104,7 +104,7 @@ data class ReviewsFilterState(
         fun getDefaultState() = ReviewsFilterState(
             years = emptyList(),
             majorList = emptyList(),
-            selectedMajorCode = null,
+            selectedMajor = null,
             selectedYear = null,
             selectedInterviewType = null,
             selectedLocation = null,
