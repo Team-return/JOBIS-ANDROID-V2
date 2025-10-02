@@ -24,7 +24,7 @@ class ReviewDataSourceImpl @Inject constructor(
         keyword: String?,
         year: Int?,
         companyId: Long?,
-        jobCode: Long?,
+        code: Long?,
     ): FetchReviewsResponse =
         RequestHandler<FetchReviewsResponse>().request {
             reviewApi.fetchReviews(
@@ -34,7 +34,7 @@ class ReviewDataSourceImpl @Inject constructor(
                 companyId = companyId,
                 keyword = keyword,
                 year = year,
-                jobCode = jobCode,
+                code = code,
             )
         }
 

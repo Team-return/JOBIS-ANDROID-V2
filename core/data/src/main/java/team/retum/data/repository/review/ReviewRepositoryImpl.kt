@@ -23,7 +23,7 @@ class ReviewRepositoryImpl @Inject constructor(
         keyword: String?,
         year: Int?,
         companyId: Long?,
-        jobCode: Long?
+        code: Long?
     ): FetchReviewsResponse =
         reviewDataSource.fetchReviews(
             page = page,
@@ -32,7 +32,7 @@ class ReviewRepositoryImpl @Inject constructor(
             keyword = keyword,
             year = year,
             companyId = companyId,
-            jobCode = jobCode,
+            code = code,
         )
 
     override suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse =

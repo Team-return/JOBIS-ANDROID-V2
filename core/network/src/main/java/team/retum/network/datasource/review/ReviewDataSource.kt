@@ -18,7 +18,7 @@ interface ReviewDataSource {
         keyword: String?,
         year: Int?,
         companyId: Long?,
-        jobCode: Long?,
+        code: Long?,
     ): FetchReviewsResponse
 
     suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse

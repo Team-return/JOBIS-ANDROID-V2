@@ -28,7 +28,7 @@ interface ReviewApi {
         @Query("company_id") companyId: Long?,
         @Query("keyword") keyword: String?,
         @Query("year") year: Int?,
-        @Query("job_code") jobCode: Long?,
+        @Query("code") code: Long?,
     ): FetchReviewsResponse
 
     @GET(RequestUrls.Reviews.details) // 컴퍼니쪽 후기 상세 조회
