@@ -2,7 +2,6 @@ package team.retum.review.ui.review_read
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,23 +9,28 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
+import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
+import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -34,8 +38,11 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.review.viewmodel.ReviewsFilterState
 import team.retum.review.viewmodel.ReviewsFilterViewModel
+import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.interviewType
+import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.keyword
+import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.location
+import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.year
 import team.retum.usecase.entity.CodesEntity
-import java.time.LocalDate
 
 @Composable
 internal fun ReviewsFilter(
@@ -51,6 +58,10 @@ internal fun ReviewsFilter(
     ReviewsFilterScreen(
         state = state,
         onBackPressed = onBackPressed,
+        onMajorSelected = reviewsFilterViewModel::setSelectedMajor,
+        onYearSelected = reviewsFilterViewModel::setSelectedYear,
+        onInterviewTypeSelected = reviewsFilterViewModel::setSelectedInterviewType,
+        onLocationSelected = reviewsFilterViewModel::setSelectedLocation,
     )
 }
 
@@ -58,20 +69,51 @@ internal fun ReviewsFilter(
 private fun ReviewsFilterScreen(
     state: ReviewsFilterState,
     onBackPressed: () -> Unit,
+    onMajorSelected: (Long?) -> Unit,
+    onYearSelected: (Int?) -> Unit,
+    onInterviewTypeSelected: (InterviewType?) -> Unit,
+    onLocationSelected: (InterviewLocation?) -> Unit,
 ) {
-    Column {
-        JobisSmallTopAppBar(
-            onBackPressed = onBackPressed,
-            title = "필터 설정"
-        )
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
-        ) {
-            Skills(majorList = state.majorList)
-            Years(years = state.years)
-            InterviewType()
-            Location()
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column {
+            JobisSmallTopAppBar(
+                onBackPressed = onBackPressed,
+                title = "필터 설정"
+            )
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                Skills(
+                    majorList = state.majorList,
+                    selectedMajorCode = state.selectedMajorCode,
+                    onMajorSelected = onMajorSelected
+                )
+                Years(
+                    years = state.years,
+                    selectedYear = state.selectedYear,
+                    onYearSelected = onYearSelected
+                )
+                InterviewType(
+                    selectedInterviewType = state.selectedInterviewType,
+                    onInterviewTypeSelected = onInterviewTypeSelected
+                )
+                Location(
+                    selectedLocation = state.selectedLocation,
+                    onLocationSelected = onLocationSelected
+                )
+            }
         }
+        JobisButton(
+            text = stringResource(id = R.string.appliance),
+            onClick = {
+                year = state.selectedYear
+                location = state.selectedLocation
+                interviewType = state.selectedInterviewType
+                onBackPressed()
+            },
+            modifier = Modifier.align(Alignment.BottomCenter),
+            color = ButtonColor.Primary,
+        )
     }
 }
 
@@ -79,6 +121,8 @@ private fun ReviewsFilterScreen(
 @Composable
 private fun Skills(
     majorList: List<CodesEntity.CodeEntity>,
+    selectedMajorCode: Long?,
+    onMajorSelected: (Long?) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp)
@@ -99,8 +143,8 @@ private fun Skills(
                 MajorContent(
                     major = it.keyword,
                     majorId = it.code,
-                    selected = false,
-                    onClick = {}
+                    selected = selectedMajorCode == it.code,
+                    onClick = { onMajorSelected(it) }
                 )
             }
         }
@@ -109,7 +153,11 @@ private fun Skills(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Years(years: List<Int>) {
+private fun Years(
+    years: List<Int>,
+    selectedYear: Int?,
+    onYearSelected: (Int?) -> Unit,
+) {
     Column(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp)
     ) {
@@ -127,9 +175,9 @@ private fun Years(years: List<Int>) {
         ) {
             years.forEach {
                 YearContent(
-                    year = it.toString(),
-                    selected = false,
-                    onClick = {}
+                    year = "$it",
+                    selected = selectedYear == it,
+                    onClick = { onYearSelected(it) }
                 )
             }
         }
@@ -137,7 +185,10 @@ private fun Years(years: List<Int>) {
 }
 
 @Composable
-private fun InterviewType() {
+private fun InterviewType(
+    selectedInterviewType: InterviewType?,
+    onInterviewTypeSelected: (InterviewType?) -> Unit,
+) {
     Column(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp)
     ) {
@@ -149,24 +200,27 @@ private fun InterviewType() {
         )
         ReviewCheckBox(
             title = "개인 면접",
-            checked = false,
-            onClick = {}
+            checked = selectedInterviewType == InterviewType.INDIVIDUAL,
+            onClick = { onInterviewTypeSelected(InterviewType.INDIVIDUAL) }
         )
         ReviewCheckBox(
             title = "단체 면접",
-            checked = false,
-            onClick = {}
+            checked = selectedInterviewType == InterviewType.GROUP,
+            onClick = { onInterviewTypeSelected(InterviewType.GROUP) }
         )
         ReviewCheckBox(
             title = "기타 면접",
-            checked = false,
-            onClick = {}
+            checked = selectedInterviewType == InterviewType.OTHER,
+            onClick = { onInterviewTypeSelected(InterviewType.OTHER) }
         )
     }
 }
 
 @Composable
-private fun Location() {
+private fun Location(
+    selectedLocation: InterviewLocation?,
+    onLocationSelected: (InterviewLocation?) -> Unit,
+) {
     Column(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp)
     ) {
@@ -178,23 +232,23 @@ private fun Location() {
         )
         ReviewCheckBox(
             title = "대전",
-            checked = false,
-            onClick = {}
+            checked = selectedLocation == InterviewLocation.DAEJEON,
+            onClick = { onLocationSelected(InterviewLocation.DAEJEON) }
         )
         ReviewCheckBox(
             title = "서울",
-            checked = false,
-            onClick = {}
+            checked = selectedLocation == InterviewLocation.SEOUL,
+            onClick = { onLocationSelected(InterviewLocation.SEOUL) }
         )
         ReviewCheckBox(
             title = "경기",
-            checked = false,
-            onClick = {}
+            checked = selectedLocation == InterviewLocation.GYEONGGI,
+            onClick = { onLocationSelected(InterviewLocation.GYEONGGI) }
         )
         ReviewCheckBox(
             title = "기타",
-            checked = false,
-            onClick = {}
+            checked = selectedLocation == InterviewLocation.OTHER,
+            onClick = { onLocationSelected(InterviewLocation.OTHER) }
         )
     }
 }
@@ -264,7 +318,7 @@ private fun YearContent(
     modifier: Modifier = Modifier,
     year: String,
     selected: Boolean,
-    onClick: (String) -> Unit,
+    onClick: (Int) -> Unit,
 ) {
     val background by animateColorAsState(
         targetValue = if (selected) {
@@ -287,7 +341,7 @@ private fun YearContent(
         modifier = modifier
             .clickable(
                 enabled = true,
-                onClick = { onClick(year) },
+                onClick = { onClick(year.toInt()) },
                 onPressed = {},
             )
             .clip(RoundedCornerShape(30.dp))
@@ -310,14 +364,14 @@ private fun YearContent(
 private fun ReviewCheckBox(
     title: String,
     checked: Boolean,
-    onClick: (Boolean) -> Unit
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.padding(vertical = 12.dp)
     ) {
         JobisCheckBox(
             checked = checked,
-            onClick = onClick,
+            onClick = { onClick() },
         )
         Spacer(modifier = Modifier.width(8.dp))
         JobisText(

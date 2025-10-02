@@ -1,10 +1,13 @@
 package team.retum.review.viewmodel
 
+import androidx.compose.runtime.key
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.usecase.entity.FetchReviewsEntity
 import team.retum.usecase.usecase.review.FetchReviewsUseCase
 import javax.inject.Inject
@@ -18,18 +21,43 @@ internal class ReviewsViewModel @Inject constructor(
         state.value.copy(companyId = companyId)
     }
 
+    internal fun setKeyword(keyword: String?) = setState {
+        state.value.copy(keyword = keyword)
+    }
+
+    internal fun setYear(year: Int?) = setState {
+        state.value.copy(year = year)
+    }
+
+    internal fun setInterviewType(interviewType: InterviewType?) = setState {
+        state.value.copy(interviewType = interviewType)
+    }
+
+    internal fun setLocation(location: InterviewLocation?) = setState {
+        state.value.copy(location = location)
+    }
+
+    internal fun clearReview() {
+        if (state.value.keyword != null || state.value.year != null) {
+            //state.value.reviews = emptyList<FetchReviewsEntity.Review>()
+            //setState { state.value.copy(page = 0L) }
+        }
+    }
+
     internal fun fetchReviews() {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchReviewsUseCase(
-                companyId = null,
-                page = null,
-                location = null,
-                interviewType = null,
-                keyword = null,
-                year = null,
-                jobCode = null
-            ).onSuccess {
-                setState { state.value.copy(reviews = it.reviews) }
+        with(state.value) {
+            viewModelScope.launch(Dispatchers.IO) {
+                fetchReviewsUseCase(
+                    companyId = null,
+                    page = null,
+                    location = location,
+                    interviewType = interviewType,
+                    keyword = keyword,
+                    year = year,
+                    jobCode = null
+                ).onSuccess {
+                    setState { state.value.copy(reviews = it.reviews) }
+                }
             }
         }
     }
@@ -37,11 +65,19 @@ internal class ReviewsViewModel @Inject constructor(
 
 internal data class ReviewsState(
     val companyId: Long,
+    val keyword: String?,
+    val year: Int?,
+    val interviewType: InterviewType?,
+    val location: InterviewLocation?,
     val reviews: List<FetchReviewsEntity.Review>,
 ) {
     companion object {
         fun getInitialState() = ReviewsState(
             companyId = 0,
+            keyword = null,
+            year = null,
+            interviewType = null,
+            location = null,
             reviews = emptyList(),
         )
     }

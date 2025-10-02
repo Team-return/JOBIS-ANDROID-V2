@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,6 +31,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.review.viewmodel.ReviewsFilterViewModel
 import team.retum.review.viewmodel.ReviewsState
 import team.retum.review.viewmodel.ReviewsViewModel
 
@@ -43,7 +45,14 @@ internal fun Reviews(
     val state by reviewsViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-       reviewsViewModel.fetchReviews()
+        with(reviewsViewModel) {
+            setYear(ReviewsFilterViewModel.year)
+            setKeyword(ReviewsFilterViewModel.keyword)
+            setLocation(ReviewsFilterViewModel.location)
+            setInterviewType(ReviewsFilterViewModel.interviewType)
+            clearReview()
+            fetchReviews()
+        }
     }
 
     ReviewsScreen(
@@ -79,7 +88,9 @@ private fun ReviewsScreen(
                 onClick = onSearchReviewClick,
             )
         }
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp)
+        ) {
             items(state.reviews.size) {
                 val review = state.reviews[it]
                 ReviewItem(
@@ -115,12 +126,19 @@ private fun ReviewItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
-                model = companyImageUrl,
                 modifier = Modifier
-                    .size(56.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(
+                        color = if (companyImageUrl.isEmpty()) {
+                            JobisTheme.colors.surfaceVariant
+                        } else {
+                            Color.Unspecified
+                        },
+                    ),
+                model = companyImageUrl,
+                contentDescription = "company profile",
                 contentScale = ContentScale.Crop,
-                contentDescription = "company image",
             )
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 JobisText(
@@ -130,7 +148,7 @@ private fun ReviewItem(
                     overflow = TextOverflow.Ellipsis,
                 )
                 JobisText(
-                    text = "$major•$writer",
+                    text = "$major • $writer",
                     style = JobisTypography.Description,
                     color = JobisTheme.colors.onPrimary,
                 )

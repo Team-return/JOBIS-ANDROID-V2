@@ -1,6 +1,7 @@
 package team.retum.usecase.entity
 
 import androidx.compose.runtime.Immutable
+import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchReviewsResponse
 
 data class FetchReviewsEntity(
@@ -24,7 +25,7 @@ internal fun FetchReviewsResponse.toEntity() = FetchReviewsEntity(
 private fun FetchReviewsResponse.Review.toEntity() = FetchReviewsEntity.Review(
     reviewId = this.reviewId,
     companyName = this.companyName,
-    companyLogoUrl = this.companyLogoUrl,
+    companyLogoUrl = ResourceKeys.IMAGE_URL + this.companyLogoUrl,
     major = this.major,
     year = this.year.toString(),
     writer = this.writer,
