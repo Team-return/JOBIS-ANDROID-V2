@@ -31,4 +31,7 @@
 
     <!--Review Screen-->
     <string name="review">후기</string>
+
+    <!--Review Filter Screen-->
+    <string name="appliance">적용하기</string>
 </resources>
