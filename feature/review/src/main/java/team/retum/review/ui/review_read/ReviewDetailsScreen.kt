@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,8 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -100,6 +103,7 @@ private fun ReviewDetailsScreen(
             location = reviewDetail.location,
             type = reviewDetail.type,
             interviewerCount = reviewDetail.interviewerCount.toString(),
+            selectedTabIndex = selectedTabIndex,
         )
         when (selectedTabIndex) {
             0 -> InterviewReview(review = reviewDetail.qnaResponse)
@@ -118,6 +122,7 @@ private fun StudentInfo(
     location: InterviewLocation,
     type: InterviewType,
     interviewerCount: String,
+    selectedTabIndex: Int,
 ) {
     Column(
         modifier = Modifier
@@ -130,7 +135,7 @@ private fun StudentInfo(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             JobisText(
-                text = "${writer}님의 면접 후기",
+                text = "${writer}님의 ${if(selectedTabIndex != 0) {"예상 질문"} else {"면접 후기"}}",
                 style = JobisTypography.PageTitle,
             )
             Row(
@@ -219,57 +224,38 @@ private fun ExpectedReview(
                 ),
         ) {
             Column {
-                if (!showQuestionDetail) {
-                    Row {
-                        JobisText(
-                            text = review.question,
-                            style = JobisTypography.SubHeadLine,
-                            modifier = Modifier.padding(bottom = 4.dp),
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_down),
-                            contentDescription = "arrow_down",
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                        )
-                    }
-                } else {
-                    Row {
-                        Text(
-                            text = buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                    append("Q ")
-                                }
-                                withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
-                                    append(review.question)
-                                }
-                            },
-                            style = JobisTypography.SubHeadLine,
-                            modifier = Modifier.padding(bottom = 4.dp),
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_down),
-                            contentDescription = "arrow_down",
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                        )
-                    }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Text(
                         text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                append("A ")
+                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary, fontSize = 24.sp)) {
+                                append("Q ")
                             }
-                            withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface)) {
-                                append(review.answer)
+                            withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground, fontSize = 16.sp)) {
+                                append(review.question)
                             }
                         },
-                        style = JobisTypography.Description,
-                        modifier = Modifier
-                            .padding(top = 12.dp)
-                            .fillMaxWidth(0.5f),
-                        maxLines = 3,
+                        style = JobisTypography.SubHeadLine,
+                        modifier = Modifier.padding(bottom = 4.dp),
                     )
                 }
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary, fontSize = 24.sp)) {
+                            append("A ")
+                        }
+                        withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface, fontSize = 14.sp)) {
+                            append(review.answer)
+                        }
+                    },
+                    style = JobisTypography.Description,
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .fillMaxWidth(0.5f),
+                    maxLines = 3,
+                )
             }
         }
     }
@@ -304,6 +290,7 @@ private fun ReviewContent(
                         Row {
                             JobisText(
                                 text = reviewItem.question,
+                                textAlign = TextAlign.Center,
                                 style = JobisTypography.SubHeadLine,
                                 modifier = Modifier.padding(bottom = 4.dp),
                             )
@@ -315,41 +302,51 @@ private fun ReviewContent(
                             )
                         }
                     } else {
-                        Row {
-                            Text(
-                                text = buildAnnotatedString {
-                                    withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                        append("Q ")
-                                    }
-                                    withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
-                                        append(reviewItem.question)
-                                    }
-                                },
-                                style = JobisTypography.SubHeadLine,
-                                modifier = Modifier.padding(bottom = 4.dp),
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                JobisText(
+                                    text = "Q",
+                                    color = JobisTheme.colors.onPrimary,
+                                    style = JobisTypography.SubHeadLine.copy(fontSize = 24.sp),
+                                    modifier = Modifier.alignByBaseline()
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                JobisText(
+                                    text = reviewItem.question,
+                                    color = JobisTheme.colors.onBackground,
+                                    style = JobisTypography.SubHeadLine,
+                                    modifier = Modifier.alignByBaseline()
+                                )
+                            }
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_arrow_down),
                                 contentDescription = "arrow_down",
-                                modifier = Modifier.align(Alignment.CenterVertically),
                             )
                         }
-                        Text(
-                            text = buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-                                    append("A ")
-                                }
-                                withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface)) {
-                                    append(reviewItem.answer)
-                                }
-                            },
-                            style = JobisTypography.Description,
-                            modifier = Modifier
-                                .padding(top = 12.dp)
-                                .fillMaxWidth(0.5f),
-                            maxLines = 3,
-                        )
+                        Row(
+                            modifier = Modifier.padding(top = 12.dp),
+                            verticalAlignment = Alignment.Top,
+                        ) {
+                            JobisText(
+                                text = "A",
+                                color = JobisTheme.colors.onPrimary,
+                                style = JobisTypography.Description.copy(fontSize = 24.sp),
+                                modifier = Modifier.alignByBaseline()
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            JobisText(
+                                text = reviewItem.answer,
+                                color = JobisTheme.colors.inverseOnSurface,
+                                style = JobisTypography.Description,
+                                modifier = Modifier.alignByBaseline(),
+                                maxLines = 3,
+                            )
+                        }
                     }
                 }
             }
