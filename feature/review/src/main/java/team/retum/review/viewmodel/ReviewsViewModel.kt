@@ -21,8 +21,8 @@ internal class ReviewsViewModel @Inject constructor(
         state.value.copy(companyId = companyId)
     }
 
-    internal fun setKeyword(keyword: String?) = setState {
-        state.value.copy(keyword = keyword)
+    internal fun setCode(code: Long?) = setState {
+        state.value.copy(code = code)
     }
 
     internal fun setYear(year: Int?) = setState {
@@ -38,7 +38,7 @@ internal class ReviewsViewModel @Inject constructor(
     }
 
     internal fun clearReview() {
-        if (state.value.keyword != null || state.value.year != null) {
+        if (state.value.code != null || state.value.year != null) {
             //state.value.reviews = emptyList<FetchReviewsEntity.Review>()
             //setState { state.value.copy(page = 0L) }
         }
@@ -52,9 +52,9 @@ internal class ReviewsViewModel @Inject constructor(
                     page = null,
                     location = location,
                     interviewType = interviewType,
-                    keyword = keyword,
+                    keyword = null,
                     year = year,
-                    jobCode = null
+                    code = code
                 ).onSuccess {
                     setState { state.value.copy(reviews = it.reviews) }
                 }
@@ -65,7 +65,7 @@ internal class ReviewsViewModel @Inject constructor(
 
 internal data class ReviewsState(
     val companyId: Long,
-    val keyword: String?,
+    val code: Long?,
     val year: Int?,
     val interviewType: InterviewType?,
     val location: InterviewLocation?,
@@ -74,7 +74,7 @@ internal data class ReviewsState(
     companion object {
         fun getInitialState() = ReviewsState(
             companyId = 0,
-            keyword = null,
+            code = null,
             year = null,
             interviewType = null,
             location = null,

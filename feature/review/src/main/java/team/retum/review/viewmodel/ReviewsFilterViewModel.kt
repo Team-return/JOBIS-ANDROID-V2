@@ -20,7 +20,7 @@ internal class ReviewsFilterViewModel @Inject constructor(
 ) : BaseViewModel<ReviewsFilterState, Unit>(initialState = ReviewsFilterState.getDefaultState()) {
 
     companion object {
-        var keyword: String? = null
+        var code: Long? = null
         var year: Int? = null
         var interviewType: InterviewType? = null
         var location: InterviewLocation? = null

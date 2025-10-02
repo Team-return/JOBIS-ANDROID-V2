@@ -49,7 +49,7 @@ internal class CompanyDetailsViewModel @Inject constructor(
                 interviewType = null,
                 keyword = null,
                 year = null,
-                jobCode = null,
+                code = null,
             ).onSuccess {
                 val reviews = it.reviews
                 setState {

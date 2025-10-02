@@ -38,8 +38,8 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.review.viewmodel.ReviewsFilterState
 import team.retum.review.viewmodel.ReviewsFilterViewModel
+import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.code
 import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.interviewType
-import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.keyword
 import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.location
 import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.year
 import team.retum.usecase.entity.CodesEntity
@@ -106,6 +106,7 @@ private fun ReviewsFilterScreen(
         JobisButton(
             text = stringResource(id = R.string.appliance),
             onClick = {
+                code = state.selectedMajorCode
                 year = state.selectedYear
                 location = state.selectedLocation
                 interviewType = state.selectedInterviewType

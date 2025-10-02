@@ -50,7 +50,7 @@ internal fun Reviews(
     LaunchedEffect(Unit) {
         with(reviewsViewModel) {
             setYear(ReviewsFilterViewModel.year)
-            setKeyword(ReviewsFilterViewModel.keyword)
+            setCode(ReviewsFilterViewModel.code)
             setLocation(ReviewsFilterViewModel.location)
             setInterviewType(ReviewsFilterViewModel.interviewType)
             clearReview()
