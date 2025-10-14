@@ -58,11 +58,11 @@ internal class ReviewViewModel @Inject constructor(
         setButtonEnabled()
     }
 
-    internal fun setKeyword(keyword: String) {
+    internal fun setKeyword(keyword: String?) {
         techs.clear()
         setState {
             state.value.copy(
-                keyword = keyword,
+                keyword = keyword ?: "",
                 buttonEnabled = true
             )
         }
@@ -74,13 +74,14 @@ internal class ReviewViewModel @Inject constructor(
             PostReviewEntity.PostReviewContentEntity(
                 answer = state.value.answer,
                 question = state.value.question,
-                codeId = state.value.selectedTech,
+                codeId = state.value.selectedTech!!,
             ),
         )
     }
 
-    internal fun setSelectedTech(selectedTech: Long) =
-        setState { state.value.copy(selectedTech = selectedTech) }
+    internal fun setSelectedTech(selectedTech: Long?) =
+        setState { state.value.copy(selectedTech = selectedTech ?: 0)  }
+
 
     internal fun postReview(companyId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -124,15 +125,15 @@ internal class ReviewViewModel @Inject constructor(
             }
 
             else -> {
-                setState { state.value.copy(buttonEnabled = !state.value.keyword.isNotEmpty()) }
+               setState { state.value.copy(buttonEnabled = !state.value.keyword?.isNotEmpty()!!) }
             }
         }
     }
 
-    internal fun setChecked(checked: String) {
+    internal fun setChecked(checked: String?) {
         setState {
             state.value.copy(
-                checked = checked,
+                checked = checked ?: "",
                 buttonEnabled = true,
             )
         }
@@ -178,9 +179,9 @@ internal class ReviewViewModel @Inject constructor(
 internal data class ReviewState(
     val question: String,
     val answer: String,
-    val keyword: String,
-    val checked: String,
-    val selectedTech: Long,
+    val keyword: String?,
+    val checked: String?,
+    val selectedTech: Long?,
     val tech: String?,
     val buttonEnabled: Boolean,
     val reviewProcess: ReviewProcess,

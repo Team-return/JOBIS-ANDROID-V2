@@ -133,9 +133,9 @@ private fun PostReviewScreen(
     pagerState: PagerState,
     state: ReviewState,
     reviewProcess: ReviewProcess,
-    setKeyword: (String) -> Unit,
-    setSelectedTech: (Long) -> Unit,
-    setChecked: (String) -> Unit,
+    setKeyword: (String?) -> Unit,
+    setSelectedTech: (Long?) -> Unit,
+    setChecked: (String?) -> Unit,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
     setInterviewerCount: (String) -> Unit,
     setInterviewType: (InterviewType) -> Unit,
@@ -322,9 +322,9 @@ private fun AddQuestionBottomSheet(
     state: ReviewState,
     pagerState: PagerState,
     sheetState: ModalBottomSheetState,
-    setKeyword: (String) -> Unit,
-    setSelectedTech: (Long) -> Unit,
-    setChecked: (String) -> Unit,
+    setKeyword: (String?) -> Unit,
+    setSelectedTech: (Long?) -> Unit,
+    setChecked: (String?) -> Unit,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
     setInterviewType: (InterviewType) -> Unit,
     setInterviewLocation: (InterviewLocation) -> Unit,
@@ -650,9 +650,9 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
     reviewProcess: ReviewProcess,
     setQuestion: (String) -> Unit,
     setAnswer: (String) -> Unit,
-    setKeyword: (String) -> Unit,
-    setSelectedTech: (Long) -> Unit,
-    setChecked: (String) -> Unit,
+    setKeyword: (String?) -> Unit,
+    setSelectedTech: (Long?) -> Unit,
+    setChecked: (String?) -> Unit,
     state: ReviewState,
     pagerTotalCount: Int,
     currentPager: Int,
@@ -708,7 +708,7 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
             }
         }
         JobisTextField(
-            value = { state.keyword },
+            value = { state.keyword!! },
             hint = stringResource(id = R.string.search),
             drawableResId = JobisIcon.Search,
             onValueChange = setKeyword,
@@ -730,9 +730,15 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
                     JobisCheckBox(
                         checked = state.checked == codes.keyword,
                         onClick = {
-                            setChecked(codes.keyword)
-                            setKeyword(codes.keyword)
-                            setSelectedTech(codes.code)
+                            if (state.checked == codes.keyword) {
+                                setChecked(null)
+                                setKeyword(null)
+                                setSelectedTech(null)
+                            } else {
+                                setChecked(codes.keyword)
+                                setKeyword(codes.keyword)
+                                setSelectedTech(codes.code)
+                            }
                         },
                         backgroundColor = JobisTheme.colors.background,
                     )
@@ -903,7 +909,7 @@ private fun InterviewSummary(
             )
             TopBottomText(
                 topText = "지원 직무",
-                bottomText = state.keyword,
+                bottomText = state.keyword!!,
             )
             TopBottomText(
                 topText = "면접관 수",
