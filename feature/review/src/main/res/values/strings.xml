@@ -34,4 +34,7 @@
 
     <!--Review Filter Screen-->
     <string name="appliance">적용하기</string>
+
+    <!--  Search Review Screen  -->
+    <string name="review_hint">검색어를 입력해주세요</string>
 </resources>
