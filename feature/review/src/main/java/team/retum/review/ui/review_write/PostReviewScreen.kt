@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -447,7 +448,12 @@ private fun AddQuestionBottomSheet(
                 4 -> {
                     // 면접 환경 입력한 부분 확인 페이지
                     InterviewSummary(
-                        onBackPressed = {},
+                        onBackPressed = {
+                            coroutineScope.launch {
+                                setButtonClear()
+                                pagerState.animateScrollToPage(page - 1)
+                            }
+                        },
                         state = state,
                         pagerTotalCount = pagerState.pageCount,
                         currentPager = page,
@@ -657,10 +663,12 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
 ) {
     // TODO :: 리팩토링 우선
     Column(
-        modifier = Modifier.padding(
-            top = 24.dp,
-            bottom = 12.dp,
-        ),
+        modifier = Modifier
+            .heightIn(max = 600.dp)
+            .padding(
+                top = 24.dp,
+                bottom = 12.dp,
+            ),
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 24.dp),
@@ -878,6 +886,7 @@ private fun InterviewSummary(
             )
         }
         Column(
+            modifier = Modifier.padding(top = 10.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             TopBottomText(
