@@ -13,7 +13,7 @@ fun NavGraphBuilder.myPage(
     onReportBugClick: () -> Unit,
     onNoticeClick: () -> Unit,
     navigateToLanding: () -> Unit,
-    onPostReviewClick: (Long) -> Unit,
+    onPostReviewClick: (String) -> Unit,
     onNotificationSettingClick: () -> Unit,
 ) {
     composable(NAVIGATION_MY_PAGE) {

@@ -72,7 +72,7 @@ const val SEARCH_DELAY: Long = 200
 @Composable
 internal fun PostReview(
     onBackPressed: () -> Unit,
-    companyId: Long,
+    companyName: String,
     onPostNextClick: () -> Unit,
     reviewViewModel: ReviewViewModel = hiltViewModel(),
 ) {
@@ -107,6 +107,7 @@ internal fun PostReview(
         sheetState = sheetState,
         pagerState = pagerState,
         state = state,
+        companyName = companyName,
         reviewProcess = state.reviewProcess,
         setInterviewerCount = reviewViewModel::setInterviewerCount,
         setInterviewType = reviewViewModel::setInterviewType,
@@ -132,6 +133,7 @@ private fun PostReviewScreen(
     sheetState: ModalBottomSheetState,
     pagerState: PagerState,
     state: ReviewState,
+    companyName: String,
     reviewProcess: ReviewProcess,
     setKeyword: (String?) -> Unit,
     setSelectedTech: (Long?) -> Unit,
@@ -156,6 +158,7 @@ private fun PostReviewScreen(
                 AddQuestionBottomSheet(
                     onReviewProcess = { },
                     state = state,
+                    companyName = companyName,
                     pagerState = pagerState,
                     sheetState = sheetState,
                     reviewProcess = reviewProcess,
@@ -320,6 +323,7 @@ private fun AddQuestionBottomSheet(
     onReviewProcess: (ReviewProcess) -> Unit,
     reviewProcess: ReviewProcess,
     state: ReviewState,
+    companyName: String,
     pagerState: PagerState,
     sheetState: ModalBottomSheetState,
     setKeyword: (String?) -> Unit,
@@ -455,6 +459,7 @@ private fun AddQuestionBottomSheet(
                             }
                         },
                         state = state,
+                        companyName = companyName,
                         pagerTotalCount = pagerState.pageCount,
                         currentPager = page,
                         onNextClick = onNextClick,
@@ -851,6 +856,7 @@ private fun InterviewerCountModal(
 private fun InterviewSummary(
     onBackPressed: () -> Unit,
     state: ReviewState,
+    companyName: String,
     pagerTotalCount: Int,
     currentPager: Int,
     onNextClick: () -> Unit,
@@ -905,7 +911,7 @@ private fun InterviewSummary(
             )
             TopBottomText(
                 topText = "업체명",
-                bottomText = "토스",
+                bottomText = companyName.removeSuffix("..."),
             )
             TopBottomText(
                 topText = "지원 직무",
