@@ -23,7 +23,7 @@ import javax.inject.Inject
 internal class ReviewViewModel @Inject constructor(
     private val postReviewUseCase: PostReviewUseCase,
     private val fetchCodeUseCase: FetchCodeUseCase,
-) : BaseViewModel<ReviewState, ReviewSideEffect>(ReviewState.getDefaultState()) {
+) : BaseViewModel<ReviewState, ReviewSideEffect>(ReviewState.getInitialState()) {
 
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
         private set
@@ -190,7 +190,7 @@ internal data class ReviewState(
     val count: String,
 ) {
     companion object {
-        fun getDefaultState() = ReviewState(
+        fun getInitialState() = ReviewState(
             question = "",
             answer = "",
             keyword = "",
