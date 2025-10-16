@@ -16,6 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -24,7 +26,9 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.review.viewmodel.PostExpectReviewState
 import team.retum.review.viewmodel.PostExpectReviewViewModel
+import team.retum.usecase.entity.PostReviewEntity
 
 @Composable
 internal fun PostExpectReview(
@@ -35,20 +39,24 @@ internal fun PostExpectReview(
 
     PostExpectReviewScreen(
         onBackPressed = onBackPressed,
+        onReviewFinishClick = postExpectReviewViewModel::postReview,
         answer = { state.answer },
         onAnswerChange = postExpectReviewViewModel::setAnswer,
         question = { state.question },
         onQuestionChange = postExpectReviewViewModel::setQuestion,
+        state = state,
     )
 }
 
 @Composable
 private fun PostExpectReviewScreen(
     onBackPressed: () -> Unit,
+    onReviewFinishClick: () -> Unit,
     answer: () -> String,
     onAnswerChange: (String) -> Unit,
     question: () -> String,
     onQuestionChange: (String) -> Unit,
+    state: PostExpectReviewState
 ) {
     Column{
         JobisSmallTopAppBar(
@@ -104,7 +112,7 @@ private fun PostExpectReviewScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = 4.dp)
-                .clickable {},
+                .clickable { onReviewFinishClick() },
             text = "건너뛸래요.",
             style = JobisTypography.SubBody,
             textDecoration = TextDecoration.Underline,
@@ -113,9 +121,8 @@ private fun PostExpectReviewScreen(
         JobisButton(
             text = "완료",
             color = ButtonColor.Primary,
-            onClick = {
-
-            }
+            onClick = onReviewFinishClick,
+            enabled = state.buttonEnabled
         )
     }
 }
