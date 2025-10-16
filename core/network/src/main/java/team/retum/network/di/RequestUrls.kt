@@ -87,6 +87,7 @@ internal object RequestUrls {
         const val questions = "$path/questions"
         const val count = "$path/count"
         const val post = path
+        const val my = "$path/my"
     }
 
     data object Bookmarks {
