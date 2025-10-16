@@ -25,6 +25,7 @@ import team.retum.review.navigation.review_write.postReview
 import team.retum.review.navigation.review_read.reviewDetails
 import team.retum.review.navigation.review_read.reviewsFilter
 import team.retum.review.navigation.review_read.searchReviews
+import team.retum.review.navigation.review_write.postExpectReview
 import team.retum.review.navigation.review_write.postNextReview
 
 const val NAVIGATION_MAIN = "main"
@@ -117,7 +118,11 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
             onPostNextClick = navigator::navigateToPostNextReview
         )
-        postNextReview(onBackPressed = navigator::popBackStackIfNotHome)
+        postNextReview(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onPostExpectReviewClick = navigator::navigateToPostExpectReview,
+        )
+        postExpectReview(onBackPressed = navigator::popBackStackIfNotHome)
         reviewDetails(navigator::popBackStackIfNotHome)
         reviewsFilter(onBackPressed = navigator::popBackStackIfNotHome)
         searchReviews(onBackPressed = navigator::popBackStackIfNotHome)
