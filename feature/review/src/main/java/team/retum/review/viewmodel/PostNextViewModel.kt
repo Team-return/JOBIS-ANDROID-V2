@@ -29,15 +29,30 @@ internal class PostNextViewModel @Inject constructor(
             }
         }
     }
+
+    internal fun setAnswer(answer: String) = setState {
+        setButtonEnabled(answer = answer)
+        state.value.copy(answer = answer)
+    }
+
+    private fun setButtonEnabled(
+        answer: String = state.value.answer,
+    ) = setState {
+        state.value.copy(buttonEnabled = answer.isNotBlank())
+    }
 }
 
 @Immutable
 internal data class PostNextState(
     val questions: List<QuestionsEntity.QuestionEntity>,
+    val buttonEnabled: Boolean,
+    val answer: String,
 ) {
     companion object {
         fun getInitialState() = PostNextState(
-            questions = emptyList()
+            questions = emptyList(),
+            buttonEnabled = false,
+            answer = "",
         )
     }
 }
