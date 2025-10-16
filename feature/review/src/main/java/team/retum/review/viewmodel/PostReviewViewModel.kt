@@ -21,7 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ReviewViewModel @Inject constructor(
-    private val postReviewUseCase: PostReviewUseCase,
     private val fetchCodeUseCase: FetchCodeUseCase,
 ) : BaseViewModel<ReviewState, ReviewSideEffect>(ReviewState.getInitialState()) {
 
@@ -69,38 +68,18 @@ internal class ReviewViewModel @Inject constructor(
 
     }
 
-    internal fun addReview() {
-        reviews.add(
-            PostReviewEntity.PostReviewContentEntity(
-                answer = state.value.answer,
-                question = state.value.question,
-                codeId = state.value.selectedTech!!,
-            ),
-        )
-    }
+//    internal fun addReview() {
+//        reviews.add(
+//            PostReviewEntity.PostReviewContentEntity(
+//                answer = state.value.answer,
+//                question = state.value.question,
+//                codeId = state.value.selectedTech!!,
+//            ),
+//        )
+//    }
 
     internal fun setSelectedTech(selectedTech: Long?) =
         setState { state.value.copy(selectedTech = selectedTech ?: 0)  }
-
-
-    internal fun postReview(companyId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            postReviewUseCase(
-                postReviewRequest = PostReviewEntity(
-                    companyId = companyId,
-                    qnaElements = reviews,
-                ),
-            ).onSuccess {
-                postSideEffect(ReviewSideEffect.Success)
-            }.onFailure {
-                when (it) {
-                    is BadRequestException -> {
-                        postSideEffect(ReviewSideEffect.BadRequest)
-                    }
-                }
-            }
-        }
-    }
 
     internal fun fetchCodes(keyword: String?) =
         viewModelScope.launch(Dispatchers.IO) {
