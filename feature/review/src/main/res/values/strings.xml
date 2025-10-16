@@ -37,4 +37,7 @@
 
     <!--  Search Review Screen  -->
     <string name="review_hint">검색어를 입력해주세요</string>
+
+    <!--  Post Next Review Screen  -->
+    <string name="hint_answer_review">면접 후기를 성심성의껏 작성해 주세요!</string>
 </resources>
