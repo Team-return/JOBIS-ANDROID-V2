@@ -42,7 +42,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.enums.InterviewLocation
@@ -101,7 +100,6 @@ internal fun PostReview(
 
     PostReviewScreen(
         onBackPressed = onBackPressed,
-        sheetScope = sheetScope,
         hideModalBottomSheet = { sheetScope.launch { sheetState.hide() } },
         onSheetShow = { sheetScope.launch { sheetState.show() } },
         sheetState = sheetState,
@@ -127,7 +125,6 @@ internal fun PostReview(
 @Composable
 private fun PostReviewScreen(
     onBackPressed: () -> Unit,
-    sheetScope: CoroutineScope,
     hideModalBottomSheet: () -> Unit,
     onSheetShow: () -> Unit,
     sheetState: ModalBottomSheetState,
@@ -156,12 +153,10 @@ private fun PostReviewScreen(
                 hideModalBottomSheet()
             } else {
                 AddQuestionBottomSheet(
-                    onReviewProcess = { },
                     state = state,
                     companyName = companyName,
                     pagerState = pagerState,
                     sheetState = sheetState,
-                    reviewProcess = reviewProcess,
                     setInterviewType = setInterviewType,
                     setInterviewLocation = setInterviewLocation,
                     setInterviewerCount = setInterviewerCount,
@@ -190,138 +185,43 @@ private fun PostReviewScreen(
                 onBackPressed = onBackPressed,
                 title = stringResource(id = R.string.write_review),
             )
-            //if (reviews.isEmpty()) {
-                Box(
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 24.dp,
+                    )
+                    .border(
+                        width = 1.dp,
+                        shape = RoundedCornerShape(12.dp),
+                        color = JobisTheme.colors.surfaceVariant,
+                    ),
+            ) {
+                JobisText(
+                    text = stringResource(id = R.string.empty),
+                    color = JobisTheme.colors.onSurfaceVariant,
+                    style = JobisTypography.HeadLine,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            horizontal = 24.dp,
-                        )
-                        .border(
-                            width = 1.dp,
-                            shape = RoundedCornerShape(12.dp),
-                            color = JobisTheme.colors.surfaceVariant,
+                            vertical = 16.dp,
+                            horizontal = 16.dp,
                         ),
-                ) {
-                    JobisText(
-                        text = stringResource(id = R.string.empty),
-                        color = JobisTheme.colors.onSurfaceVariant,
-                        style = JobisTypography.HeadLine,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                vertical = 16.dp,
-                                horizontal = 16.dp,
-                            ),
-                    )
-                }
-            //} else {
-                LazyColumn {
-//                    items(reviews.size) {
-//                        ReviewContent(
-//                            review = reviews[it],
-//                            keyword = keywords[it],
-//                        )
-//                    }
-                }
-            //}
+                )
+            }
             JobisButton(
                 text = stringResource(id = R.string.add_review),
                 onClick = {
-//                    onReviewProcessChange(ReviewProcess.QUESTION)
                     onSheetShow()
-                    //setInit()
                 },
             )
         }
     }
 }
 
-//@Composable
-//private fun ReviewContent(
-//    review: PostReviewEntity.PostReviewContentEntity,
-//    keyword: String,
-//) {
-//    var showQuestionDetail by remember { mutableStateOf(false) }
-//    JobisCard(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(
-//                horizontal = 24.dp,
-//                vertical = 4.dp,
-//            )
-//            .clip(RoundedCornerShape(12.dp))
-//            .background(JobisTheme.colors.surfaceVariant),
-//        onClick = { showQuestionDetail = !showQuestionDetail },
-//    ) {
-//        Row(
-//            modifier = Modifier
-//                .padding(
-//                    vertical = 12.dp,
-//                    horizontal = 16.dp,
-//                ),
-//        ) {
-//            Column {
-//                if (!showQuestionDetail) {
-//                    JobisText(
-//                        text = review.question,
-//                        style = JobisTypography.SubHeadLine,
-//                        modifier = Modifier.padding(bottom = 4.dp),
-//                    )
-//                    JobisText(
-//                        text = keyword,
-//                        style = JobisTypography.Description,
-//                        color = JobisTheme.colors.onPrimary,
-//                    )
-//                } else {
-//                    Text(
-//                        text = buildAnnotatedString {
-//                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-//                                append("Q ")
-//                            }
-//                            withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground)) {
-//                                append(review.question)
-//                            }
-//                        },
-//                        style = JobisTypography.SubHeadLine,
-//                        modifier = Modifier.padding(bottom = 4.dp),
-//                    )
-//                    JobisText(
-//                        text = keyword,
-//                        style = JobisTypography.Description,
-//                        color = JobisTheme.colors.onPrimary,
-//                    )
-//                    Text(
-//                        text = buildAnnotatedString {
-//                            withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary)) {
-//                                append("A ")
-//                            }
-//                            withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface)) {
-//                                append(review.answer)
-//                            }
-//                        },
-//                        style = JobisTypography.Description,
-//                        modifier = Modifier
-//                            .padding(top = 12.dp)
-//                            .fillMaxWidth(0.5f),
-//                    )
-//                }
-//            }
-//            Spacer(modifier = Modifier.weight(1f))
-//            Icon(
-//                painter = painterResource(id = R.drawable.ic_arrow_down),
-//                contentDescription = "arrow_down",
-//                modifier = Modifier.align(Alignment.CenterVertically),
-//            )
-//        }
-//    }
-//}
-
 @Composable
 private fun AddQuestionBottomSheet(
-    onReviewProcess: (ReviewProcess) -> Unit,
-    reviewProcess: ReviewProcess,
     state: ReviewState,
     companyName: String,
     pagerState: PagerState,
@@ -407,10 +307,6 @@ private fun AddQuestionBottomSheet(
                         setSelectedTech = setSelectedTech,
                         pagerTotalCount = totalPage,
                         currentPager = page,
-                        onClick = { code, keyword ->
-                            setSelectedTech(code)
-                            setChecked(keyword)
-                        },
                         onNextClick = {
                             coroutineScope.launch {
                                 setButtonClear()
@@ -418,12 +314,7 @@ private fun AddQuestionBottomSheet(
                             }
                         },
                         state = state,
-                        buttonEnabled = buttonEnabled,
                         techs = techs,
-                        onReviewProcess = onReviewProcess,
-                        reviewProcess = ReviewProcess.QUESTION,
-                        setQuestion = {""},
-                        setAnswer = {""}
                     )
                 }
                 3 -> {
@@ -438,7 +329,6 @@ private fun AddQuestionBottomSheet(
                         setInterviewerCount = setInterviewerCount,
                         pagerTotalCount = totalPage,
                         currentPager = page,
-                        onClick = { 0 },
                         onNextClick = {
                             coroutineScope.launch {
                                 setButtonClear()
@@ -460,11 +350,7 @@ private fun AddQuestionBottomSheet(
                         },
                         state = state,
                         companyName = companyName,
-                        pagerTotalCount = pagerState.pageCount,
-                        currentPager = page,
                         onNextClick = onNextClick,
-                        onClick = {},
-                        buttonEnabled = buttonEnabled
                     )
                 }
             }
@@ -651,10 +537,6 @@ private fun InterviewLocationModal(
 @Composable
 private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역할을 하는 지 우선 ex) 지원 직무 x -> 전공 조회 o
     onBackPressed: () -> Unit,
-    onReviewProcess: (ReviewProcess) -> Unit,
-    reviewProcess: ReviewProcess,
-    setQuestion: (String) -> Unit,
-    setAnswer: (String) -> Unit,
     setKeyword: (String?) -> Unit,
     setSelectedTech: (Long?) -> Unit,
     setChecked: (String?) -> Unit,
@@ -662,8 +544,6 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
     pagerTotalCount: Int,
     currentPager: Int,
     onNextClick: () -> Unit,
-    onClick: (Long, String) -> Unit,
-    buttonEnabled: Boolean,
     techs: List<CodesEntity.CodeEntity>,
 ) {
     // TODO :: 리팩토링 우선
@@ -774,7 +654,6 @@ private fun InterviewerCountModal(
     pagerTotalCount: Int,
     currentPager: Int,
     onNextClick: () -> Unit,
-    onClick: (Int) -> Unit,
     buttonEnabled: Boolean,
 ) {
     Column(
@@ -857,11 +736,7 @@ private fun InterviewSummary(
     onBackPressed: () -> Unit,
     state: ReviewState,
     companyName: String,
-    pagerTotalCount: Int,
-    currentPager: Int,
     onNextClick: () -> Unit,
-    onClick: (Int) -> Unit,
-    buttonEnabled: Boolean,
 ) {
     val interviewType = when (state.interviewType) {
         InterviewType.INDIVIDUAL -> "개인 면접"

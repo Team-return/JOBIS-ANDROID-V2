@@ -60,8 +60,6 @@ internal fun PostNextReview(
         questions = state.questions,
         coroutineScope = coroutineScope,
         pagerState = pagerState,
-        answer = { state.answer },
-        onAnswerChange = postNextViewModel::setAnswer,
         onPostExpectReviewClick = onPostExpectReviewClick,
     )
 }
@@ -72,8 +70,6 @@ private fun PostNextReviewScreen(
     questions: List<QuestionsEntity.QuestionEntity>,
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
-    answer: () -> String,
-    onAnswerChange: (String) -> Unit,
     onPostExpectReviewClick: () -> Unit,
 ) {
     val answers = remember { mutableStateListOf("", "", "") }
@@ -132,7 +128,7 @@ private fun PostNextReviewScreen(
                             style = JobisTypography.Description
                         )
                         JobisText(
-                            text = "*",
+                            text = " *",
                             style = JobisTypography.Description,
                             color = JobisTheme.colors.onPrimary,
                         )
@@ -140,8 +136,8 @@ private fun PostNextReviewScreen(
                 }
                 JobisTextField(
                     modifier = Modifier.heightIn(min = 120.dp, max = 300.dp),
-                    value = { answers[page] },
-                    onValueChange = { newValue ->
+                    value = { answers[page] }, // TODO :: viewModel로 로직 이동
+                    onValueChange = { newValue -> // TODO :: ''
                         answers[page] = newValue
                     },
                     hint = stringResource(R.string.hint_answer_review),
