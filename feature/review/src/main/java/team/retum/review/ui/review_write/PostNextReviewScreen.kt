@@ -12,37 +12,25 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Badge
-import androidx.compose.material.Button
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import team.retum.review.viewmodel.PostNextViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import team.retum.jobis.review.R
-import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -50,6 +38,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.review.viewmodel.PostNextViewModel
 import team.retum.usecase.entity.QuestionsEntity
 
 @Composable
@@ -87,7 +76,8 @@ private fun PostNextReviewScreen(
     onAnswerChange: (String) -> Unit,
     onPostExpectReviewClick: () -> Unit,
 ) {
-    Log.d("TEST", pagerState.currentPage.toString())
+    val answers = remember { mutableStateListOf("", "", "") }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -150,9 +140,11 @@ private fun PostNextReviewScreen(
                 }
                 JobisTextField(
                     modifier = Modifier.heightIn(min = 120.dp, max = 300.dp),
-                    value = answer,
-                    onValueChange = onAnswerChange,
-                    hint = stringResource(R.string.answer_review),
+                    value = { answers[page] },
+                    onValueChange = { newValue ->
+                        answers[page] = newValue
+                    },
+                    hint = stringResource(R.string.hint_answer_review),
                     singleLine = false,
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -161,7 +153,7 @@ private fun PostNextReviewScreen(
                     color = ButtonColor.Primary,
                     onClick = {
                         coroutineScope.launch {
-                            if (pagerState.currentPage != 2) pagerState.animateScrollToPage(pagerState.currentPage + 1) else onPostExpectReviewClick
+                            if (pagerState.currentPage != 2) pagerState.animateScrollToPage(pagerState.currentPage + 1) else onPostExpectReviewClick()
                         }
                     }
                 )

@@ -44,7 +44,7 @@ internal class PostNextViewModel @Inject constructor(
 
 @Immutable
 internal data class PostNextState(
-    val questions: List<QuestionsEntity.QuestionEntity>,
+    val questions: List<QuestionEntity>,
     val buttonEnabled: Boolean,
     val answer: String,
 ) {
