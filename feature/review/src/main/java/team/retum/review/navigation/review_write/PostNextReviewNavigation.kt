@@ -11,11 +11,15 @@ const val NAVIGATION_POST_NEXT_REVIEW = "post_next_reviews"
 
 fun NavGraphBuilder.postNextReview(
     onBackPressed: () -> Unit,
+    onPostExpectReviewClick: () -> Unit,
 ) {
     composable(
         route = NAVIGATION_POST_NEXT_REVIEW,
     ) {
-        PostNextReview()
+        PostNextReview(
+            onBackPressed = onBackPressed,
+            onPostExpectReviewClick = onPostExpectReviewClick,
+        )
     }
 }
 
