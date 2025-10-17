@@ -10,5 +10,5 @@ enum class ApplyStatus(val value: String) {
     FIELD_TRAIN("현장실습"),
     ACCEPTANCE("근로계약"),
     DOC_FAILED("서류 탈락"),
-    PROCESSING("진행중")
+    PROCESSING("진행중"),
 }

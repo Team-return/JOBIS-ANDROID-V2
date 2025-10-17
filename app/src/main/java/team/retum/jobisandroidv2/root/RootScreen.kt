@@ -183,7 +183,7 @@ private fun RootScreen(
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
                 )
                 reviews(
-                    onReviewFilterClick =  onReviewFilterClick,
+                    onReviewFilterClick = onReviewFilterClick,
                     onSearchReviewClick = onSearchReviewClick,
                     onReviewDetailClick = onReviewDetailClick,
                 )
