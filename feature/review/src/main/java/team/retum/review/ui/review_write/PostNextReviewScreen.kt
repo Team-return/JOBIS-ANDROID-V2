@@ -1,5 +1,6 @@
 package team.retum.review.ui.review_write
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,8 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import team.retum.common.utils.ResourceKeys
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -37,7 +41,8 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
-import team.retum.review.viewmodel.PostNextViewModel
+import team.retum.review.navigation.review_write.NAVIGATION_POST_REVIEW
+import team.retum.review.viewmodel.PostNextReviewViewModel
 import team.retum.review.viewmodel.PostReviewViewModel
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 
@@ -45,9 +50,9 @@ import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 internal fun PostNextReview(
     onBackPressed: () -> Unit,
     onPostExpectReviewClick: () -> Unit,
-    postReviewViewModel: PostReviewViewModel = hiltViewModel()
+    postNextViewModel: PostNextReviewViewModel = hiltViewModel()
 ) {
-    val postNextViewModel: PostNextViewModel = hiltViewModel()
+    val postReviewViewModel: PostReviewViewModel = hiltViewModel()
     val state by postNextViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { state.questions.size })
     val coroutineScope = rememberCoroutineScope()

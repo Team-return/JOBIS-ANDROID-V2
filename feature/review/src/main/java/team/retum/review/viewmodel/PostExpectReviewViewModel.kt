@@ -7,7 +7,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class PostExpectReviewViewModel @Inject constructor(
-
 ) : BaseViewModel<PostExpectReviewState, PostExpectReviewSideEffect>(PostExpectReviewState.getInitialState()) {
 
     internal fun setAnswer(answer: String) = setState {

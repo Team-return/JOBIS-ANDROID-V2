@@ -11,7 +11,7 @@ import team.retum.usecase.usecase.review.FetchQuestionsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-internal class PostNextViewModel @Inject constructor(
+internal class PostNextReviewViewModel @Inject constructor(
     private val fetchQuestionsUseCase : FetchQuestionsUseCase,
 ) : BaseViewModel<PostNextState, Unit>(PostNextState.getInitialState()) {
 

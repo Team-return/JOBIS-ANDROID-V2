@@ -16,9 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import team.retum.common.enums.InterviewLocation
-import team.retum.common.enums.InterviewType
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -30,14 +27,13 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.review.viewmodel.PostExpectReviewState
 import team.retum.review.viewmodel.PostExpectReviewViewModel
 import team.retum.review.viewmodel.PostReviewViewModel
-import team.retum.usecase.entity.PostReviewEntity
 
 @Composable
 internal fun PostExpectReview(
     onBackPressed: () -> Unit,
-    postReviewViewModel: PostReviewViewModel = hiltViewModel()
+    postExpectReviewViewModel: PostExpectReviewViewModel = hiltViewModel(),
 ) {
-    val postExpectReviewViewModel: PostExpectReviewViewModel = hiltViewModel()
+    val postReviewViewModel: PostReviewViewModel = hiltViewModel()
     val state by postExpectReviewViewModel.state.collectAsState()
 
     PostExpectReviewScreen(
