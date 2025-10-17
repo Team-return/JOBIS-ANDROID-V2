@@ -1,5 +1,6 @@
 package team.retum.review.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -15,19 +16,22 @@ import team.retum.common.enums.ReviewProcess
 import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.PostReviewEntity
+import team.retum.usecase.entity.PostReviewEntity.PostReviewContentEntity
+import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
 import team.retum.usecase.usecase.review.PostReviewUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ReviewViewModel @Inject constructor(
+internal class PostReviewViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
-) : BaseViewModel<ReviewState, ReviewSideEffect>(ReviewState.getInitialState()) {
+    private val postReviewUseCase: PostReviewUseCase,
+) : BaseViewModel<PostReviewState, PostReviewSideEffect>(PostReviewState.getInitialState()) {
 
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
         private set
 
-    var reviews: SnapshotStateList<PostReviewEntity.PostReviewContentEntity> = mutableStateListOf()
+    var reviews: SnapshotStateList<PostReviewContentEntity> = mutableStateListOf()
         private set
 
     var keywords: SnapshotStateList<String> = mutableStateListOf()
@@ -65,7 +69,49 @@ internal class ReviewViewModel @Inject constructor(
                 buttonEnabled = true
             )
         }
+    }
 
+    private val _qnaElements: SnapshotStateList<PostReviewContentEntity> = mutableStateListOf()
+    val qnaElements: List<PostReviewContentEntity> = _qnaElements
+
+    internal fun setQnaElement(answer: List<QuestionEntity>, question: List<String>) {
+        val size = minOf(answer.size, question.size)
+
+        for (index in 0 until size) {
+            val postReviewContent = PostReviewContentEntity(
+                question = answer[index].id,
+                answer = question[index]
+            )
+            Log.d("TEST", postReviewContent.toString())
+            _qnaElements.add(postReviewContent)
+            Log.d("TEST", _qnaElements.toString())
+        }
+    }
+
+    internal fun postReview() {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("TEST", qnaElements.toString())
+            postReviewUseCase(
+                postReviewRequest = PostReviewEntity(
+                    interviewType = state.value.interviewType,
+                    location = state.value.interviewLocation,
+                    companyId = state.value.companyId,
+                    jobCode = state.value.jobCode,
+                    interviewerCount = state.value.interviewerCount,
+                    qnaElements = qnaElements,
+                    question = state.value.question,
+                    answer = state.value.answer,
+                )
+            ).onSuccess {
+                postSideEffect(PostReviewSideEffect.Success)
+            }.onFailure {
+                when (it) {
+                    is BadRequestException -> {
+                        postSideEffect(PostReviewSideEffect.BadRequest)
+                    }
+                }
+            }
+        }
     }
 
 //    internal fun addReview() {
@@ -155,7 +201,13 @@ internal class ReviewViewModel @Inject constructor(
     }
 }
 
-internal data class ReviewState(
+internal data class PostReviewState(
+    val interviewType: InterviewType,
+    val interviewLocation: InterviewLocation,
+    val companyId: Long,
+    val jobCode: Long,
+    val interviewerCount: Int,
+    val qnaElements: List<PostReviewContentEntity>,
     val question: String,
     val answer: String,
     val keyword: String?,
@@ -164,12 +216,10 @@ internal data class ReviewState(
     val tech: String?,
     val buttonEnabled: Boolean,
     val reviewProcess: ReviewProcess,
-    val interviewType: InterviewType,
-    val interviewLocation: InterviewLocation,
     val count: String,
 ) {
     companion object {
-        fun getInitialState() = ReviewState(
+        fun getInitialState() = PostReviewState(
             question = "",
             answer = "",
             keyword = "",
@@ -181,12 +231,16 @@ internal data class ReviewState(
             interviewType = InterviewType.INDIVIDUAL,
             interviewLocation = InterviewLocation.DAEJEON, // TODO :: 널처리(선택 해제) 고려
             count = "",
+            companyId = 0,
+            jobCode = 0,
+            interviewerCount = 0,
+            qnaElements = emptyList(),
         )
     }
 }
 
-internal sealed interface ReviewSideEffect {
-    data object BadRequest : ReviewSideEffect
+internal sealed interface PostReviewSideEffect {
+    data object BadRequest : PostReviewSideEffect
 
-    data object Success : ReviewSideEffect
+    data object Success : PostReviewSideEffect
 }
