@@ -60,6 +60,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.review.model.PostReviewData
 import team.retum.review.viewmodel.PostReviewSideEffect
 import team.retum.review.viewmodel.PostReviewState
 import team.retum.review.viewmodel.PostReviewViewModel
@@ -72,7 +73,7 @@ const val SEARCH_DELAY: Long = 200
 internal fun PostReview(
     onBackPressed: () -> Unit,
     companyName: String,
-    onPostNextClick: () -> Unit,
+    navigateToPostNextReview: (PostReviewData) -> Unit,
     reviewViewModel: PostReviewViewModel = hiltViewModel(),
 ) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
@@ -84,11 +85,33 @@ internal fun PostReview(
 
     LaunchedEffect(Unit) {
         reviewViewModel.sideEffect.collect {
-            if (it is PostReviewSideEffect.Success) {
-                JobisToast.create(
-                    context = context,
-                    message = context.getString(R.string.added_question),
-                ).show()
+            when(it) {
+                is PostReviewSideEffect.Success -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.added_question),
+                    ).show()
+                }
+
+                is PostReviewSideEffect.MoveToNext -> {
+                    navigateToPostNextReview(
+                        PostReviewData(
+                            companyId = it.companyId,
+                            interviewType = it.interviewType,
+                            location = it.location,
+                            jobCode =  it.jobCode,
+                            interviewerCount = it.interviewerCount
+                        )
+                    )
+                }
+
+                // TODO :: 에러 토스트로 변경
+                PostReviewSideEffect.BadRequest -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.added_question),
+                    ).show()
+                }
             }
         }
     }
@@ -116,7 +139,7 @@ internal fun PostReview(
         setSelectedTech = reviewViewModel::setSelectedTech,
         techs = reviewViewModel.techs,
         buttonEnabled = state.buttonEnabled,
-        onPostNextClick = onPostNextClick
+        onPostNextClick = reviewViewModel::onNextClick
     )
 }
 

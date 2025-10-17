@@ -193,6 +193,18 @@ internal class PostReviewViewModel @Inject constructor(
             )
         }
     }
+
+    internal fun onNextClick() {
+        with(state.value) {
+            postSideEffect(PostReviewSideEffect.MoveToNext(
+                companyId = companyId,
+                interviewerCount = interviewerCount,
+                jobCode = jobCode,
+                interviewType = interviewType,
+                location = interviewLocation,
+            ))
+        }
+    }
 }
 
 internal data class PostReviewState(
@@ -234,6 +246,13 @@ internal data class PostReviewState(
 }
 
 internal sealed interface PostReviewSideEffect {
+    data class MoveToNext(
+        val interviewType: InterviewType,
+        val location: InterviewLocation,
+        val companyId: Long,
+        val jobCode: Long,
+        val interviewerCount: Int,
+    ): PostReviewSideEffect
     data object BadRequest : PostReviewSideEffect
 
     data object Success : PostReviewSideEffect
