@@ -3,6 +3,8 @@ package team.retum.review.viewmodel
 import androidx.compose.runtime.Immutable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +27,15 @@ internal class PostExpectReviewViewModel @Inject constructor(
     ) = setState {
         state.value.copy(buttonEnabled = answer.isNotBlank() && question.isNotBlank())
     }
+
+    internal fun onNextClick() {
+        with(state.value) {
+            postSideEffect(PostExpectReviewSideEffect.MoveToNext(
+                question = question,
+                answer = answer
+            ))
+        }
+    }
 }
 
 @Immutable
@@ -42,4 +53,9 @@ data class PostExpectReviewState(
     }
 }
 
-internal sealed interface PostExpectReviewSideEffect
+internal sealed interface PostExpectReviewSideEffect {
+    data class MoveToNext(
+        val question: String,
+        val answer: String,
+    ): PostExpectReviewSideEffect
+}

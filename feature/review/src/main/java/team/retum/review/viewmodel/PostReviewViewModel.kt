@@ -12,6 +12,7 @@ import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
 import team.retum.common.exception.BadRequestException
+import team.retum.review.model.PostReviewData
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.PostReviewEntity
 import team.retum.usecase.entity.PostReviewEntity.PostReviewContentEntity
@@ -83,7 +84,7 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-    internal fun postReview() {
+    internal fun postReview(reviewData: PostReviewData) {
         viewModelScope.launch(Dispatchers.IO) {
             postReviewUseCase(
                 postReviewRequest = PostReviewEntity(
@@ -198,7 +199,7 @@ internal class PostReviewViewModel @Inject constructor(
         with(state.value) {
             postSideEffect(PostReviewSideEffect.MoveToNext(
                 companyId = companyId,
-                interviewerCount = interviewerCount,
+                interviewerCount = count.toInt(),
                 jobCode = jobCode,
                 interviewType = interviewType,
                 location = interviewLocation,

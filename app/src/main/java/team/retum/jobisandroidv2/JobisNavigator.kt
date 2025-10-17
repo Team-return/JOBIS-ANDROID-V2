@@ -141,8 +141,8 @@ internal class JobisNavigator(
         navController.navigateToPostNextReview(reviewData = reviewData)
     }
 
-    fun navigateToPostExpectReview() {
-        navController.navigateToPostExpectReview()
+    fun navigateToPostExpectReview(reviewData: PostReviewData) {
+        navController.navigateToPostExpectReview(reviewData = reviewData)
     }
 
     fun navigateToRoot(applicationId: Long = 0) {
