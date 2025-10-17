@@ -16,7 +16,7 @@ data class PostReviewEntity(
     val answer: String,
 ) {
     data class PostReviewContentEntity(
-        val question: Long,
+        val question: String,
         val answer: String,
     )
 }
