@@ -30,6 +30,7 @@ import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.NAVIGATION_NOTIFICATIONS
 import team.retum.notification.navigation.navigateToNotification
 import team.retum.notification.navigation.navigateToNotificationSetting
+import team.retum.review.model.PostReviewData
 import team.retum.review.navigation.review_write.navigateToPostReview
 import team.retum.review.navigation.review_read.navigateToReviewDetails
 import team.retum.review.navigation.review_read.navigateToReviews
@@ -136,8 +137,8 @@ internal class JobisNavigator(
         navController.navigateToPostReview(companyName = companyName)
     }
 
-    fun navigateToPostNextReview() {
-        navController.navigateToPostNextReview()
+    fun navigateToPostNextReview(reviewData: PostReviewData) {
+        navController.navigateToPostNextReview(reviewData = reviewData)
     }
 
     fun navigateToPostExpectReview() {

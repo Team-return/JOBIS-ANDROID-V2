@@ -22,4 +22,5 @@ object ResourceKeys {
     const val EMAIL = "@dsm.hs.kr"
     const val DATABASE_NAME = "jobis-database"
     const val CLASS_ID = "classId"
+    const val REVIEW_DATA = "reviewData"
 }
