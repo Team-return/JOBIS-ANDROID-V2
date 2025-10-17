@@ -1,5 +1,6 @@
 package team.retum.review.ui.review_write
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,21 +26,40 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.review.model.PostReviewData
+import team.retum.review.viewmodel.PostExpectReviewSideEffect
 import team.retum.review.viewmodel.PostExpectReviewState
 import team.retum.review.viewmodel.PostExpectReviewViewModel
 import team.retum.review.viewmodel.PostReviewViewModel
 
 @Composable
 internal fun PostExpectReview(
+    reviewData: PostReviewData,
     onBackPressed: () -> Unit,
     postExpectReviewViewModel: PostExpectReviewViewModel = hiltViewModel(),
 ) {
     val postReviewViewModel: PostReviewViewModel = hiltViewModel()
     val state by postExpectReviewViewModel.state.collectAsState()
 
+    LaunchedEffect(Unit) {
+        postExpectReviewViewModel.sideEffect.collect {
+            Log.d("TEST", reviewData.toString())
+            when (it) {
+                is PostExpectReviewSideEffect.MoveToNext -> {
+                    postReviewViewModel.postReview(
+                        reviewData = reviewData.copy(
+                            question = state.question,
+                            answer = state.answer,
+                        )
+                    )
+                }
+            }
+        }
+    }
+
     PostExpectReviewScreen(
         onBackPressed = onBackPressed,
-        onReviewFinishClick = postReviewViewModel::postReview,
+        onReviewFinishClick = postExpectReviewViewModel::onNextClick,
         answer = { state.answer },
         onAnswerChange = postExpectReviewViewModel::setAnswer,
         question = { state.question },
@@ -55,7 +76,7 @@ private fun PostExpectReviewScreen(
     onAnswerChange: (String) -> Unit,
     question: () -> String,
     onQuestionChange: (String) -> Unit,
-    state: PostExpectReviewState
+    state: PostExpectReviewState,
 ) {
     Column{
         JobisSmallTopAppBar(

@@ -1,5 +1,6 @@
 package team.retum.review.ui.review_write
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,32 +39,48 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.review.model.PostReviewData
+import team.retum.review.viewmodel.PostNextReviewSideEffect
 import team.retum.review.viewmodel.PostNextReviewViewModel
 import team.retum.review.viewmodel.PostReviewViewModel
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 
 @Composable
 internal fun PostNextReview(
+    reviewData: PostReviewData,
     onBackPressed: () -> Unit,
-    onPostExpectReviewClick: () -> Unit,
-    postNextViewModel: PostNextReviewViewModel = hiltViewModel()
+    navigateToPostExpectReview: (PostReviewData) -> Unit,
+    postNextReviewViewModel: PostNextReviewViewModel = hiltViewModel()
 ) {
-    val postReviewViewModel: PostReviewViewModel = hiltViewModel()
-    val state by postNextViewModel.state.collectAsStateWithLifecycle()
+    val state by postNextReviewViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { state.questions.size })
     val coroutineScope = rememberCoroutineScope()
+    val answers = remember { mutableStateListOf("", "", "") }
+    val question: List<String> = state.questions.mapIndexed { _, question ->
+        question.question
+    }
 
     LaunchedEffect(Unit) {
-        postNextViewModel.fetchQuestions()
+        postNextReviewViewModel.fetchQuestions()
+        postNextReviewViewModel.sideEffect.collect {
+            Log.d("TEST", reviewData.toString())
+            when (it) {
+                is PostNextReviewSideEffect.MoveToNext -> {
+                    navigateToPostExpectReview(
+                        reviewData.copy(qnaElements = it.qnaElements)
+                    )
+                }
+            }
+        }
     }
 
     PostNextReviewScreen(
         onBackPressed = onBackPressed,
         questions = state.questions,
+        answers = answers,
         coroutineScope = coroutineScope,
         pagerState = pagerState,
-        onPostExpectReviewClick = onPostExpectReviewClick,
-        setQnaElement = postReviewViewModel::setQnaElement
+        onPostExpectReviewClick = postNextReviewViewModel::onNextClick
     )
 }
 
@@ -72,13 +90,9 @@ private fun PostNextReviewScreen(
     questions: List<QuestionEntity>,
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
+    answers: SnapshotStateList<String>,
     onPostExpectReviewClick: () -> Unit,
-    setQnaElement: (List<String>, List<String>) -> Unit,
 ) {
-    val answers = remember { mutableStateListOf("", "", "") }
-    val question: List<String> = questions.mapIndexed { _, question ->
-        question.question
-    }
 
     Column(
         modifier = Modifier
@@ -157,10 +171,8 @@ private fun PostNextReviewScreen(
                         coroutineScope.launch {
                             if (pagerState.currentPage != 2) pagerState.animateScrollToPage(
                                 pagerState.currentPage + 1
-                            ) else {
-                                setQnaElement(question, answers)
+                            ) else
                                 onPostExpectReviewClick()
-                            }
                         }
                     },
                 )

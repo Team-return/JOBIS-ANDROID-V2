@@ -99,8 +99,8 @@ internal fun PostReview(
                             companyId = it.companyId,
                             interviewType = it.interviewType,
                             location = it.location,
-                            jobCode =  it.jobCode,
-                            interviewerCount = it.interviewerCount
+                            jobCode = it.jobCode,
+                            interviewerCount = it.interviewerCount,
                         )
                     )
                 }
