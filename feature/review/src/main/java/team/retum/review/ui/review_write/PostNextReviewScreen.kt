@@ -1,6 +1,5 @@
 package team.retum.review.ui.review_write
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,11 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import team.retum.common.utils.ResourceKeys
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -41,7 +37,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
-import team.retum.review.navigation.review_write.NAVIGATION_POST_REVIEW
 import team.retum.review.viewmodel.PostNextReviewViewModel
 import team.retum.review.viewmodel.PostReviewViewModel
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
@@ -78,9 +73,12 @@ private fun PostNextReviewScreen(
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
     onPostExpectReviewClick: () -> Unit,
-    setQnaElement: (List<QuestionEntity>, List<String>) -> Unit,
+    setQnaElement: (List<String>, List<String>) -> Unit,
 ) {
     val answers = remember { mutableStateListOf("", "", "") }
+    val question: List<String> = questions.mapIndexed { _, question ->
+        question.question
+    }
 
     Column(
         modifier = Modifier
@@ -160,7 +158,7 @@ private fun PostNextReviewScreen(
                             if (pagerState.currentPage != 2) pagerState.animateScrollToPage(
                                 pagerState.currentPage + 1
                             ) else {
-                                setQnaElement(questions, answers)
+                                setQnaElement(question, answers)
                                 onPostExpectReviewClick()
                             }
                         }

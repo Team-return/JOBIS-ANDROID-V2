@@ -1,7 +1,5 @@
 package team.retum.review.viewmodel
 
-import android.util.Log
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
@@ -17,7 +15,6 @@ import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.PostReviewEntity
 import team.retum.usecase.entity.PostReviewEntity.PostReviewContentEntity
-import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
 import team.retum.usecase.usecase.review.PostReviewUseCase
 import javax.inject.Inject
@@ -74,23 +71,20 @@ internal class PostReviewViewModel @Inject constructor(
     private val _qnaElements: SnapshotStateList<PostReviewContentEntity> = mutableStateListOf()
     val qnaElements: List<PostReviewContentEntity> = _qnaElements
 
-    internal fun setQnaElement(answer: List<QuestionEntity>, question: List<String>) {
+    internal fun setQnaElement(answer: List<String>, question: List<String>) {
         val size = minOf(answer.size, question.size)
 
         for (index in 0 until size) {
             val postReviewContent = PostReviewContentEntity(
-                question = answer[index].id,
+                question = answer[index],
                 answer = question[index]
             )
-            Log.d("TEST", postReviewContent.toString())
             _qnaElements.add(postReviewContent)
-            Log.d("TEST", _qnaElements.toString())
         }
     }
 
     internal fun postReview() {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("TEST", qnaElements.toString())
             postReviewUseCase(
                 postReviewRequest = PostReviewEntity(
                     interviewType = state.value.interviewType,

@@ -47,7 +47,7 @@ import team.retum.usecase.entity.CodesEntity
 @Composable
 internal fun ReviewsFilter(
     onBackPressed: () -> Unit,
-    reviewsFilterViewModel: ReviewsFilterViewModel = hiltViewModel()
+    reviewsFilterViewModel: ReviewsFilterViewModel = hiltViewModel(),
 ) {
     val state by reviewsFilterViewModel.state.collectAsStateWithLifecycle()
 
