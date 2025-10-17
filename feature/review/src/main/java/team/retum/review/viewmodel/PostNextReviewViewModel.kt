@@ -6,9 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.exception.BadRequestException
-import team.retum.usecase.entity.PostReviewEntity
-import team.retum.usecase.entity.QuestionsEntity
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 import team.retum.usecase.usecase.review.FetchQuestionsUseCase
 import javax.inject.Inject

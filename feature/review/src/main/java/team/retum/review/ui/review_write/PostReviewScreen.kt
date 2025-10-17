@@ -60,9 +60,9 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.retum.review.viewmodel.ReviewSideEffect
-import team.retum.review.viewmodel.ReviewState
-import team.retum.review.viewmodel.ReviewViewModel
+import team.retum.review.viewmodel.PostReviewSideEffect
+import team.retum.review.viewmodel.PostReviewState
+import team.retum.review.viewmodel.PostReviewViewModel
 import team.retum.usecase.entity.CodesEntity
 
 const val SEARCH_DELAY: Long = 200
@@ -73,7 +73,7 @@ internal fun PostReview(
     onBackPressed: () -> Unit,
     companyName: String,
     onPostNextClick: () -> Unit,
-    reviewViewModel: ReviewViewModel = hiltViewModel(),
+    reviewViewModel: PostReviewViewModel = hiltViewModel(),
 ) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
     val sheetState =
@@ -84,7 +84,7 @@ internal fun PostReview(
 
     LaunchedEffect(Unit) {
         reviewViewModel.sideEffect.collect {
-            if (it is ReviewSideEffect.Success) {
+            if (it is PostReviewSideEffect.Success) {
                 JobisToast.create(
                     context = context,
                     message = context.getString(R.string.added_question),
@@ -129,7 +129,7 @@ private fun PostReviewScreen(
     onSheetShow: () -> Unit,
     sheetState: ModalBottomSheetState,
     pagerState: PagerState,
-    state: ReviewState,
+    state: PostReviewState,
     companyName: String,
     reviewProcess: ReviewProcess,
     setKeyword: (String?) -> Unit,
@@ -222,7 +222,7 @@ private fun PostReviewScreen(
 
 @Composable
 private fun AddQuestionBottomSheet(
-    state: ReviewState,
+    state: PostReviewState,
     companyName: String,
     pagerState: PagerState,
     sheetState: ModalBottomSheetState,
@@ -540,7 +540,7 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
     setKeyword: (String?) -> Unit,
     setSelectedTech: (Long?) -> Unit,
     setChecked: (String?) -> Unit,
-    state: ReviewState,
+    state: PostReviewState,
     pagerTotalCount: Int,
     currentPager: Int,
     onNextClick: () -> Unit,
@@ -650,7 +650,7 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
 private fun InterviewerCountModal(
     onBackPressed: () -> Unit,
     setInterviewerCount: (String) -> Unit,
-    state: ReviewState,
+    state: PostReviewState,
     pagerTotalCount: Int,
     currentPager: Int,
     onNextClick: () -> Unit,
@@ -734,7 +734,7 @@ private fun InterviewerCountModal(
 @Composable
 private fun InterviewSummary(
     onBackPressed: () -> Unit,
-    state: ReviewState,
+    state: PostReviewState,
     companyName: String,
     onNextClick: () -> Unit,
 ) {
