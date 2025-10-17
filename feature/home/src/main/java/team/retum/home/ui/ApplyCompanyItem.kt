@@ -48,6 +48,7 @@ internal fun ApplyCompanyItem(
     val color = when (applicationStatus) {
         ApplyStatus.FAILED, ApplyStatus.REJECTED -> JobisTheme.colors.error
         ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
+        ApplyStatus.SEND, ApplyStatus.PROCESSING -> JobisTheme.colors.secondary
         ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
         else -> JobisTheme.colors.onPrimary
     }
