@@ -16,17 +16,16 @@ const val NAVIGATION_POST_NEXT_REVIEW = "post_next_reviews"
 
 fun NavGraphBuilder.postNextReview(
     onBackPressed: () -> Unit,
-    onPostExpectReviewClick: () -> Unit,
+    navigateToPostExpectReview: (PostReviewData) -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_POST_NEXT_REVIEW/{${ResourceKeys.REVIEW_DATA}}",
         arguments = listOf(navArgument(ResourceKeys.REVIEW_DATA) { NavType.StringType }),
     ) {
-
         PostNextReview(
             reviewData = it.getReviewData(),
             onBackPressed = onBackPressed,
-            onPostExpectReviewClick = onPostExpectReviewClick,
+            navigateToPostExpectReview = navigateToPostExpectReview,
         )
     }
 }
