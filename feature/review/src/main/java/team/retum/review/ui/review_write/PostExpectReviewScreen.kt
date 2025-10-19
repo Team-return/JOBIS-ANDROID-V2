@@ -43,7 +43,6 @@ internal fun PostExpectReview(
 
     LaunchedEffect(Unit) {
         postExpectReviewViewModel.sideEffect.collect {
-            Log.d("TEST", reviewData.toString())
             when (it) {
                 is PostExpectReviewSideEffect.MoveToNext -> {
                     postReviewViewModel.postReview(
