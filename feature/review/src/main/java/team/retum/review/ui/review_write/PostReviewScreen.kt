@@ -73,6 +73,7 @@ const val SEARCH_DELAY: Long = 200
 internal fun PostReview(
     onBackPressed: () -> Unit,
     companyName: String,
+    companyId: Long,
     navigateToPostNextReview: (PostReviewData) -> Unit,
     reviewViewModel: PostReviewViewModel = hiltViewModel(),
 ) {
@@ -96,7 +97,7 @@ internal fun PostReview(
                 is PostReviewSideEffect.MoveToNext -> {
                     navigateToPostNextReview(
                         PostReviewData(
-                            companyId = it.companyId,
+                            companyId = companyId,
                             interviewType = it.interviewType,
                             location = it.location,
                             jobCode = it.jobCode,
@@ -166,7 +167,7 @@ private fun PostReviewScreen(
     buttonEnabled: Boolean,
     onPostNextClick: () -> Unit
 ) {
-    ModalBottomSheetLayout(
+    ModalBottomSheetLayout( // TODO :: Material3로 변경
         modifier = Modifier
             .background(JobisTheme.colors.background)
             .fillMaxSize(),

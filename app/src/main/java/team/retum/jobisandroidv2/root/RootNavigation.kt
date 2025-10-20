@@ -24,7 +24,7 @@ fun NavGraphBuilder.root(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     navigateToLanding: () -> Unit,
-    onPostReviewClick: (String) -> Unit,
+    onPostReviewClick: (String, Long) -> Unit,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
