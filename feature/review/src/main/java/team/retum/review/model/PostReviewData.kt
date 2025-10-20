@@ -5,6 +5,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 @Serializable
 data class PostReviewData(
@@ -19,10 +21,17 @@ data class PostReviewData(
 ) {
     @Serializable
     data class PostReviewContent(
-        val question: Long = 0,
+        val question: String = "",
         val answer: String = "",
     )
 }
 
-internal fun PostReviewData.toJsonString() = Json.encodeToString(this)
-internal fun String.toReviewData() = Json.decodeFromString<PostReviewData>(this)
+internal fun PostReviewData.toJsonString(): String {
+    val json = Json.encodeToString(this)
+    return URLEncoder.encode(json, "UTF-8")
+}
+
+internal fun String.toReviewData(): PostReviewData {
+    val decoded = URLDecoder.decode(this, "UTF-8")
+    return Json.decodeFromString<PostReviewData>(decoded)
+}
