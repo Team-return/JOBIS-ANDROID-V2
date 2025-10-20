@@ -200,7 +200,7 @@ internal class PostReviewViewModel @Inject constructor(
             postSideEffect(PostReviewSideEffect.MoveToNext(
                 companyId = companyId,
                 interviewerCount = count.toInt(),
-                jobCode = jobCode,
+                jobCode = selectedTech ?: 0,
                 interviewType = interviewType,
                 location = interviewLocation,
             ))
