@@ -19,5 +19,5 @@ internal fun FetchQuestionsResponse.toEntity() = QuestionsEntity( // TODO : Ïù¥Î
 
 private fun FetchQuestionsResponse.Question.toEntity() = QuestionsEntity.QuestionEntity(
     id = this.id,
-    question = "Q. " + this.question,
+    question = this.question,
 )

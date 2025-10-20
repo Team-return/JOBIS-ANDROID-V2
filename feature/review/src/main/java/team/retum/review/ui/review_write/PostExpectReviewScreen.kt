@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +29,7 @@ import team.retum.review.model.PostReviewData
 import team.retum.review.viewmodel.PostExpectReviewSideEffect
 import team.retum.review.viewmodel.PostExpectReviewState
 import team.retum.review.viewmodel.PostExpectReviewViewModel
+import team.retum.review.viewmodel.PostReviewSideEffect
 import team.retum.review.viewmodel.PostReviewViewModel
 
 @Composable
@@ -44,14 +44,28 @@ internal fun PostExpectReview(
     LaunchedEffect(Unit) {
         postExpectReviewViewModel.sideEffect.collect {
             when (it) {
-                is PostExpectReviewSideEffect.MoveToNext -> {
-                    postReviewViewModel.postReview(
-                        reviewData = reviewData.copy(
-                            question = state.question,
-                            answer = state.answer,
-                        )
-                    )
+                is PostExpectReviewSideEffect.PostReview -> {
+                    // TODO :: 면접 후기 작성 완성될 때 까지
+                    Log.d("TEST", reviewData.copy(
+                        question = state.question,
+                        answer = state.answer,
+                    ).toString())
+//                    postReviewViewModel.postReview(
+//                        reviewData = reviewData.copy(
+//                            question = state.question,
+//                            answer = state.answer,
+//                        )
+//                    )
                 }
+            }
+        }
+        postReviewViewModel.sideEffect.collect {
+            if (it is PostReviewSideEffect.Success) {
+                // TODO :: PostReviewComplete 띄우기
+//                showSuccessDialog = true
+//                delay(3.seconds)
+//                showSuccessDialog = false
+//                navController.popBackStack()
             }
         }
     }
@@ -90,7 +104,7 @@ private fun PostExpectReviewScreen(
             modifier = Modifier.padding(top = 30.dp, start = 24.dp, end = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            JobisText(
                 text = "질문",
                 style = JobisTypography.Description
             )
@@ -109,7 +123,7 @@ private fun PostExpectReviewScreen(
             modifier = Modifier.padding(top = 30.dp, start = 24.dp, end = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            JobisText(
                 text = stringResource(R.string.answer),
                 style = JobisTypography.Description
             )

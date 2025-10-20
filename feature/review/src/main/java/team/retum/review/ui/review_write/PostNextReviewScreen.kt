@@ -1,6 +1,5 @@
 package team.retum.review.ui.review_write
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,7 +14,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,7 +40,6 @@ import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.review.model.PostReviewData
 import team.retum.review.viewmodel.PostNextReviewSideEffect
 import team.retum.review.viewmodel.PostNextReviewViewModel
-import team.retum.review.viewmodel.PostReviewViewModel
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 
 @Composable
@@ -56,22 +53,22 @@ internal fun PostNextReview(
     val pagerState = rememberPagerState(pageCount = { state.questions.size })
     val coroutineScope = rememberCoroutineScope()
     val answers = remember { mutableStateListOf("", "", "") }
-    val question: List<String> = state.questions.mapIndexed { _, question ->
-        question.question
-    }
 
     LaunchedEffect(Unit) {
         postNextReviewViewModel.fetchQuestions()
         postNextReviewViewModel.sideEffect.collect {
-            Log.d("TEST", reviewData.toString())
             when (it) {
                 is PostNextReviewSideEffect.MoveToNext -> {
                     navigateToPostExpectReview(
-                        reviewData.copy(qnaElements = it.qnaElements)
+                        reviewData.copy(qnaElements = state.qnaElements)
                     )
                 }
             }
         }
+    }
+
+    LaunchedEffect(answers.toList()) {
+        postNextReviewViewModel.setQuestion(answers.toList())
     }
 
     PostNextReviewScreen(
@@ -80,7 +77,7 @@ internal fun PostNextReview(
         answers = answers,
         coroutineScope = coroutineScope,
         pagerState = pagerState,
-        onPostExpectReviewClick = postNextReviewViewModel::onNextClick
+        onPostExpectReviewClick = postNextReviewViewModel::onNextClick,
     )
 }
 
@@ -93,7 +90,6 @@ private fun PostNextReviewScreen(
     answers: SnapshotStateList<String>,
     onPostExpectReviewClick: () -> Unit,
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -105,7 +101,6 @@ private fun PostNextReviewScreen(
                 }
             },
         )
-
         HorizontalPager(
             state = pagerState,
             modifier = Modifier,
@@ -113,10 +108,10 @@ private fun PostNextReviewScreen(
         ) { page ->
             Column {
                 Column(
-                    modifier = Modifier.padding(horizontal = 24.dp)
+                    modifier = Modifier.padding(horizontal = 24.dp),
                 ) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         repeat(pagerState.pageCount) {
                             val color = if (pagerState.currentPage == it)
@@ -136,14 +131,14 @@ private fun PostNextReviewScreen(
                     }
                     JobisText(
                         modifier = Modifier.padding(vertical = 18.dp),
-                        text = questions[page].question,
+                        text = "Q. " + questions[page].question,
                         style = JobisTypography.PageTitle,
                     )
                     Row(
                         modifier = Modifier.padding(top = 30.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        JobisText(
                             text = stringResource(R.string.answer),
                             style = JobisTypography.Description
                         )
@@ -157,8 +152,8 @@ private fun PostNextReviewScreen(
                 JobisTextField(
                     modifier = Modifier.heightIn(min = 120.dp, max = 300.dp),
                     value = { answers[page] }, // TODO :: viewModel로 로직 이동
-                    onValueChange = { newValue -> // TODO :: ''
-                        answers[page] = newValue
+                    onValueChange = { // TODO :: ''
+                        answers[page] = it
                     },
                     hint = stringResource(R.string.hint_answer_review),
                     singleLine = false,
