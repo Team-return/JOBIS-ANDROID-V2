@@ -14,6 +14,7 @@ const val NAVIGATION_POST_EXPECT_REVIEW = "post_expect_reviews"
 
 fun NavGraphBuilder.postExpectReview(
     onBackPressed: () -> Unit,
+    onPostReviewCompleteClick: () -> Unit,
 ) {
     composable(
         route = "$NAVIGATION_POST_EXPECT_REVIEW/{${ResourceKeys.REVIEW_DATA}}",
@@ -22,6 +23,7 @@ fun NavGraphBuilder.postExpectReview(
         PostExpectReview(
             reviewData = it.getReviewData(),
             onBackPressed = onBackPressed,
+            onPostReviewCompleteClick = onPostReviewCompleteClick,
         )
     }
 }
