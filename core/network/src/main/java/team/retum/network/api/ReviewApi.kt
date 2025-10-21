@@ -20,18 +20,18 @@ interface ReviewApi {
         @Body reviewRequest: PostReviewRequest,
     )
 
-    @GET(RequestUrls.Reviews.reviews) // 컴퍼니쪽 후기 조회
+    @GET(RequestUrls.Reviews.reviews)
     suspend fun fetchReviews(
         @Query("page") page: Int?,
         @Query("location") location: InterviewLocation?,
-        @Query("interview_type") interviewType: InterviewType?,
+        @Query("type") interviewType: InterviewType?,
         @Query("company_id") companyId: Long?,
         @Query("keyword") keyword: String?,
         @Query("year") year: Int?,
         @Query("code") code: Long?,
     ): FetchReviewsResponse
 
-    @GET(RequestUrls.Reviews.details) // 컴퍼니쪽 후기 상세 조회
+    @GET(RequestUrls.Reviews.details)
     suspend fun fetchReviewDetail(
         @Path(RequestUrls.PATH.reviewId) reviewId: String,
     ): FetchReviewDetailResponse
