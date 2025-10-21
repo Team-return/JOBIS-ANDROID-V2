@@ -38,6 +38,7 @@ import team.retum.review.navigation.review_read.navigateToReviewsFilter
 import team.retum.review.navigation.review_read.navigateToSearchReviews
 import team.retum.review.navigation.review_write.navigateToPostExpectReview
 import team.retum.review.navigation.review_write.navigateToPostNextReview
+import team.retum.review.navigation.review_write.navigateToPostReviewComplete
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signup.model.SignUpData
 import team.retum.signup.navigation.navigateToInputEmail
@@ -139,6 +140,10 @@ internal class JobisNavigator(
 
     fun navigateToPostNextReview(reviewData: PostReviewData) {
         navController.navigateToPostNextReview(reviewData = reviewData)
+    }
+
+    fun navigateToPostReviewComplete() {
+        navController.navigateToPostReviewComplete()
     }
 
     fun navigateToPostExpectReview(reviewData: PostReviewData) {
