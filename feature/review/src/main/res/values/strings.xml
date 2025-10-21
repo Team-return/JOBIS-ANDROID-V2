@@ -37,6 +37,8 @@
 
     <!--  Search Review Screen  -->
     <string name="review_hint">검색어를 입력해주세요</string>
+    <string name="search_review_not_find">검색어와 관련 된 면접 후기를 못찾았어요</string>
+    <string name="search_review_expect">제대로 입력했는지 다시 한번 확인해주세요</string>
 
     <!--  Post Next Review Screen  -->
     <string name="hint_answer_review">면접 후기를 성심성의껏 작성해 주세요!</string>
