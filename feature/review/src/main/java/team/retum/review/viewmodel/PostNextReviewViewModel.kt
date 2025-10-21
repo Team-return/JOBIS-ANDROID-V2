@@ -31,11 +31,11 @@ internal class PostNextReviewViewModel @Inject constructor(
     internal fun setQuestion(answers: List<String>) {
         setState {
             with(state.value) {
-                val updatedQuestions = questions.map { it.question }
+                val updatedQuestions = questions.map { it.id }
                 copy(
                     qnaElements = updatedQuestions.zip(answers).map { (q, a) ->
                         PostReviewContent(
-                            question = q.toString(),
+                            question = q,
                             answer = a.toString()
                         )
                     }

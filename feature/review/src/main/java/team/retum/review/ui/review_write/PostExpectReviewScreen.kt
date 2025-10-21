@@ -36,6 +36,7 @@ import team.retum.review.viewmodel.PostReviewViewModel
 internal fun PostExpectReview(
     reviewData: PostReviewData,
     onBackPressed: () -> Unit,
+    onPostReviewCompleteClick: () -> Unit,
     postExpectReviewViewModel: PostExpectReviewViewModel = hiltViewModel(),
 ) {
     val postReviewViewModel: PostReviewViewModel = hiltViewModel()
@@ -45,17 +46,17 @@ internal fun PostExpectReview(
         postExpectReviewViewModel.sideEffect.collect {
             when (it) {
                 is PostExpectReviewSideEffect.PostReview -> {
-                    // TODO :: 면접 후기 작성 완성될 때 까지
                     Log.d("TEST", reviewData.copy(
                         question = state.question,
                         answer = state.answer,
                     ).toString())
-//                    postReviewViewModel.postReview(
-//                        reviewData = reviewData.copy(
-//                            question = state.question,
-//                            answer = state.answer,
-//                        )
-//                    )
+                    // TODO :: 면접 후기 작성 완성될 때 까지
+                    postReviewViewModel.postReview(
+                        reviewData = reviewData.copy(
+                            question = state.question,
+                            answer = state.answer,
+                        )
+                    )
                 }
             }
         }

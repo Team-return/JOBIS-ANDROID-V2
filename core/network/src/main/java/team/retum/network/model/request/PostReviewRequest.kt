@@ -18,7 +18,7 @@ data class PostReviewRequest(
 ) {
     @JsonClass(generateAdapter = true)
     data class PostReviewContentRequest(
-        @Json(name = "question_id") val question: String,
+        @Json(name = "question_id") val question: Long,
         @Json(name = "answer") val answer: String,
     )
 }

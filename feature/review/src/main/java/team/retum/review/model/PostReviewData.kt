@@ -17,12 +17,12 @@ data class PostReviewData(
     val jobCode: Long = 0,
     val interviewerCount: Int = 0,
     val qnaElements: List<PostReviewContent> = emptyList(),
-    val question: Int = 0,
+    val question: String = "",
     val answer: String = "",
 ) {
     @Serializable
     data class PostReviewContent(
-        val question: String = "",
+        val question: Long = 0,
         val answer: String = "",
     )
 }
@@ -40,5 +40,5 @@ internal fun String.toReviewData(): PostReviewData {
 internal fun PostReviewData.PostReviewContent.toEntity(): PostReviewEntity.PostReviewContentEntity =
     PostReviewEntity.PostReviewContentEntity(
         question = this.question,
-        answer = this.answer
+        answer = this.answer,
     )
