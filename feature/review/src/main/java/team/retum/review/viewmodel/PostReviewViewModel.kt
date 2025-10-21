@@ -13,6 +13,7 @@ import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
 import team.retum.common.exception.BadRequestException
 import team.retum.review.model.PostReviewData
+import team.retum.review.model.toEntity
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.PostReviewEntity
 import team.retum.usecase.entity.PostReviewEntity.PostReviewContentEntity
@@ -72,28 +73,16 @@ internal class PostReviewViewModel @Inject constructor(
     private val _qnaElements: SnapshotStateList<PostReviewContentEntity> = mutableStateListOf()
     val qnaElements: List<PostReviewContentEntity> = _qnaElements
 
-    internal fun setQnaElement(answer: List<String>, question: List<String>) {
-        val size = minOf(answer.size, question.size)
-
-        for (index in 0 until size) {
-            val postReviewContent = PostReviewContentEntity(
-                question = answer[index],
-                answer = question[index]
-            )
-            _qnaElements.add(postReviewContent)
-        }
-    }
-
     internal fun postReview(reviewData: PostReviewData) {
         viewModelScope.launch(Dispatchers.IO) {
             postReviewUseCase(
                 postReviewRequest = PostReviewEntity(
-                    interviewType = state.value.interviewType,
-                    location = state.value.interviewLocation,
-                    companyId = state.value.companyId,
-                    jobCode = state.value.jobCode,
-                    interviewerCount = state.value.interviewerCount,
-                    qnaElements = qnaElements,
+                    interviewType = reviewData.interviewType,
+                    location = reviewData.location,
+                    companyId = reviewData.companyId,
+                    jobCode = reviewData.jobCode,
+                    interviewerCount = reviewData.interviewerCount,
+                    qnaElements = reviewData.qnaElements.map { it.toEntity() },
                     question = state.value.question,
                     answer = state.value.answer,
                 )
