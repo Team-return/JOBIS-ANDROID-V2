@@ -10,11 +10,15 @@ const val NAVIGATION_SEARCH_REVIEWS = "search_reviews"
 
 fun NavGraphBuilder.searchReviews(
     onBackPressed: () -> Unit,
+    onReviewDetailClick: (Long) -> Unit,
 ) {
     composable(
         route = NAVIGATION_SEARCH_REVIEWS,
     ) {
-        SearchReviews(onBackPressed = onBackPressed)
+        SearchReviews(
+            onBackPressed = onBackPressed,
+            onReviewDetailClick = onReviewDetailClick,
+        )
     }
 }
 
