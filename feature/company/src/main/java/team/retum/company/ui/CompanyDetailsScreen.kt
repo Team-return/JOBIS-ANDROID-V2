@@ -41,6 +41,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
+import team.retum.jobisdesignsystemv2.review.ReviewContent
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
@@ -272,12 +273,12 @@ private fun Reviews(
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             reviews.forEach {
-//                ReviewContent(
-//                    onClick = navigateToReviewDetails,
-//                    reviewId = it.reviewId,
-//                    writer = it.writer,
-//                    year = it.year,
-//                )
+                ReviewContent(
+                    onClick = navigateToReviewDetails,
+                    reviewId = it.reviewId,
+                    writer = it.writer,
+                    year = it.year,
+                )
             }
         }
         Spacer(modifier = Modifier.height(8.dp))

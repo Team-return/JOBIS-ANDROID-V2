@@ -25,7 +25,7 @@ internal fun Reviews(
     onBackPressed: () -> Unit,
     companyId: Long,
     companyName: String,
-    navigateToReviewDetails: (String, String) -> Unit,
+    navigateToReviewDetails: (Long) -> Unit,
     reviewsViewModel: ReviewsViewModel = hiltViewModel(),
 ) {
     val state by reviewsViewModel.state.collectAsStateWithLifecycle()
@@ -47,7 +47,7 @@ internal fun Reviews(
 private fun ReviewsScreen(
     onBackPressed: () -> Unit,
     companyName: String,
-    onReviewContentClick: (String, String) -> Unit,
+    onReviewContentClick: (Long) -> Unit,
     reviews: ImmutableList<FetchReviewsEntity.Review>,
 ) {
     Column(
