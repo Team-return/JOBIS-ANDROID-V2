@@ -19,12 +19,12 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 
 @Composable
 fun ReviewContent(
-    onClick: (String, String) -> Unit,
-    reviewId: String,
+    onClick: (Long) -> Unit,
+    reviewId: Long,
     writer: String,
     year: String,
 ) {
-    JobisCard(onClick = { onClick(reviewId, writer) }) {
+    JobisCard(onClick = { onClick(reviewId) }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

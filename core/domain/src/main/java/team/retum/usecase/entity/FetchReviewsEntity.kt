@@ -9,7 +9,7 @@ data class FetchReviewsEntity(
 ) {
     @Immutable
     data class Review(
-        val reviewId: String,
+        val reviewId: Long,
         val companyName: String,
         val companyLogoUrl: String,
         val year: String,
