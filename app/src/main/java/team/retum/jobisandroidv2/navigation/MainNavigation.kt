@@ -127,7 +127,7 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
             onPostReviewCompleteClick = navigator::navigateToPostReviewComplete,
         )
-        postReviewComplete(onBackPressed = navigator::popBackStackIfNotHome)
+        postReviewComplete()
         reviewDetails(navigator::popBackStackIfNotHome)
         reviewFilter(onBackPressed = navigator::popBackStackIfNotHome)
         searchReview(

@@ -13,13 +13,11 @@ import team.retum.review.ui.review_write.PostReviewCompleteScreen
 
 const val NAVIGATION_POST_REVIEW_COMPLETE = "postReviewComplete"
 
-fun NavGraphBuilder.postReviewComplete(
-    onBackPressed: () -> Unit,
-) {
+fun NavGraphBuilder.postReviewComplete() {
     composable(
         route = NAVIGATION_POST_REVIEW_COMPLETE,
     ) {
-        PostReviewComplete(onBackPressed = onBackPressed)
+        PostReviewComplete()
     }
 }
 
