@@ -39,11 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
-import team.retum.common.enums.ReviewProcess
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -63,8 +61,6 @@ import team.retum.review.viewmodel.PostReviewState
 import team.retum.review.viewmodel.PostReviewViewModel
 import team.retum.usecase.entity.CodesEntity
 
-const val SEARCH_DELAY: Long = 200
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PostReview(
@@ -81,6 +77,7 @@ internal fun PostReview(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        reviewViewModel.fetchMyReview()
         reviewViewModel.sideEffect.collect {
             when(it) {
                 is PostReviewSideEffect.Success -> {
@@ -114,7 +111,6 @@ internal fun PostReview(
     }
 
     LaunchedEffect(state.keyword) {
-        delay(SEARCH_DELAY)
         reviewViewModel.fetchCodes(state.keyword)
     }
 
@@ -126,7 +122,6 @@ internal fun PostReview(
         pagerState = pagerState,
         state = state,
         companyName = companyName,
-        reviewProcess = state.reviewProcess,
         setInterviewerCount = reviewViewModel::setInterviewerCount,
         setInterviewType = reviewViewModel::setInterviewType,
         setInterviewLocation = reviewViewModel::setInterviewLocation,
@@ -150,7 +145,6 @@ private fun PostReviewScreen(
     pagerState: PagerState,
     state: PostReviewState,
     companyName: String,
-    reviewProcess: ReviewProcess,
     setKeyword: (String?) -> Unit,
     setSelectedTech: (Long?) -> Unit,
     setChecked: (String?) -> Unit,
@@ -171,31 +165,60 @@ private fun PostReviewScreen(
             onBackPressed = onBackPressed,
             title = stringResource(id = R.string.write_review),
         )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 24.dp,
-                )
-                .border(
-                    width = 1.dp,
-                    shape = RoundedCornerShape(12.dp),
-                    color = JobisTheme.colors.surfaceVariant,
-                ),
-        ) {
-            // TODO :: 내가 작성한 후기 조회
-            JobisText(
-                text = stringResource(id = R.string.empty),
-                color = JobisTheme.colors.onSurfaceVariant,
-                style = JobisTypography.HeadLine,
-                textAlign = TextAlign.Center,
+        if (state.myReview.isNotEmpty()) {
+            state.myReview.forEach {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 24.dp,
+                        )
+                        .border(
+                            width = 1.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = JobisTheme.colors.onPrimary,
+                        ),
+                ) {
+                    JobisText(
+                        text = it.companyName,
+                        color = JobisTheme.colors.background,
+                        style = JobisTypography.HeadLine,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                vertical = 16.dp,
+                                horizontal = 16.dp,
+                            ),
+                    )
+                }
+            }
+        } else {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        vertical = 16.dp,
-                        horizontal = 16.dp,
+                        horizontal = 24.dp,
+                    )
+                    .border(
+                        width = 1.dp,
+                        shape = RoundedCornerShape(12.dp),
+                        color = JobisTheme.colors.surfaceVariant,
                     ),
-            )
+            ) {
+                JobisText(
+                    text = stringResource(id = R.string.empty),
+                    color = JobisTheme.colors.onSurfaceVariant,
+                    style = JobisTypography.HeadLine,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            vertical = 16.dp,
+                            horizontal = 16.dp,
+                        ),
+                )
+            }
         }
         JobisButton(
             text = stringResource(id = R.string.add_review),

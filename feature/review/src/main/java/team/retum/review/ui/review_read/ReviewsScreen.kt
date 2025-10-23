@@ -80,7 +80,7 @@ private fun ReviewsScreen(
                 ReviewItems(
                     companyImageUrl = review.companyLogoUrl,
                     companyName = review.companyName,
-                    reviewId = review.reviewId.toLong(),
+                    reviewId = review.reviewId,
                     writer = review.writer,
                     major = review.major,
                     onReviewDetailClick = onReviewDetailClick,

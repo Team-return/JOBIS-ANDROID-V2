@@ -15,9 +15,12 @@ import team.retum.common.exception.BadRequestException
 import team.retum.review.model.PostReviewData
 import team.retum.review.model.toEntity
 import team.retum.usecase.entity.CodesEntity
+import team.retum.usecase.entity.MyReviewsEntity
+import team.retum.usecase.entity.MyReviewsEntity.MyReview
 import team.retum.usecase.entity.PostReviewEntity
 import team.retum.usecase.entity.PostReviewEntity.PostReviewContentEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
+import team.retum.usecase.usecase.review.FetchMyReviewUseCase
 import team.retum.usecase.usecase.review.PostReviewUseCase
 import javax.inject.Inject
 
@@ -25,6 +28,7 @@ import javax.inject.Inject
 internal class PostReviewViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
     private val postReviewUseCase: PostReviewUseCase,
+    private val fetchMyReviewsUseCase: FetchMyReviewUseCase
 ) : BaseViewModel<PostReviewState, PostReviewSideEffect>(PostReviewState.getInitialState()) {
 
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
@@ -122,6 +126,18 @@ internal class PostReviewViewModel @Inject constructor(
             }
         }
 
+    internal fun fetchMyReview() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchMyReviewsUseCase().onSuccess {
+                setState {
+                    state.value.copy(
+                        myReview = it.reviews
+                    )
+                }
+            }
+        }
+    }
+
     internal fun setReviewProcess(reviewProcess: ReviewProcess) {
         setState { state.value.copy(reviewProcess = reviewProcess) }
         setButtonEnabled()
@@ -213,6 +229,7 @@ internal data class PostReviewState(
     val buttonEnabled: Boolean,
     val reviewProcess: ReviewProcess,
     val count: String,
+    val myReview: List<MyReview>,
 ) {
     companion object {
         fun getInitialState() = PostReviewState(
@@ -231,6 +248,7 @@ internal data class PostReviewState(
             jobCode = 0,
             interviewerCount = 0,
             qnaElements = emptyList(),
+            myReview = emptyList(),
         )
     }
 }
