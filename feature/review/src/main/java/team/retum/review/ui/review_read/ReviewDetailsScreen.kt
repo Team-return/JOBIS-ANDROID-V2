@@ -107,7 +107,7 @@ private fun ReviewDetailsScreen(
         )
         when (selectedTabIndex) {
             0 -> InterviewReview(review = reviewDetail.qnaResponse)
-            1 -> ExpectedReview(review = reviewDetail)
+            1 -> if (reviewDetail.qnaResponse.isNotEmpty()) ExpectedReview(review = reviewDetail)
         }
     }
 }

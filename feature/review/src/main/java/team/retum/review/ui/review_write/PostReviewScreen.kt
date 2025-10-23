@@ -271,7 +271,6 @@ private fun AddQuestionBottomSheet(
         ) { page ->
             when (page) {
                 0 -> {
-                    // TODO :: 함수로 구분해서 분리
                     // 면접 구분(개인, 단체, 기타 면접)
                     InterviewCategoryModal(
                         onBackPressed = {
