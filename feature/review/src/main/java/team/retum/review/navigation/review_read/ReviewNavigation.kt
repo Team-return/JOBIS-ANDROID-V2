@@ -3,19 +3,19 @@ package team.retum.review.navigation.review_read
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import team.retum.review.ui.review_read.Reviews
+import team.retum.review.ui.review_read.Review
 
-const val NAVIGATION_REVIEWS = "reviews"
+const val NAVIGATION_REVIEW = "review"
 
-fun NavGraphBuilder.reviews(
+fun NavGraphBuilder.review(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
 ) {
     composable(
-        route = NAVIGATION_REVIEWS,
+        route = NAVIGATION_REVIEW,
     ) {
-        Reviews(
+        Review(
             onReviewFilterClick = onReviewFilterClick,
             onSearchReviewClick = onSearchReviewClick,
             onReviewDetailClick = onReviewDetailClick,
@@ -23,6 +23,6 @@ fun NavGraphBuilder.reviews(
     }
 }
 
-fun NavController.navigateToReviews() {
-    navigate(NAVIGATION_REVIEWS)
+fun NavController.navigateToReview() {
+    navigate(NAVIGATION_REVIEW)
 }

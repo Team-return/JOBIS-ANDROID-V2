@@ -9,7 +9,6 @@ import team.retum.common.utils.ResourceKeys
 import team.retum.review.ui.review_read.ReviewDetails
 
 const val NAVIGATION_REVIEW_DETAILS = "reviewDetails"
-const val WRITER = "writer"
 
 fun NavGraphBuilder.reviewDetails(
     onBackPressed: () -> Unit,

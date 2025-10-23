@@ -7,7 +7,7 @@ import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobis.R
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
-import team.retum.review.navigation.review_read.NAVIGATION_REVIEWS
+import team.retum.review.navigation.review_read.NAVIGATION_REVIEW
 
 sealed class BottomMenu(
     val route: String,
@@ -27,7 +27,7 @@ sealed class BottomMenu(
     )
 
     data object Review : BottomMenu(
-        route = NAVIGATION_REVIEWS,
+        route = NAVIGATION_REVIEW,
         icon = R.drawable.ic_review,
         title = R.string.review,
     )

@@ -12,7 +12,7 @@ import team.retum.review.model.toJsonString
 import team.retum.review.model.toReviewData
 import team.retum.review.ui.review_write.PostNextReview
 
-const val NAVIGATION_POST_NEXT_REVIEW = "post_next_reviews"
+const val NAVIGATION_POST_NEXT_REVIEW = "postNextReview"
 
 fun NavGraphBuilder.postNextReview(
     onBackPressed: () -> Unit,

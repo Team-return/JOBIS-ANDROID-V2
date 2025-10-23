@@ -21,12 +21,12 @@ import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
-import team.retum.review.navigation.review_write.postReview
 import team.retum.review.navigation.review_read.reviewDetails
-import team.retum.review.navigation.review_read.reviewsFilter
-import team.retum.review.navigation.review_read.searchReviews
+import team.retum.review.navigation.review_read.reviewFilter
+import team.retum.review.navigation.review_read.searchReview
 import team.retum.review.navigation.review_write.postExpectReview
 import team.retum.review.navigation.review_write.postNextReview
+import team.retum.review.navigation.review_write.postReview
 import team.retum.review.navigation.review_write.postReviewComplete
 
 const val NAVIGATION_MAIN = "main"
@@ -112,7 +112,7 @@ internal fun NavGraphBuilder.mainNavigation(
         companyDetails(
             onBackPressed = navigator::popBackStackIfNotHome,
             navigateToReviewDetails = navigator::navigateToReviewDetails,
-            navigateToReviews = navigator::navigateToReviews,
+            navigateToReviews = navigator::navigateToReview,
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
         )
         postReview(
@@ -129,8 +129,8 @@ internal fun NavGraphBuilder.mainNavigation(
         )
         postReviewComplete(onBackPressed = navigator::popBackStackIfNotHome)
         reviewDetails(navigator::popBackStackIfNotHome)
-        reviewsFilter(onBackPressed = navigator::popBackStackIfNotHome)
-        searchReviews(
+        reviewFilter(onBackPressed = navigator::popBackStackIfNotHome)
+        searchReview(
             onBackPressed = navigator::popBackStackIfNotHome,
             onReviewDetailClick = navigator::navigateToReviewDetails,
         )

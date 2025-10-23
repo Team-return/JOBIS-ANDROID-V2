@@ -37,36 +37,36 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.review.viewmodel.ReviewsFilterState
-import team.retum.review.viewmodel.ReviewsFilterViewModel
-import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.code
-import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.interviewType
-import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.location
-import team.retum.review.viewmodel.ReviewsFilterViewModel.Companion.year
+import team.retum.review.viewmodel.ReviewFilterViewModel
+import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.code
+import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.interviewType
+import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.location
+import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.year
 import team.retum.usecase.entity.CodesEntity
 
 @Composable
-internal fun ReviewsFilter(
+internal fun ReviewFilter(
     onBackPressed: () -> Unit,
-    reviewsFilterViewModel: ReviewsFilterViewModel = hiltViewModel(),
+    reviewFilterViewModel: ReviewFilterViewModel = hiltViewModel(),
 ) {
-    val state by reviewsFilterViewModel.state.collectAsStateWithLifecycle()
+    val state by reviewFilterViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        reviewsFilterViewModel.getLocalYears()
+        reviewFilterViewModel.getLocalYears()
     }
 
-    ReviewsFilterScreen(
+    ReviewFilterScreen(
         state = state,
         onBackPressed = onBackPressed,
-        onMajorSelected = reviewsFilterViewModel::setSelectedMajor,
-        onYearSelected = reviewsFilterViewModel::setSelectedYear,
-        onInterviewTypeSelected = reviewsFilterViewModel::setSelectedInterviewType,
-        onLocationSelected = reviewsFilterViewModel::setSelectedLocation,
+        onMajorSelected = reviewFilterViewModel::setSelectedMajor,
+        onYearSelected = reviewFilterViewModel::setSelectedYear,
+        onInterviewTypeSelected = reviewFilterViewModel::setSelectedInterviewType,
+        onLocationSelected = reviewFilterViewModel::setSelectedLocation,
     )
 }
 
 @Composable
-private fun ReviewsFilterScreen(
+private fun ReviewFilterScreen(
     state: ReviewsFilterState,
     onBackPressed: () -> Unit,
     onMajorSelected: (Long?) -> Unit,
@@ -140,11 +140,11 @@ private fun Skills(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             maxItemsInEachRow = 5,
         ) {
-            majorList.forEach {
+            majorList.forEach { codes ->
                 MajorContent(
-                    major = it.keyword,
-                    majorId = it.code,
-                    selected = selectedMajorCode == it.code,
+                    major = codes.keyword,
+                    majorId = codes.code,
+                    selected = selectedMajorCode == codes.code,
                     onClick = { onMajorSelected(it) }
                 )
             }
@@ -174,10 +174,10 @@ private fun Years(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             maxItemsInEachRow = 5,
         ) {
-            years.forEach {
+            years.forEach { year ->
                 YearContent(
-                    year = "$it",
-                    selected = selectedYear == it,
+                    year = "$year",
+                    selected = selectedYear == year,
                     onClick = { onYearSelected(it) }
                 )
             }

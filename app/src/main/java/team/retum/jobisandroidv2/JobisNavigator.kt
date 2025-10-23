@@ -31,13 +31,13 @@ import team.retum.notification.navigation.NAVIGATION_NOTIFICATIONS
 import team.retum.notification.navigation.navigateToNotification
 import team.retum.notification.navigation.navigateToNotificationSetting
 import team.retum.review.model.PostReviewData
-import team.retum.review.navigation.review_write.navigateToPostReview
+import team.retum.review.navigation.review_read.navigateToReview
 import team.retum.review.navigation.review_read.navigateToReviewDetails
-import team.retum.review.navigation.review_read.navigateToReviews
-import team.retum.review.navigation.review_read.navigateToReviewsFilter
-import team.retum.review.navigation.review_read.navigateToSearchReviews
+import team.retum.review.navigation.review_read.navigateToReviewFilter
+import team.retum.review.navigation.review_read.navigateToSearchReview
 import team.retum.review.navigation.review_write.navigateToPostExpectReview
 import team.retum.review.navigation.review_write.navigateToPostNextReview
+import team.retum.review.navigation.review_write.navigateToPostReview
 import team.retum.review.navigation.review_write.navigateToPostReviewComplete
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signup.model.SignUpData
@@ -203,18 +203,18 @@ internal class JobisNavigator(
     }
 
     fun navigateToSearchReview() {
-        navController.navigateToSearchReviews()
+        navController.navigateToSearchReview()
     }
 
     fun navigateToReviewFilter() {
-        navController.navigateToReviewsFilter()
+        navController.navigateToReviewFilter()
     }
 
-    fun navigateToReviews(
+    fun navigateToReview(
         companyId: Long,
         companyName: String,
     ) {
-        navController.navigateToReviews()
+        navController.navigateToReview()
     }
 
     fun navigatedFromNotifications(): Boolean {

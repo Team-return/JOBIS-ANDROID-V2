@@ -10,7 +10,7 @@ import team.retum.review.model.PostReviewData
 import team.retum.review.model.toJsonString
 import team.retum.review.ui.review_write.PostExpectReview
 
-const val NAVIGATION_POST_EXPECT_REVIEW = "post_expect_reviews"
+const val NAVIGATION_POST_EXPECT_REVIEW = "postExpectReview"
 
 fun NavGraphBuilder.postExpectReview(
     onBackPressed: () -> Unit,

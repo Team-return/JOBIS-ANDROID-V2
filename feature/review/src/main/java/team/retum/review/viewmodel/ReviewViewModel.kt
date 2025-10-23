@@ -12,7 +12,7 @@ import team.retum.usecase.usecase.review.FetchReviewsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ReviewsViewModel @Inject constructor(
+internal class ReviewViewModel @Inject constructor(
     private val fetchReviewsUseCase: FetchReviewsUseCase,
 ) : BaseViewModel<ReviewsState, Unit>(ReviewsState.getInitialState()) {
 

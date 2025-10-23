@@ -27,8 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class PostReviewViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
+    private val fetchMyReviewsUseCase: FetchMyReviewUseCase,
     private val postReviewUseCase: PostReviewUseCase,
-    private val fetchMyReviewsUseCase: FetchMyReviewUseCase
 ) : BaseViewModel<PostReviewState, PostReviewSideEffect>(PostReviewState.getInitialState()) {
 
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()

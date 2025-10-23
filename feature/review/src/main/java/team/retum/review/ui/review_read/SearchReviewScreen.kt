@@ -17,14 +17,14 @@ import team.retum.review.viewmodel.SearchReviewsState
 import team.retum.review.viewmodel.SearchReviewsViewModel
 
 @Composable
-internal fun SearchReviews(
+internal fun SearchReview(
     onBackPressed: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
     searchViewModel: SearchReviewsViewModel = hiltViewModel(),
 ) {
     val state by searchViewModel.state.collectAsStateWithLifecycle()
 
-    SearchReviewsScreen(
+    SearchReviewScreen(
         state = state,
         onBackPressed = onBackPressed,
         onReviewDetailClick = onReviewDetailClick,
@@ -33,7 +33,7 @@ internal fun SearchReviews(
 }
 
 @Composable
-private fun SearchReviewsScreen(
+private fun SearchReviewScreen(
     state: SearchReviewsState,
     onBackPressed: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,

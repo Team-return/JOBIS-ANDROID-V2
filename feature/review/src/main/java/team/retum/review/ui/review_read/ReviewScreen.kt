@@ -17,31 +17,31 @@ import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.review.ui.component.ReviewItems
-import team.retum.review.viewmodel.ReviewsFilterViewModel
+import team.retum.review.viewmodel.ReviewFilterViewModel
+import team.retum.review.viewmodel.ReviewViewModel
 import team.retum.review.viewmodel.ReviewsState
-import team.retum.review.viewmodel.ReviewsViewModel
 
 @Composable
-internal fun Reviews(
+internal fun Review(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
-    reviewsViewModel: ReviewsViewModel = hiltViewModel(),
+    reviewViewModel: ReviewViewModel = hiltViewModel(),
 ) {
-    val state by reviewsViewModel.state.collectAsStateWithLifecycle()
+    val state by reviewViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        with(reviewsViewModel) {
-            setYear(ReviewsFilterViewModel.year)
-            setCode(ReviewsFilterViewModel.code)
-            setLocation(ReviewsFilterViewModel.location)
-            setInterviewType(ReviewsFilterViewModel.interviewType)
+        with(reviewViewModel) {
+            setYear(ReviewFilterViewModel.year)
+            setCode(ReviewFilterViewModel.code)
+            setLocation(ReviewFilterViewModel.location)
+            setInterviewType(ReviewFilterViewModel.interviewType)
             clearReview()
             fetchReviews()
         }
     }
 
-    ReviewsScreen(
+    ReviewScreen(
         state = state,
         onReviewFilterClick = onReviewFilterClick,
         onSearchReviewClick = onSearchReviewClick,
@@ -50,7 +50,7 @@ internal fun Reviews(
 }
 
 @Composable
-private fun ReviewsScreen(
+private fun ReviewScreen(
     state: ReviewsState,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,

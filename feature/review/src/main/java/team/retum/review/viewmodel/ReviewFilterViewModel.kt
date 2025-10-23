@@ -15,7 +15,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ReviewsFilterViewModel @Inject constructor(
+internal class ReviewFilterViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
 ) : BaseViewModel<ReviewsFilterState, Unit>(initialState = ReviewsFilterState.getDefaultState()) {
 
