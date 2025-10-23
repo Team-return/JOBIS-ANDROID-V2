@@ -27,7 +27,7 @@
     <string name="other">기타</string>
     <string name="check">확인</string>
 
-    <!-- Post Review Complete Screen-->
+    <!-- Post Review Complete Screen -->
     <string name="post_complete_review_check_title">%s님의\n후기가 작성이 완료됐어요!</string>
     <string name="post_complete_review_good_result">후기를 작성해 주셔서 감사합니다!\n좋은결과가 있을 거예요!</string>
 

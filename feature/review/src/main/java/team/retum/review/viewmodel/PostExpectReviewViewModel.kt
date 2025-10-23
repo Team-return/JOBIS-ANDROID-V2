@@ -26,6 +26,16 @@ internal class PostExpectReviewViewModel @Inject constructor(
         state.value.copy(buttonEnabled = answer.isNotBlank() && question.isNotBlank())
     }
 
+    internal fun setEmpty() {
+        with(state.value) {
+            copy(
+                question = "",
+                answer = "",
+            )
+        }
+        onNextClick()
+    }
+
     internal fun onNextClick() {
         with(state.value) {
             postSideEffect(PostExpectReviewSideEffect.PostReview(

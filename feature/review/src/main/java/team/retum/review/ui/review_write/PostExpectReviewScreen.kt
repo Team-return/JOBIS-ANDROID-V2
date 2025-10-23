@@ -73,7 +73,7 @@ internal fun PostExpectReview(
 
     PostExpectReviewScreen(
         onBackPressed = onBackPressed,
-        onReviewFinishClick = postExpectReviewViewModel::onNextClick,
+        onReviewFinishClick = postExpectReviewViewModel::setEmpty,
         answer = { state.answer },
         onAnswerChange = postExpectReviewViewModel::setAnswer,
         question = { state.question },
