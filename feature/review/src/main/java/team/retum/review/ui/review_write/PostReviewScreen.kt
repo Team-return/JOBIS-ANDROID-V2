@@ -20,12 +20,11 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,7 +67,7 @@ import team.retum.usecase.entity.CodesEntity
 
 const val SEARCH_DELAY: Long = 200
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PostReview(
     onBackPressed: () -> Unit,
@@ -78,8 +77,7 @@ internal fun PostReview(
     reviewViewModel: PostReviewViewModel = hiltViewModel(),
 ) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
-    val sheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val sheetState = rememberModalBottomSheetState()
     val sheetScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { 5 })
     val context = LocalContext.current
@@ -140,18 +138,17 @@ internal fun PostReview(
         setSelectedTech = reviewViewModel::setSelectedTech,
         techs = reviewViewModel.techs,
         buttonEnabled = state.buttonEnabled,
-        onPostNextClick = reviewViewModel::onNextClick
+        onPostNextClick = reviewViewModel::onNextClick,
     )
 }
 
-@SuppressLint("CoroutineCreationDuringComposition")
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PostReviewScreen(
     onBackPressed: () -> Unit,
     hideModalBottomSheet: () -> Unit,
     onSheetShow: () -> Unit,
-    sheetState: ModalBottomSheetState,
+    sheetState: SheetState,
     pagerState: PagerState,
     state: PostReviewState,
     companyName: String,
@@ -167,89 +164,85 @@ private fun PostReviewScreen(
     buttonEnabled: Boolean,
     onPostNextClick: () -> Unit
 ) {
-    ModalBottomSheetLayout( // TODO :: Material3로 변경
+    Column(
         modifier = Modifier
             .background(JobisTheme.colors.background)
             .fillMaxSize(),
-        sheetState = sheetState,
-        sheetContent = {
-            if (reviewProcess == ReviewProcess.FINISH) {
-                hideModalBottomSheet()
-            } else {
-                AddQuestionBottomSheet(
-                    state = state,
-                    companyName = companyName,
-                    pagerState = pagerState,
-                    sheetState = sheetState,
-                    setInterviewType = setInterviewType,
-                    setInterviewLocation = setInterviewLocation,
-                    setInterviewerCount = setInterviewerCount,
-                    setButtonClear = setButtonClear,
-                    setKeyword = setKeyword,
-                    setSelectedTech = setSelectedTech,
-                    setChecked = setChecked,
-                    techs = techs,
-                    buttonEnabled = buttonEnabled,
-                    onNextClick = onPostNextClick
-                )
-            }
-        },
-        sheetShape = RoundedCornerShape(
-            topStart = 12.dp,
-            topEnd = 12.dp,
-        ),
-        sheetBackgroundColor = JobisTheme.colors.inverseSurface,
     ) {
-        Column(
+        JobisLargeTopAppBar(
+            onBackPressed = onBackPressed,
+            title = stringResource(id = R.string.write_review),
+        )
+        Box(
             modifier = Modifier
-                .background(JobisTheme.colors.background)
-                .fillMaxSize(),
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 24.dp,
+                )
+                .border(
+                    width = 1.dp,
+                    shape = RoundedCornerShape(12.dp),
+                    color = JobisTheme.colors.surfaceVariant,
+                ),
         ) {
-            JobisLargeTopAppBar(
-                onBackPressed = onBackPressed,
-                title = stringResource(id = R.string.write_review),
-            )
-            Box(
+            // TODO :: 내가 작성한 후기 조회
+            JobisText(
+                text = stringResource(id = R.string.empty),
+                color = JobisTheme.colors.onSurfaceVariant,
+                style = JobisTypography.HeadLine,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = 24.dp,
-                    )
-                    .border(
-                        width = 1.dp,
-                        shape = RoundedCornerShape(12.dp),
-                        color = JobisTheme.colors.surfaceVariant,
+                        vertical = 16.dp,
+                        horizontal = 16.dp,
                     ),
-            ) {
-                JobisText(
-                    text = stringResource(id = R.string.empty),
-                    color = JobisTheme.colors.onSurfaceVariant,
-                    style = JobisTypography.HeadLine,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            vertical = 16.dp,
-                            horizontal = 16.dp,
-                        ),
-                )
-            }
-            JobisButton(
-                text = stringResource(id = R.string.add_review),
-                onClick = {
-                    onSheetShow()
-                },
             )
         }
+        JobisButton(
+            text = stringResource(id = R.string.add_review),
+            onClick = {
+                onSheetShow()
+            },
+        )
+    }
+    ModalBottomSheet(
+        modifier = Modifier
+            .background(JobisTheme.colors.background)
+            .fillMaxSize(),
+        containerColor = JobisTheme.colors.inverseSurface,
+        shape = RoundedCornerShape(
+            topStart = 12.dp,
+            topEnd = 12.dp,
+        ),
+        onDismissRequest = hideModalBottomSheet,
+    ) {
+        AddQuestionBottomSheet(
+            state = state,
+            companyName = companyName,
+            pagerState = pagerState,
+            sheetState = sheetState,
+            setInterviewType = setInterviewType,
+            setInterviewLocation = setInterviewLocation,
+            setInterviewerCount = setInterviewerCount,
+            setButtonClear = setButtonClear,
+            setKeyword = setKeyword,
+            setSelectedTech = setSelectedTech,
+            setChecked = setChecked,
+            techs = techs,
+            buttonEnabled = buttonEnabled,
+            onNextClick = onPostNextClick
+        )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddQuestionBottomSheet(
     state: PostReviewState,
     companyName: String,
     pagerState: PagerState,
-    sheetState: ModalBottomSheetState,
+    sheetState: SheetState,
     setKeyword: (String?) -> Unit,
     setSelectedTech: (Long?) -> Unit,
     setChecked: (String?) -> Unit,
