@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -433,20 +432,17 @@ private fun InterviewTypeSelector(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewType == InterviewType.INDIVIDUAL,
                 text = stringResource(id = R.string.individual_review),
-                onButtonClick = { onClick(InterviewType.INDIVIDUAL) },
-            )
+            ) { onClick(InterviewType.INDIVIDUAL) }
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewType == InterviewType.GROUP,
-                text = stringResource(id = R.string.group_review),
-                onButtonClick = { onClick(InterviewType.GROUP) }
-            )
+                text = stringResource(id = R.string.group_review)
+            ) { onClick(InterviewType.GROUP) }
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewType == InterviewType.OTHER,
-                text = stringResource(id = R.string.other_review),
-                onButtonClick = { onClick(InterviewType.OTHER) }
-            )
+                text = stringResource(id = R.string.other_review)
+            ) { onClick(InterviewType.OTHER) }
         }
         JobisButton(
             modifier = Modifier.padding(top = 12.dp),
@@ -518,26 +514,22 @@ private fun InterviewLocationSelector(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.DAEJEON,
                 text = stringResource(id = R.string.deajeon),
-                onButtonClick = { onClick(InterviewLocation.DAEJEON) },
-            )
+            ) { onClick(InterviewLocation.DAEJEON) }
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.SEOUL,
-                text = stringResource(id = R.string.seoul),
-                onButtonClick = { onClick(InterviewLocation.SEOUL) }
-            )
+                text = stringResource(id = R.string.seoul)
+            ) { onClick(InterviewLocation.SEOUL) }
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.GYEONGGI,
-                text = stringResource(id = R.string.gyeonggi),
-                onButtonClick = { onClick(InterviewLocation.GYEONGGI) }
-            )
+                text = stringResource(id = R.string.gyeonggi)
+            ) { onClick(InterviewLocation.GYEONGGI) }
             PostReviewOutlinedStrokeText(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 selected = interviewLocation == InterviewLocation.OTHER,
-                text = stringResource(id = R.string.other),
-                onButtonClick = { onClick(InterviewLocation.OTHER) }
-            )
+                text = stringResource(id = R.string.other)
+            ) { onClick(InterviewLocation.OTHER) }
         }
         JobisButton(
             modifier = Modifier.padding(top = 12.dp),
@@ -845,7 +837,7 @@ private fun TopBottomText(
 }
 
 @Composable
-private fun ColumnScope.PostReviewOutlinedStrokeText(
+private fun PostReviewOutlinedStrokeText(
     modifier: Modifier = Modifier,
     selected: Boolean,
     text: String,
