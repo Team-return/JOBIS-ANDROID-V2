@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--  post Review Screen -->
     <string name="question">질문</string>
     <string name="answer">답변</string>
     <string name="write_review">다른 학생들을 위하여\n면접의 후기를 작성해주세요</string>
@@ -31,6 +32,7 @@
 
     <!--Review Screen-->
     <string name="review">후기</string>
+    <string name="review_bad_request">잘 못 된 요청이에요</string>
 
     <!--Review Filter Screen-->
     <string name="appliance">적용하기</string>

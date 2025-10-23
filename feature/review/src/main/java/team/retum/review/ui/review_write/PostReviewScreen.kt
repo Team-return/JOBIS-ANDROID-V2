@@ -104,11 +104,11 @@ internal fun PostReview(
                     )
                 }
 
-                // TODO :: 에러 토스트로 변경
                 PostReviewSideEffect.BadRequest -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.added_question),
+                        message = context.getString(R.string.review_bad_request),
+                        drawable = JobisIcon.Error
                     ).show()
                 }
             }
@@ -265,8 +265,9 @@ private fun AddQuestionBottomSheet(
             when (page) {
                 0 -> {
                     // 면접 구분(개인, 단체, 기타 면접)
-                    InterviewCategoryModal(
+                    InterviewTypeSelector(
                         onBackPressed = {
+                            // TODO :: 뷰모델에서 처리
                             coroutineScope.launch {
                                 setButtonClear()
                                 sheetState.hide()
@@ -288,7 +289,7 @@ private fun AddQuestionBottomSheet(
 
                 1 -> {
                     // 면접 지역(대전, 서울, 경기, 기타)
-                    InterviewLocationModal(
+                    InterviewLocationSelector(
                         onBackPressed = {
                             coroutineScope.launch {
                                 setButtonClear()
@@ -311,7 +312,7 @@ private fun AddQuestionBottomSheet(
 
                 2 -> {
                     // 지원 직무 :: 전공만 조회
-                    SupportPositionModal(
+                    ApplyMajorSelector(
                         onBackPressed = {
                             coroutineScope.launch {
                                 setButtonClear()
@@ -335,7 +336,7 @@ private fun AddQuestionBottomSheet(
                 }
                 3 -> {
                     // 면접관 수 :: 숫자만 입력
-                    InterviewerCountModal(
+                    InterviewerCountSelector(
                         onBackPressed = {
                             coroutineScope.launch {
                                 setButtonClear()
@@ -356,7 +357,6 @@ private fun AddQuestionBottomSheet(
                     )
                 }
                 4 -> {
-                    // 면접 환경 입력한 부분 확인 페이지
                     InterviewSummary(
                         onBackPressed = {
                             coroutineScope.launch {
@@ -375,7 +375,7 @@ private fun AddQuestionBottomSheet(
 }
 
 @Composable
-private fun InterviewCategoryModal(
+private fun InterviewTypeSelector(
     onBackPressed: () -> Unit,
     pagerTotalCount: Int,
     currentPager: Int,
@@ -460,7 +460,7 @@ private fun InterviewCategoryModal(
 }
 
 @Composable
-private fun InterviewLocationModal(
+private fun InterviewLocationSelector(
     onBackPressed: () -> Unit,
     pagerTotalCount: Int,
     currentPager: Int,
@@ -551,7 +551,7 @@ private fun InterviewLocationModal(
 }
 
 @Composable
-private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역할을 하는 지 우선 ex) 지원 직무 x -> 전공 조회 o
+private fun ApplyMajorSelector(
     onBackPressed: () -> Unit,
     setKeyword: (String?) -> Unit,
     setSelectedTech: (Long?) -> Unit,
@@ -663,7 +663,7 @@ private fun SupportPositionModal( // todo :: 이름 리팩토링 -> 어떤 역�
 }
 
 @Composable
-private fun InterviewerCountModal(
+private fun InterviewerCountSelector(
     onBackPressed: () -> Unit,
     setInterviewerCount: (String) -> Unit,
     state: PostReviewState,
