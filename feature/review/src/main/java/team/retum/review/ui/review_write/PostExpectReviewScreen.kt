@@ -50,7 +50,7 @@ internal fun PostExpectReview(
                         question = state.question,
                         answer = state.answer,
                     ).toString())
-                    // TODO :: 면접 후기 작성 완성될 때 까지
+                    // TODO :: 면접 후기 작성 완성될 때 까지 비활성화
                     postReviewViewModel.postReview(
                         reviewData = reviewData.copy(
                             question = state.question,
