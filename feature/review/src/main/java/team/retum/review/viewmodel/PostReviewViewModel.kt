@@ -1,7 +1,13 @@
 package team.retum.review.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,23 +28,32 @@ import team.retum.usecase.entity.PostReviewEntity.PostReviewContentEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
 import team.retum.usecase.usecase.review.FetchMyReviewUseCase
 import team.retum.usecase.usecase.review.PostReviewUseCase
+import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class PostReviewViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
     private val fetchMyReviewsUseCase: FetchMyReviewUseCase,
+    private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val postReviewUseCase: PostReviewUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<PostReviewState, PostReviewSideEffect>(PostReviewState.getInitialState()) {
 
+    init {
+        fetchStudentInfo()
+    }
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
         private set
 
-    var reviews: SnapshotStateList<PostReviewContentEntity> = mutableStateListOf()
-        private set
+    var companyId: Long
+        get() = savedStateHandle.get<Long>("companyId") ?: 0L
+        set(value) { savedStateHandle["companyId"] = value }
 
-    var keywords: SnapshotStateList<String> = mutableStateListOf()
-        private set
+    var companyName: String
+        get() = savedStateHandle.get<String>("companyName") ?: ""
+        set(value) { savedStateHandle["companyName"] = value }
+
 
     internal fun setInit() =
         setState {
@@ -53,6 +68,22 @@ internal class PostReviewViewModel @Inject constructor(
                 reviewProcess = ReviewProcess.QUESTION,
             )
         }
+
+    internal fun setCompanyId(companyId: Long) {
+        this.companyId = companyId
+    }
+
+    internal fun setCompanyName(companyName: String) {
+        this.companyName = companyName
+    }
+
+    private fun fetchStudentInfo() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchStudentInformationUseCase().onSuccess {
+                setState { state.value.copy(studentName = it.studentName) }
+            }
+        }
+    }
 
     internal fun setQuestion(question: String) {
         setState { state.value.copy(question = question) }
@@ -73,9 +104,6 @@ internal class PostReviewViewModel @Inject constructor(
             )
         }
     }
-
-    private val _qnaElements: SnapshotStateList<PostReviewContentEntity> = mutableStateListOf()
-    val qnaElements: List<PostReviewContentEntity> = _qnaElements
 
     internal fun postReview(reviewData: PostReviewData) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -136,11 +164,6 @@ internal class PostReviewViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    internal fun setReviewProcess(reviewProcess: ReviewProcess) {
-        setState { state.value.copy(reviewProcess = reviewProcess) }
-        setButtonEnabled()
     }
 
     private fun setButtonEnabled() {
@@ -214,6 +237,7 @@ internal class PostReviewViewModel @Inject constructor(
 }
 
 internal data class PostReviewState(
+    val studentName: String,
     val interviewType: InterviewType,
     val interviewLocation: InterviewLocation,
     val companyId: Long,
@@ -233,6 +257,7 @@ internal data class PostReviewState(
 ) {
     companion object {
         fun getInitialState() = PostReviewState(
+            studentName = "",
             question = "",
             answer = "",
             keyword = "",

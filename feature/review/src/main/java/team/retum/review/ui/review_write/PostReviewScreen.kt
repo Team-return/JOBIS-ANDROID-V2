@@ -77,6 +77,8 @@ internal fun PostReview(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        reviewViewModel.setCompanyId(companyId)
+        reviewViewModel.setCompanyName(companyName)
         reviewViewModel.fetchMyReview()
         reviewViewModel.sideEffect.collect {
             when(it) {
@@ -121,7 +123,7 @@ internal fun PostReview(
         sheetState = sheetState,
         pagerState = pagerState,
         state = state,
-        companyName = companyName,
+        companyName = reviewViewModel.companyName,
         setInterviewerCount = reviewViewModel::setInterviewerCount,
         setInterviewType = reviewViewModel::setInterviewType,
         setInterviewLocation = reviewViewModel::setInterviewLocation,
