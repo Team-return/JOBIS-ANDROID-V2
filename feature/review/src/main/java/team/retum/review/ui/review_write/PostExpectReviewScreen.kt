@@ -46,10 +46,6 @@ internal fun PostExpectReview(
         postExpectReviewViewModel.sideEffect.collect {
             when (it) {
                 is PostExpectReviewSideEffect.PostReview -> {
-                    Log.d("TEST", reviewData.copy(
-                        question = state.question,
-                        answer = state.answer,
-                    ).toString())
                     // TODO :: 면접 후기 작성 완성될 때 까지 비활성화
                     postReviewViewModel.postReview(
                         reviewData = reviewData.copy(
@@ -60,14 +56,12 @@ internal fun PostExpectReview(
                 }
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
         postReviewViewModel.sideEffect.collect {
-            if (it is PostReviewSideEffect.Success) {
-                // TODO :: PostReviewComplete 띄우기
-//                showSuccessDialog = true
-//                delay(3.seconds)
-//                showSuccessDialog = false
-//                navController.popBackStack()
-            }
+            if (it is PostReviewSideEffect.Success)
+                onPostReviewCompleteClick
         }
     }
 
