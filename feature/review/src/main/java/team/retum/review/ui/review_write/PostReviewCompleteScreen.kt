@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,17 +17,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
-import team.retum.review.viewmodel.PostReviewCompleteViewModel
+import team.retum.review.viewmodel.PostReviewViewModel
+
+const val SCREEN_TIME = 1500L
 
 @Composable
 internal fun PostReviewComplete(
-    postReviewCompleteViewModel: PostReviewCompleteViewModel = hiltViewModel()
+    navigateToPostReview: (String, Long) -> Unit,
+    postReviewViewModel: PostReviewViewModel = hiltViewModel(),
 ) {
-    val state by postReviewCompleteViewModel.state.collectAsStateWithLifecycle()
+    val state by postReviewViewModel.state.collectAsStateWithLifecycle()
+
+
+    LaunchedEffect(Unit) {
+        delay(SCREEN_TIME)
+        navigateToPostReview(postReviewViewModel.companyName, postReviewViewModel.companyId)
+    }
 
     PostReviewCompleteScreen(
         studentName = state.studentName,
