@@ -5,7 +5,7 @@ import team.retum.usecase.entity.toEntity
 import javax.inject.Inject
 
 class FetchMyReviewUseCase @Inject constructor(
-    private val reviewRepository: ReviewRepository
+    private val reviewRepository: ReviewRepository,
 ) {
     suspend operator fun invoke() = runCatching {
         reviewRepository.fetchMyReviews().toEntity()

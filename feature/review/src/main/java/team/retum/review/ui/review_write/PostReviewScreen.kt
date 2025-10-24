@@ -77,8 +77,7 @@ internal fun PostReview(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        reviewViewModel.setCompanyId(companyId)
-        reviewViewModel.setCompanyName(companyName)
+        reviewViewModel.setInit(companyId = companyId, companyName = companyName)
         reviewViewModel.fetchMyReview()
         reviewViewModel.sideEffect.collect {
             when(it) {
@@ -123,7 +122,7 @@ internal fun PostReview(
         sheetState = sheetState,
         pagerState = pagerState,
         state = state,
-        companyName = reviewViewModel.companyName,
+        companyName = reviewViewModel.companyName.toString(),
         setInterviewerCount = reviewViewModel::setInterviewerCount,
         setInterviewType = reviewViewModel::setInterviewType,
         setInterviewLocation = reviewViewModel::setInterviewLocation,
@@ -290,7 +289,6 @@ private fun AddQuestionBottomSheet(
                     // 면접 구분(개인, 단체, 기타 면접)
                     InterviewTypeSelector(
                         onBackPressed = {
-                            // TODO :: 뷰모델에서 처리
                             coroutineScope.launch {
                                 setButtonClear()
                                 sheetState.hide()
@@ -578,7 +576,6 @@ private fun ApplyMajorSelector(
     onNextClick: () -> Unit,
     techs: List<CodesEntity.CodeEntity>,
 ) {
-    // TODO :: 리팩토링 우선
     Column(
         modifier = Modifier
             .heightIn(max = 600.dp)

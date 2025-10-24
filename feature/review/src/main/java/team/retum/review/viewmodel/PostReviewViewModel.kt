@@ -11,6 +11,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
@@ -46,35 +47,13 @@ internal class PostReviewViewModel @Inject constructor(
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
         private set
 
-    var companyId: Long
-        get() = savedStateHandle.get<Long>("companyId") ?: 0L
-        set(value) { savedStateHandle["companyId"] = value }
+    val companyId: StateFlow<Long> = savedStateHandle.getStateFlow("companyId", 0L)
+    val companyName: StateFlow<String> = savedStateHandle.getStateFlow("companyName", "")
 
-    var companyName: String
-        get() = savedStateHandle.get<String>("companyName") ?: ""
-        set(value) { savedStateHandle["companyName"] = value }
-
-
-    internal fun setInit() =
-        setState {
-            state.value.copy(
-                question = "",
-                answer = "",
-                keyword = "",
-                checked = "",
-                selectedTech = 0,
-                tech = null,
-                buttonEnabled = false,
-                reviewProcess = ReviewProcess.QUESTION,
-            )
-        }
-
-    internal fun setCompanyId(companyId: Long) {
-        this.companyId = companyId
-    }
-
-    internal fun setCompanyName(companyName: String) {
-        this.companyName = companyName
+    internal fun setInit(companyId: Long, companyName: String) {
+        savedStateHandle["companyId"] = companyId
+        savedStateHandle["companyName"] = companyName
+        setState { PostReviewState.getInitialState() }
     }
 
     private fun fetchStudentInfo() {

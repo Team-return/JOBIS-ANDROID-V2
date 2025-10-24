@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import team.retum.network.model.response.FetchQuestionsResponse
 
 data class QuestionsEntity(
-    val questions: List<QuestionEntity>
+    val questions: List<QuestionEntity>,
 ) {
     @Immutable
     data class QuestionEntity(

@@ -1,6 +1,5 @@
 package team.retum.usecase.entity
 
-import androidx.compose.runtime.Immutable
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.network.model.request.PostReviewRequest

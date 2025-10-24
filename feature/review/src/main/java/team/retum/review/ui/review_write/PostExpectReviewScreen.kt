@@ -46,7 +46,6 @@ internal fun PostExpectReview(
         postExpectReviewViewModel.sideEffect.collect {
             when (it) {
                 is PostExpectReviewSideEffect.PostReview -> {
-                    // TODO :: 면접 후기 작성 완성될 때 까지 비활성화
                     postReviewViewModel.postReview(
                         reviewData = reviewData.copy(
                             question = state.question,

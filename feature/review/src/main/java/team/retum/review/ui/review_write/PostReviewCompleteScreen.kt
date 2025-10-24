@@ -36,7 +36,7 @@ internal fun PostReviewComplete(
 
     LaunchedEffect(Unit) {
         delay(SCREEN_TIME)
-        navigateToPostReview(postReviewViewModel.companyName, postReviewViewModel.companyId)
+        navigateToPostReview(postReviewViewModel.companyName.value, postReviewViewModel.companyId.value)
     }
 
     PostReviewCompleteScreen(
