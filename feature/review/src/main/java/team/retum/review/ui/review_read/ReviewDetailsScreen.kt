@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -41,6 +42,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.review.viewmodel.ReviewDetailsViewModel
 import team.retum.usecase.entity.FetchReviewDetailEntity
 
@@ -55,6 +57,7 @@ internal fun ReviewDetails(
         "예상 질문",
     )
     val state by reviewDetailsViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(reviewId) {
         // TODO : 실 값 들어왔을 때 UI 호출
@@ -66,7 +69,12 @@ internal fun ReviewDetails(
         reviewDetail = state.reviewDetail,
         tabs = tabs.toPersistentList(),
         selectedTabIndex = state.selectedTabIndex,
-        onSelectTab = { reviewDetailsViewModel.setTabIndex(it) },
+        onSelectTab = {
+            if(state.reviewDetail.answer.isBlank() || state.reviewDetail.question.isBlank()) {
+                return@ReviewDetailsScreen
+            }
+            reviewDetailsViewModel.setTabIndex(it)
+        },
         onBackPressed = onBackPressed,
     )
 }
@@ -101,12 +109,11 @@ private fun ReviewDetailsScreen(
         )
         when (selectedTabIndex) {
             0 -> InterviewReview(review = reviewDetail.qnaResponse)
-            1 -> if (reviewDetail.qnaResponse.isNotEmpty()) ExpectedReview(review = reviewDetail)
+            1 -> ExpectedReview(review = reviewDetail)
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun StudentInfo(
     writer: String,
@@ -196,9 +203,8 @@ private fun InterviewReview(
 
 @Composable
 private fun ExpectedReview(
-    review: FetchReviewDetailEntity
+    review: FetchReviewDetailEntity,
 ) {
-    var showQuestionDetail by remember { mutableStateOf(false) }
     JobisCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -208,7 +214,7 @@ private fun ExpectedReview(
             )
             .clip(RoundedCornerShape(12.dp))
             .background(JobisTheme.colors.surfaceVariant),
-        onClick = { showQuestionDetail = !showQuestionDetail },
+        onClick = {},
     ) {
         Row(
             modifier = Modifier
