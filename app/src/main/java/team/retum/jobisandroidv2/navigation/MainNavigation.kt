@@ -21,13 +21,13 @@ import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
-import team.retum.review.navigation.review_read.reviewDetails
-import team.retum.review.navigation.review_read.reviewFilter
-import team.retum.review.navigation.review_read.searchReview
-import team.retum.review.navigation.review_write.postExpectReview
-import team.retum.review.navigation.review_write.postNextReview
-import team.retum.review.navigation.review_write.postReview
-import team.retum.review.navigation.review_write.postReviewComplete
+import team.retum.post_review.navigation.postExpectReview
+import team.retum.post_review.navigation.postNextReview
+import team.retum.post_review.navigation.postReview
+import team.retum.post_review.navigation.postReviewComplete
+import team.retum.review.navigation.reviewDetails
+import team.retum.review.navigation.reviewFilter
+import team.retum.review.navigation.searchReview
 
 const val NAVIGATION_MAIN = "main"
 

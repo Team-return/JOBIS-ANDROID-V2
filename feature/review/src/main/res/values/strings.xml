@@ -1,36 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  post Review Screen -->
-    <string name="question">질문</string>
-    <string name="answer">답변</string>
-    <string name="write_review">다른 학생들을 위하여\n면접의 후기를 작성해주세요</string>
-    <string name="add_question">질문 추가하기</string>
-    <string name="add_review">후기 추가하기</string>
-    <string name="empty">현재 입력 된 질문이 없어요</string>
-    <string name="added_question">질문이 추가되었어요!</string>
-    <string name="next">다음</string>
-    <string name="tech">기술 스택</string>
-    <string name="finish">작성 완료</string>
-    <string name="please_write_review">후기를 작성해주세요</string>
-    <string name="search">검색어를 입력해주세요</string>
-    <string name="example">example</string>
-    <string name="review_category">면접 구분</string>
-    <string name="review_location">면접 지역</string>
-    <string name="support_position">지원 직무</string>
-    <string name="interviewer_count">면접관 수</string>
-    <string name="individual_review">개인 면접</string>
-    <string name="group_review">단체 면접</string>
-    <string name="other_review">기타 면접</string>
-    <string name="deajeon">대전</string>
-    <string name="seoul">서울</string>
-    <string name="gyeonggi">경기</string>
-    <string name="other">기타</string>
-    <string name="check">확인</string>
-
-    <!-- Post Review Complete Screen -->
-    <string name="post_complete_review_check_title">%s님의\n후기가 작성이 완료됐어요!</string>
-    <string name="post_complete_review_good_result">후기를 작성해 주셔서 감사합니다!\n좋은결과가 있을 거예요!</string>
-
     <!--Review Details Screen-->
     <string name="review_questions">받은 면접 질문</string>
 
@@ -45,7 +14,4 @@
     <string name="review_hint">검색어를 입력해주세요</string>
     <string name="search_review_not_find">검색어와 관련 된 면접 후기를 못찾았어요</string>
     <string name="search_review_expect">제대로 입력했는지 다시 한번 확인해주세요</string>
-
-    <!--  Post Next Review Screen  -->
-    <string name="hint_answer_review">면접 후기를 성심성의껏 작성해 주세요!</string>
 </resources>
