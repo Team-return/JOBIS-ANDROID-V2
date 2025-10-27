@@ -32,7 +32,6 @@ internal class PostReviewViewModel @Inject constructor(
     private val fetchMyReviewsUseCase: FetchMyReviewUseCase,
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val postReviewUseCase: PostReviewUseCase,
-    private val savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<PostReviewState, PostReviewSideEffect>(PostReviewState.getInitialState()) {
 
     init {
@@ -40,15 +39,6 @@ internal class PostReviewViewModel @Inject constructor(
     }
     var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
         private set
-
-    val companyId: StateFlow<Long> = savedStateHandle.getStateFlow("companyId", 0L)
-    val companyName: StateFlow<String> = savedStateHandle.getStateFlow("companyName", "")
-
-    internal fun setInit(companyId: Long, companyName: String) {
-        savedStateHandle["companyId"] = companyId
-        savedStateHandle["companyName"] = companyName
-        setState { PostReviewState.getInitialState() }
-    }
 
     private fun fetchStudentInfo() {
         viewModelScope.launch(Dispatchers.IO) {
