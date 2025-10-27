@@ -78,8 +78,8 @@ internal class PostReviewViewModel @Inject constructor(
                     jobCode = reviewData.jobCode,
                     interviewerCount = reviewData.interviewerCount,
                     qnaElements = reviewData.qnaElements.map { it.toEntity() },
-                    question = state.value.question,
-                    answer = state.value.answer,
+                    question = reviewData.question,
+                    answer = reviewData.answer,
                 )
             ).onSuccess {
                 postSideEffect(PostReviewSideEffect.Success)
@@ -131,7 +131,7 @@ internal class PostReviewViewModel @Inject constructor(
 
     private fun setButtonEnabled() {
         when (state.value.reviewProcess) {
-            ReviewProcess.QUESTION -> {
+            ReviewProcess.INTERVIEW_TYPE -> {
                 setState { state.value.copy(buttonEnabled = state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) }
             }
 
@@ -228,7 +228,7 @@ internal data class PostReviewState(
             selectedTech = 0,
             tech = null,
             buttonEnabled = false,
-            reviewProcess = ReviewProcess.QUESTION,
+            reviewProcess = ReviewProcess.INTERVIEW_TYPE,
             interviewType = InterviewType.INDIVIDUAL,
             interviewLocation = InterviewLocation.DAEJEON, // TODO :: 널처리(선택 해제) 고려
             count = "",
