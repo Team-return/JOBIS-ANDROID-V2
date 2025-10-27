@@ -36,7 +36,7 @@ internal class PostNextReviewViewModel @Inject constructor(
                     qnaElements = updatedQuestions.zip(answers).map { (q, a) ->
                         PostReviewContent(
                             question = q,
-                            answer = a.toString()
+                            answer = a
                         )
                     }
                 )

@@ -59,7 +59,7 @@ internal fun PostExpectReview(
     LaunchedEffect(Unit) {
         postReviewViewModel.sideEffect.collect {
             if (it is PostReviewSideEffect.Success)
-                onPostReviewCompleteClick
+                onPostReviewCompleteClick()
         }
     }
 
@@ -108,8 +108,8 @@ private fun PostExpectReviewScreen(
             )
         }
         JobisTextField(
-            value = answer,
-            onValueChange = onAnswerChange,
+            value = question,
+            onValueChange = onQuestionChange,
             hint = "받았던 질문을 작성해 주세요.",
         )
         Row(
@@ -128,8 +128,8 @@ private fun PostExpectReviewScreen(
         }
         JobisTextField(
             modifier = Modifier.heightIn(min = 120.dp, max = 300.dp),
-            value = question,
-            onValueChange = onQuestionChange,
+            value = answer,
+            onValueChange = onAnswerChange,
             hint = "예상 질문 답변을 성심성의껏 작성해 주세요!",
             singleLine = false,
         )
