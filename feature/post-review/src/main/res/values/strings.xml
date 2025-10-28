@@ -28,11 +28,31 @@
     <string name="check">확인</string>
     <string name="post_review_success">리뷰가 성공적으로 작성 되었어요!</string>
     <string name="post_review_bad_request">잘 못 된 요청이에요</string>
+    <string name="review_complete_suffix">%s 후기 작성 완료</string>
+    <string name="content_description_required">Required</string>
+    <string name="required_answer">답변</string>
+    <string name="interview_type_label">면접 구분</string>
+    <string name="interview_location_label">면접 지역</string>
+    <string name="position_label">지원 직무</string>
+    <string name="interviewer_count_label">면접관 수</string>
+    <string name="company_name">업체명</string>
 
     <!-- Post Review Complete Screen -->
     <string name="post_complete_review_check_title">%s님의\n후기가 작성이 완료됐어요!</string>
     <string name="post_complete_review_good_result">후기를 작성해 주셔서 감사합니다!\n좋은결과가 있을 거예요!</string>
+    <string name="content_description_review_success">review_make_success</string>
 
     <!--  Post Next Review Screen  -->
     <string name="hint_answer_review">면접 후기를 성심성의껏 작성해 주세요!</string>
+    <string name="question_prefix">Q. </string>
+    <string name="next_button">다음</string>
+
+    <!-- Post Expect Review Screen -->
+    <string name="add_interview_question_title">받았던 면접 질문을 추가해주세요!</string>
+    <string name="question_label">질문</string>
+    <string name="required_mark">*</string>
+    <string name="hint_write_question">받았던 질문을 작성해 주세요.</string>
+    <string name="hint_write_answer">예상 질문 답변을 성심성의껏 작성해 주세요!</string>
+    <string name="skip_button">건너뛸래요.</string>
+    <string name="complete">완료</string>
 </resources>

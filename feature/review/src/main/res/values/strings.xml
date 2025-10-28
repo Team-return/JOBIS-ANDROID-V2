@@ -2,13 +2,35 @@
 <resources>
     <!--Review Details Screen-->
     <string name="review_questions">받은 면접 질문</string>
+    <string name="interview_review">면접 후기</string>
+    <string name="expected_question">예상 질문</string>
+    <string name="review_detail_title">면접후기 상세보기</string>
+    <string name="review_writer_title">%1$s님의 %2$s</string>
+    <string name="interviewer_count_format">면접관 수 : %s</string>
+    <string name="individual_interview">개인 면접</string>
+    <string name="group_interview">단체 면접</string>
+    <string name="other_interview">기타 면접</string>
+    <string name="daejeon">대전</string>
+    <string name="seoul">서울</string>
+    <string name="gyeonggi">경기</string>
+    <string name="other">기타</string>
+    <string name="content_description_arrow_down">arrow_down</string>
+    <string name="question_q">Q</string>
+    <string name="answer_a">A</string>
 
     <!--Review Screen-->
     <string name="review">후기</string>
     <string name="review_bad_request">잘 못 된 요청이에요</string>
+    <string name="content_description_filter">filter</string>
+    <string name="content_description_search">search</string>
 
     <!--Review Filter Screen-->
     <string name="appliance">적용하기</string>
+    <string name="filter_setting">필터 설정</string>
+    <string name="major">전공</string>
+    <string name="year">년도</string>
+    <string name="interview_category">면접 구분</string>
+    <string name="region">지역</string>
 
     <!--  Search Review Screen  -->
     <string name="review_hint">검색어를 입력해주세요</string>
