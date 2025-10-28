@@ -1,4 +1,4 @@
-package team.retum.post_review.viewmodel
+package team.retum.post.review.viewmodel
 
 import androidx.compose.runtime.Immutable
 import dagger.hilt.android.lifecycle.HiltViewModel

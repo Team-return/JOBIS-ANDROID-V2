@@ -1,4 +1,4 @@
-package team.retum.post_review
+package team.retum.post.review
 
 import org.junit.Test
 

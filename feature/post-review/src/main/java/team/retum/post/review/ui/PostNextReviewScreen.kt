@@ -38,8 +38,8 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.post_review.R
 import team.retum.post_review.model.PostReviewData
-import team.retum.post_review.viewmodel.PostNextReviewSideEffect
-import team.retum.post_review.viewmodel.PostNextReviewViewModel
+import team.retum.post.review.viewmodel.PostNextReviewSideEffect
+import team.retum.post.review.viewmodel.PostNextReviewViewModel
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 
 @Composable

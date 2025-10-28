@@ -1,4 +1,4 @@
-package team.retum.post_review.model
+package team.retum.post.review.model
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString

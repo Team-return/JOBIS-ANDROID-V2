@@ -56,9 +56,9 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.post_review.R
 import team.retum.post_review.model.PostReviewData
-import team.retum.post_review.viewmodel.PostReviewSideEffect
-import team.retum.post_review.viewmodel.PostReviewState
-import team.retum.post_review.viewmodel.PostReviewViewModel
+import team.retum.post.review.viewmodel.PostReviewSideEffect
+import team.retum.post.review.viewmodel.PostReviewState
+import team.retum.post.review.viewmodel.PostReviewViewModel
 import team.retum.usecase.entity.CodesEntity
 
 const val PAGER_COUNT = 4

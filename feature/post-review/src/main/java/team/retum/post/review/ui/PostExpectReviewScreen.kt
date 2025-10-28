@@ -1,4 +1,4 @@
-package team.retum.post_review.ui
+package team.retum.post.review.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import team.retum.post_review.R
+import team.retum.post.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -24,12 +24,12 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
-import team.retum.post_review.model.PostReviewData
+import team.retum.post.review.model.PostReviewData
 import team.retum.post_review.viewmodel.PostExpectReviewSideEffect
 import team.retum.post_review.viewmodel.PostExpectReviewState
 import team.retum.post_review.viewmodel.PostExpectReviewViewModel
-import team.retum.post_review.viewmodel.PostReviewSideEffect
-import team.retum.post_review.viewmodel.PostReviewViewModel
+import team.retum.post.review.viewmodel.PostReviewSideEffect
+import team.retum.post.review.viewmodel.PostReviewViewModel
 
 @Composable
 internal fun PostExpectReview(
