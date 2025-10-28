@@ -9,7 +9,6 @@ import team.retum.common.utils.ResourceKeys
 import team.retum.post.review.model.PostReviewData
 import team.retum.post.review.model.toJsonString
 import team.retum.post.review.ui.PostExpectReview
-import team.retum.post_review.navigation.getReviewData
 
 const val NAVIGATION_POST_EXPECT_REVIEW = "postExpectReview"
 

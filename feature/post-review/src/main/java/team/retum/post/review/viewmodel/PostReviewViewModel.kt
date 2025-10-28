@@ -12,8 +12,8 @@ import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
 import team.retum.common.exception.BadRequestException
-import team.retum.post_review.model.PostReviewData
-import team.retum.post_review.model.toEntity
+import team.retum.post.review.model.PostReviewData
+import team.retum.post.review.model.toEntity
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.MyReviewsEntity.MyReview
 import team.retum.usecase.entity.PostReviewEntity

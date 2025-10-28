@@ -21,10 +21,10 @@ import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
-import team.retum.post_review.navigation.postExpectReview
-import team.retum.post_review.navigation.postNextReview
-import team.retum.post_review.navigation.postReview
-import team.retum.post_review.navigation.postReviewComplete
+import team.retum.post.review.navigation.postExpectReview
+import team.retum.post.review.navigation.postNextReview
+import team.retum.post.review.navigation.postReview
+import team.retum.post.review.navigation.postReviewComplete
 import team.retum.review.navigation.reviewDetails
 import team.retum.review.navigation.reviewFilter
 import team.retum.review.navigation.searchReview

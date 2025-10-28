@@ -1,4 +1,4 @@
-package team.retum.post_review.ui
+package team.retum.post.review.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -54,8 +54,8 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.retum.post_review.R
-import team.retum.post_review.model.PostReviewData
+import team.retum.post.review.R
+import team.retum.post.review.model.PostReviewData
 import team.retum.post.review.viewmodel.PostReviewSideEffect
 import team.retum.post.review.viewmodel.PostReviewState
 import team.retum.post.review.viewmodel.PostReviewViewModel

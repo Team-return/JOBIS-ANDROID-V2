@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.post_review.model.PostReviewData.PostReviewContent
+import team.retum.post.review.model.PostReviewData.PostReviewContent
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 import team.retum.usecase.usecase.review.FetchQuestionsUseCase
 import javax.inject.Inject

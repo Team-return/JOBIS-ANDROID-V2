@@ -25,9 +25,9 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
 import team.retum.post.review.model.PostReviewData
-import team.retum.post_review.viewmodel.PostExpectReviewSideEffect
-import team.retum.post_review.viewmodel.PostExpectReviewState
-import team.retum.post_review.viewmodel.PostExpectReviewViewModel
+import team.retum.post.review.viewmodel.PostExpectReviewSideEffect
+import team.retum.post.review.viewmodel.PostExpectReviewState
+import team.retum.post.review.viewmodel.PostExpectReviewViewModel
 import team.retum.post.review.viewmodel.PostReviewSideEffect
 import team.retum.post.review.viewmodel.PostReviewViewModel
 

@@ -30,11 +30,11 @@ import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.NAVIGATION_NOTIFICATIONS
 import team.retum.notification.navigation.navigateToNotification
 import team.retum.notification.navigation.navigateToNotificationSetting
-import team.retum.post_review.model.PostReviewData
-import team.retum.post_review.navigation.navigateToPostExpectReview
-import team.retum.post_review.navigation.navigateToPostNextReview
-import team.retum.post_review.navigation.navigateToPostReview
-import team.retum.post_review.navigation.navigateToPostReviewComplete
+import team.retum.post.review.model.PostReviewData
+import team.retum.post.review.navigation.navigateToPostExpectReview
+import team.retum.post.review.navigation.navigateToPostNextReview
+import team.retum.post.review.navigation.navigateToPostReview
+import team.retum.post.review.navigation.navigateToPostReviewComplete
 import team.retum.review.navigation.navigateToReview
 import team.retum.review.navigation.navigateToReviewDetails
 import team.retum.review.navigation.navigateToReviewFilter

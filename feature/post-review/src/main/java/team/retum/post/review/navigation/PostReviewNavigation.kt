@@ -1,4 +1,4 @@
-package team.retum.post_review.navigation
+package team.retum.post.review.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -6,8 +6,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import team.retum.common.utils.ResourceKeys
-import team.retum.post_review.model.PostReviewData
-import team.retum.post_review.ui.PostReview
+import team.retum.post.review.model.PostReviewData
+import team.retum.post.review.ui.PostReview
 import kotlin.text.toLongOrNull
 
 const val NAVIGATION_POST_REVIEW = "postReview"
