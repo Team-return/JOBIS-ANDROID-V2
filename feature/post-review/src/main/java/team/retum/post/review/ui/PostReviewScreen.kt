@@ -176,7 +176,7 @@ private fun PostReviewScreen(
                             .background(color = JobisTheme.colors.onPrimary, shape = RoundedCornerShape(12.dp)),
                     ) {
                         JobisText(
-                            text = "${myReview.companyName} 후기 작성 완료",
+                            text = stringResource(id = R.string.review_complete_suffix, myReview.companyName),
                             color = JobisTheme.colors.background,
                             style = JobisTypography.HeadLine,
                             textAlign = TextAlign.Center,
@@ -360,13 +360,13 @@ private fun InterviewTypeBottomSheet(
                 modifier = Modifier.padding(horizontal = 24.dp),
             ) {
                 JobisText(
-                    text = "답변",
+                    text = stringResource(id = R.string.required_answer),
                     color = JobisTheme.colors.onSurface,
                     style = JobisTypography.Description
                 )
                 Icon(
                     painter = painterResource(JobisIcon.Asterisk),
-                    contentDescription = "Required",
+                    contentDescription = stringResource(id = R.string.content_description_required),
                     tint = JobisTheme.colors.secondary,
                     modifier = Modifier.size(12.dp)
                 )
@@ -464,13 +464,13 @@ private fun InterviewLocationBottomSheet(
                 modifier = Modifier.padding(horizontal = 24.dp),
             ) {
                 JobisText(
-                    text = "답변",
+                    text = stringResource(id = R.string.required_answer),
                     color = JobisTheme.colors.onSurface,
                     style = JobisTypography.Description
                 )
                 Icon(
                     painter = painterResource(JobisIcon.Asterisk),
-                    contentDescription = "Required",
+                    contentDescription = stringResource(id = R.string.content_description_required),
                     tint = JobisTheme.colors.secondary,
                     modifier = Modifier.size(12.dp)
                 )
@@ -689,13 +689,13 @@ private fun InterviewerCountBottomSheet(
                 modifier = Modifier.padding(horizontal = 24.dp),
             ) {
                 JobisText(
-                    text = "답변",
+                    text = stringResource(id = R.string.required_answer),
                     color = JobisTheme.colors.onSurface,
                     style = JobisTypography.Description
                 )
                 Icon(
                     painter = painterResource(JobisIcon.Asterisk),
-                    contentDescription = "Required",
+                    contentDescription = stringResource(id = R.string.content_description_required),
                     tint = JobisTheme.colors.secondary,
                     modifier = Modifier.size(12.dp)
                 )
@@ -732,15 +732,15 @@ private fun SummaryBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val interviewType = when (state.interviewType) {
-        InterviewType.INDIVIDUAL -> "개인 면접"
-        InterviewType.GROUP -> "단체 면접"
-        InterviewType.OTHER -> "기타 면접"
+        InterviewType.INDIVIDUAL -> stringResource(id = R.string.individual_review)
+        InterviewType.GROUP -> stringResource(id = R.string.group_review)
+        InterviewType.OTHER -> stringResource(id = R.string.other_review)
     }
     val interviewLocation = when (state.interviewLocation) {
-        InterviewLocation.DAEJEON -> "대전"
-        InterviewLocation.SEOUL -> "서울"
-        InterviewLocation.GYEONGGI -> "경기"
-        InterviewLocation.OTHER -> "기타"
+        InterviewLocation.DAEJEON -> stringResource(id = R.string.deajeon)
+        InterviewLocation.SEOUL -> stringResource(id = R.string.seoul)
+        InterviewLocation.GYEONGGI -> stringResource(id = R.string.gyeonggi)
+        InterviewLocation.OTHER -> stringResource(id = R.string.other)
     }
 
     ModalBottomSheet(
@@ -779,23 +779,23 @@ private fun SummaryBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 TopBottomText(
-                    topText = "면접 구분",
+                    topText = stringResource(id = R.string.interview_type_label),
                     bottomText = interviewType,
                 )
                 TopBottomText(
-                    topText = "면접 지역",
+                    topText = stringResource(id = R.string.interview_location_label),
                     bottomText = interviewLocation
                 )
                 TopBottomText(
-                    topText = "업체명",
+                    topText = stringResource(id = R.string.company_name),
                     bottomText = companyName.removeSuffix("..."),
                 )
                 TopBottomText(
-                    topText = "지원 직무",
+                    topText = stringResource(id = R.string.position_label),
                     bottomText = state.keyword ?: "",
                 )
                 TopBottomText(
-                    topText = "면접관 수",
+                    topText = stringResource(id = R.string.interviewer_count_label),
                     bottomText = state.count,
                 )
             }

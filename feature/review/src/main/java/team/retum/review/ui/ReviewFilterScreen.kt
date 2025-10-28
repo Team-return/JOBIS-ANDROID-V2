@@ -78,7 +78,7 @@ private fun ReviewFilterScreen(
         Column {
             JobisSmallTopAppBar(
                 onBackPressed = onBackPressed,
-                title = "필터 설정",
+                title = stringResource(id = R.string.filter_setting),
             )
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
@@ -130,7 +130,7 @@ private fun Skills(
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
-            text = "전공",
+            text = stringResource(id = R.string.major),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
@@ -164,7 +164,7 @@ private fun Years(
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
-            text = "년도",
+            text = stringResource(id = R.string.year),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
@@ -195,22 +195,22 @@ private fun InterviewType(
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
-            text = "면접 구분",
+            text = stringResource(id = R.string.interview_category),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
         ReviewCheckBox(
-            title = "개인 면접",
+            title = stringResource(id = R.string.individual_interview),
             checked = selectedInterviewType == InterviewType.INDIVIDUAL,
             onClick = { onInterviewTypeSelected(InterviewType.INDIVIDUAL) },
         )
         ReviewCheckBox(
-            title = "단체 면접",
+            title = stringResource(id = R.string.group_interview),
             checked = selectedInterviewType == InterviewType.GROUP,
             onClick = { onInterviewTypeSelected(InterviewType.GROUP) },
         )
         ReviewCheckBox(
-            title = "기타 면접",
+            title = stringResource(id = R.string.other_interview),
             checked = selectedInterviewType == InterviewType.OTHER,
             onClick = { onInterviewTypeSelected(InterviewType.OTHER) },
         )
@@ -227,27 +227,27 @@ private fun Location(
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
-            text = "지역",
+            text = stringResource(id = R.string.region),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
         ReviewCheckBox(
-            title = "대전",
+            title = stringResource(id = R.string.daejeon),
             checked = selectedLocation == InterviewLocation.DAEJEON,
             onClick = { onLocationSelected(InterviewLocation.DAEJEON) },
         )
         ReviewCheckBox(
-            title = "서울",
+            title = stringResource(id = R.string.seoul),
             checked = selectedLocation == InterviewLocation.SEOUL,
             onClick = { onLocationSelected(InterviewLocation.SEOUL) },
         )
         ReviewCheckBox(
-            title = "경기",
+            title = stringResource(id = R.string.gyeonggi),
             checked = selectedLocation == InterviewLocation.GYEONGGI,
             onClick = { onLocationSelected(InterviewLocation.GYEONGGI) },
         )
         ReviewCheckBox(
-            title = "기타",
+            title = stringResource(id = R.string.other),
             checked = selectedLocation == InterviewLocation.OTHER,
             onClick = { onLocationSelected(InterviewLocation.OTHER) },
         )

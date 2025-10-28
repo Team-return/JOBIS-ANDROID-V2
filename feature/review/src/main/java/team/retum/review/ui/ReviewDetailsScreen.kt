@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -51,8 +52,8 @@ internal fun ReviewDetails(
     reviewDetailsViewModel: ReviewDetailsViewModel = hiltViewModel(),
 ) {
     val tabs = listOf(
-        "면접 후기",
-        "예상 질문",
+        stringResource(id = R.string.interview_review),
+        stringResource(id = R.string.expected_question),
     )
     val state by reviewDetailsViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -87,7 +88,7 @@ private fun ReviewDetailsScreen(
 ) {
     Column {
         JobisSmallTopAppBar(
-            title = "면접후기 상세보기",
+            title = stringResource(id = R.string.review_detail_title),
             onBackPressed = onBackPressed,
         )
         TabBar(
@@ -134,7 +135,11 @@ private fun StudentInfo(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             JobisText(
-                text = "${writer}님의 ${if (selectedTabIndex != 0) {"예상 질문"} else {"면접 후기"}}",
+                text = stringResource(
+                    id = R.string.review_writer_title,
+                    writer,
+                    if (selectedTabIndex != 0) stringResource(id = R.string.expected_question) else stringResource(id = R.string.interview_review),
+                ),
                 style = JobisTypography.PageTitle,
             )
             Row(
@@ -159,17 +164,17 @@ private fun StudentInfo(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             val type = when (type) {
-                InterviewType.INDIVIDUAL -> "개인 면접"
-                InterviewType.GROUP -> "단체 면접"
-                InterviewType.OTHER -> "기타 면접"
+                InterviewType.INDIVIDUAL -> stringResource(id = R.string.individual_interview)
+                InterviewType.GROUP -> stringResource(id = R.string.group_interview)
+                InterviewType.OTHER -> stringResource(id = R.string.other_interview)
             }
             val location = when (location) {
-                InterviewLocation.DAEJEON -> "대전"
-                InterviewLocation.SEOUL -> "서울"
-                InterviewLocation.GYEONGGI -> "경기"
-                InterviewLocation.OTHER -> "기타"
+                InterviewLocation.DAEJEON -> stringResource(id = R.string.daejeon)
+                InterviewLocation.SEOUL -> stringResource(id = R.string.seoul)
+                InterviewLocation.GYEONGGI -> stringResource(id = R.string.gyeonggi)
+                InterviewLocation.OTHER -> stringResource(id = R.string.other)
             }
-            val items = listOf(companyName, location, type, "면접관 수 : $interviewerCount")
+            val items = listOf(companyName, location, type, stringResource(id = R.string.interviewer_count_format, interviewerCount))
 
             items.forEachIndexed { index, item ->
                 JobisText(
@@ -295,7 +300,7 @@ private fun ReviewContent(
                             Spacer(modifier = Modifier.weight(1f))
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_arrow_down),
-                                contentDescription = "arrow_down",
+                                contentDescription = stringResource(id = R.string.content_description_arrow_down),
                                 modifier = Modifier.align(Alignment.CenterVertically),
                             )
                         }
@@ -305,7 +310,7 @@ private fun ReviewContent(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             JobisText(
-                                text = "Q",
+                                text = stringResource(id = R.string.question_q),
                                 color = JobisTheme.colors.onPrimary,
                                 style = JobisTypography.SubHeadLine.copy(fontSize = 24.sp),
                             )
@@ -319,7 +324,7 @@ private fun ReviewContent(
                             Spacer(modifier = Modifier.weight(1f))
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_arrow_down),
-                                contentDescription = "arrow_down",
+                                contentDescription = stringResource(id = R.string.content_description_arrow_down),
                             )
                         }
                         Row(
@@ -327,7 +332,7 @@ private fun ReviewContent(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             JobisText(
-                                text = "A",
+                                text = stringResource(id = R.string.answer_a),
                                 color = JobisTheme.colors.onPrimary,
                                 style = JobisTypography.Description.copy(fontSize = 24.sp),
                                 textAlign = TextAlign.Center,

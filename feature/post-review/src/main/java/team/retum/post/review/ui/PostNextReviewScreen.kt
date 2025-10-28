@@ -129,7 +129,7 @@ private fun PostNextReviewScreen(
                     }
                     JobisText(
                         modifier = Modifier.padding(vertical = 18.dp),
-                        text = "Q. " + questions[page].question,
+                        text = stringResource(id = R.string.question_prefix) + questions[page].question,
                         style = JobisTypography.PageTitle,
                     )
                     Row(
@@ -141,7 +141,7 @@ private fun PostNextReviewScreen(
                             style = JobisTypography.Description,
                         )
                         JobisText(
-                            text = " *",
+                            text = stringResource(id = R.string.required_mark),
                             style = JobisTypography.Description,
                             color = JobisTheme.colors.onPrimary,
                         )
@@ -158,7 +158,7 @@ private fun PostNextReviewScreen(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 JobisButton(
-                    text = "다음",
+                    text = stringResource(id = R.string.next),
                     color = ButtonColor.Primary,
                     onClick = {
                         coroutineScope.launch {

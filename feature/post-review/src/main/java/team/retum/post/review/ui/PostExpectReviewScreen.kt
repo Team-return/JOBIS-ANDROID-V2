@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import team.retum.post.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -24,6 +23,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.post.review.R
 import team.retum.post.review.model.PostReviewData
 import team.retum.post.review.viewmodel.PostExpectReviewSideEffect
 import team.retum.post.review.viewmodel.PostExpectReviewState
@@ -91,7 +91,7 @@ private fun PostExpectReviewScreen(
         )
         JobisText(
             modifier = Modifier.padding(vertical = 18.dp, horizontal = 24.dp),
-            text = "받았던 면접 질문을 추가해주세요!",
+            text = stringResource(id = R.string.add_interview_question_title),
             style = JobisTypography.PageTitle,
         )
         Row(
@@ -99,11 +99,11 @@ private fun PostExpectReviewScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             JobisText(
-                text = "질문",
+                text = stringResource(id = R.string.question_label),
                 style = JobisTypography.Description,
             )
             JobisText(
-                text = " *",
+                text = stringResource(id = R.string.required_mark),
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onPrimary,
             )
@@ -111,7 +111,7 @@ private fun PostExpectReviewScreen(
         JobisTextField(
             value = question,
             onValueChange = onQuestionChange,
-            hint = "받았던 질문을 작성해 주세요.",
+            hint = stringResource(id = R.string.hint_write_question),
         )
         Row(
             modifier = Modifier.padding(top = 30.dp, start = 24.dp, end = 24.dp),
@@ -122,7 +122,7 @@ private fun PostExpectReviewScreen(
                 style = JobisTypography.Description,
             )
             JobisText(
-                text = " *",
+                text = stringResource(id = R.string.required_mark),
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onPrimary,
             )
@@ -131,7 +131,7 @@ private fun PostExpectReviewScreen(
             modifier = Modifier.heightIn(min = 120.dp, max = 300.dp),
             value = answer,
             onValueChange = onAnswerChange,
-            hint = "예상 질문 답변을 성심성의껏 작성해 주세요!",
+            hint = stringResource(id = R.string.hint_write_answer),
             singleLine = false,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -140,13 +140,13 @@ private fun PostExpectReviewScreen(
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = 4.dp)
                 .clickable { onReviewFinishClick() },
-            text = "건너뛸래요.",
+            text = stringResource(id = R.string.skip_button),
             style = JobisTypography.SubBody,
             textDecoration = TextDecoration.Underline,
             color = JobisTheme.colors.surfaceTint,
         )
         JobisButton(
-            text = "완료",
+            text = stringResource(id = R.string.complete),
             color = ButtonColor.Primary,
             onClick = onReviewFinishClick,
             enabled = state.buttonEnabled,

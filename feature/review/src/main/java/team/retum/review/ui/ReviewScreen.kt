@@ -64,13 +64,13 @@ private fun ReviewScreen(
         JobisLargeTopAppBar(title = stringResource(id = R.string.review)) {
             JobisIconButton(
                 drawableResId = JobisIcon.Filter,
-                contentDescription = "filter",
+                contentDescription = stringResource(id = R.string.content_description_filter),
                 onClick = onReviewFilterClick,
                 tint = JobisTheme.colors.onPrimary,
             )
             JobisIconButton(
                 drawableResId = JobisIcon.Search,
-                contentDescription = "search",
+                contentDescription = stringResource(id = R.string.content_description_search),
                 onClick = onSearchReviewClick,
             )
         }

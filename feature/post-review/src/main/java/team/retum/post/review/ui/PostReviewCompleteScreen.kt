@@ -61,7 +61,7 @@ private fun PostReviewCompleteScreen(
         ) {
             Image(
                 painter = painterResource(team.retum.design_system.R.drawable.ic_success),
-                contentDescription = "review_make_success",
+                contentDescription = stringResource(id = R.string.content_description_review_success),
             )
             JobisText(
                 modifier = Modifier.padding(
