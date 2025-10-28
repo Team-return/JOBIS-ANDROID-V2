@@ -30,6 +30,12 @@ internal class ReviewFilterViewModel @Inject constructor(
         fetchCodes()
     }
 
+    /**
+     * Fetches job-type codes and updates the view state’s `majorList` with the fetched codes on success.
+     *
+     * If the fetch succeeds, the current `ReviewsFilterState` is replaced with a copy whose `majorList`
+     * contains the retrieved codes.
+     */
     private fun fetchCodes() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase(
@@ -46,6 +52,9 @@ internal class ReviewFilterViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Sets the state's `years` to the inclusive range from 2020 through the next calendar year.
+     */
     internal fun getLocalYears() {
         val startYear = 2020
         val endYear = LocalDate.now().year + 1
@@ -58,6 +67,13 @@ internal class ReviewFilterViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Toggles the selected major code in the view state.
+     *
+     * If `majorCode` equals the currently selected major code, the selection is cleared; otherwise the selection is set to `majorCode`.
+     *
+     * @param majorCode The major code to select or `null` to clear selection.
+     */
     internal fun setSelectedMajor(majorCode: Long?) {
         setState {
             state.value.copy(
@@ -66,6 +82,11 @@ internal class ReviewFilterViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Toggles the selected year filter: selects the given year or clears the selection if it's already selected.
+     *
+     * @param year The year to select; if it matches the current selection the selection is cleared.
+     */
     internal fun setSelectedYear(year: Int?) {
         setState {
             state.value.copy(
@@ -74,6 +95,11 @@ internal class ReviewFilterViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Toggles the selected interview type filter.
+     *
+     * @param type The interview type to select; if it equals the current selection the selection is cleared. Passing `null` clears the selection.
+     */
     internal fun setSelectedInterviewType(type: InterviewType?) {
         setState {
             state.value.copy(
@@ -82,6 +108,11 @@ internal class ReviewFilterViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Toggles the selected interview location filter.
+     *
+     * @param location The interview location to select. If this equals the current selection, the selection is cleared (set to `null`); otherwise it becomes the new selection.
+     */
     internal fun setSelectedLocation(location: InterviewLocation?) {
         setState {
             state.value.copy(
@@ -101,6 +132,11 @@ data class ReviewsFilterState(
     val selectedLocation: InterviewLocation? = null,
 ) {
     companion object {
+        /**
+         * Creates the default ReviewsFilterState with no available options and no selections.
+         *
+         * @return A ReviewsFilterState whose `years` and `majorList` are empty lists and whose selected fields (`selectedMajorCode`, `selectedYear`, `selectedInterviewType`, `selectedLocation`) are `null`.
+         */
         fun getDefaultState() = ReviewsFilterState(
             years = emptyList(),
             majorList = emptyList(),
@@ -111,4 +147,3 @@ data class ReviewsFilterState(
         )
     }
 }
-

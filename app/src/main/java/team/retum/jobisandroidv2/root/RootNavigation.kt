@@ -10,6 +10,14 @@ import team.retum.common.model.ApplicationData
 const val NAVIGATION_ROOT = "root"
 const val APPLICATION_ID = "applicationId"
 
+/**
+ * Adds the root navigation destination and wires UI callbacks into the Root composable.
+ *
+ * This defines the route "$NAVIGATION_ROOT{$APPLICATION_ID}" with a String `APPLICATION_ID` argument,
+ * parses that argument to a Long and forwards it as `applicationId` to Root along with all provided callbacks.
+ *
+ * @param navigatedFromNotifications True when navigation originated from a notification; forwarded to Root.
+ */
 fun NavGraphBuilder.root(
     onAlarmClick: () -> Unit,
     onEmploymentClick: () -> Unit,

@@ -24,6 +24,11 @@ data class FetchReviewDetailEntity(
     )
 }
 
+/**
+ * Converts a FetchReviewDetailResponse into a FetchReviewDetailEntity.
+ *
+ * @return A FetchReviewDetailEntity with metadata fields copied from the response and `qnaResponse` transformed into a list of entity `QnAs`.
+ */
 internal fun FetchReviewDetailResponse.toEntity() = FetchReviewDetailEntity(
     reviewId = this.reviewId,
     companyName = this.companyName,
@@ -38,6 +43,11 @@ internal fun FetchReviewDetailResponse.toEntity() = FetchReviewDetailEntity(
     answer = this.answer,
 )
 
+/**
+ * Convert a response QnA model into its entity representation.
+ *
+ * @return A FetchReviewDetailEntity.QnAs containing the same `id`, `question`, and `answer` as the receiver.
+ */
 private fun FetchReviewDetailResponse.QnAs.toEntity() = FetchReviewDetailEntity.QnAs(
     id = this.id,
     question = this.question,

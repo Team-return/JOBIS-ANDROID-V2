@@ -17,6 +17,14 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
+/**
+ * Displays a tappable card showing a review's author and year.
+ *
+ * @param onClick Callback invoked with [reviewId] when the card is clicked.
+ * @param reviewId Identifier for the review that will be passed to [onClick].
+ * @param writer Text displayed as the review's author.
+ * @param year Text displayed as the review's year.
+ */
 @Composable
 fun ReviewContent(
     onClick: (Long) -> Unit,

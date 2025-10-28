@@ -7,6 +7,13 @@ import team.retum.review.ui.Review
 
 const val NAVIGATION_REVIEW = "review"
 
+/**
+ * Registers the Review screen route on this NavGraphBuilder and binds navigation callbacks.
+ *
+ * @param onReviewFilterClick Invoked when the review filter action is triggered.
+ * @param onSearchReviewClick Invoked when the review search action is triggered.
+ * @param onReviewDetailClick Invoked with the selected review's ID when a review item is opened for details.
+ */
 fun NavGraphBuilder.review(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
@@ -23,6 +30,9 @@ fun NavGraphBuilder.review(
     }
 }
 
+/**
+ * Navigates to the Review screen route.
+ */
 fun NavController.navigateToReview() {
     navigate(NAVIGATION_REVIEW)
 }

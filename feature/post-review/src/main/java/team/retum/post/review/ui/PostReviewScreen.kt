@@ -63,6 +63,16 @@ import team.retum.usecase.entity.CodesEntity
 
 const val PAGER_COUNT = 4
 
+/**
+ * Hosts the post-review multi-step UI, collects state from the view model, and handles navigation and side effects during the review flow.
+ *
+ * Collects view model state, listens for side effects (success toast, navigation to the next review step with PostReviewData, and bad-request toast), triggers code fetches when the search keyword changes, and controls which bottom-sheet step is shown.
+ *
+ * @param onBackPressed Callback invoked when the user requests to navigate back.
+ * @param companyName The display name of the company shown in the UI.
+ * @param companyId The identifier for the company included in the final PostReviewData when navigating to the next review screen.
+ * @param navigateToPostNextReview Callback invoked with PostReviewData when the review flow completes and navigation to the next screen should occur.
+ */
 @Composable
 internal fun PostReview(
     onBackPressed: () -> Unit,
@@ -134,6 +144,18 @@ internal fun PostReview(
     )
 }
 
+/**
+ * Renders the post-review screen and drives the multi-step bottom-sheet flow for creating a review.
+ *
+ * Displays the user's existing reviews (or an empty state) with a button to start adding a review,
+ * and conditionally shows one of the review bottom sheets based on `currentStep`.
+ *
+ * @param state The UI state for the post-review flow (selected values, existing reviews, and UI flags).
+ * @param currentStep The active review step to display as a bottom sheet, or `null` to hide sheets.
+ * @param companyName The company name shown in the summary bottom sheet.
+ * @param techs The observable list of available technology codes to show in the tech selection sheet.
+ * @param buttonEnabled Whether the bottom-sheet "Next" button should be enabled.
+ */
 @Composable
 private fun PostReviewScreen(
     onBackPressed: () -> Unit,
@@ -300,6 +322,18 @@ private fun PostReviewScreen(
     }
 }
 
+/**
+ * Modal bottom sheet that lets the user choose an interview type and continue to the next step.
+ *
+ * Presents three selectable options (individual, group, other); updates selection via `setInterviewType`
+ * and exposes navigation controls for dismissing or advancing with `onDismiss` and `onNextClick`.
+ *
+ * @param onDismiss Called when the sheet is dismissed or the back button is pressed.
+ * @param onNextClick Called when the Next button is pressed.
+ * @param setInterviewType Callback invoked with the chosen [InterviewType].
+ * @param interviewType Currently selected [InterviewType].
+ * @param buttonEnabled Whether the Next button is enabled.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InterviewTypeBottomSheet(
@@ -404,6 +438,19 @@ private fun InterviewTypeBottomSheet(
     }
 }
 
+/**
+ * Shows a modal bottom sheet for selecting the interview location and advancing the review flow.
+ *
+ * The sheet displays four location options (Daejeon, Seoul, Gyeonggi, Other), highlights the
+ * currently selected option, and provides Back, Dismiss, and Next controls.
+ *
+ * @param onDismiss Called when the sheet is dismissed (outside tap or programmatic dismissal).
+ * @param onBackPressed Called when the header back button is pressed.
+ * @param onNextClick Called when the Next button is pressed.
+ * @param setInterviewLocation Callback to update the selected interview location.
+ * @param interviewLocation The currently selected interview location.
+ * @param buttonEnabled Controls whether the Next button is enabled.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InterviewLocationBottomSheet(
@@ -512,6 +559,19 @@ private fun InterviewLocationBottomSheet(
     }
 }
 
+/**
+ * Shows a modal bottom sheet that lets the user search and select a technology from the tech stack.
+ *
+ * @param onDismiss Called when the sheet is dismissed.
+ * @param onBackPressed Called when the sheet's back action is triggered.
+ * @param onNextClick Called when the Next button is pressed.
+ * @param setKeyword Updates the current search keyword (pass `null` to clear).
+ * @param setSelectedTech Sets the selected technology code id (pass `null` to clear).
+ * @param setChecked Sets the selected technology keyword (pass `null` to clear).
+ * @param state The current post-review state containing keyword and checked values.
+ * @param techs List of available technology code entities to display.
+ * @param buttonEnabled Controls whether the Next button is enabled.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TechStackBottomSheet(
@@ -627,6 +687,19 @@ private fun TechStackBottomSheet(
     }
 }
 
+/**
+ * Shows a modal bottom sheet that lets the user enter the number of interviewers and proceed.
+ *
+ * The sheet displays a header with back/dismiss controls, a required-answer indicator, a numeric
+ * text field bound to the provided state, and a Next button.
+ *
+ * @param onDismiss Called when the sheet is dismissed.
+ * @param onBackPressed Called when the back control in the sheet header is pressed.
+ * @param onNextClick Called when the Next button is pressed.
+ * @param setInterviewerCount Callback to update the interviewer count; receives the new count as a string.
+ * @param state Current post-review state containing the current `count` value shown in the text field.
+ * @param buttonEnabled Whether the Next button is enabled.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InterviewerCountBottomSheet(
@@ -720,6 +793,17 @@ private fun InterviewerCountBottomSheet(
     }
 }
 
+/**
+ * Displays a modal summary bottom sheet showing the selected review details and a Next action.
+ *
+ * Shows human-readable interview type and location, company name (with trailing "..." removed), selected job keyword, and interviewer count. Provides back, dismiss, and next controls.
+ *
+ * @param onDismiss Called when the sheet requests dismissal (outside tap or drag).
+ * @param onBackPressed Called when the header back button is pressed.
+ * @param onNextClick Called when the Next button is pressed to proceed with submission/navigation.
+ * @param state Current PostReviewState containing interviewType, interviewLocation, keyword, and count.
+ * @param companyName Company name string displayed in the summary (trailing ellipsis may be present).
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SummaryBottomSheet(
@@ -811,6 +895,12 @@ private fun SummaryBottomSheet(
     }
 }
 
+/**
+ * Displays a vertical label-and-value pair with a smaller top label and a prominent bottom value.
+ *
+ * @param topText The top label text.
+ * @param bottomText The bottom value text shown prominently below the label.
+ */
 @Composable
 private fun TopBottomText(
     topText: String,
@@ -833,6 +923,13 @@ private fun TopBottomText(
     }
 }
 
+/**
+ * Renders a selectable, pill-styled outlined text row used as an option in the post-review flow.
+ *
+ * @param selected Whether the option is selected; controls the item's visual appearance.
+ * @param text The label displayed inside the outlined pill.
+ * @param onButtonClick Callback invoked when the item is clicked.
+ */
 @Composable
 private fun PostReviewOutlinedStrokeText(
     modifier: Modifier = Modifier,

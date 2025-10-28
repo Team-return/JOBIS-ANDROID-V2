@@ -20,6 +20,11 @@ data class PostReviewEntity(
     )
 }
 
+/**
+ * Converts this PostReviewEntity into a PostReviewRequest.
+ *
+ * @return A PostReviewRequest populated from the entity's properties, with `qnaElements` transformed into request content.
+ */
 fun PostReviewEntity.toPostReviewRequest() = PostReviewRequest(
     interviewType = this.interviewType,
     location = this.location,
@@ -31,7 +36,12 @@ fun PostReviewEntity.toPostReviewRequest() = PostReviewRequest(
     answer = this.answer,
 )
 
-private fun PostReviewEntity.PostReviewContentEntity.toEntity() =
+/**
+     * Converts this PostReviewContentEntity into a PostReviewRequest.PostReviewContentRequest.
+     *
+     * @return A PostReviewRequest.PostReviewContentRequest containing the same `question` and `answer` as this entity.
+     */
+    private fun PostReviewEntity.PostReviewContentEntity.toEntity() =
     PostReviewRequest.PostReviewContentRequest(
         question = this.question,
         answer = this.answer,

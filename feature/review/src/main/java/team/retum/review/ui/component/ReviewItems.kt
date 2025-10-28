@@ -22,6 +22,15 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 
+/**
+ * Renders a horizontally arranged, tappable review item showing a company avatar, the company name, and a line combining major and writer.
+ *
+ * Clicking the item invokes the provided callback with the review's id.
+ *
+ * @param companyImageUrl URL of the company's avatar; when empty a placeholder background color is shown.
+ * @param reviewId Identifier for the review; passed to [onReviewDetailClick] when the item is clicked.
+ * @param onReviewDetailClick Callback invoked with the reviewId when the item is tapped.
+ */
 @Composable
 internal fun ReviewItems(
     modifier: Modifier = Modifier,

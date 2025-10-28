@@ -36,6 +36,18 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 
+/**
+ * Renders a row item showing an applied company's logo, name, application status, and contextual action.
+ *
+ * The item highlights with a temporary pulsing tint when `isFocus` is true and routes interactions based on the
+ * application's status: shows a rejection reason, navigates to the application flow, or navigates to recruitment details.
+ *
+ * @param onShowRejectionReasonClick Callback invoked when the user requests the rejection reason (shown for rejected applications).
+ * @param appliedCompany The application data including company name, logo URL, recruitmentId, and application status.
+ * @param isFocus If true, triggers a short pulsing visual highlight on first composition.
+ * @param navigateToRecruitmentDetails Callback invoked with the recruitmentId to navigate to recruitment details.
+ * @param navigateToApplication Callback invoked to navigate to the application flow (used for requested applications).
+ */
 @Composable
 internal fun ApplyCompanyItem(
     onShowRejectionReasonClick: () -> Unit,

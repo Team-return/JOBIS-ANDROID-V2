@@ -21,6 +21,15 @@ import team.retum.review.viewmodel.ReviewFilterViewModel
 import team.retum.review.viewmodel.ReviewViewModel
 import team.retum.review.viewmodel.ReviewsState
 
+/**
+ * Binds the review UI to its ViewModel, initializes filter values and review data, and displays the ReviewScreen.
+ *
+ * On first composition this sets filter fields from ReviewFilterViewModel, clears any existing reviews, and triggers loading of reviews, then renders the screen using the collected state.
+ *
+ * @param onReviewFilterClick Callback invoked when the filter action is requested.
+ * @param onSearchReviewClick Callback invoked when the search action is requested.
+ * @param onReviewDetailClick Callback invoked with the selected review's id when a review item is tapped.
+ */
 @Composable
 internal fun Review(
     onReviewFilterClick: () -> Unit,
@@ -49,6 +58,14 @@ internal fun Review(
     )
 }
 
+/**
+ * Renders the reviews screen UI with a top app bar and a scrollable list of review items.
+ *
+ * @param state The current UI state containing the list of reviews and related view data.
+ * @param onReviewFilterClick Invoked when the filter action in the top app bar is clicked.
+ * @param onSearchReviewClick Invoked when the search action in the top app bar is clicked.
+ * @param onReviewDetailClick Invoked with a review id when a review item is selected.
+ */
 @Composable
 private fun ReviewScreen(
     state: ReviewsState,

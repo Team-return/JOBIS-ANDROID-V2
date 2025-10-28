@@ -23,6 +23,12 @@ internal class ReviewDetailsViewModel @Inject constructor(
         state.value.copy(reviewId = reviewId)
     }
 
+    /**
+     * Fetches review details for the current `reviewId` and updates the state's `reviewDetail` on success.
+     *
+     * On successful fetch, replaces the current state's `reviewDetail` with the fetched `FetchReviewDetailEntity`.
+     * If the fetch fails, the state is not modified.
+     */
     internal fun fetchReviewDetails() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewDetailsUseCase(state.value.reviewId).onSuccess {
@@ -31,6 +37,11 @@ internal class ReviewDetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Updates the UI state to mark the given tab as selected.
+     *
+     * @param tabIndex The 0-based index of the tab to select.
+     */
     internal fun setTabIndex(tabIndex: Int) {
         setState { state.value.copy(selectedTabIndex = tabIndex) }
     }
@@ -43,6 +54,11 @@ internal data class ReviewDetailsState(
     val reviewDetail: FetchReviewDetailEntity,
 ) {
     companion object {
+        /**
+         * Constructs the initial ReviewDetailsState with default, empty values.
+         *
+         * @return A ReviewDetailsState where selectedTabIndex is 0, reviewId is an empty string, and reviewDetail is a FetchReviewDetailEntity populated with empty strings, zero numeric fields, default enum values, and an empty Q&A list.
+         */
         fun getInitialState() = ReviewDetailsState(
             selectedTabIndex = 0,
             reviewId = "",

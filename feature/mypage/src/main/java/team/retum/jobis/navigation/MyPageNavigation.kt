@@ -7,6 +7,17 @@ import team.retum.jobis.ui.MyPage
 
 const val NAVIGATION_MY_PAGE = "myPage"
 
+/**
+ * Registers the MyPage destination on this NavGraphBuilder.
+ *
+ * @param onSelectInterestClick Invoked when the user chooses to select interests.
+ * @param onChangePasswordClick Invoked when the user requests to change their password.
+ * @param onReportBugClick Invoked when the user reports a bug.
+ * @param onNoticeClick Invoked when the user opens notices.
+ * @param navigateToLanding Invoked to navigate back to the landing screen.
+ * @param onPostReviewClick Invoked to post a review; receives a String identifier and a Long value.
+ * @param onNotificationSettingClick Invoked when the user opens notification settings.
+ */
 fun NavGraphBuilder.myPage(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,

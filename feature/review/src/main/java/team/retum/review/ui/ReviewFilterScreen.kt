@@ -44,6 +44,11 @@ import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.year
 import team.retum.review.viewmodel.ReviewsFilterState
 import team.retum.usecase.entity.CodesEntity
 
+/**
+ * Hosts the review filter UI: observes the view model state, requests available years once on first composition, and renders ReviewFilterScreen with event bindings.
+ *
+ * @param onBackPressed Callback invoked to navigate back from the screen.
+ */
 @Composable
 internal fun ReviewFilter(
     onBackPressed: () -> Unit,
@@ -65,6 +70,17 @@ internal fun ReviewFilter(
     )
 }
 
+/**
+ * Renders the review filter screen with sections for major, year, interview type, and location,
+ * and a persistent action button that confirms the current selections and navigates back.
+ *
+ * @param state Current UI state containing available majors, years, and selected values.
+ * @param onBackPressed Callback invoked to navigate back; also called after confirming selections.
+ * @param onMajorSelected Called when the user selects or clears a major; receives the selected major id or `null`.
+ * @param onYearSelected Called when the user selects or clears a year; receives the selected year or `null`.
+ * @param onInterviewTypeSelected Called when the user selects or clears an interview type; receives the selected `InterviewType` or `null`.
+ * @param onLocationSelected Called when the user selects or clears a location; receives the selected `InterviewLocation` or `null`.
+ */
 @Composable
 private fun ReviewFilterScreen(
     state: ReviewsFilterState,
@@ -118,6 +134,16 @@ private fun ReviewFilterScreen(
     }
 }
 
+/**
+ * Displays the "전공" section with selectable chips for each major.
+ *
+ * Renders a heading and a responsive grid of MajorContent chips. Tapping a chip invokes
+ * the provided callback with that major's code or `null` to clear selection.
+ *
+ * @param majorList List of major entries to display; each provides a display keyword and a numeric code.
+ * @param selectedMajorCode The code of the currently selected major, or `null` if none is selected.
+ * @param onMajorSelected Callback invoked with the selected major code, or `null` to clear selection.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Skills(
@@ -152,6 +178,13 @@ private fun Skills(
     }
 }
 
+/**
+ * Renders a "년도" section containing selectable year chips arranged in a responsive flow.
+ *
+ * @param years The list of years to display as selectable chips.
+ * @param selectedYear The currently selected year, or `null` if none is selected.
+ * @param onYearSelected Callback invoked when a year chip is clicked; receives the selected year or `null` to clear the selection.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Years(
@@ -185,6 +218,12 @@ private fun Years(
     }
 }
 
+/**
+ * Displays the "면접 구분" section with selectable interview type options.
+ *
+ * @param selectedInterviewType The currently selected interview type, or `null` if none is selected.
+ * @param onInterviewTypeSelected Callback invoked when an option is selected; receives the chosen `InterviewType` or `null`.
+ */
 @Composable
 private fun InterviewType(
     selectedInterviewType: InterviewType?,
@@ -217,6 +256,15 @@ private fun InterviewType(
     }
 }
 
+/**
+ * Displays the location filter section with selectable location options.
+ *
+ * Shows a titled section ("지역") and four choices; tapping a choice calls `onLocationSelected`
+ * with the selected `InterviewLocation`.
+ *
+ * @param selectedLocation The currently selected `InterviewLocation`, or `null` if none is selected.
+ * @param onLocationSelected Callback invoked with the chosen `InterviewLocation` when the user selects an option.
+ */
 @Composable
 private fun Location(
     selectedLocation: InterviewLocation?,
@@ -254,6 +302,14 @@ private fun Location(
     }
 }
 
+/**
+ * Displays a selectable pill for a major, updating its colors with animation when selected.
+ *
+ * @param major The display name of the major.
+ * @param majorId The identifier for the major; passed to `onClick` when the pill is pressed.
+ * @param selected Whether the pill is currently selected.
+ * @param onClick Callback invoked with `majorId` when the pill is clicked (use `null` to clear selection).
+ */
 @Composable
 private fun MajorContent(
     modifier: Modifier = Modifier,
@@ -302,6 +358,15 @@ private fun MajorContent(
     }
 }
 
+/**
+ * Displays a selectable pill for a year.
+ *
+ * The chip shows the provided year string and visually reflects the `selected` state. When tapped,
+ * the `year` string is parsed to an `Int` and passed to `onClick`.
+ *
+ * @param year The year text to display; must be parseable as an `Int`.
+ * @param onClick Callback invoked with the parsed year `Int` when the chip is clicked.
+ */
 @Composable
 private fun YearContent(
     modifier: Modifier = Modifier,
@@ -349,6 +414,13 @@ private fun YearContent(
     }
 }
 
+/**
+ * Renders a horizontal row containing a checkbox and a label for a single filter option.
+ *
+ * @param title The label text displayed next to the checkbox.
+ * @param checked `true` if the checkbox is selected, `false` otherwise.
+ * @param onClick Callback invoked when the checkbox is clicked.
+ */
 @Composable
 private fun ReviewCheckBox(
     title: String,

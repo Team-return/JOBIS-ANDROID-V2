@@ -143,6 +143,25 @@ internal fun Home(
     )
 }
 
+/**
+ * Composes the Home screen layout including the top app bar, banner carousel, student information,
+ * action menus, and the apply status section.
+ *
+ * @param scrollState Scroll state used for the vertical content container.
+ * @param onAlarmClick Invoked when the notification (bell) button is clicked.
+ * @param onCompaniesClick Invoked when the companies menu tile is clicked.
+ * @param onEmploymentClick Invoked when the employment rate card in the banner is clicked.
+ * @param onWinterInternClick Invoked when the winter intern menu tile is clicked.
+ * @param onRejectionReasonClick Invoked with an `ApplicationData` when a rejection reason is requested.
+ * @param state Current Home screen UI state (term, rate, flags, etc.).
+ * @param banners Banner items shown in the banner carousel.
+ * @param studentInformation Student profile and academic information displayed on the screen.
+ * @param appliedCompanies List of applied company entities rendered in the apply status section.
+ * @param applicationId Optional ID of the currently focused application; used to highlight a specific item.
+ * @param setScroll Callback that receives the vertical offset of the apply status section for scroll-to positioning.
+ * @param navigateToRecruitmentDetails Callback to navigate to recruitment details given a recruitment ID.
+ * @param navigateToApplication Callback to navigate to an application flow given an `ApplicationData` instance.
+ */
 @Composable
 private fun HomeScreen(
     scrollState: ScrollState,

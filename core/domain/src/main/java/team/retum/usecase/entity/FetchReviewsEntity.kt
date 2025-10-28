@@ -22,6 +22,11 @@ internal fun FetchReviewsResponse.toEntity() = FetchReviewsEntity(
     reviews = this.reviews.map { it.toEntity() },
 )
 
+/**
+ * Converts a FetchReviewsResponse.Review into a FetchReviewsEntity.Review.
+ *
+ * @return A FetchReviewsEntity.Review with response fields mapped directly, the `companyLogoUrl` prefixed by `ResourceKeys.IMAGE_URL`, and `year` converted to a string.
+ */
 private fun FetchReviewsResponse.Review.toEntity() = FetchReviewsEntity.Review(
     reviewId = this.reviewId,
     companyName = this.companyName,

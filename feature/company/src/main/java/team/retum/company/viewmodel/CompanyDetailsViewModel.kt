@@ -40,6 +40,13 @@ internal class CompanyDetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Fetches reviews for the current company and updates the view state.
+     *
+     * Calls the reviews use case for the current `companyId` without additional filters,
+     * then updates state to contain up to `MAX_REVIEW_COUNT` reviews, sets `showMoreReviews`
+     * to `true` when more reviews exist, and enables the move-to-recruitment button.
+     */
     internal fun fetchReviews() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewsUseCase(

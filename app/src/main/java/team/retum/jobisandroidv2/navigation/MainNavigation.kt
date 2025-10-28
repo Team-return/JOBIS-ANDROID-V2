@@ -31,6 +31,13 @@ import team.retum.review.navigation.searchReview
 
 const val NAVIGATION_MAIN = "main"
 
+/**
+ * Registers the app's main navigation graph and wires each destination's navigation callbacks to the provided navigator.
+ *
+ * Creates a navigation graph with route `NAVIGATION_MAIN` and start destination `NAVIGATION_ROOT`, adding all app
+ * destinations (root, notifications, recruitment, companies, reviews, posts, etc.) and connecting their navigation
+ * actions to the given `JobisNavigator`.
+ */
 internal fun NavGraphBuilder.mainNavigation(
     navigator: JobisNavigator,
 ) {

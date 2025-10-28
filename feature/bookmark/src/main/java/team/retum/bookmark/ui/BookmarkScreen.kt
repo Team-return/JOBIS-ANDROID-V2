@@ -121,6 +121,11 @@ private fun BookmarkScreen(
     }
 }
 
+/**
+ * Displays a centered empty-bookmark placeholder with a message and a button to view recruitments.
+ *
+ * @param onRecruitmentsClick Callback invoked when the "watch recruit" button is clicked.
+ */
 @Composable
 private fun EmptyBookmarkContent(onRecruitmentsClick: () -> Unit) {
     Column(

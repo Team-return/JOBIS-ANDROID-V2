@@ -42,6 +42,18 @@ import team.retum.post.review.viewmodel.PostNextReviewSideEffect
 import team.retum.post.review.viewmodel.PostNextReviewViewModel
 import team.retum.usecase.entity.QuestionsEntity.QuestionEntity
 
+/**
+ * Entry point composable for the "next review" flow that displays question pages, collects user answers,
+ * and navigates to the next screen with the accumulated Q&A data.
+ *
+ * This composable fetches questions on first composition, keeps answers in local UI state, updates the
+ * ViewModel when answers change, and reacts to the ViewModel's side effect to navigate forward.
+ *
+ * @param reviewData Initial review data that will be copied with collected `qnaElements` when navigating.
+ * @param onBackPressed Called when the user requests back navigation from the top bar.
+ * @param navigateToPostExpectReview Called with updated `PostReviewData` when the flow completes and navigation should occur.
+ * @param postNextReviewViewModel Optional ViewModel providing state, actions, and side effects for this flow.
+ */
 @Composable
 internal fun PostNextReview(
     reviewData: PostReviewData,
@@ -81,6 +93,20 @@ internal fun PostNextReview(
     )
 }
 
+/**
+ * Renders a paged question-and-answer UI with a top app bar, progress indicators, multi-line answer input, and navigation actions.
+ *
+ * Displays each QuestionEntity on its own page, binds user input to the provided `answers` list, advances pages via the "다음" button,
+ * and invokes `onPostExpectReviewClick` when the final page is submitted. The top app bar invokes `onBackPressed` when on the first page
+ * or navigates to the previous page otherwise.
+ *
+ * @param onBackPressed Callback invoked when the user requests to navigate back from the first page.
+ * @param questions List of questions to display; each page shows the question at the corresponding index.
+ * @param coroutineScope CoroutineScope used for performing animated pager transitions.
+ * @param pagerState State object controlling the horizontal pager and current page index.
+ * @param answers SnapshotStateList of answer strings where each index corresponds to a page's answer and is updated as the user types.
+ * @param onPostExpectReviewClick Callback invoked when the user completes the last page and submits the answers.
+ */
 @Composable
 private fun PostNextReviewScreen(
     onBackPressed: () -> Unit,

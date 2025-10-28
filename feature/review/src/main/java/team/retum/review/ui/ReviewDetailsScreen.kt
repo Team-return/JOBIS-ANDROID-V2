@@ -44,6 +44,16 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.review.viewmodel.ReviewDetailsViewModel
 import team.retum.usecase.entity.FetchReviewDetailEntity
 
+/**
+ * Displays the review details screen for the specified review and coordinates loading and tab interactions.
+ *
+ * When `reviewId` changes, the composable requests the review details from the associated view model.
+ * The UI presents two tabs ("면접 후기", "예상 질문") and ignores tab selection if the current review's
+ * question or answer is blank. Invokes `onBackPressed` when the user requests navigation back.
+ *
+ * @param reviewId The identifier of the review to display.
+ * @param onBackPressed Callback invoked when the back action is requested.
+ */
 @Composable
 internal fun ReviewDetails(
     reviewId: Long,
@@ -77,6 +87,17 @@ internal fun ReviewDetails(
     )
 }
 
+/**
+ * Render the review details screen with a top app bar, tab bar, student information, and content for the selected tab.
+ *
+ * @param reviewDetail The fetched review data to display.
+ * @param tabs Immutable list of tab labels.
+ * @param selectedTabIndex The index of the currently selected tab.
+ * @param onSelectTab Callback invoked with the new tab index when the user selects a tab.
+ * @param onBackPressed Callback invoked when the back action is triggered.
+ *
+ * When `selectedTabIndex` is 0 the interview Q&A list is shown; when it is 1 the expected question/answer view is shown.
+ */
 @Composable
 private fun ReviewDetailsScreen(
     reviewDetail: FetchReviewDetailEntity,
@@ -112,6 +133,14 @@ private fun ReviewDetailsScreen(
     }
 }
 
+/**
+ * Displays the review header with writer, academic info, company and interview metadata, and a tab-specific title.
+ *
+ * The displayed title switches between "면접 후기" and "예상 질문" based on [selectedTabIndex].
+ *
+ * @param selectedTabIndex Index of the currently selected tab; non-zero values show the "예상 질문" title, zero shows "면접 후기".
+ * @param interviewerCount The number of interviewers as a displayable string (e.g., "3").
+ */
 @Composable
 private fun StudentInfo(
     writer: String,
@@ -190,6 +219,11 @@ private fun StudentInfo(
     }
 }
 
+/**
+ * Displays the interview review section consisting of a list of question-and-answer items.
+ *
+ * @param review The list of Q&A entries to render in the interview review. Each item represents a question and its corresponding answer.
+ */
 @Composable
 private fun InterviewReview(
     review: List<FetchReviewDetailEntity.QnAs>,
@@ -199,6 +233,14 @@ private fun InterviewReview(
     )
 }
 
+/**
+ * Displays the expected interview question and its answer inside a styled card.
+ *
+ * Renders the question prefixed with a prominent "Q" label and the answer prefixed with an "A" label,
+ * applying the screen's typography, color, and layout constraints.
+ *
+ * @param review FetchReviewDetailEntity containing the `question` and `answer` to present. 
+ */
 @Composable
 private fun ExpectedReview(
     review: FetchReviewDetailEntity,
@@ -259,6 +301,15 @@ private fun ExpectedReview(
     }
 }
 
+/**
+ * Renders a list of Q&A items as expandable cards where each card shows the question and, when expanded, its answer.
+ *
+ * Each item is displayed inside a card that toggles between a compact question-only view and an expanded view
+ * containing both the question (prefixed with "Q") and the answer (prefixed with "A").
+ *
+ * @param review The list of Q&A entities to render; each element's `question` is shown in the card header and
+ * `answer` is shown when that card is expanded.
+ */
 @Composable
 private fun ReviewContent(
     review: List<FetchReviewDetailEntity.QnAs>,

@@ -10,6 +10,14 @@ import team.retum.review.ui.ReviewDetails
 
 const val NAVIGATION_REVIEW_DETAILS = "reviewDetails"
 
+/**
+ * Registers the Review Details destination on the navigation graph.
+ *
+ * Adds a composable route "reviewDetails/{REVIEW_ID}" that accepts a Long `REVIEW_ID` argument
+ * and displays the ReviewDetails screen for that ID.
+ *
+ * @param onBackPressed Invoked when the user requests to navigate back from the ReviewDetails screen.
+ */
 fun NavGraphBuilder.reviewDetails(
     onBackPressed: () -> Unit,
 ) {
@@ -28,6 +36,11 @@ fun NavGraphBuilder.reviewDetails(
     }
 }
 
+/**
+ * Navigate to the Review Details screen for the given review.
+ *
+ * @param reviewId The numeric identifier of the review to open.
+ */
 fun NavController.navigateToReviewDetails(reviewId: Long) {
     navigate("$NAVIGATION_REVIEW_DETAILS/$reviewId")
 }

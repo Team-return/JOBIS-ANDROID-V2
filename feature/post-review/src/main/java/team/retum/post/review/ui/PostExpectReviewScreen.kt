@@ -31,6 +31,15 @@ import team.retum.post.review.viewmodel.PostExpectReviewViewModel
 import team.retum.post.review.viewmodel.PostReviewSideEffect
 import team.retum.post.review.viewmodel.PostReviewViewModel
 
+/**
+ * Orchestrates the "expect review" flow: observes UI state, reacts to view-model side effects,
+ * submits a combined review to the post-review flow, and renders the PostExpectReviewScreen.
+ *
+ * @param reviewData Base review data to be submitted; `question` and `answer` will be filled from local state before posting.
+ * @param onBackPressed Callback invoked when the user requests navigation back.
+ * @param onPostReviewCompleteClick Callback invoked once the post-review operation completes successfully.
+ * @param postExpectReviewViewModel ViewModel that provides state and side effects for the expect-review UI (default provided by Hilt).
+ */
 @Composable
 internal fun PostExpectReview(
     reviewData: PostReviewData,
@@ -75,6 +84,19 @@ internal fun PostExpectReview(
     )
 }
 
+/**
+ * Renders the screen for adding an expected interview question and its answer, exposing navigation and completion actions.
+ *
+ * Displays a top app bar, input fields for question and answer (answer supports multi-line and height limits), a skip link, and a primary completion button whose enabled state is driven by `state`.
+ *
+ * @param onBackPressed Called when the back navigation is triggered.
+ * @param onReviewFinishClick Called when the user chooses to finish or skip the review flow.
+ * @param answer Lambda that returns the current answer text.
+ * @param onAnswerChange Callback invoked with the new answer text when the answer input changes.
+ * @param question Lambda that returns the current question text.
+ * @param onQuestionChange Callback invoked with the new question text when the question input changes.
+ * @param state UI state driving view behavior (for example, `buttonEnabled`).
+ */
 @Composable
 private fun PostExpectReviewScreen(
     onBackPressed: () -> Unit,

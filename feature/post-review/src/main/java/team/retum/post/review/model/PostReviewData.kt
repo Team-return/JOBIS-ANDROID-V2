@@ -27,17 +27,33 @@ data class PostReviewData(
     )
 }
 
+/**
+ * Serializes this PostReviewData to JSON and URL-encodes the resulting string using UTF-8.
+ *
+ * @return The URL-encoded JSON representation of this PostReviewData.
+ */
 internal fun PostReviewData.toJsonString(): String {
     val json = Json.encodeToString(this)
     return URLEncoder.encode(json, "UTF-8")
 }
 
+/**
+ * Decode a URL-encoded JSON string and parse it into a PostReviewData.
+ *
+ * @receiver The URL-encoded JSON string representing a PostReviewData.
+ * @return The parsed PostReviewData instance.
+ */
 internal fun String.toReviewData(): PostReviewData {
     val decoded = URLDecoder.decode(this, "UTF-8")
     return Json.decodeFromString<PostReviewData>(decoded)
 }
 
-internal fun PostReviewData.PostReviewContent.toEntity(): PostReviewEntity.PostReviewContentEntity =
+/**
+     * Converts this PostReviewContent to a PostReviewEntity.PostReviewContentEntity.
+     *
+     * @return A PostReviewEntity.PostReviewContentEntity containing the same `question` and `answer`.
+     */
+    internal fun PostReviewData.PostReviewContent.toEntity(): PostReviewEntity.PostReviewContentEntity =
     PostReviewEntity.PostReviewContentEntity(
         question = this.question,
         answer = this.answer,

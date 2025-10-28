@@ -47,6 +47,18 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.FetchReviewsEntity
 
+/**
+ * Displays company details and coordinates loading, side effects, and navigation.
+ *
+ * On composition this sets the current company id, triggers loading of company details and reviews,
+ * observes view model side effects (showing a toast on fetch error and navigating to recruitment details),
+ * and renders the details screen with company information and review navigation handlers.
+ *
+ * @param navigateToReviewDetails Called with a review id when a single review is selected.
+ * @param navigateToReviews Called with the company id and company name to navigate to the reviews list.
+ * @param navigateToRecruitmentDetails Called with a recruitment id and a flag indicating the navigation originated here.
+ * @param isMovedRecruitmentDetails Indicates whether the UI has already navigated to recruitment details (disables duplicate navigation).
+ */
 @Composable
 internal fun CompanyDetails(
     companyId: Long,
@@ -111,6 +123,20 @@ internal fun CompanyDetails(
     )
 }
 
+/**
+ * Displays the company details UI including the top app bar, main company information,
+ * a list of additional company fields, recent reviews (with optional "show more"), and
+ * an optional button to navigate to recruitment details.
+ *
+ * @param companyId The identifier of the displayed company; used when navigating to the full reviews screen.
+ * @param onBackPressed Callback invoked when the back action is triggered.
+ * @param navigateToReviewDetails Callback invoked with a review id to navigate to that review's detail screen.
+ * @param navigateToReviews Callback invoked with the company id and company name to navigate to the full reviews list.
+ * @param onMoveToRecruitmentButtonClick Callback invoked when the "Show Recruitment" button is clicked.
+ * @param isMovedRecruitmentDetails `true` if navigation to recruitment details has already occurred; disables the recruitment button when true.
+ * @param state Current UI state containing company details, reviews, and flags controlling visibility and enabled state.
+ * @param companyInfo Immutable list of title/resource-id and detail pairs used to render additional company fields.
+ */
 @Composable
 private fun CompanyDetailsScreen(
     companyId: Long,
@@ -250,6 +276,14 @@ private fun CompanyInformation(
     }
 }
 
+/**
+ * Render a reviews section containing review items and an optional "show more reviews" action.
+ *
+ * @param reviews Immutable list of review entities to display.
+ * @param navigateToReviewDetails Callback invoked with the selected review's id when a review is clicked.
+ * @param showMoreReviews Whether to display the "show more reviews" action.
+ * @param onShowMoreReviewClick Callback invoked when the "show more reviews" action is clicked.
+ */
 @Composable
 private fun Reviews(
     reviews: ImmutableList<FetchReviewsEntity.Review>,

@@ -41,6 +41,16 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.review.navigation.review
 
+/**
+ * Hosts the app's root UI, wires navigation and action callbacks, and controls the rejection modal state
+ * forwarded to RootScreen.
+ *
+ * @param applicationId Optional application ID to preselect when entering the app.
+ * @param navigateToLanding Navigates to the landing (auth/entry) screen.
+ * @param navigateToApplication Navigates to the application flow with the provided ApplicationData.
+ * @param navigateToRecruitmentDetails Navigates to the recruitment details screen for the given recruitment ID.
+ * @param navigatedFromNotifications `true` when the current navigation was initiated from a notification; forwarded to Home.
+ */
 @Composable
 internal fun Root(
     applicationId: Long?,
@@ -111,6 +121,21 @@ internal fun Root(
     )
 }
 
+/**
+ * Composes the app's main navigation scaffold with a bottom navigation bar and a modal rejection bottom sheet.
+ *
+ * Hosts the navigation graph (Home, Recruitments, Bookmarks, Review, MyPage), wires screen-level callbacks into each destination,
+ * and displays a RejectionBottomSheet using the provided sheet state and rejection reason.
+ *
+ * @param sheetState Controls visibility and state of the modal bottom sheet shown for rejection details.
+ * @param applicationId If non-null, the Home destination will receive this application id to display related content.
+ * @param showRejectionModal Callback invoked with ApplicationData to open the rejection bottom sheet populated for that application.
+ * @param rejectionReason Text shown inside the rejection bottom sheet.
+ * @param navigateToApplicationByRejectionBottomSheet Callback invoked when the user chooses to re-apply from the rejection bottom sheet.
+ * @param navigateToApplication Callback used to navigate to an application detail screen with the provided ApplicationData.
+ * @param navigateToRecruitmentDetails Callback used to navigate to a recruitment details screen with the provided recruitment id.
+ * @param navigatedFromNotifications Indicates whether navigation to Home originated from a notifications entry point (affects Home destination behavior).
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun RootScreen(

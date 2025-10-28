@@ -26,10 +26,20 @@ internal class SearchReviewsViewModel @Inject constructor(
         debounceName()
     }
 
+    /**
+     * Updates the ViewModel state with the provided search keyword.
+     *
+     * @param keyword The new search keyword to store in the state.
+     */
     internal fun setKeyword(keyword: String) = setState {
         state.value.copy(keyword = keyword)
     }
 
+    /**
+     * Observes keyword changes and triggers a debounced search for reviews.
+     *
+     * Debounces keyword updates by `SEARCH_DEBOUNCE_MILLIS` and calls `fetchReviews()` when the keyword is not blank.
+     */
     @OptIn(FlowPreview::class)
     private fun debounceName() {
         viewModelScope.launch {
@@ -41,6 +51,11 @@ internal class SearchReviewsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Fetches reviews using the current state's keyword and updates the ViewModel state with the results.
+     *
+     * Updates `reviews` with the fetched list and sets `showRecruitmentsEmptyContent` to `true` when the returned list is empty, `false` otherwise.
+     */
     internal fun fetchReviews() {
         with(state.value) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -72,6 +87,11 @@ data class SearchReviewsState(
     val showRecruitmentsEmptyContent: Boolean
 ) {
     companion object {
+        /**
+         * Provides the initial SearchReviewsState for the view model.
+         *
+         * @return A SearchReviewsState with `keyword` set to null, an empty `reviews` list, and `showRecruitmentsEmptyContent` set to false.
+         */
         fun getInitialState() = SearchReviewsState(
             keyword = null,
             reviews = emptyList(),

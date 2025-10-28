@@ -26,6 +26,17 @@ import team.retum.post.review.viewmodel.PostReviewViewModel
 
 const val SCREEN_TIME = 1500L
 
+/**
+ * Displays the post-review completion UI and, after a short delay, performs navigation actions.
+ *
+ * After waiting for SCREEN_TIME milliseconds, this composable invokes `onBackPressed` and then
+ * calls `navigateToPostReview` with the provided parameters. The UI shows the completion screen
+ * using the current `studentName` from `postReviewViewModel` state.
+ *
+ * @param onBackPressed Callback invoked to trigger back navigation after the delay.
+ * @param navigateToPostReview Callback invoked after the delay to navigate to the post-review screen;
+ *   receives a `String` and a `Long` as navigation parameters.
+ */
 @Composable
 internal fun PostReviewComplete(
     onBackPressed: () -> Unit,
@@ -46,6 +57,13 @@ internal fun PostReviewComplete(
     )
 }
 
+/**
+ * Displays a centered post-review completion UI with a success image and localized text.
+ *
+ * Shows a success illustration, a title that interpolates the provided student name, and a descriptive subtitle; content is centered both vertically and horizontally.
+ *
+ * @param studentName The student's name to interpolate into the title string.
+ */
 @Composable
 private fun PostReviewCompleteScreen(
     studentName: String,

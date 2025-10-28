@@ -49,6 +49,15 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 
+/**
+ * Composes the user's My Page screen, wiring ViewModel state, side effects, media picking, and action callbacks.
+ *
+ * Collects UI state from [MyPageViewModel], handles side effects (navigation on successful sign-out and toasts for other outcomes),
+ * provides an image picker to update the profile image, and delegates UI rendering to [MyPageScreen].
+ *
+ * @param navigateToLanding Invoked when sign-out completes successfully to navigate back to the landing screen.
+ * @param onPostReviewClick Called when the user chooses to write an interview review; receives the company name first, then the company id.
+ */
 @Composable
 internal fun MyPage(
     onSelectInterestClick: () -> Unit,
@@ -135,6 +144,27 @@ internal fun MyPage(
     )
 }
 
+/**
+ * Renders the My Page screen UI with user profile, review prompt, settings sections, and confirmation dialogs.
+ *
+ * Displays the student's information, an optional review card for a reviewable company, grouped setting items (notifications, help, account, bug report),
+ * and sign-out / withdrawal confirmation dialogs based on state flags.
+ *
+ * @param onSelectInterestClick Callback invoked when the interest selection item is activated.
+ * @param onChangePasswordClick Callback invoked to start the password change flow.
+ * @param onReportBugClick Callback invoked to navigate to or open the bug report flow.
+ * @param onNoticeClick Callback invoked to view notices.
+ * @param state Current UI state driving content and modal visibility.
+ * @param scrollState Scroll state used for the screen's vertical scrolling container.
+ * @param setShowSignOutModal Setter to toggle visibility of the sign-out confirmation dialog.
+ * @param setShowWithdrawalModal Setter to toggle visibility of the withdrawal confirmation dialog.
+ * @param onSignOutClick Callback invoked to perform sign-out when confirmed.
+ * @param onWithdrawalClick Callback invoked to perform membership withdrawal when confirmed.
+ * @param onPostReviewClick Callback invoked to start posting a review; receives the company name and company id.
+ * @param onNotificationSettingClick Callback invoked to open notification settings.
+ * @param showUpdateLaterToast Callback invoked to show a "update later" toast hint for unavailable actions.
+ * @param showGallery Callback invoked to open the image picker for changing the profile image.
+ */
 @Composable
 private fun MyPageScreen(
     onSelectInterestClick: () -> Unit,

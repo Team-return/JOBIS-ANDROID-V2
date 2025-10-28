@@ -10,8 +10,25 @@ import team.retum.network.model.response.FetchReviewsCountResponse
 import team.retum.network.model.response.FetchReviewsResponse
 
 interface ReviewDataSource {
-    suspend fun postReview(postReviewRequest: PostReviewRequest)
+    /**
+ * Submits a new review to the server.
+ *
+ * @param postReviewRequest The payload containing the review details to create.
+ */
+suspend fun postReview(postReviewRequest: PostReviewRequest)
 
+    /**
+     * Retrieve a paginated list of reviews filtered by the provided optional criteria.
+     *
+     * @param page Page number for pagination; when null, the default page is used.
+     * @param location Filter reviews by interview location.
+     * @param interviewType Filter reviews by interview type.
+     * @param keyword Search term to match against review content or metadata.
+     * @param year Filter reviews by the interview year.
+     * @param companyId Filter reviews for a specific company.
+     * @param code Filter reviews by a specific code or tag.
+     * @return A FetchReviewsResponse containing the matching reviews and pagination metadata.
+     */
     suspend fun fetchReviews(
         page: Int?,
         location: InterviewLocation?,
@@ -22,11 +39,31 @@ interface ReviewDataSource {
         code: Long?,
     ): FetchReviewsResponse
 
-    suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse
+    /**
+ * Retrieve detailed information for a review identified by its ID.
+ *
+ * @return `FetchReviewDetailResponse` containing detailed data for the specified review.
+ */
+suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse
 
-    suspend fun fetchQuestions(): FetchQuestionsResponse
+    /**
+ * Retrieves the list of predefined interview questions used when creating or browsing reviews.
+ *
+ * @return A FetchQuestionsResponse containing the available questions.
+ */
+suspend fun fetchQuestions(): FetchQuestionsResponse
 
-    suspend fun fetchReviewsCount(): FetchReviewsCountResponse
+    /**
+ * Retrieves aggregated counts of reviews, such as totals by category or status.
+ *
+ * @return A FetchReviewsCountResponse containing the review count summary.
+ */
+suspend fun fetchReviewsCount(): FetchReviewsCountResponse
 
-    suspend fun fetchMyReviews(): FetchMyReviewResponse
+    /**
+ * Retrieves reviews created by the current user.
+ *
+ * @return A FetchMyReviewResponse containing the current user's reviews.
+ */
+suspend fun fetchMyReviews(): FetchMyReviewResponse
 }

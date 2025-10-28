@@ -16,6 +16,12 @@ import team.retum.review.ui.component.ReviewItems
 import team.retum.review.viewmodel.SearchReviewsState
 import team.retum.review.viewmodel.SearchReviewsViewModel
 
+/**
+ * Binds the SearchReviewsViewModel state to the search UI and wires navigation and item-selection callbacks.
+ *
+ * @param onBackPressed Called when the top app bar back action is triggered.
+ * @param onReviewDetailClick Called with the selected review's id when a review item is clicked.
+ */
 @Composable
 internal fun SearchReview(
     onBackPressed: () -> Unit,
@@ -32,6 +38,15 @@ internal fun SearchReview(
     )
 }
 
+/**
+ * Renders the review search screen: a top app bar, a search input bound to the provided state,
+ * a list of review results when present, and an empty state message when no results exist.
+ *
+ * @param state Current UI state containing the search keyword, review list, and empty-state flag.
+ * @param onBackPressed Callback invoked when the back action is triggered.
+ * @param onReviewDetailClick Callback invoked with the selected review's id when a review item is clicked.
+ * @param onNameChange Callback invoked with the updated search keyword when the user changes the input.
+ */
 @Composable
 private fun SearchReviewScreen(
     state: SearchReviewsState,
