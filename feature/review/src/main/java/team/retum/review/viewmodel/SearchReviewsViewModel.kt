@@ -1,7 +1,6 @@
 package team.retum.review.viewmodel
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.key
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +40,7 @@ internal class SearchReviewsViewModel @Inject constructor(
         }
     }
 
-    internal fun fetchReviews() {
+    private fun fetchReviews() {
         with(state.value) {
             viewModelScope.launch(Dispatchers.IO) {
                 fetchReviewsUseCase(
@@ -51,7 +50,7 @@ internal class SearchReviewsViewModel @Inject constructor(
                     interviewType = null,
                     keyword = keyword,
                     year = null,
-                    code = null
+                    code = null,
                 ).onSuccess {
                     setState {
                         state.value.copy(
@@ -69,7 +68,7 @@ internal class SearchReviewsViewModel @Inject constructor(
 data class SearchReviewsState(
     val keyword: String?,
     val reviews: List<FetchReviewsEntity.Review>,
-    val showRecruitmentsEmptyContent: Boolean
+    val showRecruitmentsEmptyContent: Boolean,
 ) {
     companion object {
         fun getInitialState() = SearchReviewsState(

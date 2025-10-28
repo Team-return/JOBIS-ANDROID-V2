@@ -33,5 +33,8 @@ fun NavGraphBuilder.postReview(
 }
 
 fun NavController.navigateToPostReview(companyName: String, companyId: Long) {
-    navigate("$NAVIGATION_POST_REVIEW/$companyName/$companyId")
+    navigate("$NAVIGATION_POST_REVIEW/$companyName/$companyId") {
+        popUpTo(NAVIGATION_POST_NEXT_REVIEW) { inclusive = false }
+        popUpTo(NAVIGATION_POST_EXPECT_REVIEW) { inclusive = false }
+    }
 }
