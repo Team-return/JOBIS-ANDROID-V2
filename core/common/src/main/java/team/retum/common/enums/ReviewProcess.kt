@@ -5,5 +5,5 @@ enum class ReviewProcess {
     INTERVIEW_LOCATION,
     TECH_STACK,
     INTERVIEWER_COUNT,
-    SUMMARY
+    SUMMARY,
 }

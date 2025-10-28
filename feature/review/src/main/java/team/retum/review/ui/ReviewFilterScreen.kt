@@ -36,12 +36,12 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.retum.review.viewmodel.ReviewsFilterState
 import team.retum.review.viewmodel.ReviewFilterViewModel
 import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.code
 import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.interviewType
 import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.location
 import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.year
+import team.retum.review.viewmodel.ReviewsFilterState
 import team.retum.usecase.entity.CodesEntity
 
 @Composable
@@ -78,28 +78,28 @@ private fun ReviewFilterScreen(
         Column {
             JobisSmallTopAppBar(
                 onBackPressed = onBackPressed,
-                title = "필터 설정"
+                title = "필터 설정",
             )
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
+                modifier = Modifier.verticalScroll(rememberScrollState()),
             ) {
                 Skills(
                     majorList = state.majorList,
                     selectedMajorCode = state.selectedMajorCode,
-                    onMajorSelected = onMajorSelected
+                    onMajorSelected = onMajorSelected,
                 )
                 Years(
                     years = state.years,
                     selectedYear = state.selectedYear,
-                    onYearSelected = onYearSelected
+                    onYearSelected = onYearSelected,
                 )
                 InterviewType(
                     selectedInterviewType = state.selectedInterviewType,
-                    onInterviewTypeSelected = onInterviewTypeSelected
+                    onInterviewTypeSelected = onInterviewTypeSelected,
                 )
                 Location(
                     selectedLocation = state.selectedLocation,
-                    onLocationSelected = onLocationSelected
+                    onLocationSelected = onLocationSelected,
                 )
             }
         }
@@ -126,7 +126,7 @@ private fun Skills(
     onMajorSelected: (Long?) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
@@ -145,7 +145,7 @@ private fun Skills(
                     major = codes.keyword,
                     majorId = codes.code,
                     selected = selectedMajorCode == codes.code,
-                    onClick = { onMajorSelected(it) }
+                    onClick = { onMajorSelected(it) },
                 )
             }
         }
@@ -160,7 +160,7 @@ private fun Years(
     onYearSelected: (Int?) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
@@ -178,7 +178,7 @@ private fun Years(
                 YearContent(
                     year = "$year",
                     selected = selectedYear == year,
-                    onClick = { onYearSelected(it) }
+                    onClick = { onYearSelected(it) },
                 )
             }
         }
@@ -191,7 +191,7 @@ private fun InterviewType(
     onInterviewTypeSelected: (InterviewType?) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
@@ -202,17 +202,17 @@ private fun InterviewType(
         ReviewCheckBox(
             title = "개인 면접",
             checked = selectedInterviewType == InterviewType.INDIVIDUAL,
-            onClick = { onInterviewTypeSelected(InterviewType.INDIVIDUAL) }
+            onClick = { onInterviewTypeSelected(InterviewType.INDIVIDUAL) },
         )
         ReviewCheckBox(
             title = "단체 면접",
             checked = selectedInterviewType == InterviewType.GROUP,
-            onClick = { onInterviewTypeSelected(InterviewType.GROUP) }
+            onClick = { onInterviewTypeSelected(InterviewType.GROUP) },
         )
         ReviewCheckBox(
             title = "기타 면접",
             checked = selectedInterviewType == InterviewType.OTHER,
-            onClick = { onInterviewTypeSelected(InterviewType.OTHER) }
+            onClick = { onInterviewTypeSelected(InterviewType.OTHER) },
         )
     }
 }
@@ -223,7 +223,7 @@ private fun Location(
     onLocationSelected: (InterviewLocation?) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
@@ -234,37 +234,25 @@ private fun Location(
         ReviewCheckBox(
             title = "대전",
             checked = selectedLocation == InterviewLocation.DAEJEON,
-            onClick = { onLocationSelected(InterviewLocation.DAEJEON) }
+            onClick = { onLocationSelected(InterviewLocation.DAEJEON) },
         )
         ReviewCheckBox(
             title = "서울",
             checked = selectedLocation == InterviewLocation.SEOUL,
-            onClick = { onLocationSelected(InterviewLocation.SEOUL) }
+            onClick = { onLocationSelected(InterviewLocation.SEOUL) },
         )
         ReviewCheckBox(
             title = "경기",
             checked = selectedLocation == InterviewLocation.GYEONGGI,
-            onClick = { onLocationSelected(InterviewLocation.GYEONGGI) }
+            onClick = { onLocationSelected(InterviewLocation.GYEONGGI) },
         )
         ReviewCheckBox(
             title = "기타",
             checked = selectedLocation == InterviewLocation.OTHER,
-            onClick = { onLocationSelected(InterviewLocation.OTHER) }
+            onClick = { onLocationSelected(InterviewLocation.OTHER) },
         )
     }
 }
-
-//MajorContent(
-//    major = it.keyword,
-//    majorId = it.code,
-//    selected = selectedMajorCodes.contains(it.code),
-//    onClick = { major ->
-//        when (selectedMajorCodes.contains(it.code)) {
-//            true -> { onUnselectCategory(major) }
-//            false -> { onSelectCategory(major) }
-//        }
-//    },
-//)
 
 @Composable
 private fun MajorContent(
@@ -365,10 +353,10 @@ private fun YearContent(
 private fun ReviewCheckBox(
     title: String,
     checked: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier.padding(vertical = 12.dp)
+        modifier = Modifier.padding(vertical = 12.dp),
     ) {
         JobisCheckBox(
             checked = checked,

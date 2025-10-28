@@ -45,7 +45,7 @@ internal fun Review(
         state = state,
         onReviewFilterClick = onReviewFilterClick,
         onSearchReviewClick = onSearchReviewClick,
-        onReviewDetailClick = onReviewDetailClick
+        onReviewDetailClick = onReviewDetailClick,
     )
 }
 
@@ -54,7 +54,7 @@ private fun ReviewScreen(
     state: ReviewsState,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
-    onReviewDetailClick: (Long) -> Unit
+    onReviewDetailClick: (Long) -> Unit,
 ) {
     Column(
         modifier = Modifier

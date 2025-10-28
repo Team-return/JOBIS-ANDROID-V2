@@ -49,7 +49,7 @@ internal fun PostExpectReview(
                         reviewData = reviewData.copy(
                             question = state.question,
                             answer = state.answer,
-                        )
+                        ),
                     )
                 }
             }
@@ -58,8 +58,9 @@ internal fun PostExpectReview(
 
     LaunchedEffect(Unit) {
         postReviewViewModel.sideEffect.collect {
-            if (it is PostReviewSideEffect.Success)
+            if (it is PostReviewSideEffect.Success) {
                 onPostReviewCompleteClick()
+            }
         }
     }
 
@@ -84,7 +85,7 @@ private fun PostExpectReviewScreen(
     onQuestionChange: (String) -> Unit,
     state: PostExpectReviewState,
 ) {
-    Column{
+    Column {
         JobisSmallTopAppBar(
             onBackPressed = onBackPressed,
         )
@@ -95,11 +96,11 @@ private fun PostExpectReviewScreen(
         )
         Row(
             modifier = Modifier.padding(top = 30.dp, start = 24.dp, end = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             JobisText(
                 text = "질문",
-                style = JobisTypography.Description
+                style = JobisTypography.Description,
             )
             JobisText(
                 text = " *",
@@ -114,11 +115,11 @@ private fun PostExpectReviewScreen(
         )
         Row(
             modifier = Modifier.padding(top = 30.dp, start = 24.dp, end = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             JobisText(
                 text = stringResource(R.string.answer),
-                style = JobisTypography.Description
+                style = JobisTypography.Description,
             )
             JobisText(
                 text = " *",
@@ -148,7 +149,7 @@ private fun PostExpectReviewScreen(
             text = "완료",
             color = ButtonColor.Primary,
             onClick = onReviewFinishClick,
-            enabled = state.buttonEnabled
+            enabled = state.buttonEnabled,
         )
     }
 }

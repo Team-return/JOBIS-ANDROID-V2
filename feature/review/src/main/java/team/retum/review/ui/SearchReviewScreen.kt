@@ -41,7 +41,7 @@ private fun SearchReviewScreen(
 ) {
     Column {
         JobisSmallTopAppBar(
-            onBackPressed = onBackPressed
+            onBackPressed = onBackPressed,
         )
         JobisTextField(
             value = { state.keyword ?: "" },
@@ -56,7 +56,7 @@ private fun SearchReviewScreen(
                     ReviewItems(
                         companyImageUrl = review.companyLogoUrl,
                         companyName = review.companyName,
-                        reviewId = review.reviewId.toLong(),
+                        reviewId = review.reviewId,
                         writer = review.writer,
                         major = review.major,
                         onReviewDetailClick = onReviewDetailClick,
@@ -66,7 +66,7 @@ private fun SearchReviewScreen(
         } else {
             EmptyContent(
                 title = stringResource(R.string.search_review_not_find),
-                description = stringResource(R.string.search_review_expect)
+                description = stringResource(R.string.search_review_expect),
             )
         }
     }

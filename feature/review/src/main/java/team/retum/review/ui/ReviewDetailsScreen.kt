@@ -68,7 +68,7 @@ internal fun ReviewDetails(
         tabs = tabs.toPersistentList(),
         selectedTabIndex = state.selectedTabIndex,
         onSelectTab = {
-            if(state.reviewDetail.answer.isBlank() || state.reviewDetail.question.isBlank()) {
+            if (state.reviewDetail.answer.isBlank() || state.reviewDetail.question.isBlank()) {
                 return@ReviewDetailsScreen
             }
             reviewDetailsViewModel.setTabIndex(it)
@@ -97,7 +97,7 @@ private fun ReviewDetailsScreen(
         )
         StudentInfo(
             writer = reviewDetail.writer,
-            major =  reviewDetail.major,
+            major = reviewDetail.major,
             year = reviewDetail.year.toString(),
             companyName = reviewDetail.companyName,
             location = reviewDetail.location,
@@ -126,7 +126,7 @@ private fun StudentInfo(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 20.dp)
+            .padding(horizontal = 24.dp, vertical = 20.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -134,11 +134,11 @@ private fun StudentInfo(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             JobisText(
-                text = "${writer}님의 ${if(selectedTabIndex != 0) {"예상 질문"} else {"면접 후기"}}",
+                text = "${writer}님의 ${if (selectedTabIndex != 0) {"예상 질문"} else {"면접 후기"}}",
                 style = JobisTypography.PageTitle,
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 JobisText(
                     text = major,
@@ -192,7 +192,7 @@ private fun StudentInfo(
 
 @Composable
 private fun InterviewReview(
-    review: List<FetchReviewDetailEntity.QnAs>
+    review: List<FetchReviewDetailEntity.QnAs>,
 ) {
     ReviewContent(
         review = review,
@@ -302,7 +302,7 @@ private fun ReviewContent(
                     } else {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             JobisText(
                                 text = "Q",

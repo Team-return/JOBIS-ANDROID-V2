@@ -47,7 +47,7 @@ internal fun PostNextReview(
     reviewData: PostReviewData,
     onBackPressed: () -> Unit,
     navigateToPostExpectReview: (PostReviewData) -> Unit,
-    postNextReviewViewModel: PostNextReviewViewModel = hiltViewModel()
+    postNextReviewViewModel: PostNextReviewViewModel = hiltViewModel(),
 ) {
     val state by postNextReviewViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { state.questions.size })
@@ -60,7 +60,7 @@ internal fun PostNextReview(
             when (it) {
                 is PostNextReviewSideEffect.MoveToNext -> {
                     navigateToPostExpectReview(
-                        reviewData.copy(qnaElements = state.qnaElements)
+                        reviewData.copy(qnaElements = state.qnaElements),
                     )
                 }
             }
@@ -92,12 +92,16 @@ private fun PostNextReviewScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         JobisSmallTopAppBar(
             onBackPressed = {
-                if (pagerState.currentPage == 0) onBackPressed() else coroutineScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                if (pagerState.currentPage == 0) {
+                    onBackPressed()
+                } else {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    }
                 }
             },
         )
@@ -114,18 +118,12 @@ private fun PostNextReviewScreen(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         repeat(pagerState.pageCount) {
-                            val color = if (pagerState.currentPage == it)
-                                JobisTheme.colors.onPrimary
-                            else
-                                JobisTheme.colors.surfaceVariant
-                            val multiple = if (pagerState.currentPage == it)
-                                1.8f
-                            else
-                                1f
+                            val color = if (pagerState.currentPage == it) JobisTheme.colors.onPrimary else JobisTheme.colors.surfaceVariant
+                            val multiple = if (pagerState.currentPage == it) 1.8f else 1f
                             Box(
                                 modifier = Modifier
                                     .background(color = color, shape = RoundedCornerShape(200.dp))
-                                    .size(width = 12.dp * multiple, height = 6.dp)
+                                    .size(width = 12.dp * multiple, height = 6.dp),
                             )
                         }
                     }
@@ -136,11 +134,11 @@ private fun PostNextReviewScreen(
                     )
                     Row(
                         modifier = Modifier.padding(top = 30.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         JobisText(
                             text = stringResource(R.string.answer),
-                            style = JobisTypography.Description
+                            style = JobisTypography.Description,
                         )
                         JobisText(
                             text = " *",
@@ -164,10 +162,7 @@ private fun PostNextReviewScreen(
                     color = ButtonColor.Primary,
                     onClick = {
                         coroutineScope.launch {
-                            if (pagerState.currentPage != 2) pagerState.animateScrollToPage(
-                                pagerState.currentPage + 1
-                            ) else
-                                onPostExpectReviewClick()
+                            if (pagerState.currentPage != 2) pagerState.animateScrollToPage(pagerState.currentPage + 1) else onPostExpectReviewClick()
                         }
                     },
                 )
