@@ -52,7 +52,7 @@ internal class ReviewFilterViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             setState {
                 state.value.copy(
-                    years = (startYear..endYear).toList(),
+                    years = (startYear..endYear).toList().reversed(),
                 )
             }
         }
