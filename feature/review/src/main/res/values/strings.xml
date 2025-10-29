@@ -3,7 +3,7 @@
     <!--Review Details Screen-->
     <string name="review_questions">받은 면접 질문</string>
     <string name="interview_review">면접 후기</string>
-    <string name="expected_question">예상 질문</string>
+    <string name="reviewed_question">받은 질문</string>
     <string name="review_detail_title">면접후기 상세보기</string>
     <string name="review_writer_title">%1$s님의 %2$s</string>
     <string name="interviewer_count_format">면접관 수 : %s</string>

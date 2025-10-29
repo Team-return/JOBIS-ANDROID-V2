@@ -53,7 +53,7 @@ internal fun ReviewDetails(
 ) {
     val tabs = listOf(
         stringResource(id = R.string.interview_review),
-        stringResource(id = R.string.expected_question),
+        stringResource(id = R.string.reviewed_question),
     )
     val state by reviewDetailsViewModel.state.collectAsStateWithLifecycle()
 
@@ -134,7 +134,7 @@ private fun StudentInfo(
                 text = stringResource(
                     id = R.string.review_writer_title,
                     writer,
-                    if (selectedTabIndex != 0) stringResource(id = R.string.expected_question) else stringResource(id = R.string.interview_review),
+                    if (selectedTabIndex != 0) stringResource(id = R.string.reviewed_question) else stringResource(id = R.string.interview_review),
                 ),
                 style = JobisTypography.PageTitle,
             )
