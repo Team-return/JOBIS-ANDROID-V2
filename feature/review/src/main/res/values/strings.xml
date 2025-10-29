@@ -35,7 +35,7 @@
     <string name="region">지역</string>
 
     <!--  Search Review Screen  -->
-    <string name="review_hint">검색어를 입력해주세요</string>
+    <string name="review_hint">찾고 싶은 면접후기를 입력해주세요</string>
     <string name="search_review_not_find">검색어와 관련 된 면접 후기를 못찾았어요</string>
     <string name="search_review_expect">제대로 입력했는지 다시 한번 확인해주세요</string>
 </resources>

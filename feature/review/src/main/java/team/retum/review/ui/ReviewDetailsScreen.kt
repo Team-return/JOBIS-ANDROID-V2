@@ -204,7 +204,7 @@ private fun InterviewReview(
 private fun ExpectedReview(
     review: FetchReviewDetailEntity,
 ) {
-    if (review.answer.isBlank() || review.question.isBlank()) {
+    if (!review.answer.isBlank() || !review.question.isBlank()) {
         JobisCard(
             modifier = Modifier
                 .fillMaxWidth()
