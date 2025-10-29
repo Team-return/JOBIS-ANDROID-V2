@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -38,6 +37,7 @@ import team.retum.common.enums.InterviewType
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
@@ -56,7 +56,6 @@ internal fun ReviewDetails(
         stringResource(id = R.string.expected_question),
     )
     val state by reviewDetailsViewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
     LaunchedEffect(reviewId) {
         // TODO : 실 값 들어왔을 때 UI 호출
@@ -69,9 +68,6 @@ internal fun ReviewDetails(
         tabs = tabs.toPersistentList(),
         selectedTabIndex = state.selectedTabIndex,
         onSelectTab = {
-            if (state.reviewDetail.answer.isBlank() || state.reviewDetail.question.isBlank()) {
-                return@ReviewDetailsScreen
-            }
             reviewDetailsViewModel.setTabIndex(it)
         },
         onBackPressed = onBackPressed,
@@ -208,59 +204,66 @@ private fun InterviewReview(
 private fun ExpectedReview(
     review: FetchReviewDetailEntity,
 ) {
-    JobisCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 24.dp,
-                vertical = 4.dp,
-            )
-            .clip(RoundedCornerShape(12.dp))
-            .background(JobisTheme.colors.surfaceVariant),
-        onClick = {},
-    ) {
-        Row(
+    if (review.answer.isBlank() || review.question.isBlank()) {
+        JobisCard(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(
-                    vertical = 12.dp,
-                    horizontal = 16.dp,
-                ),
+                    horizontal = 24.dp,
+                    vertical = 4.dp,
+                )
+                .clip(RoundedCornerShape(12.dp))
+                .background(JobisTheme.colors.surfaceVariant),
+            onClick = {},
         ) {
-            Column {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+            Row(
+                modifier = Modifier
+                    .padding(
+                        vertical = 12.dp,
+                        horizontal = 16.dp,
+                    ),
+            ) {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = buildAnnotatedString {
+                                withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary, fontSize = 24.sp)) {
+                                    append("Q ")
+                                }
+                                withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground, fontSize = 16.sp)) {
+                                    append(review.question)
+                                }
+                            },
+                            style = JobisTypography.SubHeadLine,
+                            modifier = Modifier.padding(bottom = 4.dp),
+                        )
+                    }
                     Text(
                         text = buildAnnotatedString {
                             withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary, fontSize = 24.sp)) {
-                                append("Q ")
+                                append("A ")
                             }
-                            withStyle(style = SpanStyle(color = JobisTheme.colors.onBackground, fontSize = 16.sp)) {
-                                append(review.question)
+                            withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface, fontSize = 14.sp)) {
+                                append(review.answer)
                             }
                         },
-                        style = JobisTypography.SubHeadLine,
-                        modifier = Modifier.padding(bottom = 4.dp),
+                        style = JobisTypography.Description,
+                        modifier = Modifier
+                            .padding(top = 12.dp)
+                            .fillMaxWidth(0.5f),
+                        maxLines = 3,
                     )
                 }
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = JobisTheme.colors.onPrimary, fontSize = 24.sp)) {
-                            append("A ")
-                        }
-                        withStyle(style = SpanStyle(color = JobisTheme.colors.inverseOnSurface, fontSize = 14.sp)) {
-                            append(review.answer)
-                        }
-                    },
-                    style = JobisTypography.Description,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(0.5f),
-                    maxLines = 3,
-                )
             }
         }
+    } else {
+        EmptyContent(
+            title = stringResource(R.string.empty_content_answer_not_found),
+            description = stringResource(R.string.empty_content_other_interview_title),
+        )
     }
 }
 
