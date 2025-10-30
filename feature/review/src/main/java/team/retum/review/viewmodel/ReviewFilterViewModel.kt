@@ -61,7 +61,7 @@ internal class ReviewFilterViewModel @Inject constructor(
     internal fun setSelectedMajor(majorCode: Long?) {
         setState {
             state.value.copy(
-                selectedMajorCode = if (state.value.selectedMajorCode == majorCode) null else majorCode
+                selectedMajorCode = if (state.value.selectedMajorCode == majorCode) null else majorCode,
             )
         }
     }
@@ -69,7 +69,7 @@ internal class ReviewFilterViewModel @Inject constructor(
     internal fun setSelectedYear(year: Int?) {
         setState {
             state.value.copy(
-                selectedYear = if (state.value.selectedYear == year) null else year
+                selectedYear = if (state.value.selectedYear == year) null else year,
             )
         }
     }
@@ -77,7 +77,7 @@ internal class ReviewFilterViewModel @Inject constructor(
     internal fun setSelectedInterviewType(type: InterviewType?) {
         setState {
             state.value.copy(
-                selectedInterviewType = if (state.value.selectedInterviewType == type) null else type
+                selectedInterviewType = if (state.value.selectedInterviewType == type) null else type,
             )
         }
     }
@@ -85,7 +85,7 @@ internal class ReviewFilterViewModel @Inject constructor(
     internal fun setSelectedLocation(location: InterviewLocation?) {
         setState {
             state.value.copy(
-                selectedLocation = if (state.value.selectedLocation == location) null else location
+                selectedLocation = if (state.value.selectedLocation == location) null else location,
             )
         }
     }
@@ -111,4 +111,3 @@ data class ReviewsFilterState(
         )
     }
 }
-

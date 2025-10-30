@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class PostNextReviewViewModel @Inject constructor(
-    private val fetchQuestionsUseCase : FetchQuestionsUseCase,
+    private val fetchQuestionsUseCase: FetchQuestionsUseCase,
 ) : BaseViewModel<PostNextReviewState, PostNextReviewSideEffect>(PostNextReviewState.getInitialState()) {
 
     internal fun fetchQuestions() {
@@ -36,9 +36,9 @@ internal class PostNextReviewViewModel @Inject constructor(
                     qnaElements = updatedQuestions.zip(answers).map { (q, a) ->
                         PostReviewContent(
                             question = q,
-                            answer = a
+                            answer = a,
                         )
-                    }
+                    },
                 )
             }
         }
@@ -48,8 +48,8 @@ internal class PostNextReviewViewModel @Inject constructor(
         with(state.value) {
             postSideEffect(
                 PostNextReviewSideEffect.MoveToNext(
-                    qnaElements = qnaElements
-                )
+                    qnaElements = qnaElements,
+                ),
             )
         }
     }
@@ -76,6 +76,6 @@ internal data class PostNextReviewState(
 
 internal sealed interface PostNextReviewSideEffect {
     data class MoveToNext(
-       val qnaElements: List<PostReviewContent>,
-    ): PostNextReviewSideEffect
+        val qnaElements: List<PostReviewContent>,
+    ) : PostNextReviewSideEffect
 }
