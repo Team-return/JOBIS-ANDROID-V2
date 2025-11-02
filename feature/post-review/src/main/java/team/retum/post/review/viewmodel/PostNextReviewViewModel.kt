@@ -28,7 +28,23 @@ internal class PostNextReviewViewModel @Inject constructor(
         }
     }
 
-    internal fun setQuestion(answers: List<String>) {
+    internal fun setAnswer(answer: String, index: Int) {
+        setState {
+            with(state.value) {
+                val updatedAnswers = answers.toMutableList()
+                updatedAnswers[index] = answer
+                copy(
+                    answers = updatedAnswers,
+                )
+            }
+        }
+    }
+
+    internal fun getAnswer(index: Int): String {
+        return state.value.answers.getOrNull(index) ?: ""
+    }
+
+    internal fun setQuestion() {
         setState {
             with(state.value) {
                 val updatedQuestions = questions.map { it.id }

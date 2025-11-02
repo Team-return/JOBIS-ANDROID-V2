@@ -67,10 +67,6 @@ internal fun PostNextReview(
         }
     }
 
-    LaunchedEffect(answers.toList()) {
-        postNextReviewViewModel.setQuestion(answers.toList())
-    }
-
     PostNextReviewScreen(
         onBackPressed = onBackPressed,
         questions = state.questions,
@@ -78,6 +74,9 @@ internal fun PostNextReview(
         coroutineScope = coroutineScope,
         pagerState = pagerState,
         onPostExpectReviewClick = postNextReviewViewModel::onNextClick,
+        setAnswer = postNextReviewViewModel::getAnswer,
+        onAnswerChange = postNextReviewViewModel::setAnswer,
+        setQuestion = postNextReviewViewModel::setQuestion,
     )
 }
 
@@ -89,6 +88,9 @@ private fun PostNextReviewScreen(
     pagerState: PagerState,
     answers: SnapshotStateList<String>,
     onPostExpectReviewClick: () -> Unit,
+    setAnswer: (Int) -> String,
+    onAnswerChange: (String, Int) -> Unit,
+    setQuestion: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -149,10 +151,8 @@ private fun PostNextReviewScreen(
                 }
                 JobisTextField(
                     modifier = Modifier.heightIn(min = 120.dp, max = 300.dp),
-                    value = { answers[page] }, // TODO :: viewModel로 로직 이동
-                    onValueChange = { // TODO :: ''
-                        answers[page] = it
-                    },
+                    value = { setAnswer(page) },
+                    onValueChange = { onAnswerChange(answers[page], page) },
                     hint = stringResource(R.string.hint_answer_review),
                     singleLine = false,
                 )
@@ -161,6 +161,7 @@ private fun PostNextReviewScreen(
                     text = stringResource(id = R.string.next),
                     color = ButtonColor.Primary,
                     onClick = {
+                        setQuestion()
                         coroutineScope.launch {
                             if (pagerState.currentPage != 2) pagerState.animateScrollToPage(pagerState.currentPage + 1) else onPostExpectReviewClick()
                         }
