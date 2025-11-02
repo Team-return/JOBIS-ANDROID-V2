@@ -16,10 +16,6 @@ internal class ReviewViewModel @Inject constructor(
     private val fetchReviewsUseCase: FetchReviewsUseCase,
 ) : BaseViewModel<ReviewsState, Unit>(ReviewsState.getInitialState()) {
 
-    internal fun setCompanyId(companyId: Long) = setState {
-        state.value.copy(companyId = companyId)
-    }
-
     internal fun setCode(code: Long?) = setState {
         state.value.copy(code = code)
     }
@@ -67,6 +63,7 @@ internal class ReviewViewModel @Inject constructor(
 }
 
 internal data class ReviewsState(
+    val page: Long,
     val companyId: Long,
     val code: Long?,
     val year: Int?,
@@ -76,6 +73,7 @@ internal data class ReviewsState(
 ) {
     companion object {
         fun getInitialState() = ReviewsState(
+            page = 0L,
             companyId = 0,
             code = null,
             year = null,

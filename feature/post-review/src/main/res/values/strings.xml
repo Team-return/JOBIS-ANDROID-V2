@@ -27,7 +27,7 @@
     <string name="other">기타</string>
     <string name="check">확인</string>
     <string name="post_review_success">리뷰가 성공적으로 작성 되었어요!</string>
-    <string name="post_review_bad_request">잘 못 된 요청이에요</string>
+    <string name="post_review_bad_request">잘못된 요청이에요</string>
     <string name="review_complete_suffix">%s 후기 작성 완료</string>
     <string name="content_description_required">Required</string>
     <string name="required_answer">답변</string>
