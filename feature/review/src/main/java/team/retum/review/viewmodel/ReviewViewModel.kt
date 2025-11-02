@@ -38,8 +38,12 @@ internal class ReviewViewModel @Inject constructor(
 
     internal fun clearReview() {
         if (state.value.code != null || state.value.year != null) {
-            //state.value.reviews = emptyList<FetchReviewsEntity.Review>()
-            //setState { state.value.copy(page = 0L) }
+            setState {
+                state.value.copy(
+                    page = 0L,
+                    reviews = emptyList(),
+                )
+            }
         }
     }
 
@@ -47,13 +51,13 @@ internal class ReviewViewModel @Inject constructor(
         with(state.value) {
             viewModelScope.launch(Dispatchers.IO) {
                 fetchReviewsUseCase(
-                    companyId = null,
                     page = null,
                     location = location,
                     interviewType = interviewType,
+                    companyId = null,
                     keyword = null,
                     year = year,
-                    code = code
+                    code = code,
                 ).onSuccess {
                     setState { state.value.copy(reviews = it.reviews) }
                 }

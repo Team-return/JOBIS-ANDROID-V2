@@ -22,22 +22,21 @@ class ReviewDataSourceImpl @Inject constructor(
         page: Int?,
         location: InterviewLocation?,
         interviewType: InterviewType?,
+        companyId: Long?,
         keyword: String?,
         year: Int?,
-        companyId: Long?,
         code: Long?,
-    ): FetchReviewsResponse =
-        RequestHandler<FetchReviewsResponse>().request {
-            reviewApi.fetchReviews(
-                page = page,
-                location = location,
-                interviewType = interviewType,
-                companyId = companyId,
-                keyword = keyword,
-                year = year,
-                code = code,
-            )
-        }
+    ): FetchReviewsResponse = RequestHandler<FetchReviewsResponse>().request {
+        reviewApi.fetchReviews(
+            page = page,
+            location = location,
+            interviewType = interviewType,
+            companyId = companyId,
+            keyword = keyword,
+            year = year,
+            code = code,
+        )
+    }
 
     override suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse =
         RequestHandler<FetchReviewDetailResponse>().request { reviewApi.fetchReviewDetail(reviewId) }

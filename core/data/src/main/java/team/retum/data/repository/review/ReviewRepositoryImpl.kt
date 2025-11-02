@@ -21,9 +21,9 @@ class ReviewRepositoryImpl @Inject constructor(
         page: Int?,
         location: InterviewLocation?,
         interviewType: InterviewType?,
+        companyId: Long?,
         keyword: String?,
         year: Int?,
-        companyId: Long?,
         code: Long?,
     ): FetchReviewsResponse =
         reviewDataSource.fetchReviews(

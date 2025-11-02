@@ -16,9 +16,9 @@ interface ReviewDataSource {
         page: Int?,
         location: InterviewLocation?,
         interviewType: InterviewType?,
+        companyId: Long?,
         keyword: String?,
         year: Int?,
-        companyId: Long?,
         code: Long?,
     ): FetchReviewsResponse
 

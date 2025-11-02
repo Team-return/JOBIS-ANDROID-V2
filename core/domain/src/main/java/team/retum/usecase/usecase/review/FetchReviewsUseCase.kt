@@ -10,6 +10,6 @@ class FetchReviewsUseCase @Inject constructor(
     private val reviewRepository: ReviewRepository,
 ) {
     suspend operator fun invoke(page: Int?, location: InterviewLocation?, interviewType: InterviewType?, keyword: String?, year: Int?, companyId: Long?, code: Long?) = runCatching {
-        reviewRepository.fetchReviews(page, location, interviewType, keyword, year, companyId, code).toEntity()
+        reviewRepository.fetchReviews(page, location, interviewType, companyId, keyword, year, code).toEntity()
     }
 }

@@ -43,10 +43,10 @@ internal class CompanyDetailsViewModel @Inject constructor(
     internal fun fetchReviews() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewsUseCase(
-                companyId = state.value.companyId,
                 page = null,
                 location = null,
                 interviewType = null,
+                companyId = state.value.companyId,
                 keyword = null,
                 year = null,
                 code = null,
