@@ -5,7 +5,7 @@ import team.retum.common.enums.InterviewType
 import team.retum.network.model.response.FetchReviewDetailResponse
 
 data class FetchReviewDetailEntity(
-    val reviewId: String,
+    val reviewId: Long,
     val companyName: String,
     val writer: String,
     val major: String,

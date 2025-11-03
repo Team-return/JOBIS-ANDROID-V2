@@ -59,7 +59,7 @@ internal fun ReviewDetails(
 
     LaunchedEffect(reviewId) {
         // TODO : 실 값 들어왔을 때 UI 호출
-        reviewDetailsViewModel.setReviewId(reviewId.toString())
+        reviewDetailsViewModel.setReviewId(reviewId)
         reviewDetailsViewModel.fetchReviewDetails()
     }
 

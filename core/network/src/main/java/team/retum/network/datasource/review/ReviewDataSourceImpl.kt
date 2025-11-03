@@ -38,7 +38,7 @@ class ReviewDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse =
+    override suspend fun fetchReviewDetail(reviewId: Long): FetchReviewDetailResponse =
         RequestHandler<FetchReviewDetailResponse>().request { reviewApi.fetchReviewDetail(reviewId) }
 
     override suspend fun fetchQuestions(): FetchQuestionsResponse =

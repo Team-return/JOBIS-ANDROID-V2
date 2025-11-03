@@ -17,7 +17,7 @@ internal class ReviewDetailsViewModel @Inject constructor(
     private val fetchReviewDetailsUseCase: FetchReviewDetailUseCase,
 ) : BaseViewModel<ReviewDetailsState, Unit>(ReviewDetailsState.getInitialState()) {
 
-    internal fun setReviewId(reviewId: String) = setState {
+    internal fun setReviewId(reviewId: Long) = setState {
         state.value.copy(reviewId = reviewId)
     }
 
@@ -37,15 +37,15 @@ internal class ReviewDetailsViewModel @Inject constructor(
 @Immutable
 internal data class ReviewDetailsState(
     val selectedTabIndex: Int,
-    val reviewId: String,
+    val reviewId: Long,
     val reviewDetail: FetchReviewDetailEntity,
 ) {
     companion object {
         fun getInitialState() = ReviewDetailsState(
             selectedTabIndex = 0,
-            reviewId = "",
+            reviewId = 0L,
             reviewDetail = FetchReviewDetailEntity(
-                reviewId = "",
+                reviewId = 0L,
                 companyName = "",
                 writer = "",
                 major = "",

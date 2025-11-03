@@ -7,7 +7,7 @@ import team.retum.common.enums.InterviewType
 
 @JsonClass(generateAdapter = true)
 data class FetchReviewDetailResponse(
-    @Json(name = "review_id") val reviewId: String,
+    @Json(name = "review_id") val reviewId: Long,
     @Json(name = "company_name") val companyName: String,
     @Json(name = "writer") val writer: String,
     @Json(name = "major") val major: String,

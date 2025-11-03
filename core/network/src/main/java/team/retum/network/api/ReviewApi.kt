@@ -34,7 +34,7 @@ interface ReviewApi {
 
     @GET(RequestUrls.Reviews.details)
     suspend fun fetchReviewDetail(
-        @Path(RequestUrls.PATH.reviewId) reviewId: String,
+        @Path(RequestUrls.PATH.reviewId) reviewId: Long,
     ): FetchReviewDetailResponse
 
     @GET(RequestUrls.Reviews.questions)

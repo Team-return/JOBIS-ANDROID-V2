@@ -22,7 +22,7 @@ interface ReviewDataSource {
         code: Long?,
     ): FetchReviewsResponse
 
-    suspend fun fetchReviewDetail(reviewId: String): FetchReviewDetailResponse
+    suspend fun fetchReviewDetail(reviewId: Long): FetchReviewDetailResponse
 
     suspend fun fetchQuestions(): FetchQuestionsResponse
 
