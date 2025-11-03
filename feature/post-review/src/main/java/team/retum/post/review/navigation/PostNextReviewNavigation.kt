@@ -1,5 +1,6 @@
 package team.retum.post.review.navigation
 
+import android.net.Uri
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -31,7 +32,7 @@ fun NavGraphBuilder.postNextReview(
 }
 
 fun NavController.navigateToPostNextReview(reviewData: PostReviewData) {
-    navigate("$NAVIGATION_POST_NEXT_REVIEW/${reviewData.toJsonString()}")
+    navigate("$NAVIGATION_POST_NEXT_REVIEW/${Uri.encode(reviewData.toJsonString())}")
 }
 
 internal fun NavBackStackEntry.getReviewData(): PostReviewData {

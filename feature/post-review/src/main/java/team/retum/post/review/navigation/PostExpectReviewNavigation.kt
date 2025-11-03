@@ -1,5 +1,6 @@
 package team.retum.post.review.navigation
 
+import android.net.Uri
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -29,5 +30,5 @@ fun NavGraphBuilder.postExpectReview(
 }
 
 fun NavController.navigateToPostExpectReview(reviewData: PostReviewData) {
-    navigate("$NAVIGATION_POST_EXPECT_REVIEW/${reviewData.toJsonString()}")
+    navigate("$NAVIGATION_POST_EXPECT_REVIEW/${Uri.encode(reviewData.toJsonString())}")
 }
