@@ -19,7 +19,7 @@ const val SEARCH_DEBOUNCE_MILLIS = 1000L
 @HiltViewModel
 internal class SearchReviewsViewModel @Inject constructor(
     private val fetchReviewsUseCase: FetchReviewsUseCase,
-) : BaseViewModel<SearchReviewsState, Unit>(SearchReviewsState.getInitialState()) {
+) : BaseViewModel<SearchReviewsState, SearchReviewsSideEffect>(SearchReviewsState.getInitialState()) {
 
     init {
         debounceName()
@@ -58,6 +58,8 @@ internal class SearchReviewsViewModel @Inject constructor(
                             reviews = it.reviews,
                         )
                     }
+                }.onFailure {
+                    postSideEffect(SearchReviewsSideEffect.FetchError)
                 }
             }
         }
@@ -77,4 +79,8 @@ data class SearchReviewsState(
             showRecruitmentsEmptyContent = false,
         )
     }
+}
+
+internal sealed class SearchReviewsSideEffect {
+    data object FetchError : SearchReviewsSideEffect()
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,10 +17,12 @@ import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.review.ui.component.ReviewItems
 import team.retum.review.viewmodel.ReviewFilterViewModel
+import team.retum.review.viewmodel.ReviewSideEffect
+import team.retum.review.viewmodel.ReviewState
 import team.retum.review.viewmodel.ReviewViewModel
-import team.retum.review.viewmodel.ReviewsState
 
 @Composable
 internal fun Review(
@@ -29,6 +32,7 @@ internal fun Review(
     reviewViewModel: ReviewViewModel = hiltViewModel(),
 ) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         with(reviewViewModel) {
@@ -38,6 +42,18 @@ internal fun Review(
             setInterviewType(ReviewFilterViewModel.interviewType)
             clearReview()
             fetchReviews()
+        }
+
+        reviewViewModel.sideEffect.collect {
+            when (it) {
+                is ReviewSideEffect.FetchError -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.review_fetch_error),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+            }
         }
     }
 
@@ -51,7 +67,7 @@ internal fun Review(
 
 @Composable
 private fun ReviewScreen(
-    state: ReviewsState,
+    state: ReviewState,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
