@@ -13,7 +13,7 @@ const val NAVIGATION_COMPANY_DETAILS = "companyDetails"
 fun NavGraphBuilder.companyDetails(
     onBackPressed: () -> Unit,
     navigateToReviewDetails: (Long) -> Unit,
-    navigateToReviews: (Long, String) -> Unit,
+    navigateToReviews: () -> Unit,
     navigateToRecruitmentDetails: (Long, Boolean) -> Unit,
 ) {
     composable(

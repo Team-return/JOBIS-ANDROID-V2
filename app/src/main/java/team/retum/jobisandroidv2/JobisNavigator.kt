@@ -210,10 +210,7 @@ internal class JobisNavigator(
         navController.navigateToReviewFilter()
     }
 
-    fun navigateToReview(
-        companyId: Long,
-        companyName: String,
-    ) {
+    fun navigateToReview() {
         navController.navigateToReview()
     }
 
