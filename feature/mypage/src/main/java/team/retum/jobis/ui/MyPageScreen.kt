@@ -193,10 +193,10 @@ private fun MyPageScreen(
                     onClick = showGallery,
                 )
             }
-            state.reviewableCompany?.run {
+            state.reviewableCompany?.let {
                 WriteInterviewReview(
-                    companyName = state.reviewableCompany.name,
-                    onClick = { onPostReviewClick(state.reviewableCompany.name, state.reviewableCompany.id) },
+                    companyName = it.name,
+                    onClick = { onPostReviewClick(it.name, it.id) },
                 )
             }
             ContentListItem(
