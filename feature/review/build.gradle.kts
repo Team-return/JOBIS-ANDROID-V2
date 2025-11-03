@@ -5,7 +5,6 @@ plugins {
     id(libs.plugins.kotlin.ksp.get().pluginId)
     id(libs.plugins.hilt.android.get().pluginId)
     id(libs.plugins.ktlint.gradle.get().pluginId)
-    id(libs.plugins.kotlinx.serialization.get().pluginId)
 }
 
 apply<CommonGradlePlugin>()
@@ -31,5 +30,4 @@ dependencies {
 
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.coil.compose)
-    implementation(libs.kotlinx.serialization.json)
 }
