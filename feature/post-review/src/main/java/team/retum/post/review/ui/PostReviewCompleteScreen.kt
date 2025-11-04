@@ -29,16 +29,14 @@ const val SCREEN_TIME = 1500L
 @Composable
 internal fun PostReviewComplete(
     onBackPressed: () -> Unit,
-    navigateToPostReview: (String, Long) -> Unit,
+    navigateToMyPage: () -> Unit,
     postReviewViewModel: PostReviewViewModel = hiltViewModel(),
 ) {
     val state by postReviewViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        // TODO :: 빈번하게 일어나는 api 요청 개선
         delay(SCREEN_TIME)
-        onBackPressed()
-        navigateToPostReview("", 0)
+        navigateToMyPage()
     }
 
     PostReviewCompleteScreen(

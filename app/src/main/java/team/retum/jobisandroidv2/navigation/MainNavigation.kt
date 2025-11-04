@@ -129,7 +129,7 @@ internal fun NavGraphBuilder.mainNavigation(
         )
         postReviewComplete(
             onBackPressed = navigator::popBackStackIfNotHome,
-            navigateToPostReview = navigator::navigateToPostReview,
+            navigateToMyPage = navigator::navigateToMyPage,
         )
         reviewDetails(navigator::popBackStackIfNotHome)
         reviewFilter(onBackPressed = navigator::popBackStackIfNotHome)

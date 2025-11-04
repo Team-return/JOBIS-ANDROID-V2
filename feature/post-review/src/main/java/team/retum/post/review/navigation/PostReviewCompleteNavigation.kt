@@ -9,14 +9,14 @@ const val NAVIGATION_POST_REVIEW_COMPLETE = "postReviewComplete"
 
 fun NavGraphBuilder.postReviewComplete(
     onBackPressed: () -> Unit,
-    navigateToPostReview: (String, Long) -> Unit,
+    navigateToMyPage: () -> Unit,
 ) {
     composable(
         route = NAVIGATION_POST_REVIEW_COMPLETE,
     ) {
         PostReviewComplete(
             onBackPressed = onBackPressed,
-            navigateToPostReview = navigateToPostReview,
+            navigateToMyPage = navigateToMyPage,
         )
     }
 }

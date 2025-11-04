@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import team.retum.jobis.ui.MyPage
 
 const val NAVIGATION_MY_PAGE = "myPage"
+const val NAVIGATION_POST_REVIEW = "postReview"
 
 fun NavGraphBuilder.myPage(
     onSelectInterestClick: () -> Unit,
@@ -30,5 +31,8 @@ fun NavGraphBuilder.myPage(
 }
 
 fun NavController.navigateToMyPage() {
-    navigate(NAVIGATION_MY_PAGE)
+    navigate(NAVIGATION_MY_PAGE) {
+        popUpTo(NAVIGATION_POST_REVIEW) { inclusive = true }
+        launchSingleTop = true
+    }
 }
