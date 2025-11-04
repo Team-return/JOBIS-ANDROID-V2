@@ -36,6 +36,10 @@
     <string name="position_label">지원 직무</string>
     <string name="interviewer_count_label">면접관 수</string>
     <string name="company_name">업체명</string>
+    <string name="dialog_exit_message">지금 나가면 되돌릴 수 없어요.</string>
+    <string name="dialog_exit_description">지금 나가면 이전 작업은 저장 되지 않아요.</string>
+    <string name="exit">나가기</string>
+    <string name="stay">이어서하기</string>
 
     <!-- Post Review Complete Screen -->
     <string name="post_complete_review_check_title">%s님의\n후기가 작성이 완료됐어요!</string>

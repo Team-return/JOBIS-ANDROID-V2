@@ -47,6 +47,7 @@ import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
+import team.retum.jobisdesignsystemv2.dialog.JobisDialog
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -131,6 +132,7 @@ internal fun PostReview(
         techs = reviewViewModel.techs,
         buttonEnabled = state.buttonEnabled,
         onPostNextClick = reviewViewModel::onNextClick,
+        showExitConfirmDialog = reviewViewModel::setShowExitConfirmDialog,
     )
 }
 
@@ -153,14 +155,28 @@ private fun PostReviewScreen(
     setButtonClear: () -> Unit,
     buttonEnabled: Boolean,
     onPostNextClick: () -> Unit,
+    showExitConfirmDialog: (Boolean) -> Unit,
 ) {
+    if (state.showExitConfirmDialog) {
+        JobisDialog(
+            onDismissRequest = { showExitConfirmDialog(false) },
+            title = stringResource(id = R.string.dialog_exit_message),
+            description = stringResource(id = R.string.dialog_exit_description),
+            subButtonText = stringResource(id = R.string.exit),
+            mainButtonText = stringResource(id = R.string.stay),
+            subButtonColor = ButtonColor.Error,
+            mainButtonColor = ButtonColor.Default,
+            onSubButtonClick = onBackPressed,
+            onMainButtonClick = { showExitConfirmDialog(false) },
+        )
+    }
     Column(
         modifier = Modifier
             .background(JobisTheme.colors.background)
             .fillMaxSize(),
     ) {
         JobisLargeTopAppBar(
-            onBackPressed = onBackPressed,
+            onBackPressed = { showExitConfirmDialog(true) },
             title = stringResource(id = R.string.write_review),
         )
         LazyColumn(
