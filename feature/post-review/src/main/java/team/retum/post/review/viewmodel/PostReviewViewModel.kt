@@ -50,6 +50,10 @@ internal class PostReviewViewModel @Inject constructor(
         state.value.copy(showExitConfirmDialog = showExitConfirmDialog)
     }
 
+    internal fun setShowModalLossDataDialog(showModalLossDataDialog: Boolean) = setState {
+        state.value.copy(showModalLossDataDialog = showModalLossDataDialog)
+    }
+
     internal fun setKeyword(keyword: String?) {
         techs.clear()
         setState {
@@ -142,20 +146,20 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-    internal fun setInterviewType(interviewType: InterviewType) {
+    internal fun setInterviewType(interviewType: InterviewType?) {
         setState {
             state.value.copy(
                 interviewType = interviewType,
-                buttonEnabled = true,
+                buttonEnabled = interviewType != null,
             )
         }
     }
 
-    internal fun setInterviewLocation(interviewLocation: InterviewLocation) {
+    internal fun setInterviewLocation(interviewLocation: InterviewLocation?) {
         setState {
             state.value.copy(
                 interviewLocation = interviewLocation,
-                buttonEnabled = true,
+                buttonEnabled = interviewLocation != null,
             )
         }
     }
@@ -179,23 +183,26 @@ internal class PostReviewViewModel @Inject constructor(
 
     internal fun onNextClick() {
         with(state.value) {
-            postSideEffect(
-                PostReviewSideEffect.MoveToNext(
-                    companyId = companyId,
-                    interviewerCount = count.toInt(),
-                    jobCode = selectedTech ?: 0,
-                    interviewType = interviewType,
-                    location = interviewLocation,
-                ),
-            )
+            // interviewType과 interviewLocation이 null이면 안되므로 체크
+            if (interviewType != null && interviewLocation != null) {
+                postSideEffect(
+                    PostReviewSideEffect.MoveToNext(
+                        companyId = companyId,
+                        interviewerCount = count.toInt(),
+                        jobCode = selectedTech ?: 0,
+                        interviewType = interviewType,
+                        location = interviewLocation,
+                    ),
+                )
+            }
         }
     }
 }
 
 internal data class PostReviewState(
     val studentName: String,
-    val interviewType: InterviewType,
-    val interviewLocation: InterviewLocation,
+    val interviewType: InterviewType?,
+    val interviewLocation: InterviewLocation?,
     val companyId: Long,
     val jobCode: Long,
     val interviewerCount: Int,
@@ -211,6 +218,7 @@ internal data class PostReviewState(
     val count: String,
     val myReview: List<MyReview>,
     val showExitConfirmDialog: Boolean,
+    val showModalLossDataDialog: Boolean,
 ) {
     companion object {
         fun getInitialState() = PostReviewState(
@@ -223,8 +231,8 @@ internal data class PostReviewState(
             tech = null,
             buttonEnabled = false,
             reviewProcess = ReviewProcess.INTERVIEW_TYPE,
-            interviewType = InterviewType.OTHER,
-            interviewLocation = InterviewLocation.OTHER, // TODO :: 널처리(선택 해제) 고려
+            interviewType = null,
+            interviewLocation = null,
             count = "",
             companyId = 0,
             jobCode = 0,
@@ -232,6 +240,7 @@ internal data class PostReviewState(
             qnaElements = emptyList(),
             myReview = emptyList(),
             showExitConfirmDialog = false,
+            showModalLossDataDialog = false
         )
     }
 }

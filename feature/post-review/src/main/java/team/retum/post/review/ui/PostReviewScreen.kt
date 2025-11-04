@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -134,6 +135,7 @@ internal fun PostReview(
         buttonEnabled = state.buttonEnabled,
         onPostNextClick = reviewViewModel::onNextClick,
         showExitConfirmDialog = reviewViewModel::setShowExitConfirmDialog,
+        showModalLossDataDialog = reviewViewModel::setShowModalLossDataDialog
     )
 }
 
@@ -151,12 +153,13 @@ private fun PostReviewScreen(
     setChecked: (String?) -> Unit,
     techs: SnapshotStateList<CodesEntity.CodeEntity>,
     setInterviewerCount: (String) -> Unit,
-    setInterviewType: (InterviewType) -> Unit,
-    setInterviewLocation: (InterviewLocation) -> Unit,
+    setInterviewType: (InterviewType?) -> Unit,
+    setInterviewLocation: (InterviewLocation?) -> Unit,
     setButtonClear: () -> Unit,
     buttonEnabled: Boolean,
     onPostNextClick: () -> Unit,
     showExitConfirmDialog: (Boolean) -> Unit,
+    showModalLossDataDialog: (Boolean) -> Unit,
 ) {
     if (state.showExitConfirmDialog) {
         JobisDialog(
@@ -169,6 +172,22 @@ private fun PostReviewScreen(
             mainButtonColor = ButtonColor.Default,
             onSubButtonClick = onBackPressed,
             onMainButtonClick = { showExitConfirmDialog(false) },
+        )
+    }
+    if (state.showModalLossDataDialog) {
+        JobisDialog(
+            onDismissRequest = { showModalLossDataDialog(false) },
+            title = stringResource(id = R.string.dialog_exit_message),
+            description = stringResource(id = R.string.dialog_exit_description),
+            subButtonText = stringResource(id = R.string.exit),
+            mainButtonText = stringResource(id = R.string.stay),
+            subButtonColor = ButtonColor.Error,
+            mainButtonColor = ButtonColor.Default,
+            onSubButtonClick = {
+                showModalLossDataDialog(false)
+                onDismiss()
+            },
+            onMainButtonClick = { showModalLossDataDialog(false) },
         )
     }
     Column(
@@ -192,7 +211,10 @@ private fun PostReviewScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp)
-                            .background(color = JobisTheme.colors.onPrimary, shape = RoundedCornerShape(12.dp)),
+                            .background(
+                                color = JobisTheme.colors.onPrimary,
+                                shape = RoundedCornerShape(12.dp)
+                            ),
                     ) {
                         JobisText(
                             text = stringResource(id = R.string.review_complete_suffix, it.companyName),
@@ -245,7 +267,6 @@ private fun PostReviewScreen(
         }
     }
 
-    // 각 단계별로 별도의 바텀시트 표시
     when (currentStep) {
         ReviewProcess.INTERVIEW_TYPE -> {
             InterviewTypeBottomSheet(
@@ -257,6 +278,7 @@ private fun PostReviewScreen(
                 setInterviewType = setInterviewType,
                 interviewType = state.interviewType,
                 buttonEnabled = buttonEnabled,
+                showModalLossDataDialog = showModalLossDataDialog,
             )
         }
 
@@ -323,15 +345,16 @@ private fun PostReviewScreen(
 @Composable
 private fun InterviewTypeBottomSheet(
     onDismiss: () -> Unit,
+    showModalLossDataDialog: (Boolean) -> Unit,
     onNextClick: () -> Unit,
-    setInterviewType: (InterviewType) -> Unit,
-    interviewType: InterviewType,
+    setInterviewType: (InterviewType?) -> Unit,
+    interviewType: InterviewType?,
     buttonEnabled: Boolean,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = { showModalLossDataDialog(true) },
         sheetState = sheetState,
         containerColor = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
@@ -397,19 +420,31 @@ private fun InterviewTypeBottomSheet(
                 PostReviewOutlinedStrokeText(
                     selected = interviewType == InterviewType.INDIVIDUAL,
                     text = stringResource(id = R.string.individual_review),
-                    onButtonClick = { setInterviewType(InterviewType.INDIVIDUAL) },
+                    onButtonClick = {
+                        setInterviewType(
+                            if (interviewType == InterviewType.INDIVIDUAL) null else InterviewType.INDIVIDUAL,
+                        )
+                    },
                 )
 
                 PostReviewOutlinedStrokeText(
                     selected = interviewType == InterviewType.GROUP,
                     text = stringResource(id = R.string.group_review),
-                    onButtonClick = { setInterviewType(InterviewType.GROUP) },
+                    onButtonClick = {
+                        setInterviewType(
+                            if (interviewType == InterviewType.GROUP) null else InterviewType.GROUP,
+                        )
+                    },
                 )
 
                 PostReviewOutlinedStrokeText(
                     selected = interviewType == InterviewType.OTHER,
                     text = stringResource(id = R.string.other_review),
-                    onButtonClick = { setInterviewType(InterviewType.OTHER) },
+                    onButtonClick = {
+                        setInterviewType(
+                            if (interviewType == InterviewType.OTHER) null else InterviewType.OTHER,
+                        )
+                    },
                 )
             }
             JobisButton(
@@ -429,8 +464,8 @@ private fun InterviewLocationBottomSheet(
     onDismiss: () -> Unit,
     onBackPressed: () -> Unit,
     onNextClick: () -> Unit,
-    setInterviewLocation: (InterviewLocation) -> Unit,
-    interviewLocation: InterviewLocation,
+    setInterviewLocation: (InterviewLocation?) -> Unit,
+    interviewLocation: InterviewLocation?,
     buttonEnabled: Boolean,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -501,23 +536,39 @@ private fun InterviewLocationBottomSheet(
                 PostReviewOutlinedStrokeText(
                     selected = interviewLocation == InterviewLocation.DAEJEON,
                     text = stringResource(id = R.string.deajeon),
-                    onButtonClick = { setInterviewLocation(InterviewLocation.DAEJEON) },
+                    onButtonClick = {
+                        setInterviewLocation(
+                            if (interviewLocation == InterviewLocation.DAEJEON) null else InterviewLocation.DAEJEON,
+                        )
+                    },
                 )
                 PostReviewOutlinedStrokeText(
                     selected = interviewLocation == InterviewLocation.SEOUL,
                     text = stringResource(id = R.string.seoul),
-                    onButtonClick = { setInterviewLocation(InterviewLocation.SEOUL) },
+                    onButtonClick = {
+                        setInterviewLocation(
+                            if (interviewLocation == InterviewLocation.SEOUL) null else InterviewLocation.SEOUL,
+                        )
+                    },
                 )
                 PostReviewOutlinedStrokeText(
                     selected = interviewLocation == InterviewLocation.GYEONGGI,
                     text = stringResource(id = R.string.gyeonggi),
-                    onButtonClick = { setInterviewLocation(InterviewLocation.GYEONGGI) },
+                    onButtonClick = {
+                        setInterviewLocation(
+                            if (interviewLocation == InterviewLocation.GYEONGGI) null else InterviewLocation.GYEONGGI,
+                        )
+                    },
                 )
 
                 PostReviewOutlinedStrokeText(
                     selected = interviewLocation == InterviewLocation.OTHER,
                     text = stringResource(id = R.string.other),
-                    onButtonClick = { setInterviewLocation(InterviewLocation.OTHER) },
+                    onButtonClick = {
+                        setInterviewLocation(
+                            if (interviewLocation == InterviewLocation.OTHER) null else InterviewLocation.OTHER,
+                        )
+                    },
                 )
             }
             JobisButton(
@@ -667,10 +718,12 @@ private fun InterviewerCountBottomSheet(
         scrimColor = Color.Transparent,
     ) {
         Column(
-            modifier = Modifier.padding(
-                top = 24.dp,
-                bottom = 12.dp,
-            ),
+            modifier = Modifier
+                .imePadding()
+                .padding(
+                    top = 24.dp,
+                    bottom = 12.dp,
+                ),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -750,12 +803,12 @@ private fun SummaryBottomSheet(
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    val interviewType = when (state.interviewType) {
+    val interviewType = when (state.interviewType!!) {
         InterviewType.INDIVIDUAL -> stringResource(id = R.string.individual_review)
         InterviewType.GROUP -> stringResource(id = R.string.group_review)
         InterviewType.OTHER -> stringResource(id = R.string.other_review)
     }
-    val interviewLocation = when (state.interviewLocation) {
+    val interviewLocation = when (state.interviewLocation!!) {
         InterviewLocation.DAEJEON -> stringResource(id = R.string.deajeon)
         InterviewLocation.SEOUL -> stringResource(id = R.string.seoul)
         InterviewLocation.GYEONGGI -> stringResource(id = R.string.gyeonggi)
