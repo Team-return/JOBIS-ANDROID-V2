@@ -12,7 +12,8 @@
     <string name="tech">기술 스택</string>
     <string name="finish">작성 완료</string>
     <string name="please_write_review">후기를 작성해주세요</string>
-    <string name="search">검색어를 입력해주세요</string>
+    <string name="hint_tech_search">직무를 검색해주세요</string>
+    <string name="hint_interviewer_count_search">면접관수를 검색해주세요</string>
     <string name="example">example</string>
     <string name="review_category">면접 구분</string>
     <string name="review_location">면접 지역</string>

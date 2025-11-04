@@ -135,7 +135,7 @@ internal fun PostReview(
         buttonEnabled = state.buttonEnabled,
         onPostNextClick = reviewViewModel::onNextClick,
         showExitConfirmDialog = reviewViewModel::setShowExitConfirmDialog,
-        showModalLossDataDialog = reviewViewModel::setShowModalLossDataDialog
+        showModalLossDataDialog = reviewViewModel::setShowModalLossDataDialog,
     )
 }
 
@@ -645,7 +645,7 @@ private fun TechStackBottomSheet(
 
             JobisTextField(
                 value = { state.keyword ?: "" },
-                hint = stringResource(id = R.string.search),
+                hint = stringResource(id = R.string.hint_tech_search),
                 drawableResId = JobisIcon.Search,
                 onValueChange = setKeyword,
                 fieldColor = JobisTheme.colors.background,
@@ -775,7 +775,7 @@ private fun InterviewerCountBottomSheet(
 
             JobisTextField(
                 value = { state.count },
-                hint = stringResource(id = R.string.search),
+                hint = stringResource(id = R.string.hint_interviewer_count_search),
                 onValueChange = setInterviewerCount,
                 fieldColor = JobisTheme.colors.background,
                 keyboardType = KeyboardType.Number,
