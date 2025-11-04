@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -91,14 +92,16 @@ private fun ReviewScreen(
             )
         }
         LazyColumn {
-            items(state.reviews.size) {
-                val review = state.reviews[it]
+            items(
+                items = state.reviews,
+                key = { it.reviewId },
+            ) {
                 ReviewItems(
-                    companyImageUrl = review.companyLogoUrl,
-                    companyName = review.companyName,
-                    reviewId = review.reviewId,
-                    writer = review.writer,
-                    major = review.major,
+                    companyImageUrl = it.companyLogoUrl,
+                    companyName = it.companyName,
+                    reviewId = it.reviewId,
+                    writer = it.writer,
+                    major = it.major,
                     onReviewDetailClick = onReviewDetailClick,
                 )
             }

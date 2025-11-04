@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -183,8 +184,10 @@ private fun PostReviewScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (state.myReview.isNotEmpty()) {
-                items(state.myReview.size) {
-                    val myReview = state.myReview[it]
+                items(
+                    items = state.myReview,
+                    key = { it.reviewId },
+                ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -192,7 +195,7 @@ private fun PostReviewScreen(
                             .background(color = JobisTheme.colors.onPrimary, shape = RoundedCornerShape(12.dp)),
                     ) {
                         JobisText(
-                            text = stringResource(id = R.string.review_complete_suffix, myReview.companyName),
+                            text = stringResource(id = R.string.review_complete_suffix, it.companyName),
                             color = JobisTheme.colors.background,
                             style = JobisTypography.HeadLine,
                             textAlign = TextAlign.Center,
