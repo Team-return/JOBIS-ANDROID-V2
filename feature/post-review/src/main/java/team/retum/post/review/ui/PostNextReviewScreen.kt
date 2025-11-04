@@ -152,7 +152,7 @@ private fun PostNextReviewScreen(
                 JobisTextField(
                     modifier = Modifier.heightIn(min = 120.dp, max = 300.dp),
                     value = { setAnswer(page) },
-                    onValueChange = { onAnswerChange(answers[page], page) },
+                    onValueChange = { onAnswerChange(it, page) },
                     hint = stringResource(R.string.hint_answer_review),
                     singleLine = false,
                 )
