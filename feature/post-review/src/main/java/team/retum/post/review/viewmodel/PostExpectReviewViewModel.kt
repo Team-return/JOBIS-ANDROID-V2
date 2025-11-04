@@ -8,26 +8,26 @@ import javax.inject.Inject
 @HiltViewModel
 internal class PostExpectReviewViewModel @Inject constructor() : BaseViewModel<PostExpectReviewState, PostExpectReviewSideEffect>(PostExpectReviewState.getInitialState()) {
 
-    internal fun setAnswer(answer: String) = setState {
+    internal fun setAnswer(answer: String) {
+        setState { state.value.copy(answer = answer) }
         setButtonEnabled(answer = answer)
-        state.value.copy(answer = answer)
     }
 
-    internal fun setQuestion(question: String) = setState {
+    internal fun setQuestion(question: String) {
+        setState { state.value.copy(question = question) }
         setButtonEnabled(question = question)
-        state.value.copy(question = question)
     }
 
     private fun setButtonEnabled(
         answer: String = state.value.answer,
         question: String = state.value.question,
-    ) = setState {
-        state.value.copy(buttonEnabled = answer.isNotBlank() && question.isNotBlank())
+    ) {
+        setState { state.value.copy(buttonEnabled = answer.isNotBlank() && question.isNotBlank()) }
     }
 
     internal fun setEmpty() {
-        with(state.value) {
-            copy(
+        setState {
+            state.value.copy(
                 question = "",
                 answer = "",
             )
