@@ -79,7 +79,7 @@ internal fun PostReview(
     LaunchedEffect(Unit) {
         reviewViewModel.fetchMyReview()
         reviewViewModel.sideEffect.collect {
-            when(it) {
+            when (it) {
                 is PostReviewSideEffect.Success -> {
                     JobisToast.create(
                         context = context,
@@ -95,7 +95,7 @@ internal fun PostReview(
                             location = it.location,
                             jobCode = it.jobCode,
                             interviewerCount = it.interviewerCount,
-                        )
+                        ),
                     )
                 }
 
@@ -103,7 +103,7 @@ internal fun PostReview(
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.post_review_bad_request),
-                        drawable = JobisIcon.Error
+                        drawable = JobisIcon.Error,
                     ).show()
                 }
             }
@@ -339,7 +339,7 @@ private fun InterviewTypeBottomSheet(
             modifier = Modifier.padding(
                 top = 24.dp,
                 bottom = 12.dp,
-            )
+            ),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -359,7 +359,7 @@ private fun InterviewTypeBottomSheet(
             }
             Row(
                 modifier = Modifier.padding(top = 10.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 repeat(PAGER_COUNT) {
                     val color = if (it == 0) JobisTheme.colors.onPrimary else JobisTheme.colors.surfaceVariant
@@ -367,7 +367,7 @@ private fun InterviewTypeBottomSheet(
                     Box(
                         modifier = Modifier
                             .background(color = color, shape = RoundedCornerShape(200.dp))
-                            .size(width = 12.dp * multiple, height = 6.dp)
+                            .size(width = 12.dp * multiple, height = 6.dp),
                     )
                 }
             }
@@ -378,13 +378,13 @@ private fun InterviewTypeBottomSheet(
                 JobisText(
                     text = stringResource(id = R.string.required_answer),
                     color = JobisTheme.colors.onSurface,
-                    style = JobisTypography.Description
+                    style = JobisTypography.Description,
                 )
                 Icon(
                     painter = painterResource(JobisIcon.Asterisk),
                     contentDescription = stringResource(id = R.string.content_description_required),
                     tint = JobisTheme.colors.secondary,
-                    modifier = Modifier.size(12.dp)
+                    modifier = Modifier.size(12.dp),
                 )
             }
             Column(
@@ -444,7 +444,7 @@ private fun InterviewLocationBottomSheet(
             modifier = Modifier.padding(
                 top = 24.dp,
                 bottom = 12.dp,
-            )
+            ),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -464,7 +464,7 @@ private fun InterviewLocationBottomSheet(
             }
             Row(
                 modifier = Modifier.padding(top = 10.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 repeat(PAGER_COUNT) {
                     val color = if (it == 1) JobisTheme.colors.onPrimary else JobisTheme.colors.surfaceVariant
@@ -472,7 +472,7 @@ private fun InterviewLocationBottomSheet(
                     Box(
                         modifier = Modifier
                             .background(color = color, shape = RoundedCornerShape(200.dp))
-                            .size(width = 12.dp * multiple, height = 6.dp)
+                            .size(width = 12.dp * multiple, height = 6.dp),
                     )
                 }
             }
@@ -482,18 +482,18 @@ private fun InterviewLocationBottomSheet(
                 JobisText(
                     text = stringResource(id = R.string.required_answer),
                     color = JobisTheme.colors.onSurface,
-                    style = JobisTypography.Description
+                    style = JobisTypography.Description,
                 )
                 Icon(
                     painter = painterResource(JobisIcon.Asterisk),
                     contentDescription = stringResource(id = R.string.content_description_required),
                     tint = JobisTheme.colors.secondary,
-                    modifier = Modifier.size(12.dp)
+                    modifier = Modifier.size(12.dp),
                 )
             }
             Column(
                 modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 PostReviewOutlinedStrokeText(
                     selected = interviewLocation == InterviewLocation.DAEJEON,
@@ -555,7 +555,7 @@ private fun TechStackBottomSheet(
             modifier = Modifier.padding(
                 top = 24.dp,
                 bottom = 12.dp,
-            )
+            ),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -576,7 +576,7 @@ private fun TechStackBottomSheet(
 
             Row(
                 modifier = Modifier.padding(top = 10.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 repeat(PAGER_COUNT) {
                     val color = if (it == 2) JobisTheme.colors.onPrimary else JobisTheme.colors.surfaceVariant
@@ -584,7 +584,7 @@ private fun TechStackBottomSheet(
                     Box(
                         modifier = Modifier
                             .background(color = color, shape = RoundedCornerShape(200.dp))
-                            .size(width = 12.dp * multiple, height = 6.dp)
+                            .size(width = 12.dp * multiple, height = 6.dp),
                     )
                 }
             }
@@ -667,7 +667,7 @@ private fun InterviewerCountBottomSheet(
             modifier = Modifier.padding(
                 top = 24.dp,
                 bottom = 12.dp,
-            )
+            ),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -688,7 +688,7 @@ private fun InterviewerCountBottomSheet(
 
             Row(
                 modifier = Modifier.padding(top = 10.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 repeat(PAGER_COUNT) {
                     val color = if (it == 3) JobisTheme.colors.onPrimary else JobisTheme.colors.surfaceVariant
@@ -696,7 +696,7 @@ private fun InterviewerCountBottomSheet(
                     Box(
                         modifier = Modifier
                             .background(color = color, shape = RoundedCornerShape(200.dp))
-                            .size(width = 12.dp * multiple, height = 6.dp)
+                            .size(width = 12.dp * multiple, height = 6.dp),
                     )
                 }
             }
@@ -707,13 +707,13 @@ private fun InterviewerCountBottomSheet(
                 JobisText(
                     text = stringResource(id = R.string.required_answer),
                     color = JobisTheme.colors.onSurface,
-                    style = JobisTypography.Description
+                    style = JobisTypography.Description,
                 )
                 Icon(
                     painter = painterResource(JobisIcon.Asterisk),
                     contentDescription = stringResource(id = R.string.content_description_required),
                     tint = JobisTheme.colors.secondary,
-                    modifier = Modifier.size(12.dp)
+                    modifier = Modifier.size(12.dp),
                 )
             }
 
@@ -771,7 +771,7 @@ private fun SummaryBottomSheet(
             modifier = Modifier.padding(
                 top = 24.dp,
                 bottom = 12.dp,
-            )
+            ),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -792,7 +792,7 @@ private fun SummaryBottomSheet(
 
             Column(
                 modifier = Modifier.padding(top = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 TopBottomText(
                     topText = stringResource(id = R.string.interview_type_label),
@@ -800,7 +800,7 @@ private fun SummaryBottomSheet(
                 )
                 TopBottomText(
                     topText = stringResource(id = R.string.interview_location_label),
-                    bottomText = interviewLocation
+                    bottomText = interviewLocation,
                 )
                 TopBottomText(
                     topText = stringResource(id = R.string.company_name),
@@ -834,7 +834,7 @@ private fun TopBottomText(
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         JobisText(
             text = topText,
@@ -844,7 +844,7 @@ private fun TopBottomText(
         JobisText(
             text = bottomText,
             style = JobisTypography.HeadLine,
-            color = JobisTheme.colors.onPrimary
+            color = JobisTheme.colors.onPrimary,
         )
     }
 }
@@ -872,7 +872,7 @@ private fun PostReviewOutlinedStrokeText(
             .border(
                 width = 1.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
             )
             .background(color = Color.White, shape = RoundedCornerShape(12.dp))
             .fillMaxWidth()

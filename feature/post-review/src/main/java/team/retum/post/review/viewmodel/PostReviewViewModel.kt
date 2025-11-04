@@ -46,14 +46,8 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-    internal fun setQuestion(question: String) {
-        setState { state.value.copy(question = question) }
-        setButtonEnabled()
-    }
-
-    internal fun setAnswer(answer: String) {
-        setState { state.value.copy(answer = answer) }
-        setButtonEnabled()
+    internal fun setShowExitConfirmDialog(showExitConfirmDialog: Boolean) = setState {
+        state.value.copy(showExitConfirmDialog = showExitConfirmDialog)
     }
 
     internal fun setKeyword(keyword: String?) {
@@ -61,7 +55,7 @@ internal class PostReviewViewModel @Inject constructor(
         setState {
             state.value.copy(
                 keyword = keyword ?: "",
-                buttonEnabled = true
+                buttonEnabled = true,
             )
         }
     }
@@ -78,7 +72,7 @@ internal class PostReviewViewModel @Inject constructor(
                     qnaElements = reviewData.qnaElements.map { it.toEntity() },
                     question = reviewData.question,
                     answer = reviewData.answer,
-                )
+                ),
             ).onSuccess {
                 postSideEffect(PostReviewSideEffect.Success)
             }.onFailure {
@@ -91,7 +85,7 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-//    internal fun addReview() {
+    internal fun addReview() {
 //        reviews.add(
 //            PostReviewEntity.PostReviewContentEntity(
 //                answer = state.value.answer,
@@ -99,10 +93,10 @@ internal class PostReviewViewModel @Inject constructor(
 //                codeId = state.value.selectedTech!!,
 //            ),
 //        )
-//    }
+    }
 
     internal fun setSelectedTech(selectedTech: Long?) =
-        setState { state.value.copy(selectedTech = selectedTech ?: 0)  }
+        setState { state.value.copy(selectedTech = selectedTech ?: 0) }
 
     internal fun fetchCodes(keyword: String?) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -120,7 +114,7 @@ internal class PostReviewViewModel @Inject constructor(
             fetchMyReviewsUseCase().onSuccess {
                 setState {
                     state.value.copy(
-                        myReview = it.reviews
+                        myReview = it.reviews,
                     )
                 }
             }
@@ -134,7 +128,7 @@ internal class PostReviewViewModel @Inject constructor(
             }
 
             else -> {
-               setState { state.value.copy(buttonEnabled = !state.value.keyword?.isNotEmpty()!!) }
+                setState { state.value.copy(buttonEnabled = !state.value.keyword?.isNotEmpty()!!) }
             }
         }
     }
@@ -167,7 +161,6 @@ internal class PostReviewViewModel @Inject constructor(
     }
 
     internal fun setInterviewerCount(count: String) {
-        //techs.clear()
         setState {
             state.value.copy(
                 count = count,
@@ -186,13 +179,15 @@ internal class PostReviewViewModel @Inject constructor(
 
     internal fun onNextClick() {
         with(state.value) {
-            postSideEffect(PostReviewSideEffect.MoveToNext(
-                companyId = companyId,
-                interviewerCount = count.toInt(),
-                jobCode = selectedTech ?: 0,
-                interviewType = interviewType,
-                location = interviewLocation,
-            ))
+            postSideEffect(
+                PostReviewSideEffect.MoveToNext(
+                    companyId = companyId,
+                    interviewerCount = count.toInt(),
+                    jobCode = selectedTech ?: 0,
+                    interviewType = interviewType,
+                    location = interviewLocation,
+                ),
+            )
         }
     }
 }
@@ -215,6 +210,7 @@ internal data class PostReviewState(
     val reviewProcess: ReviewProcess,
     val count: String,
     val myReview: List<MyReview>,
+    val showExitConfirmDialog: Boolean,
 ) {
     companion object {
         fun getInitialState() = PostReviewState(
@@ -227,14 +223,15 @@ internal data class PostReviewState(
             tech = null,
             buttonEnabled = false,
             reviewProcess = ReviewProcess.INTERVIEW_TYPE,
-            interviewType = InterviewType.INDIVIDUAL,
-            interviewLocation = InterviewLocation.DAEJEON, // TODO :: 널처리(선택 해제) 고려
+            interviewType = InterviewType.OTHER,
+            interviewLocation = InterviewLocation.OTHER, // TODO :: 널처리(선택 해제) 고려
             count = "",
             companyId = 0,
             jobCode = 0,
             interviewerCount = 0,
             qnaElements = emptyList(),
             myReview = emptyList(),
+            showExitConfirmDialog = false,
         )
     }
 }
@@ -246,7 +243,7 @@ internal sealed interface PostReviewSideEffect {
         val companyId: Long,
         val jobCode: Long,
         val interviewerCount: Int,
-    ): PostReviewSideEffect
+    ) : PostReviewSideEffect
     data object BadRequest : PostReviewSideEffect
 
     data object Success : PostReviewSideEffect
