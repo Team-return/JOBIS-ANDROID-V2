@@ -21,7 +21,7 @@ fun NavGraphBuilder.postNextReview(
 ) {
     composable(
         route = "$NAVIGATION_POST_NEXT_REVIEW/{${ResourceKeys.REVIEW_DATA}}",
-        arguments = listOf(navArgument(ResourceKeys.REVIEW_DATA) { NavType.StringType }),
+        arguments = listOf(navArgument(ResourceKeys.REVIEW_DATA) { type = NavType.StringType }),
     ) {
         PostNextReview(
             reviewData = it.getReviewData(),

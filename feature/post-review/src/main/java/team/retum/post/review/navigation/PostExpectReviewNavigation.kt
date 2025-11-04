@@ -19,7 +19,7 @@ fun NavGraphBuilder.postExpectReview(
 ) {
     composable(
         route = "$NAVIGATION_POST_EXPECT_REVIEW/{${ResourceKeys.REVIEW_DATA}}",
-        arguments = listOf(navArgument(ResourceKeys.REVIEW_DATA) { NavType.StringType }),
+        arguments = listOf(navArgument(ResourceKeys.REVIEW_DATA) { type = NavType.StringType }),
     ) {
         PostExpectReview(
             reviewData = it.getReviewData(),

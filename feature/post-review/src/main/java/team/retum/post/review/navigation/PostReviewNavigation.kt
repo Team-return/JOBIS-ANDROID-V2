@@ -19,8 +19,8 @@ fun NavGraphBuilder.postReview(
     composable(
         route = "$NAVIGATION_POST_REVIEW/{${ResourceKeys.COMPANY_NAME}}/{${ResourceKeys.COMPANY_ID}}",
         arguments = listOf(
-            navArgument(ResourceKeys.COMPANY_NAME) { NavType.StringType },
-            navArgument(ResourceKeys.COMPANY_ID) { NavType.StringType },
+            navArgument(ResourceKeys.COMPANY_NAME) { type =  NavType.StringType },
+            navArgument(ResourceKeys.COMPANY_ID) { type = NavType.StringType },
         ),
     ) {
         PostReview(
@@ -33,8 +33,5 @@ fun NavGraphBuilder.postReview(
 }
 
 fun NavController.navigateToPostReview(companyName: String, companyId: Long) {
-    navigate("$NAVIGATION_POST_REVIEW/$companyName/$companyId") {
-        popUpTo(NAVIGATION_POST_NEXT_REVIEW) { inclusive = false }
-        popUpTo(NAVIGATION_POST_EXPECT_REVIEW) { inclusive = false }
-    }
+    navigate("$NAVIGATION_POST_REVIEW/$companyName/$companyId")
 }

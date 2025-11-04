@@ -52,7 +52,6 @@ internal fun PostNextReview(
     val state by postNextReviewViewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { state.questions.size })
     val coroutineScope = rememberCoroutineScope()
-    val answers = remember { mutableStateListOf("", "", "") }
 
     LaunchedEffect(Unit) {
         postNextReviewViewModel.fetchQuestions()
@@ -70,7 +69,7 @@ internal fun PostNextReview(
     PostNextReviewScreen(
         onBackPressed = onBackPressed,
         questions = state.questions,
-        answers = answers,
+        answers = state.answers,
         coroutineScope = coroutineScope,
         pagerState = pagerState,
         onPostExpectReviewClick = postNextReviewViewModel::onNextClick,
@@ -86,7 +85,7 @@ private fun PostNextReviewScreen(
     questions: List<QuestionEntity>,
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
-    answers: SnapshotStateList<String>,
+    answers: List<String>,
     onPostExpectReviewClick: () -> Unit,
     setAnswer: (Int) -> String,
     onAnswerChange: (String, Int) -> Unit,
