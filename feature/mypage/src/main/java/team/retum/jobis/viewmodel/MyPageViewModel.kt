@@ -101,7 +101,7 @@ internal class MyPageViewModel @Inject constructor(
     private fun fetchReviewableCompanies() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewableCompaniesUseCase().onSuccess {
-                setState { state.value.copy(reviewableCompany = it.companies.firstOrNull()) }
+                setState { state.value.copy(reviewableCompany = it.companies) }
             }
         }
     }
@@ -126,7 +126,7 @@ internal data class MyPageState(
     val studentInformation: StudentInformationEntity,
     val showSignOutModal: Boolean,
     val showWithdrawalModal: Boolean,
-    val reviewableCompany: ReviewableCompaniesEntity.ReviewableCompanyEntity?,
+    val reviewableCompany: List<ReviewableCompaniesEntity.ReviewableCompanyEntity>?,
 ) {
     companion object {
         fun getInitialState() = MyPageState(

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -193,11 +195,13 @@ private fun MyPageScreen(
                     onClick = showGallery,
                 )
             }
-            state.reviewableCompany?.let {
-                WriteInterviewReview(
-                    companyName = it.name,
-                    onClick = { onPostReviewClick(it.name, it.id) },
-                )
+            state.reviewableCompany?.let { reviewable ->
+                reviewable.forEach { reviewableItem ->
+                    WriteInterviewReview(
+                        companyName = reviewableItem.name,
+                        onClick = { onPostReviewClick(reviewableItem.name, reviewableItem.id) },
+                    )
+                }
             }
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.notification),
