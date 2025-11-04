@@ -49,12 +49,10 @@ internal class ReviewFilterViewModel @Inject constructor(
     internal fun getLocalYears() {
         val startYear = 2020
         val endYear = LocalDate.now().year + 1
-        viewModelScope.launch(Dispatchers.IO) {
-            setState {
-                state.value.copy(
-                    years = (startYear..endYear).toList().reversed(),
-                )
-            }
+        setState {
+            state.value.copy(
+                years = (startYear..endYear).toList().reversed(),
+            )
         }
     }
 
