@@ -22,7 +22,7 @@ internal class PostNextReviewViewModel @Inject constructor(
                 setState {
                     state.value.copy(
                         questions = it.questions,
-                        answers = List(it.questions.size) { "" }
+                        answers = List(it.questions.size) { "" },
                     )
                 }
             }

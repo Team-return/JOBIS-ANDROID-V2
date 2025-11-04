@@ -6,8 +6,7 @@ import team.retum.common.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-internal class PostExpectReviewViewModel @Inject constructor(
-) : BaseViewModel<PostExpectReviewState, PostExpectReviewSideEffect>(PostExpectReviewState.getInitialState()) {
+internal class PostExpectReviewViewModel @Inject constructor() : BaseViewModel<PostExpectReviewState, PostExpectReviewSideEffect>(PostExpectReviewState.getInitialState()) {
 
     internal fun setAnswer(answer: String) = setState {
         setButtonEnabled(answer = answer)
@@ -38,10 +37,12 @@ internal class PostExpectReviewViewModel @Inject constructor(
 
     internal fun onNextClick() {
         with(state.value) {
-            postSideEffect(PostExpectReviewSideEffect.PostReview(
-                question = question,
-                answer = answer
-            ))
+            postSideEffect(
+                PostExpectReviewSideEffect.PostReview(
+                    question = question,
+                    answer = answer,
+                ),
+            )
         }
     }
 }
@@ -56,7 +57,7 @@ data class PostExpectReviewState(
         fun getInitialState() = PostExpectReviewState(
             question = "",
             answer = "",
-            buttonEnabled = false
+            buttonEnabled = false,
         )
     }
 }
@@ -65,5 +66,5 @@ internal sealed interface PostExpectReviewSideEffect {
     data class PostReview(
         val question: String,
         val answer: String,
-    ): PostExpectReviewSideEffect
+    ) : PostExpectReviewSideEffect
 }
