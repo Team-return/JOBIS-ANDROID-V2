@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -75,6 +74,7 @@ internal fun PostReview(
     reviewViewModel: PostReviewViewModel = hiltViewModel(),
 ) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
+    val techs by reviewViewModel.techs.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var currentStep by remember { mutableStateOf<ReviewProcess?>(null) }
 
@@ -101,10 +101,18 @@ internal fun PostReview(
                     )
                 }
 
-                PostReviewSideEffect.BadRequest -> {
+                is PostReviewSideEffect.BadRequest -> {
                     JobisToast.create(
                         context = context,
-                        message = context.getString(R.string.post_review_bad_request),
+                        message = context.getString(R.string.error_post_review_bad_request),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is PostReviewSideEffect.SelectTechAndCount -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.error_select_tech_and_count),
                         drawable = JobisIcon.Error,
                     ).show()
                 }
@@ -131,7 +139,7 @@ internal fun PostReview(
         setChecked = reviewViewModel::setChecked,
         setKeyword = reviewViewModel::setKeyword,
         setSelectedTech = reviewViewModel::setSelectedTech,
-        techs = reviewViewModel.techs,
+        techs = techs,
         buttonEnabled = state.buttonEnabled,
         onPostNextClick = reviewViewModel::onNextClick,
         showExitConfirmDialog = reviewViewModel::setShowExitConfirmDialog,
@@ -151,7 +159,7 @@ private fun PostReviewScreen(
     setKeyword: (String?) -> Unit,
     setSelectedTech: (Long?) -> Unit,
     setChecked: (String?) -> Unit,
-    techs: SnapshotStateList<CodesEntity.CodeEntity>,
+    techs: List<CodesEntity.CodeEntity>,
     setInterviewerCount: (String) -> Unit,
     setInterviewType: (InterviewType?) -> Unit,
     setInterviewLocation: (InterviewLocation?) -> Unit,
@@ -187,7 +195,10 @@ private fun PostReviewScreen(
                 showModalLossDataDialog(false)
                 onDismiss()
             },
-            onMainButtonClick = { showModalLossDataDialog(false) },
+            onMainButtonClick = {
+                showModalLossDataDialog(false)
+                onStepChange(currentStep)
+            },
         )
     }
     Column(
@@ -592,7 +603,7 @@ private fun TechStackBottomSheet(
     setSelectedTech: (Long?) -> Unit,
     setChecked: (String?) -> Unit,
     state: PostReviewState,
-    techs: SnapshotStateList<CodesEntity.CodeEntity>,
+    techs: List<CodesEntity.CodeEntity>,
     buttonEnabled: Boolean,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
