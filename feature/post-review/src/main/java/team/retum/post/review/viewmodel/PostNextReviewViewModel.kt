@@ -25,6 +25,8 @@ internal class PostNextReviewViewModel @Inject constructor(
                         answers = List(it.questions.size) { "" },
                     )
                 }
+            }.onFailure {
+                postSideEffect(PostNextReviewSideEffect.FetchQuestionError)
             }
         }
     }
@@ -95,4 +97,5 @@ internal sealed interface PostNextReviewSideEffect {
     data class MoveToNext(
         val qnaElements: List<PostReviewContent>,
     ) : PostNextReviewSideEffect
+    data object FetchQuestionError : PostNextReviewSideEffect
 }

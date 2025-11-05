@@ -89,14 +89,12 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-    internal fun addReview() {
-//        reviews.add(
-//            PostReviewEntity.PostReviewContentEntity(
-//                answer = state.value.answer,
-//                question = state.value.question,
-//                codeId = state.value.selectedTech!!,
-//            ),
-//        )
+    internal fun addReview(reviewProcess: ReviewProcess) {
+        setState {
+            state.value.copy(
+                reviewProcess = reviewProcess,
+            )
+        }
     }
 
     internal fun setSelectedTech(selectedTech: Long?) =
@@ -214,7 +212,7 @@ internal data class PostReviewState(
     val selectedTech: Long?,
     val tech: String?,
     val buttonEnabled: Boolean,
-    val reviewProcess: ReviewProcess,
+    val reviewProcess: ReviewProcess?,
     val count: String,
     val myReview: List<MyReview>,
     val showExitConfirmDialog: Boolean,
@@ -240,7 +238,7 @@ internal data class PostReviewState(
             qnaElements = emptyList(),
             myReview = emptyList(),
             showExitConfirmDialog = false,
-            showModalLossDataDialog = false
+            showModalLossDataDialog = false,
         )
     }
 }
