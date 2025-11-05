@@ -5,6 +5,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
@@ -35,8 +37,8 @@ internal class PostReviewViewModel @Inject constructor(
     init {
         fetchStudentInfo()
     }
-    var techs: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
-        private set
+    private val _techs = MutableStateFlow<List<CodesEntity.CodeEntity>>(emptyList())
+    val techs = _techs.asStateFlow()
 
     private fun fetchStudentInfo() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -55,7 +57,7 @@ internal class PostReviewViewModel @Inject constructor(
     }
 
     internal fun setKeyword(keyword: String?) {
-        techs.clear()
+        _techs.value = emptyList()
         setState {
             state.value.copy(
                 keyword = keyword ?: "",
@@ -107,7 +109,7 @@ internal class PostReviewViewModel @Inject constructor(
                 type = CodeType.JOB,
                 parentCode = null,
             ).onSuccess {
-                techs.addAll(it.codes)
+                _techs.value = it.codes
             }
         }
 
@@ -181,7 +183,6 @@ internal class PostReviewViewModel @Inject constructor(
 
     internal fun onNextClick() {
         with(state.value) {
-            // interviewType과 interviewLocation이 null이면 안되므로 체크
             if (interviewType != null && interviewLocation != null) {
                 postSideEffect(
                     PostReviewSideEffect.MoveToNext(
@@ -191,6 +192,10 @@ internal class PostReviewViewModel @Inject constructor(
                         interviewType = interviewType,
                         location = interviewLocation,
                     ),
+                )
+            } else {
+                postSideEffect(
+                    PostReviewSideEffect.SelectTechAndCount
                 )
             }
         }
@@ -254,4 +259,6 @@ internal sealed interface PostReviewSideEffect {
     data object BadRequest : PostReviewSideEffect
 
     data object Success : PostReviewSideEffect
+
+    data object SelectTechAndCount : PostReviewSideEffect
 }
