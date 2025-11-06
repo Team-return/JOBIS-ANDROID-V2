@@ -22,6 +22,7 @@ import team.retum.network.api.BugApi
 import team.retum.network.api.CodeApi
 import team.retum.network.api.CompanyApi
 import team.retum.network.api.FileApi
+import team.retum.network.api.InterestsApi
 import team.retum.network.api.NoticeApi
 import team.retum.network.api.NotificationApi
 import team.retum.network.api.RecruitmentApi
@@ -187,5 +188,11 @@ object NetworkModule {
     @Singleton
     fun provideServerStatusCheckApi(retrofit: Retrofit): ServerStatusCheckApi {
         return retrofit.create(ServerStatusCheckApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInterestsApi(retrofit: Retrofit): InterestsApi {
+        return retrofit.create(InterestsApi::class.java)
     }
 }

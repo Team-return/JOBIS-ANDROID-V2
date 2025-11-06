@@ -10,6 +10,7 @@ import team.retum.employment.navigation.employment
 import team.retum.employment.navigation.employmentDetail
 import team.retum.jobis.application.navigation.application
 import team.retum.jobis.interests.navigation.interests
+import team.retum.jobis.interests.navigation.interestsComplete
 import team.retum.jobis.notice.navigation.noticeDetails
 import team.retum.jobis.notice.navigation.notices
 import team.retum.jobis.recruitment.navigation.recruitmentDetails
@@ -82,7 +83,13 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
         )
         reportBug(onBackPressed = navigator::popBackStackIfNotHome)
-        interests(onBackPressed = navigator::popBackStackIfNotHome)
+        interests(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            navigateToInterestsComplete = navigator::navigateToInterestsComplete,
+        )
+        interestsComplete(
+            onBackPressed = navigator::popBackStackIfNotHome,
+        )
         noticeDetails(onBackPressed = navigator::popBackStackIfNotHome)
         companies(
             onBackPressed = navigator::popBackStackIfNotHome,
