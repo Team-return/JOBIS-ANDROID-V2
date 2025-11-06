@@ -127,7 +127,7 @@ internal fun PostReview(
     PostReviewScreen(
         onBackPressed = onBackPressed,
         state = state,
-        onAddReviewClick = { currentStep = ReviewProcess.INTERVIEW_TYPE },
+        onAddReviewClick = { currentStep = state.reviewProcess },
         currentStep = currentStep,
         onDismiss = { currentStep = null },
         onStepChange = { step ->
@@ -145,7 +145,6 @@ internal fun PostReview(
         buttonEnabled = state.buttonEnabled,
         onPostNextClick = reviewViewModel::onNextClick,
         showExitConfirmDialog = reviewViewModel::setShowExitConfirmDialog,
-        showModalLossDataDialog = reviewViewModel::setShowModalLossDataDialog,
     )
 }
 
@@ -168,7 +167,6 @@ private fun PostReviewScreen(
     buttonEnabled: Boolean,
     onPostNextClick: () -> Unit,
     showExitConfirmDialog: (Boolean) -> Unit,
-    showModalLossDataDialog: (Boolean) -> Unit,
 ) {
     if (state.showExitConfirmDialog) {
         JobisDialog(
@@ -181,25 +179,6 @@ private fun PostReviewScreen(
             mainButtonColor = ButtonColor.Default,
             onSubButtonClick = onBackPressed,
             onMainButtonClick = { showExitConfirmDialog(false) },
-        )
-    }
-    if (state.showModalLossDataDialog) {
-        JobisDialog(
-            onDismissRequest = { showModalLossDataDialog(false) },
-            title = stringResource(id = R.string.dialog_exit_message),
-            description = stringResource(id = R.string.dialog_exit_description),
-            subButtonText = stringResource(id = R.string.exit),
-            mainButtonText = stringResource(id = R.string.stay),
-            subButtonColor = ButtonColor.Error,
-            mainButtonColor = ButtonColor.Default,
-            onSubButtonClick = {
-                showModalLossDataDialog(false)
-                onDismiss()
-            },
-            onMainButtonClick = {
-                showModalLossDataDialog(false)
-                onStepChange(currentStep)
-            },
         )
     }
     Column(
@@ -289,7 +268,6 @@ private fun PostReviewScreen(
                 setInterviewType = setInterviewType,
                 interviewType = state.interviewType,
                 buttonEnabled = buttonEnabled,
-                showModalLossDataDialog = showModalLossDataDialog,
             )
         }
 
@@ -361,7 +339,6 @@ private fun PostReviewScreen(
 @Composable
 private fun InterviewTypeBottomSheet(
     onDismiss: () -> Unit,
-    showModalLossDataDialog: (Boolean) -> Unit,
     onNextClick: () -> Unit,
     setInterviewType: (InterviewType?) -> Unit,
     interviewType: InterviewType?,
@@ -370,7 +347,7 @@ private fun InterviewTypeBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
-        onDismissRequest = { showModalLossDataDialog(true) },
+        onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
