@@ -130,12 +130,14 @@ internal fun PostReview(
         onAddReviewClick = { currentStep = ReviewProcess.INTERVIEW_TYPE },
         currentStep = currentStep,
         onDismiss = { currentStep = null },
-        onStepChange = { currentStep = it },
+        onStepChange = { step ->
+            step?.let(reviewViewModel::addReviewProcess)
+            currentStep = step
+        },
         companyName = companyName,
         setInterviewerCount = reviewViewModel::setInterviewerCount,
         setInterviewType = reviewViewModel::setInterviewType,
         setInterviewLocation = reviewViewModel::setInterviewLocation,
-        setButtonClear = reviewViewModel::setButtonClear,
         setChecked = reviewViewModel::setChecked,
         setKeyword = reviewViewModel::setKeyword,
         setSelectedTech = reviewViewModel::setSelectedTech,
@@ -163,7 +165,6 @@ private fun PostReviewScreen(
     setInterviewerCount: (String) -> Unit,
     setInterviewType: (InterviewType?) -> Unit,
     setInterviewLocation: (InterviewLocation?) -> Unit,
-    setButtonClear: () -> Unit,
     buttonEnabled: Boolean,
     onPostNextClick: () -> Unit,
     showExitConfirmDialog: (Boolean) -> Unit,
@@ -283,7 +284,6 @@ private fun PostReviewScreen(
             InterviewTypeBottomSheet(
                 onDismiss = onDismiss,
                 onNextClick = {
-                    setButtonClear()
                     onStepChange(ReviewProcess.INTERVIEW_LOCATION)
                 },
                 setInterviewType = setInterviewType,
@@ -296,9 +296,10 @@ private fun PostReviewScreen(
         ReviewProcess.INTERVIEW_LOCATION -> {
             InterviewLocationBottomSheet(
                 onDismiss = onDismiss,
-                onBackPressed = { onStepChange(ReviewProcess.INTERVIEW_TYPE) },
+                onBackPressed = {
+                    onStepChange(ReviewProcess.INTERVIEW_TYPE)
+                },
                 onNextClick = {
-                    setButtonClear()
                     onStepChange(ReviewProcess.TECH_STACK)
                 },
                 setInterviewLocation = setInterviewLocation,
@@ -310,9 +311,10 @@ private fun PostReviewScreen(
         ReviewProcess.TECH_STACK -> {
             TechStackBottomSheet(
                 onDismiss = onDismiss,
-                onBackPressed = { onStepChange(ReviewProcess.INTERVIEW_LOCATION) },
+                onBackPressed = {
+                    onStepChange(ReviewProcess.INTERVIEW_LOCATION)
+                },
                 onNextClick = {
-                    setButtonClear()
                     onStepChange(ReviewProcess.INTERVIEWER_COUNT)
                 },
                 setKeyword = setKeyword,
@@ -327,9 +329,10 @@ private fun PostReviewScreen(
         ReviewProcess.INTERVIEWER_COUNT -> {
             InterviewerCountBottomSheet(
                 onDismiss = onDismiss,
-                onBackPressed = { onStepChange(ReviewProcess.TECH_STACK) },
+                onBackPressed = {
+                    onStepChange(ReviewProcess.TECH_STACK)
+                },
                 onNextClick = {
-                    setButtonClear()
                     onStepChange(ReviewProcess.SUMMARY)
                 },
                 setInterviewerCount = setInterviewerCount,
@@ -341,7 +344,9 @@ private fun PostReviewScreen(
         ReviewProcess.SUMMARY -> {
             SummaryBottomSheet(
                 onDismiss = onDismiss,
-                onBackPressed = { onStepChange(ReviewProcess.INTERVIEWER_COUNT) },
+                onBackPressed = {
+                    onStepChange(ReviewProcess.INTERVIEWER_COUNT)
+                },
                 onNextClick = onPostNextClick,
                 state = state,
                 companyName = companyName,

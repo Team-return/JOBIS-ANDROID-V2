@@ -1,7 +1,5 @@
 package team.retum.post.review.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +59,6 @@ internal class PostReviewViewModel @Inject constructor(
         setState {
             state.value.copy(
                 keyword = keyword ?: "",
-                buttonEnabled = true,
             )
         }
     }
@@ -91,12 +88,13 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-    internal fun addReview(reviewProcess: ReviewProcess) {
+    internal fun addReviewProcess(reviewProcess: ReviewProcess) {
         setState {
             state.value.copy(
                 reviewProcess = reviewProcess,
             )
         }
+
     }
 
     internal fun setSelectedTech(selectedTech: Long?) =
@@ -125,23 +123,10 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-    private fun setButtonEnabled() {
-        when (state.value.reviewProcess) {
-            ReviewProcess.INTERVIEW_TYPE -> {
-                setState { state.value.copy(buttonEnabled = state.value.question.isNotEmpty() && state.value.answer.isNotEmpty()) }
-            }
-
-            else -> {
-                setState { state.value.copy(buttonEnabled = !state.value.keyword?.isNotEmpty()!!) }
-            }
-        }
-    }
-
     internal fun setChecked(checked: String?) {
         setState {
             state.value.copy(
                 checked = checked ?: "",
-                buttonEnabled = true,
             )
         }
     }
@@ -150,7 +135,6 @@ internal class PostReviewViewModel @Inject constructor(
         setState {
             state.value.copy(
                 interviewType = interviewType,
-                buttonEnabled = interviewType != null,
             )
         }
     }
@@ -159,7 +143,6 @@ internal class PostReviewViewModel @Inject constructor(
         setState {
             state.value.copy(
                 interviewLocation = interviewLocation,
-                buttonEnabled = interviewLocation != null,
             )
         }
     }
@@ -168,18 +151,10 @@ internal class PostReviewViewModel @Inject constructor(
         setState {
             state.value.copy(
                 count = count,
-                buttonEnabled = true,
             )
         }
     }
 
-    internal fun setButtonClear() {
-        setState {
-            state.value.copy(
-                buttonEnabled = false,
-            )
-        }
-    }
 
     internal fun onNextClick() {
         with(state.value) {
@@ -208,7 +183,6 @@ internal data class PostReviewState(
     val interviewLocation: InterviewLocation?,
     val companyId: Long,
     val jobCode: Long,
-    val interviewerCount: Int,
     val qnaElements: List<PostReviewContentEntity>,
     val question: String,
     val answer: String,
@@ -216,13 +190,21 @@ internal data class PostReviewState(
     val checked: String?,
     val selectedTech: Long?,
     val tech: String?,
-    val buttonEnabled: Boolean,
     val reviewProcess: ReviewProcess?,
     val count: String,
     val myReview: List<MyReview>,
     val showExitConfirmDialog: Boolean,
     val showModalLossDataDialog: Boolean,
 ) {
+    val buttonEnabled: Boolean
+        get() = when (reviewProcess) {
+            ReviewProcess.INTERVIEW_TYPE -> interviewType != null
+            ReviewProcess.INTERVIEW_LOCATION -> interviewLocation != null
+            ReviewProcess.TECH_STACK -> keyword?.isNotEmpty() == true
+            ReviewProcess.INTERVIEWER_COUNT -> count.isNotEmpty()
+            ReviewProcess.SUMMARY -> true
+            null -> false
+        }
     companion object {
         fun getInitialState() = PostReviewState(
             studentName = "",
@@ -232,14 +214,12 @@ internal data class PostReviewState(
             checked = "",
             selectedTech = 0,
             tech = null,
-            buttonEnabled = false,
             reviewProcess = ReviewProcess.INTERVIEW_TYPE,
             interviewType = null,
             interviewLocation = null,
             count = "",
             companyId = 0,
             jobCode = 0,
-            interviewerCount = 0,
             qnaElements = emptyList(),
             myReview = emptyList(),
             showExitConfirmDialog = false,
