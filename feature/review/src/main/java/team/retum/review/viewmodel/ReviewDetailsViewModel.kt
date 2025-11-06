@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ReviewDetailsViewModel @Inject constructor(
     private val fetchReviewDetailsUseCase: FetchReviewDetailUseCase,
-) : BaseViewModel<ReviewDetailsState, Unit>(ReviewDetailsState.getInitialState()) {
+) : BaseViewModel<ReviewDetailsState, ReviewDetailsSideEffect>(ReviewDetailsState.getInitialState()) {
 
     internal fun setReviewId(reviewId: Long) = setState {
         state.value.copy(reviewId = reviewId)
@@ -23,9 +23,12 @@ internal class ReviewDetailsViewModel @Inject constructor(
 
     internal fun fetchReviewDetails() {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchReviewDetailsUseCase(state.value.reviewId).onSuccess {
-                setState { state.value.copy(reviewDetail = it) }
-            }
+            fetchReviewDetailsUseCase(state.value.reviewId)
+                .onSuccess {
+                    setState { state.value.copy(reviewDetail = it) }
+                }.onFailure {
+                    postSideEffect(ReviewDetailsSideEffect.FetchReviewDetailsError)
+                }
         }
     }
 
@@ -59,4 +62,8 @@ internal data class ReviewDetailsState(
             ),
         )
     }
+}
+
+internal sealed interface ReviewDetailsSideEffect {
+    data object FetchReviewDetailsError : ReviewDetailsSideEffect
 }

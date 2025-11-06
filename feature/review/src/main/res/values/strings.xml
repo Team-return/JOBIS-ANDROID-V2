@@ -19,6 +19,7 @@
     <string name="answer_a">A</string>
     <string name="empty_content_answer_not_found">받은 질문을 작성하지 않았어요!</string>
     <string name="empty_content_other_interview_title">다른 학생의 전공 후기를 봐주세요!</string>
+    <string name="review_detail_fetch_error">정보를 가져오지 못 했어요</string>
 
     <!--Review Screen-->
     <string name="review">후기</string>

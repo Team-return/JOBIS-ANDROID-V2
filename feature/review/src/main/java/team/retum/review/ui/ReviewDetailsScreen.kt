@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -42,6 +43,8 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
+import team.retum.review.viewmodel.ReviewDetailsSideEffect
 import team.retum.review.viewmodel.ReviewDetailsViewModel
 import team.retum.usecase.entity.FetchReviewDetailEntity
 
@@ -56,11 +59,23 @@ internal fun ReviewDetails(
         stringResource(id = R.string.reviewed_question),
     )
     val state by reviewDetailsViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(reviewId) {
         // TODO : 실 값 들어왔을 때 UI 호출
         reviewDetailsViewModel.setReviewId(reviewId)
         reviewDetailsViewModel.fetchReviewDetails()
+    }
+
+    LaunchedEffect(Unit) {
+        reviewDetailsViewModel.sideEffect.collect {
+            when (it) {
+                is ReviewDetailsSideEffect.FetchReviewDetailsError -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.review_detail_fetch_error)
+                )
+            }
+        }
     }
 
     ReviewDetailsScreen(
