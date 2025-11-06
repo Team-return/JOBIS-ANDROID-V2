@@ -13,6 +13,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ import team.retum.review.navigation.review
 
 @Composable
 internal fun Root(
+    initialTab: String?,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
     onEmploymentClick: () -> Unit,
@@ -74,6 +76,7 @@ internal fun Root(
 
     RootScreen(
         sheetState = sheetState,
+        initialTab = initialTab,
         applicationId = applicationId,
         onAlarmClick = onAlarmClick,
         showRejectionModal = {
@@ -116,6 +119,7 @@ internal fun Root(
 private fun RootScreen(
     navController: NavHostController = rememberNavController(),
     sheetState: ModalBottomSheetState,
+    initialTab: String?,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
     onEmploymentClick: () -> Unit,
@@ -141,6 +145,18 @@ private fun RootScreen(
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
+    LaunchedEffect(initialTab) {
+        if (initialTab != null) {
+            navController.navigate(initialTab) {
+                popUpTo(NAVIGATION_HOME) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
