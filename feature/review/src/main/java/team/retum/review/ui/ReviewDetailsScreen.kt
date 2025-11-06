@@ -62,7 +62,6 @@ internal fun ReviewDetails(
     val context = LocalContext.current
 
     LaunchedEffect(reviewId) {
-        // TODO : 실 값 들어왔을 때 UI 호출
         reviewDetailsViewModel.setReviewId(reviewId)
         reviewDetailsViewModel.fetchReviewDetails()
     }

@@ -76,12 +76,15 @@ internal fun PostNextReview(
     PostNextReviewScreen(
         onBackPressed = onBackPressed,
         questions = state.questions,
+        answers = state.answers,
+        buttonEnabled = state.buttonEnabled,
         coroutineScope = coroutineScope,
         pagerState = pagerState,
         onPostExpectReviewClick = postNextReviewViewModel::onNextClick,
         setAnswer = postNextReviewViewModel::getAnswer,
         onAnswerChange = postNextReviewViewModel::setAnswer,
         setQuestion = postNextReviewViewModel::setQuestion,
+        updateButtonEnabledForPage = postNextReviewViewModel::updateButtonEnabledForPage,
     )
 }
 
@@ -89,12 +92,15 @@ internal fun PostNextReview(
 private fun PostNextReviewScreen(
     onBackPressed: () -> Unit,
     questions: List<QuestionEntity>,
+    answers: List<String>,
+    buttonEnabled: Boolean,
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
     onPostExpectReviewClick: () -> Unit,
     setAnswer: (Int) -> String,
     onAnswerChange: (String, Int) -> Unit,
     setQuestion: () -> Unit,
+    updateButtonEnabledForPage: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -116,6 +122,10 @@ private fun PostNextReviewScreen(
             modifier = Modifier,
             userScrollEnabled = false,
         ) { page ->
+            LaunchedEffect(pagerState.currentPage) {
+                updateButtonEnabledForPage(pagerState.currentPage)
+            }
+
             Column {
                 Column(
                     modifier = Modifier.padding(horizontal = 24.dp),
@@ -164,6 +174,7 @@ private fun PostNextReviewScreen(
                 JobisButton(
                     text = stringResource(id = R.string.next),
                     color = ButtonColor.Primary,
+                    enabled = buttonEnabled,
                     onClick = {
                         setQuestion()
                         coroutineScope.launch {

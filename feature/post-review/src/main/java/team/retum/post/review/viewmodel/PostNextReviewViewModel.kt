@@ -38,6 +38,7 @@ internal class PostNextReviewViewModel @Inject constructor(
                 updatedAnswers[index] = answer
                 copy(
                     answers = updatedAnswers,
+                    buttonEnabled = answer.isNotBlank(),
                 )
             }
         }
@@ -45,6 +46,14 @@ internal class PostNextReviewViewModel @Inject constructor(
 
     internal fun getAnswer(index: Int): String {
         return state.value.answers.getOrNull(index) ?: ""
+    }
+
+    internal fun updateButtonEnabledForPage(pageIndex: Int) {
+        setState {
+            state.value.copy(
+                buttonEnabled = state.value.answers.getOrNull(pageIndex)?.isNotBlank() ?: false,
+            )
+        }
     }
 
     internal fun setQuestion() {
