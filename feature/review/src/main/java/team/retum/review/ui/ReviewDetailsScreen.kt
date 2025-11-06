@@ -228,7 +228,6 @@ private fun ExpectedReview(
                 )
                 .clip(RoundedCornerShape(12.dp))
                 .background(JobisTheme.colors.surfaceVariant),
-            onClick = {},
         ) {
             Row(
                 modifier = Modifier
