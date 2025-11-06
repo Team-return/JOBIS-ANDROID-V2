@@ -94,7 +94,6 @@ internal class PostReviewViewModel @Inject constructor(
                 reviewProcess = reviewProcess,
             )
         }
-
     }
 
     internal fun setSelectedTech(selectedTech: Long?) =
@@ -155,7 +154,6 @@ internal class PostReviewViewModel @Inject constructor(
         }
     }
 
-
     internal fun onNextClick() {
         with(state.value) {
             if (interviewType != null && interviewLocation != null) {
@@ -170,7 +168,7 @@ internal class PostReviewViewModel @Inject constructor(
                 )
             } else {
                 postSideEffect(
-                    PostReviewSideEffect.SelectTechAndCount
+                    PostReviewSideEffect.SelectTechAndCount,
                 )
             }
         }

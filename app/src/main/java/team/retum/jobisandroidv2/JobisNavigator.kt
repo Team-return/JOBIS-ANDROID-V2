@@ -134,7 +134,7 @@ internal class JobisNavigator(
     fun navigateToMyPage() {
         navController.navigateToRoot(
             applicationId = 0,
-            initialTab = NAVIGATION_MY_PAGE
+            initialTab = NAVIGATION_MY_PAGE,
         )
     }
 

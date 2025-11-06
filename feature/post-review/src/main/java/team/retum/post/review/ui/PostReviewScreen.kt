@@ -204,7 +204,7 @@ private fun PostReviewScreen(
                             .padding(horizontal = 24.dp)
                             .background(
                                 color = JobisTheme.colors.onPrimary,
-                                shape = RoundedCornerShape(12.dp)
+                                shape = RoundedCornerShape(12.dp),
                             ),
                     ) {
                         JobisText(
