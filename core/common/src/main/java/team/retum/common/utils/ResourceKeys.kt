@@ -23,4 +23,5 @@ object ResourceKeys {
     const val DATABASE_NAME = "jobis-database"
     const val CLASS_ID = "classId"
     const val REVIEW_DATA = "reviewData"
+    const val STUDENT_NAME = "studentName"
 }
