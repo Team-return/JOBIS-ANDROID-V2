@@ -17,10 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -79,7 +76,6 @@ internal fun PostNextReview(
     PostNextReviewScreen(
         onBackPressed = onBackPressed,
         questions = state.questions,
-        answers = state.answers,
         coroutineScope = coroutineScope,
         pagerState = pagerState,
         onPostExpectReviewClick = postNextReviewViewModel::onNextClick,
@@ -95,7 +91,6 @@ private fun PostNextReviewScreen(
     questions: List<QuestionEntity>,
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
-    answers: List<String>,
     onPostExpectReviewClick: () -> Unit,
     setAnswer: (Int) -> String,
     onAnswerChange: (String, Int) -> Unit,
@@ -172,7 +167,8 @@ private fun PostNextReviewScreen(
                     onClick = {
                         setQuestion()
                         coroutineScope.launch {
-                            if (pagerState.currentPage != 2) pagerState.animateScrollToPage(pagerState.currentPage + 1) else onPostExpectReviewClick()
+                            val lastPageIndex = pagerState.pageCount - 1
+                            if (pagerState.currentPage != lastPageIndex) pagerState.animateScrollToPage(pagerState.currentPage + 1) else onPostExpectReviewClick()
                         }
                     },
                 )
