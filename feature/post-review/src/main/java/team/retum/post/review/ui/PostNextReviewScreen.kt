@@ -67,7 +67,7 @@ internal fun PostNextReview(
                     JobisToast.create(
                         message = "질문을 조회하지 못했어요",
                         context = context,
-                    )
+                    ).show()
                 }
             }
         }

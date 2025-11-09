@@ -74,7 +74,7 @@ internal fun ReviewDetails(
                 is ReviewDetailsSideEffect.FetchReviewDetailsError -> JobisToast.create(
                     context = context,
                     message = context.getString(R.string.review_detail_fetch_error),
-                )
+                ).show()
             }
         }
     }
