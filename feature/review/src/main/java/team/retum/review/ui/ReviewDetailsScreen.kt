@@ -1,6 +1,7 @@
 package team.retum.review.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -170,6 +172,7 @@ private fun StudentInfo(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
                 .padding(top = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -195,7 +198,7 @@ private fun StudentInfo(
 
                 if (index < items.size - 1) {
                     JobisText(
-                        text = "•",
+                        text = " • ",
                         style = JobisTypography.SubBody,
                         color = JobisTheme.colors.inverseOnSurface,
                     )
