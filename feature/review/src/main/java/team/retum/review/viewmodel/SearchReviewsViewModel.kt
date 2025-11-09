@@ -3,6 +3,9 @@ package team.retum.review.viewmodel
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -55,7 +58,7 @@ internal class SearchReviewsViewModel @Inject constructor(
                     setState {
                         state.value.copy(
                             showRecruitmentsEmptyContent = it.reviews.isEmpty(),
-                            reviews = it.reviews,
+                            reviews = it.reviews.toPersistentList(),
                         )
                     }
                 }.onFailure {
@@ -69,13 +72,13 @@ internal class SearchReviewsViewModel @Inject constructor(
 @Immutable
 data class SearchReviewsState(
     val keyword: String?,
-    val reviews: List<FetchReviewsEntity.Review>,
+    val reviews: ImmutableList<FetchReviewsEntity.Review>,
     val showRecruitmentsEmptyContent: Boolean,
 ) {
     companion object {
         fun getInitialState() = SearchReviewsState(
             keyword = null,
-            reviews = emptyList(),
+            reviews = persistentListOf(),
             showRecruitmentsEmptyContent = false,
         )
     }

@@ -3,6 +3,9 @@ package team.retum.review.viewmodel
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
@@ -39,7 +42,7 @@ internal class ReviewFilterViewModel @Inject constructor(
             ).onSuccess {
                 setState {
                     state.value.copy(
-                        majorList = it.codes,
+                        majorList = it.codes.toPersistentList(),
                     )
                 }
             }
@@ -51,7 +54,7 @@ internal class ReviewFilterViewModel @Inject constructor(
         val endYear = LocalDate.now().year + 1
         setState {
             state.value.copy(
-                years = (startYear..endYear).toList().reversed(),
+                years = (startYear..endYear).toList().reversed().toPersistentList(),
             )
         }
     }
@@ -91,8 +94,8 @@ internal class ReviewFilterViewModel @Inject constructor(
 
 @Immutable
 data class ReviewsFilterState(
-    val years: List<Int>,
-    val majorList: List<CodesEntity.CodeEntity>,
+    val years: ImmutableList<Int>,
+    val majorList: ImmutableList<CodesEntity.CodeEntity>,
     val selectedMajorCode: Long? = null,
     val selectedYear: Int? = null,
     val selectedInterviewType: InterviewType? = null,
@@ -100,8 +103,8 @@ data class ReviewsFilterState(
 ) {
     companion object {
         fun getDefaultState() = ReviewsFilterState(
-            years = emptyList(),
-            majorList = emptyList(),
+            years = persistentListOf(),
+            majorList = persistentListOf(),
             selectedMajorCode = null,
             selectedYear = null,
             selectedInterviewType = null,

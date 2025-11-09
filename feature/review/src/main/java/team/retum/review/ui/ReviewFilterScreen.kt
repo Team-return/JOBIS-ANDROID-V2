@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.jobis.review.R
@@ -84,12 +86,12 @@ private fun ReviewFilterScreen(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
             ) {
                 Skills(
-                    majorList = state.majorList,
+                    majorList = state.majorList.toPersistentList(),
                     selectedMajorCode = state.selectedMajorCode,
                     onMajorSelected = onMajorSelected,
                 )
                 Years(
-                    years = state.years,
+                    years = state.years.toPersistentList(),
                     selectedYear = state.selectedYear,
                     onYearSelected = onYearSelected,
                 )
@@ -121,7 +123,7 @@ private fun ReviewFilterScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Skills(
-    majorList: List<CodesEntity.CodeEntity>,
+    majorList: ImmutableList<CodesEntity.CodeEntity>,
     selectedMajorCode: Long?,
     onMajorSelected: (Long?) -> Unit,
 ) {
@@ -155,7 +157,7 @@ private fun Skills(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Years(
-    years: List<Int>,
+    years: ImmutableList<Int>,
     selectedYear: Int?,
     onYearSelected: (Int?) -> Unit,
 ) {

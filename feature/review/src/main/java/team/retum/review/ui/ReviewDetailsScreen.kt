@@ -119,7 +119,7 @@ private fun ReviewDetailsScreen(
             selectedTabIndex = selectedTabIndex,
         )
         when (selectedTabIndex) {
-            0 -> InterviewReview(review = reviewDetail.qnaResponse)
+            0 -> InterviewReview(review = reviewDetail.qnaResponse.toPersistentList())
             1 -> ExpectedReview(review = reviewDetail)
         }
     }
@@ -210,7 +210,7 @@ private fun StudentInfo(
 
 @Composable
 private fun InterviewReview(
-    review: List<FetchReviewDetailEntity.QnAs>,
+    review: ImmutableList<FetchReviewDetailEntity.QnAs>,
 ) {
     ReviewContent(
         review = review,
@@ -285,7 +285,7 @@ private fun ExpectedReview(
 
 @Composable
 private fun ReviewContent(
-    review: List<FetchReviewDetailEntity.QnAs>,
+    review: ImmutableList<FetchReviewDetailEntity.QnAs>,
 ) {
     review.forEachIndexed { index, reviewItem ->
         var showQuestionDetail by remember { mutableStateOf(false) }
