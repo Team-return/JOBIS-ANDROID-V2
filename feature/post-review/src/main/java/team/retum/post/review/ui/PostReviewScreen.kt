@@ -2,6 +2,7 @@ package team.retum.post.review.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -207,19 +208,28 @@ private fun PostReviewScreen(
                                 shape = RoundedCornerShape(12.dp),
                             ),
                     ) {
-                        JobisText(
-                            text = stringResource(id = R.string.review_complete_suffix, it.companyName),
-                            color = JobisTheme.colors.background,
-                            style = JobisTypography.HeadLine,
-                            textAlign = TextAlign.Center,
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
                                     vertical = 16.dp,
                                     horizontal = 16.dp,
                                 ),
-                            maxLines = 1,
-                        )
+                            horizontalArrangement = Arrangement.Center,
+                        ) {
+                            JobisText(
+                                text = it.companyName,
+                                color = Color.White,
+                                style = JobisTypography.HeadLine,
+                                maxLines = 1,
+                                modifier = Modifier.weight(1f, fill = false),
+                            )
+                            JobisText(
+                                text = " 후기 작성 완료",
+                                color = Color.White,
+                                style = JobisTypography.HeadLine,
+                            )
+                        }
                     }
                 }
             } else {
@@ -915,6 +925,11 @@ private fun PostReviewOutlinedStrokeText(
     } else {
         JobisTheme.colors.onSurfaceVariant
     }
+    val backgroundColor = if (isSystemInDarkTheme()) {
+        Color(0xFF333333)
+    } else {
+        Color(0xFFFFFFFF)
+    }
 
     JobisText(
         modifier = modifier
@@ -923,7 +938,7 @@ private fun PostReviewOutlinedStrokeText(
                 color = borderColor,
                 shape = RoundedCornerShape(12.dp),
             )
-            .background(color = Color.White, shape = RoundedCornerShape(12.dp))
+            .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
             .fillMaxWidth()
             .padding(
                 vertical = 16.dp,
