@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -39,7 +40,7 @@ internal fun PostExpectReview(
     postExpectReviewViewModel: PostExpectReviewViewModel = hiltViewModel(),
 ) {
     val postReviewViewModel: PostReviewViewModel = hiltViewModel()
-    val state by postExpectReviewViewModel.state.collectAsState()
+    val state by postExpectReviewViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         postExpectReviewViewModel.sideEffect.collect {
