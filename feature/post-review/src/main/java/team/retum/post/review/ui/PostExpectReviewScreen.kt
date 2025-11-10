@@ -80,7 +80,7 @@ internal fun PostExpectReview(
 private fun PostExpectReviewScreen(
     onBackPressed: () -> Unit,
     onReviewFinishClick: () -> Unit,
-    setEmptyClick: () -> Unit ,
+    setEmptyClick: () -> Unit,
     answer: () -> String,
     onAnswerChange: (String) -> Unit,
     question: () -> String,
