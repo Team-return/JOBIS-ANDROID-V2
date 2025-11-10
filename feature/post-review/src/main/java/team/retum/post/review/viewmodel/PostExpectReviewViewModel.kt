@@ -1,12 +1,22 @@
 package team.retum.post.review.viewmodel
 
 import androidx.compose.runtime.Immutable
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.exception.BadRequestException
+import team.retum.post.review.model.PostReviewData
+import team.retum.post.review.model.toEntity
+import team.retum.usecase.entity.PostReviewEntity
+import team.retum.usecase.usecase.review.PostReviewUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-internal class PostExpectReviewViewModel @Inject constructor() : BaseViewModel<PostExpectReviewState, PostExpectReviewSideEffect>(PostExpectReviewState.getInitialState()) {
+internal class PostExpectReviewViewModel @Inject constructor(
+    private val postReviewUseCase: PostReviewUseCase,
+) : BaseViewModel<PostExpectReviewState, PostExpectReviewSideEffect>(PostExpectReviewState.getInitialState()) {
 
     internal fun setAnswer(answer: String) {
         setState { state.value.copy(answer = answer) }
@@ -33,6 +43,31 @@ internal class PostExpectReviewViewModel @Inject constructor() : BaseViewModel<P
             )
         }
         onNextClick()
+    }
+
+    internal fun postReview(reviewData: PostReviewData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            postReviewUseCase(
+                postReviewRequest = PostReviewEntity(
+                    interviewType = reviewData.interviewType,
+                    location = reviewData.location,
+                    companyId = reviewData.companyId,
+                    jobCode = reviewData.jobCode,
+                    interviewerCount = reviewData.interviewerCount,
+                    qnaElements = reviewData.qnaElements.map { it.toEntity() },
+                    question = reviewData.question,
+                    answer = reviewData.answer,
+                ),
+            ).onSuccess {
+                postSideEffect(PostExpectReviewSideEffect.Success)
+            }.onFailure {
+                when (it) {
+                    is BadRequestException -> {
+                        postSideEffect(PostExpectReviewSideEffect.BadRequest)
+                    }
+                }
+            }
+        }
     }
 
     internal fun onNextClick() {
@@ -67,4 +102,8 @@ internal sealed interface PostExpectReviewSideEffect {
         val question: String,
         val answer: String,
     ) : PostExpectReviewSideEffect
+
+    data object Success : PostExpectReviewSideEffect
+
+    data object BadRequest : PostExpectReviewSideEffect
 }

@@ -83,13 +83,6 @@ internal fun PostReview(
         reviewViewModel.fetchMyReview()
         reviewViewModel.sideEffect.collect {
             when (it) {
-                is PostReviewSideEffect.Success -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.post_review_success),
-                    ).show()
-                }
-
                 is PostReviewSideEffect.MoveToNext -> {
                     navigateToPostNextReview(
                         PostReviewData(

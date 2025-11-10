@@ -61,4 +61,5 @@
     <string name="hint_write_answer">예상 질문 답변을 성심성의껏 작성해 주세요!</string>
     <string name="skip_button">건너뛸래요.</string>
     <string name="complete">완료</string>
+    <string name="error_post_expect_review_bad_request">잘못된 요청이에요</string>
 </resources>

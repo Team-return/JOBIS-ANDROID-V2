@@ -11,16 +11,11 @@ import team.retum.common.enums.CodeType
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ReviewProcess
-import team.retum.common.exception.BadRequestException
-import team.retum.post.review.model.PostReviewData
-import team.retum.post.review.model.toEntity
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.entity.MyReviewsEntity.MyReview
-import team.retum.usecase.entity.PostReviewEntity
 import team.retum.usecase.entity.PostReviewEntity.PostReviewContentEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
 import team.retum.usecase.usecase.review.FetchMyReviewUseCase
-import team.retum.usecase.usecase.review.PostReviewUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import javax.inject.Inject
 
@@ -29,7 +24,6 @@ internal class PostReviewViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
     private val fetchMyReviewsUseCase: FetchMyReviewUseCase,
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
-    private val postReviewUseCase: PostReviewUseCase,
 ) : BaseViewModel<PostReviewState, PostReviewSideEffect>(PostReviewState.getInitialState()) {
 
     init {
@@ -50,41 +44,12 @@ internal class PostReviewViewModel @Inject constructor(
         state.value.copy(showExitConfirmDialog = showExitConfirmDialog)
     }
 
-    internal fun setShowModalLossDataDialog(showModalLossDataDialog: Boolean) = setState {
-        state.value.copy(showModalLossDataDialog = showModalLossDataDialog)
-    }
-
     internal fun setKeyword(keyword: String?) {
         _techs.value = emptyList()
         setState {
             state.value.copy(
                 keyword = keyword ?: "",
             )
-        }
-    }
-
-    internal fun postReview(reviewData: PostReviewData) {
-        viewModelScope.launch(Dispatchers.IO) {
-            postReviewUseCase(
-                postReviewRequest = PostReviewEntity(
-                    interviewType = reviewData.interviewType,
-                    location = reviewData.location,
-                    companyId = reviewData.companyId,
-                    jobCode = reviewData.jobCode,
-                    interviewerCount = reviewData.interviewerCount,
-                    qnaElements = reviewData.qnaElements.map { it.toEntity() },
-                    question = reviewData.question,
-                    answer = reviewData.answer,
-                ),
-            ).onSuccess {
-                postSideEffect(PostReviewSideEffect.Success)
-            }.onFailure {
-                when (it) {
-                    is BadRequestException -> {
-                        postSideEffect(PostReviewSideEffect.BadRequest)
-                    }
-                }
-            }
         }
     }
 
@@ -235,8 +200,6 @@ internal sealed interface PostReviewSideEffect {
         val interviewerCount: Int,
     ) : PostReviewSideEffect
     data object BadRequest : PostReviewSideEffect
-
-    data object Success : PostReviewSideEffect
 
     data object SelectTechAndCount : PostReviewSideEffect
 }

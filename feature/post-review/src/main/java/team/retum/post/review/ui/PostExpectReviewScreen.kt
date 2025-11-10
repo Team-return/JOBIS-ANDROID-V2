@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -23,43 +24,49 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.post.review.R
 import team.retum.post.review.model.PostReviewData
 import team.retum.post.review.viewmodel.PostExpectReviewSideEffect
 import team.retum.post.review.viewmodel.PostExpectReviewState
 import team.retum.post.review.viewmodel.PostExpectReviewViewModel
-import team.retum.post.review.viewmodel.PostReviewSideEffect
-import team.retum.post.review.viewmodel.PostReviewViewModel
 
 @Composable
 internal fun PostExpectReview(
     reviewData: PostReviewData,
     onBackPressed: () -> Unit,
     onPostReviewCompleteClick: () -> Unit,
-    postExpectReviewViewModel: PostExpectReviewViewModel = hiltViewModel(),
 ) {
-    val postReviewViewModel: PostReviewViewModel = hiltViewModel()
+    val postExpectReviewViewModel: PostExpectReviewViewModel = hiltViewModel()
     val state by postExpectReviewViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         postExpectReviewViewModel.sideEffect.collect {
             when (it) {
                 is PostExpectReviewSideEffect.PostReview -> {
-                    postReviewViewModel.postReview(
+                    postExpectReviewViewModel.postReview(
                         reviewData = reviewData.copy(
                             question = state.question,
                             answer = state.answer,
                         ),
                     )
                 }
-            }
-        }
-    }
 
-    LaunchedEffect(Unit) {
-        postReviewViewModel.sideEffect.collect {
-            if (it is PostReviewSideEffect.Success) {
-                onPostReviewCompleteClick()
+                is PostExpectReviewSideEffect.Success -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.post_review_success),
+                    ).show()
+                    onPostReviewCompleteClick()
+                }
+
+                is PostExpectReviewSideEffect.BadRequest -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.error_post_expect_review_bad_request),
+                    ).show()
+                }
             }
         }
     }

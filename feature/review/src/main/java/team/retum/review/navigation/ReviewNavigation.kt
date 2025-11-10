@@ -85,9 +85,7 @@ fun NavController.navigateToReview(
         append("&$ARG_LOCATION=${location?.name ?: ""}")
     }
     navigate(route) {
-        popUpTo(NAVIGATION_REVIEW_FILTER) {
-            inclusive = true
-        }
+        popUpTo("root")
         launchSingleTop = true
     }
 }
