@@ -3,16 +3,16 @@ package team.retum.review.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -20,29 +20,31 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.review.ui.component.ReviewItems
-import team.retum.review.viewmodel.ReviewFilterViewModel
 import team.retum.review.viewmodel.ReviewSideEffect
-import team.retum.review.viewmodel.ReviewState
 import team.retum.review.viewmodel.ReviewViewModel
+import team.retum.usecase.entity.FetchReviewsEntity
 
 @Composable
 internal fun Review(
+    code: Long?,
+    year: Int?,
+    interviewType: InterviewType?,
+    location: InterviewLocation?,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
     reviewViewModel: ReviewViewModel = hiltViewModel(),
 ) {
-    val state by reviewViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(code, year, interviewType, location) {
         with(reviewViewModel) {
-            setYear(ReviewFilterViewModel.year)
-            setCode(ReviewFilterViewModel.code)
-            setLocation(ReviewFilterViewModel.location)
-            setInterviewType(ReviewFilterViewModel.interviewType)
-            clearReview()
-            fetchReviews()
+            clearReviews()
+            setCode(code)
+            setYear(year)
+            setInterviewType(interviewType)
+            setLocation(location)
+            fetchTotalReviewCount()
         }
     }
 

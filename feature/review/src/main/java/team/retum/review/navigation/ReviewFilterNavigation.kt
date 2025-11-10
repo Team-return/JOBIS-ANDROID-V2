@@ -3,17 +3,23 @@ package team.retum.review.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.review.ui.ReviewFilter
 
 const val NAVIGATION_REVIEW_FILTER = "reviewFilter"
 
 fun NavGraphBuilder.reviewFilter(
+    onApplyFilter: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
     onBackPressed: () -> Unit,
 ) {
     composable(
         route = NAVIGATION_REVIEW_FILTER,
     ) {
-        ReviewFilter(onBackPressed = onBackPressed)
+        ReviewFilter(
+            onApplyFilter = onApplyFilter,
+            onBackPressed = onBackPressed,
+        )
     }
 }
 

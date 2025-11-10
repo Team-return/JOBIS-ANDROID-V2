@@ -44,7 +44,7 @@ fun BottomNavigationBar(navController: NavController = rememberNavController()) 
             containerColor = JobisTheme.colors.background,
         ) {
             bottomMenus.forEach {
-                val selected = selectedRoute == it.route
+                val selected = selectedRoute?.startsWith(it.route) == true
                 val color by animateColorAsState(
                     targetValue = if (selected) {
                         JobisTheme.colors.onBackground

@@ -22,13 +22,6 @@ internal class ReviewFilterViewModel @Inject constructor(
     private val fetchCodeUseCase: FetchCodeUseCase,
 ) : BaseViewModel<ReviewsFilterState, Unit>(initialState = ReviewsFilterState.getDefaultState()) {
 
-    companion object {
-        var code: Long? = null
-        var year: Int? = null
-        var interviewType: InterviewType? = null
-        var location: InterviewLocation? = null
-    }
-
     init {
         fetchCodes()
     }

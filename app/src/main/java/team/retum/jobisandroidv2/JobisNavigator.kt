@@ -223,8 +223,18 @@ internal class JobisNavigator(
         navController.navigateToReviewFilter()
     }
 
-    fun navigateToReview() {
-        navController.navigateToReview()
+    fun navigateToReview(
+        code: Long? = null,
+        year: Int? = null,
+        interviewType: team.retum.common.enums.InterviewType? = null,
+        location: team.retum.common.enums.InterviewLocation? = null,
+    ) {
+        navController.navigateToReview(
+            code = code,
+            year = year,
+            interviewType = interviewType,
+            location = location,
+        )
     }
 
     fun navigatedFromNotifications(): Boolean {

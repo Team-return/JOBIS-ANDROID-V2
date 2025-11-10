@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.LocalNavController
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.common.enums.InterviewLocation
@@ -38,11 +40,8 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
+import team.retum.review.navigation.navigateToReview
 import team.retum.review.viewmodel.ReviewFilterViewModel
-import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.code
-import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.interviewType
-import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.location
-import team.retum.review.viewmodel.ReviewFilterViewModel.Companion.year
 import team.retum.review.viewmodel.ReviewsFilterState
 import team.retum.usecase.entity.CodesEntity
 
@@ -51,6 +50,7 @@ internal fun ReviewFilter(
     onBackPressed: () -> Unit,
     reviewFilterViewModel: ReviewFilterViewModel = hiltViewModel(),
 ) {
+    val navController = LocalNavController.current
     val state by reviewFilterViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -64,6 +64,7 @@ internal fun ReviewFilter(
         onYearSelected = reviewFilterViewModel::setSelectedYear,
         onInterviewTypeSelected = reviewFilterViewModel::setSelectedInterviewType,
         onLocationSelected = reviewFilterViewModel::setSelectedLocation,
+        onApplyFilter = onApplyFilter,
     )
 }
 
@@ -75,6 +76,7 @@ private fun ReviewFilterScreen(
     onYearSelected: (Int?) -> Unit,
     onInterviewTypeSelected: (InterviewType?) -> Unit,
     onLocationSelected: (InterviewLocation?) -> Unit,
+    onApplyFilter: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
@@ -108,11 +110,12 @@ private fun ReviewFilterScreen(
         JobisButton(
             text = stringResource(id = R.string.appliance),
             onClick = {
-                code = state.selectedMajorCode
-                year = state.selectedYear
-                location = state.selectedLocation
-                interviewType = state.selectedInterviewType
-                onBackPressed()
+                onApplyFilter(
+                    state.selectedMajorCode,
+                    state.selectedYear,
+                    state.selectedInterviewType,
+                    state.selectedLocation,
+                )
             },
             modifier = Modifier.align(Alignment.BottomCenter),
             color = ButtonColor.Primary,

@@ -26,6 +26,7 @@ import team.retum.post.review.navigation.postExpectReview
 import team.retum.post.review.navigation.postNextReview
 import team.retum.post.review.navigation.postReview
 import team.retum.post.review.navigation.postReviewComplete
+import team.retum.review.navigation.review
 import team.retum.review.navigation.reviewDetails
 import team.retum.review.navigation.reviewFilter
 import team.retum.review.navigation.searchReview
@@ -138,8 +139,23 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
             navigateToMyPage = navigator::navigateToMyPage,
         )
+        review(
+            onReviewFilterClick = navigator::navigateToReviewFilter,
+            onSearchReviewClick = navigator::navigateToSearchReview,
+            onReviewDetailClick = navigator::navigateToReviewDetails,
+        )
         reviewDetails(navigator::popBackStackIfNotHome)
-        reviewFilter(onBackPressed = navigator::popBackStackIfNotHome)
+        reviewFilter(
+            onApplyFilter = { code, year, interviewType, location ->
+                navigator.navigateToReview(
+                    code = code,
+                    year = year,
+                    interviewType = interviewType,
+                    location = location,
+                )
+            },
+            onBackPressed = navigator::popBackStackIfNotHome,
+        )
         searchReview(
             onBackPressed = navigator::popBackStackIfNotHome,
             onReviewDetailClick = navigator::navigateToReviewDetails,
