@@ -66,7 +66,8 @@ internal fun PostExpectReview(
 
     PostExpectReviewScreen(
         onBackPressed = onBackPressed,
-        onReviewFinishClick = postExpectReviewViewModel::setEmpty,
+        onReviewFinishClick = postExpectReviewViewModel::onNextClick,
+        setEmptyClick = postExpectReviewViewModel::setEmpty,
         answer = { state.answer },
         onAnswerChange = postExpectReviewViewModel::setAnswer,
         question = { state.question },
@@ -79,6 +80,7 @@ internal fun PostExpectReview(
 private fun PostExpectReviewScreen(
     onBackPressed: () -> Unit,
     onReviewFinishClick: () -> Unit,
+    setEmptyClick: () -> Unit ,
     answer: () -> String,
     onAnswerChange: (String) -> Unit,
     question: () -> String,
@@ -139,7 +141,7 @@ private fun PostExpectReviewScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = 4.dp)
-                .clickable { onReviewFinishClick() },
+                .clickable { setEmptyClick() },
             text = stringResource(id = R.string.skip_button),
             style = JobisTypography.SubBody,
             textDecoration = TextDecoration.Underline,

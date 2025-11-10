@@ -5,6 +5,8 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import team.retum.bug.navigation.navigateToReportBug
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.common.model.ApplicationData
 import team.retum.company.navigation.navigateToCompanies
@@ -226,8 +228,8 @@ internal class JobisNavigator(
     fun navigateToReview(
         code: Long? = null,
         year: Int? = null,
-        interviewType: team.retum.common.enums.InterviewType? = null,
-        location: team.retum.common.enums.InterviewLocation? = null,
+        interviewType: InterviewType? = null,
+        location: InterviewLocation? = null,
     ) {
         navController.navigateToReview(
             code = code,
