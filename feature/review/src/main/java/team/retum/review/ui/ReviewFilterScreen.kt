@@ -25,8 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.compose.LocalNavController
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.common.enums.InterviewLocation
@@ -40,17 +38,16 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
-import team.retum.review.navigation.navigateToReview
 import team.retum.review.viewmodel.ReviewFilterViewModel
 import team.retum.review.viewmodel.ReviewsFilterState
 import team.retum.usecase.entity.CodesEntity
 
 @Composable
 internal fun ReviewFilter(
+    navigateToReview: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
     onBackPressed: () -> Unit,
     reviewFilterViewModel: ReviewFilterViewModel = hiltViewModel(),
 ) {
-    val navController = LocalNavController.current
     val state by reviewFilterViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -64,7 +61,9 @@ internal fun ReviewFilter(
         onYearSelected = reviewFilterViewModel::setSelectedYear,
         onInterviewTypeSelected = reviewFilterViewModel::setSelectedInterviewType,
         onLocationSelected = reviewFilterViewModel::setSelectedLocation,
-        onApplyFilter = onApplyFilter,
+        onApplyFilter = { code, year, interviewType, location ->
+            navigateToReview(code, year, interviewType, location)
+        },
     )
 }
 

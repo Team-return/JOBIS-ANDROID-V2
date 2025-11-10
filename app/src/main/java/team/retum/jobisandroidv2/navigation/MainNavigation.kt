@@ -146,14 +146,7 @@ internal fun NavGraphBuilder.mainNavigation(
         )
         reviewDetails(navigator::popBackStackIfNotHome)
         reviewFilter(
-            onApplyFilter = { code, year, interviewType, location ->
-                navigator.navigateToReview(
-                    code = code,
-                    year = year,
-                    interviewType = interviewType,
-                    location = location,
-                )
-            },
+            navigateToReview = navigator::navigateToReview,
             onBackPressed = navigator::popBackStackIfNotHome,
         )
         searchReview(

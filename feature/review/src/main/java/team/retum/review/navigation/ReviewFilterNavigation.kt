@@ -10,14 +10,14 @@ import team.retum.review.ui.ReviewFilter
 const val NAVIGATION_REVIEW_FILTER = "reviewFilter"
 
 fun NavGraphBuilder.reviewFilter(
-    onApplyFilter: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
+    navigateToReview: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
     onBackPressed: () -> Unit,
 ) {
     composable(
         route = NAVIGATION_REVIEW_FILTER,
     ) {
         ReviewFilter(
-            onApplyFilter = onApplyFilter,
+            navigateToReview = navigateToReview,
             onBackPressed = onBackPressed,
         )
     }

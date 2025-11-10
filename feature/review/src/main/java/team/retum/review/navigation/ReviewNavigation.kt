@@ -85,8 +85,9 @@ fun NavController.navigateToReview(
         append("&$ARG_LOCATION=${location?.name ?: ""}")
     }
     navigate(route) {
-        popUpTo(NAVIGATION_REVIEW) {
-            inclusive = false
+        popUpTo(NAVIGATION_REVIEW_FILTER) {
+            inclusive = true
         }
+        launchSingleTop = true
     }
 }
