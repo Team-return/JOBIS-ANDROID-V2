@@ -41,7 +41,13 @@ interface ReviewApi {
     suspend fun fetchQuestions(): FetchQuestionsResponse
 
     @GET(RequestUrls.Reviews.count)
-    suspend fun fetchReviewsCount(): FetchReviewsCountResponse
+    suspend fun fetchReviewsCount(
+        location: InterviewLocation?,
+        interviewType: InterviewType?,
+        keyword: String?,
+        year: Int?,
+        code: Long?,
+    ): FetchReviewsCountResponse
 
     @GET(RequestUrls.Reviews.my)
     suspend fun fetchMyReviews(): FetchMyReviewResponse

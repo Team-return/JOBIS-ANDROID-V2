@@ -16,6 +16,12 @@ class FetchReviewsCountUseCase @Inject constructor(
         year: Int?,
         code: Long?,
     ) = runCatching {
-        reviewRepository.fetchReviewsCount().toEntity()
+        reviewRepository.fetchReviewsCount(
+            location = location,
+            interviewType = interviewType,
+            keyword = keyword,
+            year = year,
+            code = code,
+        ).toEntity()
     }
 }

@@ -26,7 +26,13 @@ interface ReviewRepository {
 
     suspend fun fetchQuestions(): FetchQuestionsResponse
 
-    suspend fun fetchReviewsCount(): FetchReviewsCountResponse
+    suspend fun fetchReviewsCount(
+        location: InterviewLocation?,
+        interviewType: InterviewType?,
+        keyword: String?,
+        year: Int?,
+        code: Long?,
+    ): FetchReviewsCountResponse
 
     suspend fun fetchMyReviews(): FetchMyReviewResponse
 }
