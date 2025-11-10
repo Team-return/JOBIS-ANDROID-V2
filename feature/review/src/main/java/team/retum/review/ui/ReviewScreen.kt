@@ -44,7 +44,9 @@ internal fun Review(
             clearReview()
             fetchReviews()
         }
+    }
 
+    LaunchedEffect(Unit) {
         reviewViewModel.sideEffect.collect {
             when (it) {
                 is ReviewSideEffect.FetchError -> {
@@ -59,19 +61,23 @@ internal fun Review(
     }
 
     ReviewScreen(
-        state = state,
+        reviews = reviewViewModel.reviews.toPersistentList(),
         onReviewFilterClick = onReviewFilterClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
+        whetherFetchNextPage = reviewViewModel::whetherFetchNextPage,
+        fetchNextPage = reviewViewModel::fetchReviews,
     )
 }
 
 @Composable
 private fun ReviewScreen(
-    state: ReviewState,
+    reviews: ImmutableList<FetchReviewsEntity.Review>,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
+    whetherFetchNextPage: (Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -91,20 +97,11 @@ private fun ReviewScreen(
                 onClick = onSearchReviewClick,
             )
         }
-        LazyColumn {
-            items(
-                items = state.reviews,
-                key = { it.reviewId },
-            ) {
-                ReviewItems(
-                    companyImageUrl = it.companyLogoUrl,
-                    companyName = it.companyName,
-                    reviewId = it.reviewId,
-                    writer = it.writer,
-                    major = it.major,
-                    onReviewDetailClick = onReviewDetailClick,
-                )
-            }
-        }
+        ReviewItems(
+            reviews = reviews,
+            onReviewDetailClick = onReviewDetailClick,
+            whetherFetchNextPage = whetherFetchNextPage,
+            fetchNextPage = fetchNextPage,
+        )
     }
 }
