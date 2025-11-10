@@ -196,7 +196,7 @@ private fun MyPageScreen(
             state.reviewableCompany?.let { reviewable ->
                 reviewable.forEach { reviewableItem ->
                     WriteInterviewReview(
-                        companyName = reviewableItem.name,
+                        companyName = reviewableItem.name.take(10) + "...",
                         onClick = { onPostReviewClick(reviewableItem.name, reviewableItem.id) },
                     )
                 }
