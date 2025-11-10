@@ -15,7 +15,18 @@ data class FetchReviewsEntity(
         val year: String,
         val writer: String,
         val major: String,
-    )
+    ) {
+        companion object {
+            fun getDefaultEntity() = Review(
+                reviewId = 0L,
+                companyName = "",
+                companyLogoUrl = "",
+                year = "",
+                writer = "",
+                major = "",
+            )
+        }
+    }
 }
 
 internal fun FetchReviewsResponse.toEntity() = FetchReviewsEntity(
