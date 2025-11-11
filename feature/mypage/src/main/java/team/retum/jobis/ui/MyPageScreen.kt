@@ -57,7 +57,7 @@ internal fun MyPage(
     onNoticeClick: () -> Unit,
     navigateToLanding: () -> Unit,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
-    onPostReviewClick: (Long) -> Unit,
+    onPostReviewClick: (String, Long) -> Unit,
     onNotificationSettingClick: () -> Unit,
 ) {
     val state by myPageViewModel.state.collectAsStateWithLifecycle()
@@ -147,7 +147,7 @@ private fun MyPageScreen(
     setShowWithdrawalModal: (Boolean) -> Unit,
     onSignOutClick: () -> Unit,
     onWithdrawalClick: () -> Unit,
-    onPostReviewClick: (Long) -> Unit,
+    onPostReviewClick: (String, Long) -> Unit,
     onNotificationSettingClick: () -> Unit,
     showUpdateLaterToast: () -> Unit,
     showGallery: () -> Unit,
@@ -193,11 +193,13 @@ private fun MyPageScreen(
                     onClick = showGallery,
                 )
             }
-            state.reviewableCompany?.run {
-                WriteInterviewReview(
-                    companyName = state.reviewableCompany.name,
-                    onClick = { onPostReviewClick(state.reviewableCompany.id) },
-                )
+            state.reviewableCompany?.let { reviewable ->
+                reviewable.forEach { reviewableItem ->
+                    WriteInterviewReview(
+                        companyName = reviewableItem.name.take(10) + "...",
+                        onClick = { onPostReviewClick(reviewableItem.name, reviewableItem.id) },
+                    )
+                }
             }
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.notification),

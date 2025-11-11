@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  post Review Screen -->
+    <string name="question">질문</string>
+    <string name="answer">답변</string>
+    <string name="write_review">다른 학생들을 위하여\n면접의 후기를 작성해주세요</string>
+    <string name="add_question">질문 추가하기</string>
+    <string name="add_review">후기 추가하기</string>
+    <string name="empty">현재 입력 된 질문이 없어요</string>
+    <string name="added_question">질문이 추가되었어요!</string>
+    <string name="next">다음</string>
+    <string name="tech">기술 스택</string>
+    <string name="finish">작성 완료</string>
+    <string name="please_write_review">후기를 작성해주세요</string>
+    <string name="hint_tech_search">직무를 검색해주세요</string>
+    <string name="hint_interviewer_count_search">면접관수를 검색해주세요</string>
+    <string name="example">example</string>
+    <string name="review_category">면접 구분</string>
+    <string name="review_location">면접 지역</string>
+    <string name="support_position">지원 직무</string>
+    <string name="interviewer_count">면접관 수</string>
+    <string name="individual_review">개인 면접</string>
+    <string name="group_review">단체 면접</string>
+    <string name="other_review">기타 면접</string>
+    <string name="deajeon">대전</string>
+    <string name="seoul">서울</string>
+    <string name="gyeonggi">경기</string>
+    <string name="other">기타</string>
+    <string name="check">확인</string>
+    <string name="post_review_success">리뷰가 성공적으로 작성 되었어요!</string>
+    <string name="error_post_review_bad_request">잘못된 요청이에요</string>
+    <string name="error_select_tech_and_count">전공과 면접관 수를 선택해주세요</string>
+    <string name="review_complete_suffix">%s 후기 작성 완료</string>
+    <string name="content_description_required">Required</string>
+    <string name="required_answer">답변</string>
+    <string name="interview_type_label">면접 구분</string>
+    <string name="interview_location_label">면접 지역</string>
+    <string name="position_label">지원 직무</string>
+    <string name="interviewer_count_label">면접관 수</string>
+    <string name="company_name">업체명</string>
+    <string name="dialog_exit_message">지금 나가면 되돌릴 수 없어요.</string>
+    <string name="dialog_exit_description">지금 나가면 이전 작업은 저장 되지 않아요.</string>
+    <string name="exit">나가기</string>
+    <string name="stay">이어서하기</string>
+
+    <!-- Post Review Complete Screen -->
+    <string name="post_complete_review_check_title">%s님의\n후기가 작성이 완료됐어요!</string>
+    <string name="post_complete_review_good_result">후기를 작성해 주셔서 감사합니다!\n좋은결과가 있을 거예요!</string>
+    <string name="content_description_review_success">review_make_success</string>
+
+    <!--  Post Next Review Screen  -->
+    <string name="hint_answer_review">면접 후기를 성심성의껏 작성해 주세요!</string>
+    <string name="question_prefix">Q. </string>
+    <string name="next_button">다음</string>
+
+    <!-- Post Expect Review Screen -->
+    <string name="add_interview_question_title">받았던 면접 질문을 추가해주세요!</string>
+    <string name="question_label">질문</string>
+    <string name="required_mark">*</string>
+    <string name="hint_write_question">받았던 질문을 작성해 주세요.</string>
+    <string name="hint_write_answer">예상 질문 답변을 성심성의껏 작성해 주세요!</string>
+    <string name="skip_button">건너뛸래요.</string>
+    <string name="complete">완료</string>
+    <string name="error_post_expect_review_bad_request">잘못된 요청이에요</string>
+</resources>

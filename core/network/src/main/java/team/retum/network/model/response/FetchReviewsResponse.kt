@@ -9,9 +9,11 @@ data class FetchReviewsResponse(
 ) {
     @JsonClass(generateAdapter = true)
     data class Review(
-        @Json(name = "review_id") val reviewId: String,
+        @Json(name = "review_id") val reviewId: Long,
+        @Json(name = "company_name") val companyName: String,
+        @Json(name = "company_logo_url") val companyLogoUrl: String,
         @Json(name = "year") val year: Int,
         @Json(name = "writer") val writer: String,
-        @Json(name = "date") val date: String,
+        @Json(name = "major") val major: String,
     )
 }

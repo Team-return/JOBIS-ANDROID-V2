@@ -1,6 +1,7 @@
 package team.retum.usecase.entity
 
 import androidx.compose.runtime.Immutable
+import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchReviewsResponse
 
 data class FetchReviewsEntity(
@@ -8,11 +9,24 @@ data class FetchReviewsEntity(
 ) {
     @Immutable
     data class Review(
-        val reviewId: String,
+        val reviewId: Long,
+        val companyName: String,
+        val companyLogoUrl: String,
         val year: String,
         val writer: String,
-        val date: String,
-    )
+        val major: String,
+    ) {
+        companion object {
+            fun getDefaultEntity() = Review(
+                reviewId = 0L,
+                companyName = "",
+                companyLogoUrl = "",
+                year = "",
+                writer = "",
+                major = "",
+            )
+        }
+    }
 }
 
 internal fun FetchReviewsResponse.toEntity() = FetchReviewsEntity(
@@ -21,7 +35,9 @@ internal fun FetchReviewsResponse.toEntity() = FetchReviewsEntity(
 
 private fun FetchReviewsResponse.Review.toEntity() = FetchReviewsEntity.Review(
     reviewId = this.reviewId,
+    companyName = this.companyName,
+    companyLogoUrl = ResourceKeys.IMAGE_URL + this.companyLogoUrl,
+    major = this.major,
     year = this.year.toString(),
-    writer = "${this.writer}님의 후기",
-    date = this.date,
+    writer = this.writer,
 )

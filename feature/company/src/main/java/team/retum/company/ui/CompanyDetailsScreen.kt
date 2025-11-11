@@ -51,8 +51,8 @@ import team.retum.usecase.entity.FetchReviewsEntity
 internal fun CompanyDetails(
     companyId: Long,
     onBackPressed: () -> Unit,
-    navigateToReviewDetails: (String, String) -> Unit,
-    navigateToReviews: (Long, String) -> Unit,
+    navigateToReviewDetails: (Long) -> Unit,
+    navigateToReviews: () -> Unit,
     navigateToRecruitmentDetails: (Long, Boolean) -> Unit,
     isMovedRecruitmentDetails: Boolean,
     companyDetailsViewModel: CompanyDetailsViewModel = hiltViewModel(),
@@ -100,7 +100,6 @@ internal fun CompanyDetails(
     }
 
     CompanyDetailsScreen(
-        companyId = companyId,
         onBackPressed = onBackPressed,
         navigateToReviewDetails = navigateToReviewDetails,
         navigateToReviews = navigateToReviews,
@@ -113,10 +112,9 @@ internal fun CompanyDetails(
 
 @Composable
 private fun CompanyDetailsScreen(
-    companyId: Long,
     onBackPressed: () -> Unit,
-    navigateToReviewDetails: (String, String) -> Unit,
-    navigateToReviews: (Long, String) -> Unit,
+    navigateToReviewDetails: (Long) -> Unit,
+    navigateToReviews: () -> Unit,
     onMoveToRecruitmentButtonClick: () -> Unit,
     isMovedRecruitmentDetails: Boolean,
     state: CompanyDetailsState,
@@ -155,12 +153,7 @@ private fun CompanyDetailsScreen(
                     reviews = state.reviews.toPersistentList(),
                     navigateToReviewDetails = navigateToReviewDetails,
                     showMoreReviews = state.showMoreReviews,
-                    onShowMoreReviewClick = {
-                        navigateToReviews(
-                            companyId,
-                            state.companyDetailsEntity.companyName,
-                        )
-                    },
+                    onShowMoreReviewClick = navigateToReviews,
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -253,7 +246,7 @@ private fun CompanyInformation(
 @Composable
 private fun Reviews(
     reviews: ImmutableList<FetchReviewsEntity.Review>,
-    navigateToReviewDetails: (String, String) -> Unit,
+    navigateToReviewDetails: (Long) -> Unit,
     showMoreReviews: Boolean,
     onShowMoreReviewClick: () -> Unit,
 ) {

@@ -82,9 +82,12 @@ internal object RequestUrls {
     data object Reviews {
         private const val path = "/reviews"
 
-        const val details = "$path/details/{${PATH.reviewId}}"
-        const val reviews = "$path/{${PATH.companyId}}"
+        const val details = "$path/{${PATH.reviewId}}"
+        const val reviews = path
+        const val questions = "$path/questions"
+        const val count = "$path/count"
         const val post = path
+        const val my = "$path/my"
     }
 
     data object Bookmarks {
