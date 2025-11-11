@@ -11,8 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import team.retum.common.enums.InterviewLocation
-import team.retum.common.enums.InterviewType
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -20,16 +18,13 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.review.ui.component.ReviewItems
+import team.retum.review.viewmodel.ReviewFilterViewModel
 import team.retum.review.viewmodel.ReviewSideEffect
 import team.retum.review.viewmodel.ReviewViewModel
 import team.retum.usecase.entity.FetchReviewsEntity
 
 @Composable
 internal fun Review(
-    code: Long?,
-    year: Int?,
-    interviewType: InterviewType?,
-    location: InterviewLocation?,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
@@ -37,13 +32,13 @@ internal fun Review(
 ) {
     val context = LocalContext.current
 
-    LaunchedEffect(code, year, interviewType, location) {
+    LaunchedEffect(Unit) {
         with(reviewViewModel) {
+            setCode(ReviewFilterViewModel.code)
+            setYear(ReviewFilterViewModel.year)
+            setInterviewType(ReviewFilterViewModel.interviewType)
+            setLocation(ReviewFilterViewModel.location)
             clearReviews()
-            setCode(code)
-            setYear(year)
-            setInterviewType(interviewType)
-            setLocation(location)
             fetchTotalReviewCount()
         }
     }

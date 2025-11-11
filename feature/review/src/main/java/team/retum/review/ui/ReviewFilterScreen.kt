@@ -44,7 +44,6 @@ import team.retum.usecase.entity.CodesEntity
 
 @Composable
 internal fun ReviewFilter(
-    navigateToReview: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
     onBackPressed: () -> Unit,
     reviewFilterViewModel: ReviewFilterViewModel = hiltViewModel(),
 ) {
@@ -62,7 +61,11 @@ internal fun ReviewFilter(
         onInterviewTypeSelected = reviewFilterViewModel::setSelectedInterviewType,
         onLocationSelected = reviewFilterViewModel::setSelectedLocation,
         onApplyFilter = { code, year, interviewType, location ->
-            navigateToReview(code, year, interviewType, location)
+            ReviewFilterViewModel.code = code
+            ReviewFilterViewModel.year = year
+            ReviewFilterViewModel.interviewType = interviewType
+            ReviewFilterViewModel.location = location
+            onBackPressed()
         },
     )
 }
