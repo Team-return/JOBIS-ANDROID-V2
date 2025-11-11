@@ -22,9 +22,14 @@ import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.root
 import team.retum.notification.navigation.notificationSetting
 import team.retum.notification.navigation.notifications
-import team.retum.review.navigation.postReview
+import team.retum.post.review.navigation.postExpectReview
+import team.retum.post.review.navigation.postNextReview
+import team.retum.post.review.navigation.postReview
+import team.retum.post.review.navigation.postReviewComplete
+import team.retum.review.navigation.review
 import team.retum.review.navigation.reviewDetails
-import team.retum.review.navigation.reviews
+import team.retum.review.navigation.reviewFilter
+import team.retum.review.navigation.searchReview
 
 const val NAVIGATION_MAIN = "main"
 
@@ -50,6 +55,9 @@ internal fun NavGraphBuilder.mainNavigation(
             onNoticeClick = navigator::navigateToNotices,
             navigateToLanding = { navigator.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navigator::navigateToPostReview,
+            onSearchReviewClick = navigator::navigateToSearchReview,
+            onReviewFilterClick = navigator::navigateToReviewFilter,
+            onReviewDetailClick = navigator::navigateToReviewDetails,
             navigateToApplication = navigator::navigateToApplication,
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
             navigatedFromNotifications = navigator.navigatedFromNotifications(),
@@ -109,17 +117,40 @@ internal fun NavGraphBuilder.mainNavigation(
             onBackPressed = navigator::popBackStackIfNotHome,
             navigateToDetails = navigator::navigateToNoticeDetails,
         )
-        postReview(onBackPressed = navigator::popBackStackIfNotHome)
         companyDetails(
             onBackPressed = navigator::popBackStackIfNotHome,
             navigateToReviewDetails = navigator::navigateToReviewDetails,
-            navigateToReviews = navigator::navigateToReviews,
+            navigateToReviews = navigator::navigateToReview,
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
         )
+        postReview(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            navigateToPostNextReview = navigator::navigateToPostNextReview,
+        )
+        postNextReview(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            navigateToPostExpectReview = navigator::navigateToPostExpectReview,
+        )
+        postExpectReview(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onPostReviewCompleteClick = navigator::navigateToPostReviewComplete,
+        )
+        postReviewComplete(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            navigateToMyPage = navigator::navigateToMyPage,
+        )
+        review(
+            onReviewFilterClick = navigator::navigateToReviewFilter,
+            onSearchReviewClick = navigator::navigateToSearchReview,
+            onReviewDetailClick = navigator::navigateToReviewDetails,
+        )
         reviewDetails(navigator::popBackStackIfNotHome)
-        reviews(
-            navigator::popBackStackIfNotHome,
-            navigateToReviewDetails = navigator::navigateToReviewDetails,
+        reviewFilter(
+            onBackPressed = navigator::popBackStackIfNotHome,
+        )
+        searchReview(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onReviewDetailClick = navigator::navigateToReviewDetails,
         )
     }
 }

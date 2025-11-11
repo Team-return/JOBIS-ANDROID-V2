@@ -9,31 +9,25 @@ import team.retum.common.utils.ResourceKeys
 import team.retum.review.ui.ReviewDetails
 
 const val NAVIGATION_REVIEW_DETAILS = "reviewDetails"
-const val WRITER = "writer"
 
 fun NavGraphBuilder.reviewDetails(
     onBackPressed: () -> Unit,
 ) {
     composable(
-        route = "$NAVIGATION_REVIEW_DETAILS/{${ResourceKeys.REVIEW_ID}}/{$WRITER}",
+        route = "$NAVIGATION_REVIEW_DETAILS/{${ResourceKeys.REVIEW_ID}}",
         arguments = listOf(
-            navArgument(ResourceKeys.REVIEW_ID) { NavType.StringType },
-            navArgument(WRITER) { NavType.StringType },
+            navArgument(ResourceKeys.REVIEW_ID) { type = NavType.LongType },
         ),
     ) {
-        val reviewId = it.arguments?.getString(ResourceKeys.REVIEW_ID) ?: ""
-        val writer = it.arguments?.getString(WRITER) ?: ""
+        val reviewId = it.arguments?.getLong(ResourceKeys.REVIEW_ID) ?: 0
+
         ReviewDetails(
-            onBackPressed = onBackPressed,
-            writer = writer,
             reviewId = reviewId,
+            onBackPressed = onBackPressed,
         )
     }
 }
 
-fun NavController.navigateToReviewDetails(
-    reviewId: String,
-    writer: String,
-) {
-    navigate("$NAVIGATION_REVIEW_DETAILS/$reviewId/$writer")
+fun NavController.navigateToReviewDetails(reviewId: Long) {
+    navigate("$NAVIGATION_REVIEW_DETAILS/$reviewId")
 }

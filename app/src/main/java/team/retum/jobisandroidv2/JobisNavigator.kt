@@ -17,6 +17,7 @@ import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
 import team.retum.jobis.interests.navigation.navigateToInterests
 import team.retum.jobis.interests.navigation.navigateToInterestsComplete
+import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
@@ -31,9 +32,14 @@ import team.retum.landing.navigation.navigateToLanding
 import team.retum.notification.navigation.NAVIGATION_NOTIFICATIONS
 import team.retum.notification.navigation.navigateToNotification
 import team.retum.notification.navigation.navigateToNotificationSetting
-import team.retum.review.navigation.navigateToPostReview
+import team.retum.post.review.model.PostReviewData
+import team.retum.post.review.navigation.navigateToPostExpectReview
+import team.retum.post.review.navigation.navigateToPostNextReview
+import team.retum.post.review.navigation.navigateToPostReview
+import team.retum.post.review.navigation.navigateToPostReviewComplete
 import team.retum.review.navigation.navigateToReviewDetails
-import team.retum.review.navigation.navigateToReviews
+import team.retum.review.navigation.navigateToReviewFilter
+import team.retum.review.navigation.navigateToSearchReview
 import team.retum.signin.navigation.navigateToSignIn
 import team.retum.signup.model.SignUpData
 import team.retum.signup.navigation.navigateToInputEmail
@@ -129,12 +135,31 @@ internal class JobisNavigator(
         navController.navigateToNotices()
     }
 
+    fun navigateToMyPage() {
+        navController.navigateToRoot(
+            applicationId = 0,
+            initialTab = NAVIGATION_MY_PAGE,
+        )
+    }
+
     fun navigateToLanding(popUpRoute: String) {
         navController.navigateToLanding(popUpRoute = popUpRoute)
     }
 
-    fun navigateToPostReview(companyId: Long) {
-        navController.navigateToPostReview(companyId = companyId)
+    fun navigateToPostReview(companyName: String, companyId: Long) {
+        navController.navigateToPostReview(companyName = companyName, companyId = companyId)
+    }
+
+    fun navigateToPostNextReview(reviewData: PostReviewData) {
+        navController.navigateToPostNextReview(reviewData = reviewData)
+    }
+
+    fun navigateToPostReviewComplete() {
+        navController.navigateToPostReviewComplete()
+    }
+
+    fun navigateToPostExpectReview(reviewData: PostReviewData) {
+        navController.navigateToPostExpectReview(reviewData = reviewData)
     }
 
     fun navigateToRoot(applicationId: Long = 0) {
@@ -185,24 +210,20 @@ internal class JobisNavigator(
         navController.navigateToNoticeDetails(noticeId = noticeId)
     }
 
-    fun navigateToReviewDetails(
-        reviewId: String,
-        writer: String,
-    ) {
-        navController.navigateToReviewDetails(
-            reviewId = reviewId,
-            writer = writer,
-        )
+    fun navigateToReviewDetails(reviewId: Long) {
+        navController.navigateToReviewDetails(reviewId = reviewId)
     }
 
-    fun navigateToReviews(
-        companyId: Long,
-        companyName: String,
-    ) {
-        navController.navigateToReviews(
-            companyId = companyId,
-            companyName = companyName,
-        )
+    fun navigateToSearchReview() {
+        navController.navigateToSearchReview()
+    }
+
+    fun navigateToReviewFilter() {
+        navController.navigateToReviewFilter()
+    }
+
+    fun navigateToReview() {
+        popBackStackIfNotHome()
     }
 
     fun navigatedFromNotifications(): Boolean {

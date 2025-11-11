@@ -1,28 +1,38 @@
 package team.retum.usecase.entity
 
-import androidx.compose.runtime.Immutable
+import team.retum.common.enums.InterviewLocation
+import team.retum.common.enums.InterviewType
 import team.retum.network.model.request.PostReviewRequest
 
 data class PostReviewEntity(
+    val interviewType: InterviewType,
+    val location: InterviewLocation,
     val companyId: Long,
+    val jobCode: Long,
+    val interviewerCount: Int,
     val qnaElements: List<PostReviewContentEntity>,
+    val question: String,
+    val answer: String,
 ) {
-    @Immutable
     data class PostReviewContentEntity(
-        val question: String,
+        val question: Long,
         val answer: String,
-        val codeId: Long,
     )
 }
 
 fun PostReviewEntity.toPostReviewRequest() = PostReviewRequest(
+    interviewType = this.interviewType,
+    location = this.location,
+    jobCode = this.jobCode,
+    interviewerCount = this.interviewerCount,
     companyId = this.companyId,
     qnaElements = this.qnaElements.map { it.toEntity() },
+    question = this.question,
+    answer = this.answer,
 )
 
 private fun PostReviewEntity.PostReviewContentEntity.toEntity() =
     PostReviewRequest.PostReviewContentRequest(
         question = this.question,
         answer = this.answer,
-        codeId = this.codeId,
     )

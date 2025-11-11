@@ -115,6 +115,7 @@ dependencies {
     implementation(project(":feature:review"))
     implementation(project(":feature:application"))
     implementation(project(":feature:employment"))
+    implementation(project(":feature:post-review"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)

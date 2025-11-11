@@ -13,6 +13,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,9 +40,11 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.review.navigation.review
 
 @Composable
 internal fun Root(
+    initialTab: String?,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
     onEmploymentClick: () -> Unit,
@@ -55,7 +58,10 @@ internal fun Root(
     onSelectInterestClick: () -> Unit,
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
-    onPostReviewClick: (Long) -> Unit,
+    onPostReviewClick: (String, Long) -> Unit,
+    onReviewFilterClick: () -> Unit,
+    onSearchReviewClick: () -> Unit,
+    onReviewDetailClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -70,6 +76,7 @@ internal fun Root(
 
     RootScreen(
         sheetState = sheetState,
+        initialTab = initialTab,
         applicationId = applicationId,
         onAlarmClick = onAlarmClick,
         showRejectionModal = {
@@ -92,6 +99,9 @@ internal fun Root(
         rejectionReason = applicationData.rejectionReason,
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
+        onReviewFilterClick = onReviewFilterClick,
+        onSearchReviewClick = onSearchReviewClick,
+        onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
             coroutineScope.launch {
                 sheetState.hide()
@@ -109,6 +119,7 @@ internal fun Root(
 private fun RootScreen(
     navController: NavHostController = rememberNavController(),
     sheetState: ModalBottomSheetState,
+    initialTab: String?,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
     onEmploymentClick: () -> Unit,
@@ -125,12 +136,27 @@ private fun RootScreen(
     onReportBugClick: () -> Unit,
     rejectionReason: String,
     navigateToLanding: () -> Unit,
-    onPostReviewClick: (Long) -> Unit,
+    onPostReviewClick: (String, Long) -> Unit,
+    onReviewFilterClick: () -> Unit,
+    onSearchReviewClick: () -> Unit,
+    onReviewDetailClick: (Long) -> Unit,
     navigateToApplicationByRejectionBottomSheet: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
+    LaunchedEffect(initialTab) {
+        if (initialTab != null) {
+            navController.navigate(initialTab) {
+                popUpTo(NAVIGATION_HOME) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
@@ -171,6 +197,11 @@ private fun RootScreen(
                 bookmarks(
                     onRecruitmentsClick = navController::navigateToRecruitments,
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
+                )
+                review(
+                    onReviewFilterClick = onReviewFilterClick,
+                    onSearchReviewClick = onSearchReviewClick,
+                    onReviewDetailClick = onReviewDetailClick,
                 )
                 myPage(
                     onSelectInterestClick = onSelectInterestClick,

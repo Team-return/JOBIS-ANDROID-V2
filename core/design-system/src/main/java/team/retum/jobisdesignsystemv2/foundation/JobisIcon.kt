@@ -37,4 +37,5 @@ object JobisIcon {
     val Notification = R.drawable.ic_notification
     val Empty = R.drawable.ic_empty
     val Person = R.drawable.ic_person
+    val Asterisk = R.drawable.ic_asterisk
 }

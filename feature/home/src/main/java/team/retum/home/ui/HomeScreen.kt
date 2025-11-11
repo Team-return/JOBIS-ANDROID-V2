@@ -201,6 +201,7 @@ private fun HomeScreen(
                 onCompaniesClick = onCompaniesClick,
                 onWinterInternClick = onWinterInternClick,
             )
+            // TODO :: 지원 했을 때 홈 진입 시 ui에 바로 반영
             ApplyStatus(
                 modifier = Modifier.padding(
                     vertical = 12.dp,

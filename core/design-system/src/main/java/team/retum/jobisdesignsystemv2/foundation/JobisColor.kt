@@ -32,7 +32,7 @@ internal sealed class JobisColor(
 ) {
     data object Light : JobisColor(
         primary100 = Color(0xFFF3F3FB),
-        primary200 = Color(0xFF2F4DEF),
+        primary200 = Color(0xFF2F53FF),
         primary300 = Color(0xFF263EBF),
         primary400 = Color(0xFF132BAC),
         red100 = Color(0xFFFCE9E7),

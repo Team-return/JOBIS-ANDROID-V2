@@ -132,7 +132,7 @@ private fun EmptyBookmarkContent(onRecruitmentsClick: () -> Unit) {
     ) {
         Image(
             modifier = Modifier.size(128.dp),
-            painter = painterResource(id = R.drawable.ic_empty_bookmark),
+            painter = painterResource(id = team.retum.design_system.R.drawable.ic_empty),
             contentDescription = "empty bookmark",
         )
         Spacer(modifier = Modifier.height(16.dp))
