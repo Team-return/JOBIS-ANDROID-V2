@@ -27,6 +27,8 @@
     <string name="content_description_filter">filter</string>
     <string name="content_description_search">search</string>
     <string name="review_fetch_error">후기를 조회할 수 없어요</string>
+    <string name="review_page_fetch_error">후기 페이지를 조회할 수 없어요</string>
+    <string name="review_replace_error">리뷰를 교체할 수 없습니다</string>
 
     <!--Review Filter Screen-->
     <string name="appliance">적용하기</string>

@@ -62,10 +62,8 @@ internal class ReviewViewModel @Inject constructor(
     }
 
     internal fun clearReviews() {
-        if (state.value.code != null || state.value.year != null) {
-            _reviews.clear()
-            setState { state.value.copy(page = 0L) }
-        }
+        _reviews.clear()
+        setState { state.value.copy(page = 0L) }
     }
 
     internal fun fetchReviews() {
@@ -84,7 +82,7 @@ internal class ReviewViewModel @Inject constructor(
                 ).onSuccess {
                     replaceReviews(it.reviews)
                 }.onFailure {
-                    postSideEffect(ReviewSideEffect.FetchError)
+                    postSideEffect(ReviewSideEffect.FetchErrorReview)
                 }
             }
         }
@@ -116,7 +114,7 @@ internal class ReviewViewModel @Inject constructor(
             }
             _reviews.removeAll(_reviews.filter { item -> item.reviewId == 0L })
         }.onFailure {
-            postSideEffect(ReviewSideEffect.FetchError)
+            postSideEffect(ReviewSideEffect.SetReplaceReviewError)
         }
     }
 
@@ -133,7 +131,7 @@ internal class ReviewViewModel @Inject constructor(
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchReviews()
                 }.onFailure {
-                    postSideEffect(ReviewSideEffect.FetchError)
+                    postSideEffect(ReviewSideEffect.FetchErrorCount)
                 }
             }
         }
@@ -173,5 +171,7 @@ internal data class ReviewState(
 }
 
 internal sealed class ReviewSideEffect {
-    data object FetchError : ReviewSideEffect()
+    data object FetchErrorCount : ReviewSideEffect()
+    data object FetchErrorReview : ReviewSideEffect()
+    data object SetReplaceReviewError : ReviewSideEffect()
 }

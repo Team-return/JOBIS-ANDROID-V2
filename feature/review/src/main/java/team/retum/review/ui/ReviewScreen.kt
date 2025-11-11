@@ -51,13 +51,23 @@ internal fun Review(
     LaunchedEffect(Unit) {
         reviewViewModel.sideEffect.collect {
             when (it) {
-                is ReviewSideEffect.FetchError -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.review_fetch_error),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
+                is ReviewSideEffect.FetchErrorCount -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.review_page_fetch_error),
+                    drawable = JobisIcon.Error,
+                ).show()
+
+                is ReviewSideEffect.FetchErrorReview -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.review_fetch_error),
+                    drawable = JobisIcon.Error,
+                ).show()
+
+                is ReviewSideEffect.SetReplaceReviewError -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.review_replace_error),
+                    drawable = JobisIcon.Error,
+                ).show()
             }
         }
     }
