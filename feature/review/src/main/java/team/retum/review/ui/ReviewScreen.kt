@@ -5,21 +5,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.review.ui.component.ReviewItems
 import team.retum.review.viewmodel.ReviewFilterViewModel
 import team.retum.review.viewmodel.ReviewSideEffect
+import team.retum.review.viewmodel.ReviewState
 import team.retum.review.viewmodel.ReviewViewModel
 import team.retum.usecase.entity.FetchReviewsEntity
 
@@ -30,6 +34,7 @@ internal fun Review(
     onReviewDetailClick: (Long) -> Unit,
     reviewViewModel: ReviewViewModel = hiltViewModel(),
 ) {
+    val state by reviewViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -68,6 +73,7 @@ internal fun Review(
     }
 
     ReviewScreen(
+        state = state,
         reviews = reviewViewModel.reviews.toPersistentList(),
         onReviewFilterClick = onReviewFilterClick,
         onSearchReviewClick = onSearchReviewClick,
@@ -79,6 +85,7 @@ internal fun Review(
 
 @Composable
 private fun ReviewScreen(
+    state: ReviewState,
     reviews: ImmutableList<FetchReviewsEntity.Review>,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
@@ -104,11 +111,18 @@ private fun ReviewScreen(
                 onClick = onSearchReviewClick,
             )
         }
-        ReviewItems(
-            reviews = reviews,
-            onReviewDetailClick = onReviewDetailClick,
-            whetherFetchNextPage = whetherFetchNextPage,
-            fetchNextPage = fetchNextPage,
-        )
+        if (!state.showReviewEmptyContent) {
+            ReviewItems(
+                reviews = reviews,
+                onReviewDetailClick = onReviewDetailClick,
+                whetherFetchNextPage = whetherFetchNextPage,
+                fetchNextPage = fetchNextPage,
+            )
+        } else {
+            EmptyContent(
+                title = stringResource(id = R.string.review_not_found),
+                description = stringResource(id = R.string.please_wait_other_review)
+            )
+        }
     }
 }

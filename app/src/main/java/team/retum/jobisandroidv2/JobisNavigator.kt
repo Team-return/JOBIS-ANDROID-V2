@@ -5,8 +5,6 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import team.retum.bug.navigation.navigateToReportBug
-import team.retum.common.enums.InterviewLocation
-import team.retum.common.enums.InterviewType
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.common.model.ApplicationData
 import team.retum.company.navigation.navigateToCompanies
@@ -39,7 +37,6 @@ import team.retum.post.review.navigation.navigateToPostExpectReview
 import team.retum.post.review.navigation.navigateToPostNextReview
 import team.retum.post.review.navigation.navigateToPostReview
 import team.retum.post.review.navigation.navigateToPostReviewComplete
-import team.retum.review.navigation.navigateToReview
 import team.retum.review.navigation.navigateToReviewDetails
 import team.retum.review.navigation.navigateToReviewFilter
 import team.retum.review.navigation.navigateToSearchReview
@@ -225,18 +222,8 @@ internal class JobisNavigator(
         navController.navigateToReviewFilter()
     }
 
-    fun navigateToReview(
-        code: Long? = null,
-        year: Int? = null,
-        interviewType: InterviewType? = null,
-        location: InterviewLocation? = null,
-    ) {
-        navController.navigateToReview(
-            code = code,
-            year = year,
-            interviewType = interviewType,
-            location = location,
-        )
+    fun navigateToReview() {
+        popBackStackIfNotHome()
     }
 
     fun navigatedFromNotifications(): Boolean {

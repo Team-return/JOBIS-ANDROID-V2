@@ -42,11 +42,11 @@ interface ReviewApi {
 
     @GET(RequestUrls.Reviews.count)
     suspend fun fetchReviewsCount(
-        location: InterviewLocation?,
-        interviewType: InterviewType?,
-        keyword: String?,
-        year: Int?,
-        code: Long?,
+        @Query("location") location: InterviewLocation?,
+        @Query("type") interviewType: InterviewType?,
+        @Query("keyword") keyword: String?,
+        @Query("year") year: Int?,
+        @Query("code") code: Long?,
     ): FetchReviewsCountResponse
 
     @GET(RequestUrls.Reviews.my)

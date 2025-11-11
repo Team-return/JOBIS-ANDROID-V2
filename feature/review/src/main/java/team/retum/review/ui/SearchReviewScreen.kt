@@ -50,11 +50,11 @@ private fun SearchReviewScreen(
             onValueChange = onNameChange,
             drawableResId = JobisIcon.Search,
         )
-        if (!state.showRecruitmentsEmptyContent) {
+        if (!state.showReviewFilterEmptyContent) {
             LazyColumn {
                 items(
                     items = state.reviews,
-                    key = { state.reviews }
+                    key = { review -> review.reviewId }
                 ) {reviewEntity ->
                     ReviewItem(
                         review = reviewEntity,

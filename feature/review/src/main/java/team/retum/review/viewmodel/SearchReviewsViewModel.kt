@@ -57,7 +57,7 @@ internal class SearchReviewsViewModel @Inject constructor(
                 ).onSuccess {
                     setState {
                         state.value.copy(
-                            showRecruitmentsEmptyContent = it.reviews.isEmpty(),
+                            showReviewFilterEmptyContent = it.reviews.isEmpty(),
                             reviews = it.reviews.toPersistentList(),
                         )
                     }
@@ -73,13 +73,13 @@ internal class SearchReviewsViewModel @Inject constructor(
 data class SearchReviewsState(
     val keyword: String?,
     val reviews: ImmutableList<FetchReviewsEntity.Review>,
-    val showRecruitmentsEmptyContent: Boolean,
+    val showReviewFilterEmptyContent: Boolean,
 ) {
     companion object {
         fun getInitialState() = SearchReviewsState(
             keyword = null,
             reviews = persistentListOf(),
-            showRecruitmentsEmptyContent = false,
+            showReviewFilterEmptyContent = false,
         )
     }
 }

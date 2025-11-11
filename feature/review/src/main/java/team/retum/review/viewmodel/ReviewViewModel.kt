@@ -80,7 +80,10 @@ internal class ReviewViewModel @Inject constructor(
                     year = year,
                     code = code,
                 ).onSuccess {
-                    replaceReviews(it.reviews)
+                    setState { state.value.copy(showReviewEmptyContent = it.reviews.isEmpty()) }
+                    replaceReviews(
+                        reviews = it.reviews,
+                    )
                 }.onFailure {
                     postSideEffect(ReviewSideEffect.FetchErrorReview)
                 }
@@ -156,6 +159,7 @@ internal data class ReviewState(
     val year: Int?,
     val interviewType: InterviewType?,
     val location: InterviewLocation?,
+    val showReviewEmptyContent: Boolean,
 ) {
     companion object {
         fun getInitialState() = ReviewState(
@@ -166,6 +170,7 @@ internal data class ReviewState(
             year = null,
             interviewType = null,
             location = null,
+            showReviewEmptyContent = false,
         )
     }
 }

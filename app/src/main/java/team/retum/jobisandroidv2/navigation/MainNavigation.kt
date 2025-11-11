@@ -146,7 +146,6 @@ internal fun NavGraphBuilder.mainNavigation(
         )
         reviewDetails(navigator::popBackStackIfNotHome)
         reviewFilter(
-            navigateToReview = navigator::navigateToReview,
             onBackPressed = navigator::popBackStackIfNotHome,
         )
         searchReview(
