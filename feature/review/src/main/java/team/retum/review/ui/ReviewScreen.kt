@@ -121,7 +121,7 @@ private fun ReviewScreen(
         } else {
             EmptyContent(
                 title = stringResource(id = R.string.review_not_found),
-                description = stringResource(id = R.string.please_wait_other_review)
+                description = stringResource(id = R.string.please_wait_other_review),
             )
         }
     }

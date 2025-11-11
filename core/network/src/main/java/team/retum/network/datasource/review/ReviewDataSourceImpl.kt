@@ -57,10 +57,9 @@ class ReviewDataSourceImpl @Inject constructor(
                 interviewType = interviewType,
                 keyword = keyword,
                 year = year,
-                code = code
+                code = code,
             )
         }
-
 
     override suspend fun fetchMyReviews(): FetchMyReviewResponse =
         RequestHandler<FetchMyReviewResponse>().request { reviewApi.fetchMyReviews() }

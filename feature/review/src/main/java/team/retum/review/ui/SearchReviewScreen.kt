@@ -54,8 +54,8 @@ private fun SearchReviewScreen(
             LazyColumn {
                 items(
                     items = state.reviews,
-                    key = { review -> review.reviewId }
-                ) {reviewEntity ->
+                    key = { review -> review.reviewId },
+                ) { reviewEntity ->
                     ReviewItem(
                         review = reviewEntity,
                         onReviewDetailClick = onReviewDetailClick,
