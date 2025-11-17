@@ -1,6 +1,7 @@
 package team.retum.employment.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -148,11 +149,14 @@ private fun CompanyCard(
             )
         }
         JobisText(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .basicMarquee(),
             text = companyName,
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
             textAlign = TextAlign.Center,
+            maxLines = 1,
         )
     }
 }
