@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -134,17 +136,13 @@ private fun EmploymentScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 ClassEmploymentButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterVertically)
-                        .weight(1f),
+                    modifier = Modifier.weight(1f),
                     onClassClick = { onClassClick(1) },
                     image = team.retum.design_system.R.drawable.ic_computer,
                     text = stringResource(R.string.first_class),
                 )
                 ClassEmploymentButton(
-                    modifier = Modifier
-                        .weight(1f),
+                    modifier = Modifier.weight(1f),
                     onClassClick = { onClassClick(2) },
                     image = team.retum.design_system.R.drawable.ic_computer,
                     text = stringResource(R.string.second_class),
@@ -197,8 +195,7 @@ private fun EmploymentRate(
             )
             Spacer(modifier = Modifier.weight(1f))
             Column(
-                verticalArrangement = Arrangement
-                    .spacedBy(space = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(space = 4.dp),
             ) {
                 Row {
                     Box(
@@ -282,8 +279,6 @@ private fun CircleProgress(
     primaryColor: Color = JobisTheme.colors.onSecondary,
     secondaryColor: Color = JobisTheme.colors.onPrimary,
 ) {
-    val animatedValue = remember { Animatable(percentage) }
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.size(radius),
@@ -336,7 +331,6 @@ private fun ClassEmploymentButton(
     modifier: Modifier = Modifier,
     onClassClick: (Int) -> Unit,
     image: Int,
-    description: String = "",
     text: String,
 ) {
     Surface(
@@ -346,43 +340,40 @@ private fun ClassEmploymentButton(
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier = Modifier.background(color = JobisTheme.colors.inverseSurface),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Column(
-                modifier = Modifier.padding(top = 20.dp, start = 34.dp, end = 34.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Box(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .padding(20.dp)
+                    .clip(CircleShape)
+                    .background(JobisTheme.colors.background)
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center,
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .background(JobisTheme.colors.background),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(48.dp),
-                        painter = painterResource(image),
-                        contentDescription = description,
-                        tint = Color.Unspecified,
-                    )
-                }
+                Icon(
+                    modifier = Modifier.fillMaxSize(0.6f),
+                    painter = painterResource(image),
+                    contentDescription = text,
+                    tint = Color.Unspecified,
+                )
             }
             Surface(
                 color = JobisTheme.colors.surfaceTint,
                 shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 12.dp, bottom = 12.dp)
-                    .align(Alignment.Start),
+                modifier = Modifier.align(Alignment.Start),
             ) {
                 JobisText(
                     text = text,
                     style = JobisTypography.SubBody,
                     color = JobisTheme.colors.background,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
         }
