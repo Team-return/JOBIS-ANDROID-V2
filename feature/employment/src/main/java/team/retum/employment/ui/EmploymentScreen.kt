@@ -55,21 +55,24 @@ internal fun Employment(
     employmentViewModel: EmploymentViewModel = hiltViewModel(),
 ) {
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
-    val animatedValue = remember { Animatable(state.rate.toFloat()) }
-    LaunchedEffect(Unit) {
-        with(employmentViewModel) {
-            fetchEmploymentCount()
-        }
+    val animatedValue = remember { Animatable(state.rate) }
+
+    LaunchedEffect(state.rate) {
         animatedValue.animateTo(
             targetValue = state.rate,
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing),
         )
     }
+    LaunchedEffect(Unit) {
+        with(employmentViewModel) {
+            fetchEmploymentCount()
+        }
+    }
 
     EmploymentScreen(
         onBackPressed = onBackPressed,
         onClassClick = onClassClick,
-        rate = state.rate,
+        rate = animatedValue.value,
         totalStudentCount = state.totalStudentCount,
         passCount = state.passCount,
     )
@@ -309,7 +312,7 @@ private fun CircleProgress(
             drawArc(
                 color = secondaryColor,
                 startAngle = 270f,
-                sweepAngle = animatedValue.value * 3.6f,
+                sweepAngle = percentage * 3.6f,
                 useCenter = false,
                 style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Butt),
                 size = Size(arcRadius * 2, arcRadius * 2),
@@ -321,7 +324,7 @@ private fun CircleProgress(
         }
 
         JobisText(
-            text = "${animatedValue.value.toInt()}%",
+            text = "${percentage.toInt()}%",
             style = JobisTypography.Body,
             color = JobisTheme.colors.onPrimary,
         )
