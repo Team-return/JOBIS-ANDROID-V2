@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.employment.R
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -36,8 +38,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.application.EmploymentStatusEntity
-
-const val MAX_STUDENT = 16
 
 @Composable
 internal fun EmploymentDetail(
@@ -59,8 +59,8 @@ internal fun EmploymentDetail(
         classId = classId,
         passStudent = state.passStudent,
         totalStudent = state.totalStudent,
-        classNameList = classNameList,
-        classInfoList = state.classInfoList.toMutableList(),
+        classNameList = classNameList.toPersistentList(),
+        classInfoList = state.classInfoList,
         onBackPressed = onBackPressed,
     )
 }
@@ -70,8 +70,8 @@ private fun EmploymentDetailScreen(
     classId: Long,
     passStudent: Int,
     totalStudent: Int,
-    classNameList: List<String>,
-    classInfoList: MutableList<EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList>,
+    classNameList: ImmutableList<String>,
+    classInfoList: ImmutableList<EmploymentStatusEntity.ClassEmploymentStatusEntity.FetchEmploymentRateList>,
     onBackPressed: () -> Unit,
 ) {
     Column(
@@ -89,17 +89,6 @@ private fun EmploymentDetailScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp),
             contentPadding = PaddingValues(top = 32.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
         ) {
-            classInfoList.apply {
-                repeat(MAX_STUDENT - passStudent) {
-                    add(
-                        EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList(
-                            id = 0,
-                            companyName = "",
-                            logoUrl = "",
-                        ),
-                    )
-                }
-            }
             if (classInfoList.isNotEmpty()) {
                 items(items = classInfoList) { company ->
                     CompanyCard(
