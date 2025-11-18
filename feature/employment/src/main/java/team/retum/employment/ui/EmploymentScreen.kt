@@ -1,5 +1,6 @@
 package team.retum.employment.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -43,7 +44,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import team.retum.employment.R
+import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
 import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -53,12 +56,18 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
+@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 internal fun Employment(
+    navController: NavHostController,
     onBackPressed: () -> Unit,
     onClassClick: (Long) -> Unit,
-    employmentViewModel: EmploymentViewModel = hiltViewModel(),
+    onFilterClick: () -> Unit,
 ) {
+    val parentEntry = remember(navController) {
+        navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
+    }
+    val employmentViewModel: EmploymentViewModel = hiltViewModel(parentEntry)
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
     val animatedValue = remember { Animatable(state.rate) }
 
@@ -78,6 +87,7 @@ internal fun Employment(
     EmploymentScreen(
         onBackPressed = onBackPressed,
         onClassClick = onClassClick,
+        onFilterClick = onFilterClick,
         rate = animatedValue.value,
         totalStudentCount = state.totalStudentCount,
         passCount = state.passCount,
@@ -89,6 +99,7 @@ internal fun Employment(
 private fun EmploymentScreen(
     onBackPressed: () -> Unit,
     onClassClick: (Long) -> Unit,
+    onFilterClick: () -> Unit,
     rate: Float,
     totalStudentCount: String,
     passCount: String,
@@ -105,7 +116,7 @@ private fun EmploymentScreen(
             JobisIconButton(
                 drawableResId = JobisIcon.Filter,
                 contentDescription = "filter",
-                onClick = {  },
+                onClick = onFilterClick,
                 tint = JobisTheme.colors.onPrimary,
             )
         }

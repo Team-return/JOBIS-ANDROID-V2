@@ -1,5 +1,6 @@
 package team.retum.employment.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,10 +30,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.employment.R
+import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -39,12 +43,17 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.usecase.entity.application.EmploymentStatusEntity
 
+@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 internal fun EmploymentDetail(
+    navController: NavHostController,
     classId: Long,
     onBackPressed: () -> Unit,
-    employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
+    val parentEntry = remember(navController) {
+        navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
+    }
+    val employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(parentEntry)
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
     val classNameList = listOf(stringResource(R.string.soft_ware_first_class), stringResource(R.string.soft_ware_second_class), stringResource(R.string.soft_ware_embedded), stringResource(R.string.ai_class))
 

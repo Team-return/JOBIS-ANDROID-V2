@@ -2,15 +2,17 @@ package team.retum.employment.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import team.retum.common.utils.ResourceKeys
 import team.retum.employment.ui.EmploymentDetail
 
-const val EMPLOYMENT_DETAIL = "employmentDetail"
+const val EMPLOYMENT_DETAIL = "employment/detail"
 
 fun NavGraphBuilder.employmentDetail(
+    navController: NavHostController,
     onBackPressed: () -> Unit,
 ) {
     composable(
@@ -22,6 +24,7 @@ fun NavGraphBuilder.employmentDetail(
         val classId = it.arguments?.getString(ResourceKeys.CLASS_ID)?.toLong() ?: 0
 
         EmploymentDetail(
+            navController = navController,
             onBackPressed = onBackPressed,
             classId = classId,
         )
