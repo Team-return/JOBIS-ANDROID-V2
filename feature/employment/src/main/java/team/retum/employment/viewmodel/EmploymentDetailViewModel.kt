@@ -44,6 +44,8 @@ internal class EmploymentDetailViewModel @Inject constructor(
                         passStudent = classData.passedStudents,
                     )
                 }
+            }.onFailure {
+                postSideEffect(EmploymentDetailSideEffect.EmploymentFetchError)
             }
         }
     }
@@ -84,6 +86,5 @@ internal data class EmploymentDetailState(
 }
 
 internal sealed interface EmploymentDetailSideEffect {
-    data object BadRequest : EmploymentDetailSideEffect
-    data object Success : EmploymentDetailSideEffect
+    data object EmploymentFetchError : EmploymentDetailSideEffect
 }

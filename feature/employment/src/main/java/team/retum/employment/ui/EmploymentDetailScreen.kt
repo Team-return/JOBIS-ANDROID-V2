@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,11 +37,15 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.employment.R
 import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
+import team.retum.employment.viewmodel.EmploymentDetailSideEffect
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
+import team.retum.employment.viewmodel.EmploymentSideEffect
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.EmploymentStatusEntity
 
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -54,6 +59,7 @@ internal fun EmploymentDetail(
         navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
     }
     val employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(parentEntry)
+    val context = LocalContext.current
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
     val classNameList = listOf(stringResource(R.string.soft_ware_first_class), stringResource(R.string.soft_ware_second_class), stringResource(R.string.soft_ware_embedded), stringResource(R.string.ai_class))
 
@@ -61,6 +67,18 @@ internal fun EmploymentDetail(
         with(employmentDetailViewModel) {
             setClassId(classId = classId.toInt() - 1)
             fetchEmploymentStatus(state.employmentYear)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        employmentDetailViewModel.sideEffect.collect {
+            when (it) {
+                is EmploymentDetailSideEffect.EmploymentFetchError -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_fetch_employment_status_error),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
         }
     }
 

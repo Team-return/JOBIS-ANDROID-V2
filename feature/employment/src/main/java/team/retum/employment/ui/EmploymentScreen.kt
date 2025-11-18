@@ -37,6 +37,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import team.retum.employment.R
 import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
+import team.retum.employment.viewmodel.EmploymentSideEffect
 import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -55,6 +57,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -68,6 +71,7 @@ internal fun Employment(
         navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
     }
     val employmentViewModel: EmploymentViewModel = hiltViewModel(parentEntry)
+    val context = LocalContext.current
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
     val animatedValue = remember { Animatable(state.rate) }
 
@@ -79,8 +83,18 @@ internal fun Employment(
     }
 
     LaunchedEffect(state.selectedYear) {
-        with(employmentViewModel) {
-            fetchEmploymentCount(state.selectedYear.toInt())
+        employmentViewModel.fetchEmploymentCount(state.selectedYear.toInt())
+    }
+
+    LaunchedEffect(Unit) {
+        employmentViewModel.sideEffect.collect {
+            when (it) {
+                is EmploymentSideEffect.FetchEmploymentCountError -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_fetch_employment_count_error),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
         }
     }
 
