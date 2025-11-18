@@ -45,7 +45,7 @@ internal fun EmploymentFilter(
     EmploymentFilterScreen(
         onBackPressed = onBackPressed,
         years = state.yearList.toPersistentList(),
-        setYear = employmentViewModel::setYear
+        setYear = employmentViewModel::setYear,
     )
 }
 

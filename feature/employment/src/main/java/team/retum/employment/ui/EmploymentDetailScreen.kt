@@ -39,7 +39,6 @@ import team.retum.employment.R
 import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
 import team.retum.employment.viewmodel.EmploymentDetailSideEffect
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
-import team.retum.employment.viewmodel.EmploymentSideEffect
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme

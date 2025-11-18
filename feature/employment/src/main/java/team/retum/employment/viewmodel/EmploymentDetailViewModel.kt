@@ -34,7 +34,7 @@ internal class EmploymentDetailViewModel @Inject constructor(
                 val classData = it.classes[state.value.classId]
                 val displayList = buildDisplayList(
                     employmentRateList = classData.employmentRateList,
-                    passedStudents = classData.passedStudents
+                    passedStudents = classData.passedStudents,
                 )
 
                 setState {
