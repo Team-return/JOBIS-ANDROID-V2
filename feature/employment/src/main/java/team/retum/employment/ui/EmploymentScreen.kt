@@ -91,6 +91,7 @@ internal fun Employment(
         rate = animatedValue.value,
         totalStudentCount = state.totalStudentCount,
         passCount = state.passCount,
+        year = state.selectedYear,
     )
 }
 
@@ -103,6 +104,7 @@ private fun EmploymentScreen(
     rate: Float,
     totalStudentCount: String,
     passCount: String,
+    year: String,
 ) {
     Column(
         modifier = Modifier
@@ -134,6 +136,7 @@ private fun EmploymentScreen(
                 passCount = passCount,
                 totalStudentCount = totalStudentCount,
                 rate = rate,
+                year = year,
             )
         }
         Column(
@@ -192,6 +195,7 @@ private fun EmploymentRate(
     rate: Float,
     totalStudentCount: String,
     passCount: String,
+    year: String,
 ) {
     Column(
         modifier = Modifier
@@ -201,6 +205,7 @@ private fun EmploymentRate(
                 start = 16.dp,
                 end = 16.dp,
             ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row {
             JobisText(
@@ -254,7 +259,7 @@ private fun EmploymentRate(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 34.dp, bottom = 82.dp),
+                .padding(top = 34.dp, bottom = 66.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -283,6 +288,13 @@ private fun EmploymentRate(
                 )
             }
         }
+        JobisText(
+            modifier = Modifier.padding(bottom = 16.dp),
+            text = "$year 취업률",
+            textAlign = TextAlign.Center,
+            style = JobisTypography.SubBody,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
     }
 }
 
@@ -333,7 +345,6 @@ private fun CircleProgress(
                 ),
             )
         }
-
         JobisText(
             text = "${percentage.toInt()}%",
             style = JobisTypography.Body,
