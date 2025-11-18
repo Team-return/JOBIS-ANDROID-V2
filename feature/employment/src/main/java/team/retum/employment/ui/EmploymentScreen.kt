@@ -78,9 +78,9 @@ internal fun Employment(
         )
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(state.selectedYear) {
         with(employmentViewModel) {
-            fetchEmploymentCount()
+            fetchEmploymentCount(state.selectedYear.toInt())
         }
     }
 

@@ -74,9 +74,9 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
-    internal fun fetchEmploymentCount() {
+    internal fun fetchEmploymentCount(year: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchEmploymentCountUseCase().onSuccess {
+            fetchEmploymentCountUseCase(year = year).onSuccess {
                 setState {
                     val rate = if (it.passCount == 0L || it.totalStudentCount == 0L) {
                         0f
@@ -132,6 +132,7 @@ internal data class HomeState(
     val banners: List<BannersEntity.BannerEntity>,
     val appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
     val isWinterIntern: Boolean,
+    val employmentYear: Int,
 ) {
     companion object {
         fun getDefaultState() = HomeState(
@@ -148,6 +149,7 @@ internal data class HomeState(
             banners = emptyList(),
             appliedCompanies = emptyList(),
             isWinterIntern = false,
+            employmentYear = LocalDate.now().year,
         )
     }
 }

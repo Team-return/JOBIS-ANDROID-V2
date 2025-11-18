@@ -22,9 +22,9 @@ internal class EmploymentViewModel @Inject constructor(
         updateFilterYear()
     }
 
-    internal fun fetchEmploymentCount() {
+    internal fun fetchEmploymentCount(year: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchEmploymentCountUseCase()
+            fetchEmploymentCountUseCase(year = year)
                 .onSuccess {
                     setState {
                         val rate = if (it.passCount == 0L || it.totalStudentCount == 0L) {

@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.usecase.entity.application.EmploymentStatusEntity
 import team.retum.usecase.usecase.application.FetchEmploymentStatusUseCase
+import java.time.LocalDate
 import javax.inject.Inject
 
 private const val MAX_STUDENT = 16
@@ -27,9 +28,9 @@ internal class EmploymentDetailViewModel @Inject constructor(
         state.value.copy(classId = classId)
     }
 
-    internal fun fetchEmploymentStatus() {
+    internal fun fetchEmploymentStatus(year: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchEmploymentStatusUseCase().onSuccess {
+            fetchEmploymentStatusUseCase(year = year).onSuccess {
                 val classData = it.classes[state.value.classId]
                 val displayList = buildDisplayList(
                     employmentRateList = classData.employmentRateList,
@@ -69,6 +70,7 @@ internal data class EmploymentDetailState(
     val totalStudent: Int,
     val passStudent: Int,
     val classInfoList: ImmutableList<EmploymentStatusEntity.ClassEmploymentStatusEntity.FetchEmploymentRateList>,
+    val employmentYear: Int,
 ) {
     companion object {
         fun getDefaultState() = EmploymentDetailState(
@@ -76,6 +78,7 @@ internal data class EmploymentDetailState(
             totalStudent = 0,
             passStudent = 0,
             classInfoList = kotlinx.collections.immutable.persistentListOf(),
+            employmentYear = LocalDate.now().year,
         )
     }
 }
