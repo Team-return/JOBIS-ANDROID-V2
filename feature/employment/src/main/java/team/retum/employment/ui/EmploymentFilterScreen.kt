@@ -9,17 +9,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import team.retum.employment.R
 import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
 import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -56,7 +57,7 @@ private fun EmploymentFilterScreen(
 ) {
     Column {
         JobisSmallTopAppBar(
-            title = "년도 설정",
+            title = stringResource(R.string.filter_year),
             onBackPressed = onBackPressed,
         )
         years.let { year ->
@@ -72,7 +73,7 @@ private fun EmploymentFilterScreen(
         }
         Spacer(modifier = Modifier.weight(1f))
         JobisButton(
-            text = "적용하기",
+            text = stringResource(R.string.filter_apply),
             onClick = onBackPressed,
             color = ButtonColor.Primary,
         )

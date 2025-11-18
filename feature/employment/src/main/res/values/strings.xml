@@ -26,4 +26,6 @@
     <string name="toast_fetch_employment_status_error">반별 취업 현황을 조회할 수 없습니다</string>
 
     <!--  employment filter  -->
+    <string name="filter_year">년도 설정</string>
+    <string name="filter_apply">적용하기</string>
 </resources>
