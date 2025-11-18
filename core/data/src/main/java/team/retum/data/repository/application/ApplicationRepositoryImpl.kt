@@ -15,8 +15,8 @@ class ApplicationRepositoryImpl @Inject constructor(
         return remoteApplicationDataSource.fetchAppliedCompanies()
     }
 
-    override suspend fun fetchEmploymentCount(): FetchEmploymentCountResponse {
-        return remoteApplicationDataSource.fetchEmploymentCount()
+    override suspend fun fetchEmploymentCount(year: Int): FetchEmploymentCountResponse {
+        return remoteApplicationDataSource.fetchEmploymentCount(year = year)
     }
 
     override suspend fun fetchRejectionReason(applicationId: Long): FetchRejectionReasonResponse {
@@ -43,7 +43,7 @@ class ApplicationRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun fetchEmploymentStatus(): FetchEmploymentStatusResponse {
-        return remoteApplicationDataSource.fetchEmploymentStatus()
+    override suspend fun fetchEmploymentStatus(year: Int): FetchEmploymentStatusResponse {
+        return remoteApplicationDataSource.fetchEmploymentStatus(year = year)
     }
 }

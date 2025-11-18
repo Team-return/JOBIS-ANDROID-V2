@@ -18,9 +18,9 @@ class RemoteApplicationDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchEmploymentCount(): FetchEmploymentCountResponse {
+    override suspend fun fetchEmploymentCount(year: Int): FetchEmploymentCountResponse {
         return RequestHandler<FetchEmploymentCountResponse>().request {
-            applicationApi.fetchEmploymentCount()
+            applicationApi.fetchEmploymentCount(year = year)
         }
     }
 
@@ -54,9 +54,9 @@ class RemoteApplicationDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchEmploymentStatus(): FetchEmploymentStatusResponse {
+    override suspend fun fetchEmploymentStatus(year: Int): FetchEmploymentStatusResponse {
         return RequestHandler<FetchEmploymentStatusResponse>().request {
-            applicationApi.fetchEmploymentStatus()
+            applicationApi.fetchEmploymentStatus(year = year)
         }
     }
 }

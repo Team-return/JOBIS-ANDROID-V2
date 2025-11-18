@@ -8,6 +8,7 @@ internal object RequestUrls {
         const val reviewId = "review-id"
         const val notificationId = "notification-id"
         const val noticeId = "notice-id"
+        const val year = "year"
     }
 
     data object Users {
@@ -67,8 +68,8 @@ internal object RequestUrls {
         const val apply = "$path/{${PATH.recruitmentId}}"
         const val rejection = "$path/rejection/{${PATH.applicationId}}"
         const val reApply = "$path/{${PATH.applicationId}}"
-        const val employmentCount = "$path/employment/count"
-        const val employment = "$path/employment"
+        const val employmentCount = "$path/employment/count/{${PATH.year}}"
+        const val employment = "$path/employment/{${PATH.year}}"
     }
 
     data object Files {
