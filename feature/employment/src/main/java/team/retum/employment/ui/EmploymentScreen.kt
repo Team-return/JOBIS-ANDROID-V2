@@ -8,6 +8,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -17,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -45,7 +46,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import team.retum.employment.R
 import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -65,6 +68,7 @@ internal fun Employment(
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing),
         )
     }
+
     LaunchedEffect(Unit) {
         with(employmentViewModel) {
             fetchEmploymentCount()
@@ -80,6 +84,7 @@ internal fun Employment(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun EmploymentScreen(
     onBackPressed: () -> Unit,
@@ -96,7 +101,14 @@ private fun EmploymentScreen(
         JobisSmallTopAppBar(
             title = stringResource(id = R.string.employment_status),
             onBackPressed = onBackPressed,
-        )
+        ) {
+            JobisIconButton(
+                drawableResId = JobisIcon.Filter,
+                contentDescription = "filter",
+                onClick = {  },
+                tint = JobisTheme.colors.onPrimary,
+            )
+        }
         JobisCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -121,52 +133,45 @@ private fun EmploymentScreen(
                 modifier = Modifier
                     .padding(vertical = 8.dp),
                 text = stringResource(id = R.string.check_employment_status),
-                style = JobisTypography.Description,
+                style = JobisTypography.Body,
                 color = JobisTheme.colors.onSurfaceVariant,
             )
         }
-        Column(
+        Spacer(modifier = Modifier.weight(1f))
+        FlowRow(
             modifier = Modifier
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp, vertical = 12.dp)
                 .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            maxItemsInEachRow = 2,
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                ClassEmploymentButton(
-                    modifier = Modifier.weight(1f),
-                    onClassClick = { onClassClick(1) },
-                    image = team.retum.design_system.R.drawable.ic_computer,
-                    text = stringResource(R.string.first_class),
-                )
-                ClassEmploymentButton(
-                    modifier = Modifier.weight(1f),
-                    onClassClick = { onClassClick(2) },
-                    image = team.retum.design_system.R.drawable.ic_computer,
-                    text = stringResource(R.string.second_class),
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                ClassEmploymentButton(
-                    modifier = Modifier
-                        .weight(1f),
-                    onClassClick = { onClassClick(3) },
-                    image = team.retum.design_system.R.drawable.ic_spanner,
-                    text = stringResource(R.string.third_class),
-                )
-                ClassEmploymentButton(
-                    modifier = Modifier
-                        .weight(1f),
-                    onClassClick = { onClassClick(4) },
-                    image = team.retum.design_system.R.drawable.ic_robot,
-                    text = stringResource(R.string.fourth_class),
-                )
-            }
+            ClassEmploymentButton(
+                modifier = Modifier.weight(1f),
+                onClassClick = { onClassClick(1) },
+                image = team.retum.design_system.R.drawable.ic_computer,
+                text = stringResource(R.string.first_class),
+            )
+            ClassEmploymentButton(
+                modifier = Modifier.weight(1f),
+                onClassClick = { onClassClick(2) },
+                image = team.retum.design_system.R.drawable.ic_computer,
+                text = stringResource(R.string.second_class),
+            )
+            ClassEmploymentButton(
+                modifier = Modifier
+                    .weight(1f),
+                onClassClick = { onClassClick(3) },
+                image = team.retum.design_system.R.drawable.ic_spanner,
+                text = stringResource(R.string.third_class),
+            )
+            ClassEmploymentButton(
+                modifier = Modifier
+                    .weight(1f),
+                onClassClick = { onClassClick(4) },
+                image = team.retum.design_system.R.drawable.ic_robot,
+                text = stringResource(R.string.fourth_class),
+            )
         }
     }
 }
@@ -334,46 +339,46 @@ private fun ClassEmploymentButton(
     text: String,
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier
+            .aspectRatio(1f),
         onClick = { onClassClick(4) },
         color = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 20.dp),
+                .fillMaxSize()
+                .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.5f)
                     .aspectRatio(1f)
-                    .padding(20.dp)
                     .clip(CircleShape)
                     .background(JobisTheme.colors.background)
-                    .padding(4.dp),
+                    .padding(8.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    modifier = Modifier.fillMaxSize(0.6f),
+                    modifier = Modifier.fillMaxSize(0.7f),
                     painter = painterResource(image),
                     contentDescription = text,
                     tint = Color.Unspecified,
                 )
             }
-            Surface(
-                color = JobisTheme.colors.surfaceTint,
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.align(Alignment.Start),
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .background(color = JobisTheme.colors.surfaceTint, shape = RoundedCornerShape(12.dp))
+                    .align(Alignment.Start),
             ) {
                 JobisText(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     text = text,
                     style = JobisTypography.SubBody,
                     color = JobisTheme.colors.background,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
         }

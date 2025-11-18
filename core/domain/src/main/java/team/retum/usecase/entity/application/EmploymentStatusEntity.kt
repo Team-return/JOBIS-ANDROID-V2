@@ -8,11 +8,11 @@ data class EmploymentStatusEntity(
 ) {
     data class ClassEmploymentStatusEntity(
         val classId: Int,
-        val employmentRateList: List<GetEmploymentRateList>,
+        val employmentRateList: List<FetchEmploymentRateList>,
         val totalStudents: Int,
         val passedStudents: Int,
     ) {
-        data class GetEmploymentRateList(
+        data class FetchEmploymentRateList(
             val id: Int,
             val companyName: String,
             val logoUrl: String,
@@ -33,7 +33,7 @@ private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.toEntity
     )
 
 private fun FetchEmploymentStatusResponse.ClassEmploymentStatusResponse.FetchEmploymentRate.toEntity() =
-    EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList(
+    EmploymentStatusEntity.ClassEmploymentStatusEntity.FetchEmploymentRateList(
         id = this.id,
         companyName = this.companyName,
         logoUrl = ResourceKeys.IMAGE_URL + this.logoUrl,

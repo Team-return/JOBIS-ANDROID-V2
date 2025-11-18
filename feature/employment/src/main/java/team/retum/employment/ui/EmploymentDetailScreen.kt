@@ -140,7 +140,7 @@ private fun CompanyCard(
         JobisText(
             modifier = Modifier
                 .padding(top = 8.dp)
-                .basicMarquee(),
+                .basicMarquee(iterations = Int.MAX_VALUE),
             text = companyName,
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
