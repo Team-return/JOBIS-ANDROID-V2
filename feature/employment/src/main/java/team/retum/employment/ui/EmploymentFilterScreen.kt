@@ -19,7 +19,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import team.retum.employment.R
 import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
 import team.retum.employment.viewmodel.EmploymentViewModel
@@ -44,8 +43,9 @@ internal fun EmploymentFilter(
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
     EmploymentFilterScreen(
         onBackPressed = onBackPressed,
-        years = state.yearList.toPersistentList(),
-        setYear = employmentViewModel::setYear,
+        years = state.yearList,
+        selectedYear = state.selectedYear,
+        setSelectedYear = employmentViewModel::setSelectedYear,
     )
 }
 
@@ -53,22 +53,24 @@ internal fun EmploymentFilter(
 private fun EmploymentFilterScreen(
     onBackPressed: () -> Unit,
     years: ImmutableList<String>,
-    setYear: (String) -> Unit,
+    selectedYear: String,
+    setSelectedYear: (String) -> Unit,
 ) {
     Column {
         JobisSmallTopAppBar(
             title = stringResource(R.string.filter_year),
             onBackPressed = onBackPressed,
         )
-        years.let { year ->
-            LazyColumn {
-                items(year) {
-                    FilterYearContent(
-                        title = it,
-                        checked = true,
-                        onClick = { setYear(it) },
-                    )
-                }
+        LazyColumn {
+            items(
+                items = years,
+                key = { it },
+            ) { yearItem ->
+                FilterYearContent(
+                    title = yearItem,
+                    checked = selectedYear == yearItem,
+                    onClick = { setSelectedYear(yearItem) },
+                )
             }
         }
         Spacer(modifier = Modifier.weight(1f))

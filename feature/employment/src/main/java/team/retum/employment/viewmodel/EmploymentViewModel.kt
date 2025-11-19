@@ -52,8 +52,12 @@ internal class EmploymentViewModel @Inject constructor(
         setState { state.value.copy(yearList = (startYear..endYear).map { it.toString() }.reversed().toPersistentList()) }
     }
 
-    internal fun setYear(selectedYear: String) {
-        setState { state.value.copy(selectedYear = selectedYear) }
+    internal fun setSelectedYear(year: String) {
+        setState {
+            state.value.copy(
+                selectedYear = if (state.value.selectedYear == year) "" else year,
+            )
+        }
     }
 }
 
