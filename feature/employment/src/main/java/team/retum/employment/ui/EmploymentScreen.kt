@@ -1,6 +1,5 @@
 package team.retum.employment.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -59,7 +58,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 
-@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 internal fun Employment(
     navController: NavHostController,
@@ -67,7 +65,7 @@ internal fun Employment(
     onClassClick: (Long) -> Unit,
     onFilterClick: () -> Unit,
 ) {
-    val parentEntry = remember(navController) {
+    val parentEntry = remember(navController.currentBackStackEntry) {
         navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
     }
     val employmentViewModel: EmploymentViewModel = hiltViewModel(parentEntry)
