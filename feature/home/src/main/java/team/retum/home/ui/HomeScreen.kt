@@ -93,7 +93,7 @@ internal fun Home(
             calculateTerm()
             fetchStudentInformation()
             fetchAppliedCompanies()
-            fetchEmploymentCount()
+            fetchEmploymentCount(state.employmentYear)
             fetchBanners()
             fetchWinterIntern()
         }

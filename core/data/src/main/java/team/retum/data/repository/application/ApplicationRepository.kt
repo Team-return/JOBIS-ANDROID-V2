@@ -9,7 +9,7 @@ import team.retum.network.model.response.application.FetchRejectionReasonRespons
 interface ApplicationRepository {
     suspend fun fetchAppliedCompanies(): FetchAppliedCompaniesResponse
 
-    suspend fun fetchEmploymentCount(): FetchEmploymentCountResponse
+    suspend fun fetchEmploymentCount(year: Int): FetchEmploymentCountResponse
 
     suspend fun fetchRejectionReason(applicationId: Long): FetchRejectionReasonResponse
 
@@ -23,5 +23,5 @@ interface ApplicationRepository {
         applyCompanyRequest: ApplyCompanyRequest,
     )
 
-    suspend fun fetchEmploymentStatus(): FetchEmploymentStatusResponse
+    suspend fun fetchEmploymentStatus(year: Int): FetchEmploymentStatusResponse
 }

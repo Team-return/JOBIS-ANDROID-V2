@@ -8,8 +8,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,6 +36,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -40,48 +44,79 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import team.retum.employment.R
+import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
+import team.retum.employment.viewmodel.EmploymentSideEffect
 import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 
 @Composable
 internal fun Employment(
+    navController: NavHostController,
     onBackPressed: () -> Unit,
     onClassClick: (Long) -> Unit,
-    employmentViewModel: EmploymentViewModel = hiltViewModel(),
+    onFilterClick: () -> Unit,
 ) {
+    val parentEntry = remember(navController.currentBackStackEntry) {
+        navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
+    }
+    val employmentViewModel: EmploymentViewModel = hiltViewModel(parentEntry)
+    val context = LocalContext.current
     val state by employmentViewModel.state.collectAsStateWithLifecycle()
-    val animatedValue = remember { Animatable(state.rate.toFloat()) }
-    LaunchedEffect(Unit) {
-        with(employmentViewModel) {
-            fetchEmploymentCount()
-        }
+    val animatedValue = remember { Animatable(state.rate) }
+
+    LaunchedEffect(state.rate) {
         animatedValue.animateTo(
             targetValue = state.rate,
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing),
         )
     }
 
+    LaunchedEffect(state.selectedYear) {
+        employmentViewModel.fetchEmploymentCount(state.selectedYear.toInt())
+    }
+
+    LaunchedEffect(Unit) {
+        employmentViewModel.sideEffect.collect {
+            when (it) {
+                is EmploymentSideEffect.FetchEmploymentCountError -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_fetch_employment_count_error),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+        }
+    }
+
     EmploymentScreen(
         onBackPressed = onBackPressed,
         onClassClick = onClassClick,
-        rate = state.rate,
+        onFilterClick = onFilterClick,
+        rate = animatedValue.value,
         totalStudentCount = state.totalStudentCount,
         passCount = state.passCount,
+        year = state.selectedYear,
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun EmploymentScreen(
     onBackPressed: () -> Unit,
     onClassClick: (Long) -> Unit,
+    onFilterClick: () -> Unit,
     rate: Float,
     totalStudentCount: String,
     passCount: String,
+    year: String,
 ) {
     Column(
         modifier = Modifier
@@ -91,7 +126,14 @@ private fun EmploymentScreen(
         JobisSmallTopAppBar(
             title = stringResource(id = R.string.employment_status),
             onBackPressed = onBackPressed,
-        )
+        ) {
+            JobisIconButton(
+                drawableResId = JobisIcon.Filter,
+                contentDescription = "filter",
+                onClick = onFilterClick,
+                tint = JobisTheme.colors.onPrimary,
+            )
+        }
         JobisCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -106,6 +148,7 @@ private fun EmploymentScreen(
                 passCount = passCount,
                 totalStudentCount = totalStudentCount,
                 rate = rate,
+                year = year,
             )
         }
         Column(
@@ -116,56 +159,45 @@ private fun EmploymentScreen(
                 modifier = Modifier
                     .padding(vertical = 8.dp),
                 text = stringResource(id = R.string.check_employment_status),
-                style = JobisTypography.Description,
+                style = JobisTypography.Body,
                 color = JobisTheme.colors.onSurfaceVariant,
             )
         }
-        Column(
+        Spacer(modifier = Modifier.weight(1f))
+        FlowRow(
             modifier = Modifier
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp, vertical = 12.dp)
                 .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            maxItemsInEachRow = 2,
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                ClassEmploymentButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterVertically)
-                        .weight(1f),
-                    onClassClick = { onClassClick(1) },
-                    image = team.retum.design_system.R.drawable.ic_computer,
-                    text = stringResource(R.string.first_class),
-                )
-                ClassEmploymentButton(
-                    modifier = Modifier
-                        .weight(1f),
-                    onClassClick = { onClassClick(2) },
-                    image = team.retum.design_system.R.drawable.ic_computer,
-                    text = stringResource(R.string.second_class),
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                ClassEmploymentButton(
-                    modifier = Modifier
-                        .weight(1f),
-                    onClassClick = { onClassClick(3) },
-                    image = team.retum.design_system.R.drawable.ic_spanner,
-                    text = stringResource(R.string.third_class),
-                )
-                ClassEmploymentButton(
-                    modifier = Modifier
-                        .weight(1f),
-                    onClassClick = { onClassClick(4) },
-                    image = team.retum.design_system.R.drawable.ic_robot,
-                    text = stringResource(R.string.fourth_class),
-                )
-            }
+            ClassEmploymentButton(
+                modifier = Modifier.weight(1f),
+                onClassClick = { onClassClick(1) },
+                image = team.retum.design_system.R.drawable.ic_computer,
+                text = stringResource(R.string.first_class),
+            )
+            ClassEmploymentButton(
+                modifier = Modifier.weight(1f),
+                onClassClick = { onClassClick(2) },
+                image = team.retum.design_system.R.drawable.ic_computer,
+                text = stringResource(R.string.second_class),
+            )
+            ClassEmploymentButton(
+                modifier = Modifier
+                    .weight(1f),
+                onClassClick = { onClassClick(3) },
+                image = team.retum.design_system.R.drawable.ic_spanner,
+                text = stringResource(R.string.third_class),
+            )
+            ClassEmploymentButton(
+                modifier = Modifier
+                    .weight(1f),
+                onClassClick = { onClassClick(4) },
+                image = team.retum.design_system.R.drawable.ic_robot,
+                text = stringResource(R.string.fourth_class),
+            )
         }
     }
 }
@@ -175,6 +207,7 @@ private fun EmploymentRate(
     rate: Float,
     totalStudentCount: String,
     passCount: String,
+    year: String,
 ) {
     Column(
         modifier = Modifier
@@ -184,6 +217,7 @@ private fun EmploymentRate(
                 start = 16.dp,
                 end = 16.dp,
             ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row {
             JobisText(
@@ -194,8 +228,7 @@ private fun EmploymentRate(
             )
             Spacer(modifier = Modifier.weight(1f))
             Column(
-                verticalArrangement = Arrangement
-                    .spacedBy(space = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(space = 4.dp),
             ) {
                 Row {
                     Box(
@@ -238,7 +271,7 @@ private fun EmploymentRate(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 34.dp, bottom = 82.dp),
+                .padding(top = 34.dp, bottom = 66.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -267,6 +300,13 @@ private fun EmploymentRate(
                 )
             }
         }
+        JobisText(
+            modifier = Modifier.padding(bottom = 16.dp),
+            text = "$year 취업률",
+            textAlign = TextAlign.Center,
+            style = JobisTypography.SubBody,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
     }
 }
 
@@ -279,8 +319,6 @@ private fun CircleProgress(
     primaryColor: Color = JobisTheme.colors.onSecondary,
     secondaryColor: Color = JobisTheme.colors.onPrimary,
 ) {
-    val animatedValue = remember { Animatable(percentage) }
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.size(radius),
@@ -309,7 +347,7 @@ private fun CircleProgress(
             drawArc(
                 color = secondaryColor,
                 startAngle = 270f,
-                sweepAngle = animatedValue.value * 3.6f,
+                sweepAngle = percentage * 3.6f,
                 useCenter = false,
                 style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Butt),
                 size = Size(arcRadius * 2, arcRadius * 2),
@@ -319,9 +357,8 @@ private fun CircleProgress(
                 ),
             )
         }
-
         JobisText(
-            text = "${animatedValue.value.toInt()}%",
+            text = "${percentage.toInt()}%",
             style = JobisTypography.Body,
             color = JobisTheme.colors.onPrimary,
         )
@@ -333,53 +370,49 @@ private fun ClassEmploymentButton(
     modifier: Modifier = Modifier,
     onClassClick: (Int) -> Unit,
     image: Int,
-    description: String = "",
     text: String,
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier
+            .aspectRatio(1f),
         onClick = { onClassClick(4) },
         color = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier = Modifier.background(color = JobisTheme.colors.inverseSurface),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
-                modifier = Modifier.padding(top = 20.dp, start = 34.dp, end = 34.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .background(JobisTheme.colors.background),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(48.dp),
-                        painter = painterResource(image),
-                        contentDescription = description,
-                        tint = Color.Unspecified,
-                    )
-                }
-            }
-            Surface(
-                color = JobisTheme.colors.surfaceTint,
-                shape = RoundedCornerShape(12.dp),
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
                 modifier = Modifier
-                    .padding(top = 16.dp, start = 12.dp, bottom = 12.dp)
+                    .fillMaxWidth(0.5f)
+                    .aspectRatio(1f)
+                    .clip(CircleShape)
+                    .background(JobisTheme.colors.background)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    modifier = Modifier.fillMaxSize(0.7f),
+                    painter = painterResource(image),
+                    contentDescription = text,
+                    tint = Color.Unspecified,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .background(color = JobisTheme.colors.surfaceTint, shape = RoundedCornerShape(12.dp))
                     .align(Alignment.Start),
             ) {
                 JobisText(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     text = text,
                     style = JobisTypography.SubBody,
                     color = JobisTheme.colors.background,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
         }

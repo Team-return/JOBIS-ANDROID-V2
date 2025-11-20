@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--  employment  -->
     <string name="employment_status">취업 현황</string>
 
     <string name="employment_completed">취업 완료</string>
@@ -10,13 +11,21 @@
 
     <string name="class_employment">%s/%s</string>
 
-    <string name="soft_ware_first_class">소프트웨어 개발 1반</string>
-    <string name="soft_ware_second_class">소프트웨어 개발 2반</string>
-    <string name="soft_ware_embedded">임베디드 소프트웨어 3반</string>
-    <string name="ai_class">인공지능 소프트웨어 4반</string>
-
     <string name="first_class">1반</string>
     <string name="second_class">2반</string>
     <string name="third_class">3반</string>
     <string name="fourth_class">4반</string>
+
+    <string name="toast_fetch_employment_count_error">취업 현황을 조회할 수 없습니다</string>
+
+    <!--  employment detail  -->
+    <string name="soft_ware_first_class">소프트웨어 개발 1반</string>
+    <string name="soft_ware_second_class">소프트웨어 개발 2반</string>
+    <string name="soft_ware_embedded">임베디드 소프트웨어 3반</string>
+    <string name="ai_class">인공지능 소프트웨어 4반</string>
+    <string name="toast_fetch_employment_status_error">반별 취업 현황을 조회할 수 없습니다</string>
+
+    <!--  employment filter  -->
+    <string name="filter_year">년도 설정</string>
+    <string name="filter_apply">적용하기</string>
 </resources>
