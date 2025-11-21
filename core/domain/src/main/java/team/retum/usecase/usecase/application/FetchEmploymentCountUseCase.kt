@@ -7,7 +7,7 @@ import javax.inject.Inject
 class FetchEmploymentCountUseCase @Inject constructor(
     private val applicationRepository: ApplicationRepository,
 ) {
-    suspend operator fun invoke() = runCatching {
-        applicationRepository.fetchEmploymentCount().toEntity()
+    suspend operator fun invoke(year: Int) = runCatching {
+        applicationRepository.fetchEmploymentCount(year = year).toEntity()
     }
 }

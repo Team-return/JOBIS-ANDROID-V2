@@ -17,7 +17,9 @@ interface ApplicationApi {
     suspend fun fetchAppliedCompanies(): FetchAppliedCompaniesResponse
 
     @GET(RequestUrls.Applications.employmentCount)
-    suspend fun fetchEmploymentCount(): FetchEmploymentCountResponse
+    suspend fun fetchEmploymentCount(
+        @Path(RequestUrls.PATH.year) year: Int,
+    ): FetchEmploymentCountResponse
 
     @GET(RequestUrls.Applications.rejection)
     suspend fun fetchRejectionReason(
@@ -37,5 +39,7 @@ interface ApplicationApi {
     )
 
     @GET(RequestUrls.Applications.employment)
-    suspend fun fetchEmploymentStatus(): FetchEmploymentStatusResponse
+    suspend fun fetchEmploymentStatus(
+        @Path(RequestUrls.PATH.year) year: Int,
+    ): FetchEmploymentStatusResponse
 }

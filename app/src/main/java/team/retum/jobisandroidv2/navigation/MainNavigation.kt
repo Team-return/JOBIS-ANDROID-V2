@@ -6,8 +6,7 @@ import team.retum.bug.navigation.reportBug
 import team.retum.company.navigation.companies
 import team.retum.company.navigation.companyDetails
 import team.retum.company.navigation.searchCompanies
-import team.retum.employment.navigation.employment
-import team.retum.employment.navigation.employmentDetail
+import team.retum.employment.navigation.employmentNavigation
 import team.retum.jobis.application.navigation.application
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.interestsComplete
@@ -76,12 +75,11 @@ internal fun NavGraphBuilder.mainNavigation(
             onApplyClick = navigator::navigateToApplication,
             navigateToCompanyDetails = navigator::navigateToCompanyDetails,
         )
-        employment(
-            onBackPressed = navigator::popBackStackIfNotHome,
-            onClassClick = navigator::navigateToEmploymentDetail,
-        )
-        employmentDetail(
-            onBackPressed = navigator::popBackStackIfNotHome,
+        employmentNavigation(
+            navController = navigator.navController,
+            onEmploymentBackPressed = navigator::popBackStackIfNotHome,
+            onEmploymentClassClick = navigator::navigateToEmploymentDetail,
+            onEmploymentFilterClick = navigator::navigateToEmploymentFilter,
         )
         reportBug(onBackPressed = navigator::popBackStackIfNotHome)
         interests(

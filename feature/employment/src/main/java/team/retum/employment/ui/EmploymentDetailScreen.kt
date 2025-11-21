@@ -1,6 +1,7 @@
 package team.retum.employment.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,40 +18,64 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import team.retum.employment.R
+import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
+import team.retum.employment.viewmodel.EmploymentDetailSideEffect
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.EmploymentStatusEntity
-
-const val MAX_STUDENT = 16
 
 @Composable
 internal fun EmploymentDetail(
+    navController: NavHostController,
     classId: Long,
     onBackPressed: () -> Unit,
-    employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(),
 ) {
+    val parentEntry = remember(navController.currentBackStackEntry) {
+        navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
+    }
+    val employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(parentEntry)
+    val context = LocalContext.current
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
     val classNameList = listOf(stringResource(R.string.soft_ware_first_class), stringResource(R.string.soft_ware_second_class), stringResource(R.string.soft_ware_embedded), stringResource(R.string.ai_class))
 
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {
             setClassId(classId = classId.toInt() - 1)
-            fetchEmploymentStatus()
+            fetchEmploymentStatus(state.employmentYear)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        employmentDetailViewModel.sideEffect.collect {
+            when (it) {
+                is EmploymentDetailSideEffect.EmploymentFetchError -> JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_fetch_employment_status_error),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
         }
     }
 
@@ -58,8 +83,8 @@ internal fun EmploymentDetail(
         classId = classId,
         passStudent = state.passStudent,
         totalStudent = state.totalStudent,
-        classNameList = classNameList,
-        classInfoList = state.classInfoList.toMutableList(),
+        classNameList = classNameList.toPersistentList(),
+        classInfoList = state.classInfoList,
         onBackPressed = onBackPressed,
     )
 }
@@ -69,8 +94,8 @@ private fun EmploymentDetailScreen(
     classId: Long,
     passStudent: Int,
     totalStudent: Int,
-    classNameList: List<String>,
-    classInfoList: MutableList<EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList>,
+    classNameList: ImmutableList<String>,
+    classInfoList: ImmutableList<EmploymentStatusEntity.ClassEmploymentStatusEntity.FetchEmploymentRateList>,
     onBackPressed: () -> Unit,
 ) {
     Column(
@@ -88,17 +113,6 @@ private fun EmploymentDetailScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp),
             contentPadding = PaddingValues(top = 32.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
         ) {
-            classInfoList.apply {
-                repeat(MAX_STUDENT - passStudent) {
-                    add(
-                        EmploymentStatusEntity.ClassEmploymentStatusEntity.GetEmploymentRateList(
-                            id = 0,
-                            companyName = "",
-                            logoUrl = "",
-                        ),
-                    )
-                }
-            }
             if (classInfoList.isNotEmpty()) {
                 items(items = classInfoList) { company ->
                     CompanyCard(
@@ -148,11 +162,14 @@ private fun CompanyCard(
             )
         }
         JobisText(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .basicMarquee(iterations = Int.MAX_VALUE),
             text = companyName,
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
             textAlign = TextAlign.Center,
+            maxLines = 1,
         )
     }
 }

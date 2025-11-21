@@ -12,6 +12,7 @@ import team.retum.company.navigation.navigateToCompanyDetails
 import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.employment.navigation.navigateToEmployment
 import team.retum.employment.navigation.navigateToEmploymentDetail
+import team.retum.employment.navigation.navigateToEmploymentFilter
 import team.retum.jobis.application.navigation.navigateToApplication
 import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
@@ -26,6 +27,7 @@ import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
 import team.retum.jobis.recruitment.navigation.navigateToWinterIntern
 import team.retum.jobis.verify.email.navigation.navigateToVerifyEmail
 import team.retum.jobisandroidv2.root.APPLICATION_ID
+import team.retum.jobisandroidv2.root.INITIAL_TAB
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.landing.navigation.navigateToLanding
@@ -170,6 +172,10 @@ internal class JobisNavigator(
         navController.navigateToEmployment()
     }
 
+    fun navigateToEmploymentFilter() {
+        navController.navigateToEmploymentFilter()
+    }
+
     fun navigateToEmploymentDetail(classId: Long) {
         navController.navigateToEmploymentDetail(classId = classId)
     }
@@ -241,7 +247,7 @@ internal class JobisNavigator(
     }
 
     private fun isSameCurrentDestination(): Boolean {
-        return navController.currentDestination?.route == "$NAVIGATION_ROOT{$APPLICATION_ID}"
+        return navController.currentDestination?.route == "$NAVIGATION_ROOT/{$APPLICATION_ID}?$INITIAL_TAB={$INITIAL_TAB}"
     }
 }
 
