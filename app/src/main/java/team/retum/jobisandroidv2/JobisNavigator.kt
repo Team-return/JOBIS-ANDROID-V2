@@ -27,6 +27,7 @@ import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
 import team.retum.jobis.recruitment.navigation.navigateToWinterIntern
 import team.retum.jobis.verify.email.navigation.navigateToVerifyEmail
 import team.retum.jobisandroidv2.root.APPLICATION_ID
+import team.retum.jobisandroidv2.root.INITIAL_TAB
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.landing.navigation.navigateToLanding
@@ -246,7 +247,7 @@ internal class JobisNavigator(
     }
 
     private fun isSameCurrentDestination(): Boolean {
-        return navController.currentDestination?.route == "$NAVIGATION_ROOT{$APPLICATION_ID}"
+        return navController.currentDestination?.route == "$NAVIGATION_ROOT/{$APPLICATION_ID}?$INITIAL_TAB={$INITIAL_TAB}"
     }
 }
 
