@@ -247,7 +247,7 @@ internal class JobisNavigator(
     }
 
     private fun isSameCurrentDestination(): Boolean {
-        return navController.currentDestination?.route == "$NAVIGATION_ROOT/{$APPLICATION_ID}?$INITIAL_TAB={$INITIAL_TAB}"
+        return navController.currentDestination?.route == "$NAVIGATION_ROOT/{$APPLICATION_ID}"
     }
 }
 
