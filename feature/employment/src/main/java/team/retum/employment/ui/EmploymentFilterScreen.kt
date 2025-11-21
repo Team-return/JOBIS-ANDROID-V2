@@ -1,5 +1,6 @@
 package team.retum.employment.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,12 +30,13 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 
+@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 internal fun EmploymentFilter(
     navController: NavHostController,
     onBackPressed: () -> Unit,
 ) {
-    val parentEntry = remember(navController.currentBackStackEntry) {
+    val parentEntry = remember(navController) {
         navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
     }
     val employmentViewModel: EmploymentViewModel = hiltViewModel(parentEntry)
