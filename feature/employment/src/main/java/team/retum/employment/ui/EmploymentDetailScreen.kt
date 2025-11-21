@@ -1,5 +1,6 @@
 package team.retum.employment.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
@@ -46,13 +47,14 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.application.EmploymentStatusEntity
 
+@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 internal fun EmploymentDetail(
     navController: NavHostController,
     classId: Long,
     onBackPressed: () -> Unit,
 ) {
-    val parentEntry = remember(navController.currentBackStackEntry) {
+    val parentEntry = remember(navController) {
         navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
     }
     val employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(parentEntry)
