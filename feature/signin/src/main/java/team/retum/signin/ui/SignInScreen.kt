@@ -132,9 +132,7 @@ private fun SignInScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(JobisTheme.colors.background)
-            .verticalScroll(rememberScrollState())
-            .navigationBarsPadding(),
+            .background(JobisTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         JobisSmallTopAppBar(onBackPressed = onBackClick)
