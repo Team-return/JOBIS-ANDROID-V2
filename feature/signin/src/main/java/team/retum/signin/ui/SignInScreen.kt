@@ -2,12 +2,14 @@ package team.retum.signin.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -148,6 +150,13 @@ private fun SignInScreen(
             keyboardInteractionEnabled = false,
         )
         Spacer(modifier = Modifier.weight(1f))
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(),
+        contentAlignment = Alignment.BottomCenter,
+    ) {
         JobisButton(
             modifier = Modifier.testTag(stringResource(id = R.string.sign_in)),
             text = stringResource(id = R.string.sign_in),
