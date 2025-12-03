@@ -39,6 +39,7 @@ import team.retum.employment.R
 import team.retum.employment.navigation.NAVIGATION_EMPLOYMENT
 import team.retum.employment.viewmodel.EmploymentDetailSideEffect
 import team.retum.employment.viewmodel.EmploymentDetailViewModel
+import team.retum.employment.viewmodel.EmploymentViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -57,15 +58,18 @@ internal fun EmploymentDetail(
     val parentEntry = remember(navController) {
         navController.getBackStackEntry(NAVIGATION_EMPLOYMENT)
     }
-    val employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel(parentEntry)
+
+    val employmentViewModel: EmploymentViewModel = hiltViewModel(parentEntry)
+    val employmentDetailViewModel: EmploymentDetailViewModel = hiltViewModel()
     val context = LocalContext.current
+    val employmentState by employmentViewModel.state.collectAsStateWithLifecycle()
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
     val classNameList = listOf(stringResource(R.string.soft_ware_first_class), stringResource(R.string.soft_ware_second_class), stringResource(R.string.soft_ware_embedded), stringResource(R.string.ai_class))
 
     LaunchedEffect(Unit) {
         with(employmentDetailViewModel) {
             setClassId(classId = classId.toInt() - 1)
-            fetchEmploymentStatus(state.employmentYear)
+            fetchEmploymentStatus(employmentState.selectedYear.toInt())
         }
     }
 
