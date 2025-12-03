@@ -83,7 +83,7 @@ internal fun Employment(
     }
 
     LaunchedEffect(state.selectedYear) {
-        employmentViewModel.fetchEmploymentCount(state.selectedYear.toInt())
+        employmentViewModel.fetchEmploymentCount(state.selectedYear)
     }
 
     LaunchedEffect(Unit) {
@@ -116,9 +116,9 @@ private fun EmploymentScreen(
     onClassClick: (Long) -> Unit,
     onFilterClick: () -> Unit,
     rate: Float,
-    totalStudentCount: String,
-    passCount: String,
-    year: String,
+    totalStudentCount: Long,
+    passCount: Long,
+    year: Int,
 ) {
     Column(
         modifier = Modifier
@@ -150,7 +150,7 @@ private fun EmploymentScreen(
                 passCount = passCount,
                 totalStudentCount = totalStudentCount,
                 rate = rate,
-                year = year,
+                year = "$year",
             )
         }
         Column(
@@ -207,8 +207,8 @@ private fun EmploymentScreen(
 @Composable
 private fun EmploymentRate(
     rate: Float,
-    totalStudentCount: String,
-    passCount: String,
+    totalStudentCount: Long,
+    passCount: Long,
     year: String,
 ) {
     Column(
@@ -360,7 +360,7 @@ private fun CircleProgress(
             )
         }
         JobisText(
-            text = "${percentage.toInt()}%",
+            text = "%.1f%%".format(percentage),
             style = JobisTypography.Body,
             color = JobisTheme.colors.onPrimary,
         )

@@ -34,8 +34,8 @@ internal class EmploymentViewModel @Inject constructor(
                         }
                         state.value.copy(
                             rate = DecimalFormat("##.#").format(rate).toFloat(),
-                            totalStudentCount = it.totalStudentCount.toString(),
-                            passCount = it.passCount.toString(),
+                            totalStudentCount = it.totalStudentCount,
+                            passCount = it.passCount,
                         )
                     }
                 }
@@ -49,13 +49,13 @@ internal class EmploymentViewModel @Inject constructor(
         val startYear = 2024
         val endYear = LocalDate.now().year
 
-        setState { state.value.copy(yearList = (startYear..endYear).map { it.toString() }.reversed().toPersistentList()) }
+        setState { state.value.copy(yearList = (startYear..endYear).map { it }.reversed().toPersistentList()) }
     }
 
-    internal fun setSelectedYear(year: String) {
+    internal fun setSelectedYear(year: Int) {
         setState {
             state.value.copy(
-                selectedYear = if (state.value.selectedYear == year) "" else year,
+                selectedYear = if (state.value.selectedYear == year) 0 else year,
             )
         }
     }
@@ -63,17 +63,17 @@ internal class EmploymentViewModel @Inject constructor(
 
 internal data class EmploymentState(
     val rate: Float,
-    val totalStudentCount: String,
-    val passCount: String,
-    val selectedYear: String,
-    val yearList: ImmutableList<String>,
+    val totalStudentCount: Long,
+    val passCount: Long,
+    val selectedYear: Int,
+    val yearList: ImmutableList<Int>,
 ) {
     companion object {
         fun getDefaultState() = EmploymentState(
             rate = 0F,
-            totalStudentCount = "",
-            passCount = "",
-            selectedYear = LocalDate.now().year.toString(),
+            totalStudentCount = 0,
+            passCount = 0,
+            selectedYear = LocalDate.now().year,
             yearList = persistentListOf(),
         )
     }

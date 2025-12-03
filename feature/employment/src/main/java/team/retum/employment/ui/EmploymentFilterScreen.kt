@@ -52,9 +52,9 @@ internal fun EmploymentFilter(
 @Composable
 private fun EmploymentFilterScreen(
     onBackPressed: () -> Unit,
-    years: ImmutableList<String>,
-    selectedYear: String,
-    setSelectedYear: (String) -> Unit,
+    years: ImmutableList<Int>,
+    selectedYear: Int,
+    setSelectedYear: (Int) -> Unit,
 ) {
     Column {
         JobisSmallTopAppBar(
@@ -67,7 +67,7 @@ private fun EmploymentFilterScreen(
                 key = { it },
             ) { yearItem ->
                 FilterYearContent(
-                    title = yearItem,
+                    title = "$yearItem",
                     checked = selectedYear == yearItem,
                     onClick = { setSelectedYear(yearItem) },
                 )
