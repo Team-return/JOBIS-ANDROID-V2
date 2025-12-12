@@ -10,16 +10,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -164,42 +167,55 @@ private fun EmploymentScreen(
                 style = JobisTypography.Body,
                 color = JobisTheme.colors.onSurfaceVariant,
             )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        FlowRow(
-            modifier = Modifier
-                .padding(horizontal = 24.dp, vertical = 12.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            maxItemsInEachRow = 2,
-        ) {
-            ClassEmploymentButton(
-                modifier = Modifier.weight(1f),
-                onClassClick = { onClassClick(1) },
-                image = team.retum.design_system.R.drawable.ic_computer,
-                text = stringResource(R.string.first_class),
-            )
-            ClassEmploymentButton(
-                modifier = Modifier.weight(1f),
-                onClassClick = { onClassClick(2) },
-                image = team.retum.design_system.R.drawable.ic_computer,
-                text = stringResource(R.string.second_class),
-            )
-            ClassEmploymentButton(
+            Column(
                 modifier = Modifier
-                    .weight(1f),
-                onClassClick = { onClassClick(3) },
-                image = team.retum.design_system.R.drawable.ic_spanner,
-                text = stringResource(R.string.third_class),
-            )
-            ClassEmploymentButton(
-                modifier = Modifier
-                    .weight(1f),
-                onClassClick = { onClassClick(4) },
-                image = team.retum.design_system.R.drawable.ic_robot,
-                text = stringResource(R.string.fourth_class),
-            )
+                    .padding(vertical = 12.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                Row(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    ClassEmploymentButton(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f),
+                        onClassClick = { onClassClick(1) },
+                        image = team.retum.design_system.R.drawable.ic_computer,
+                        text = stringResource(R.string.first_class),
+                    )
+                    ClassEmploymentButton(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f),
+                        onClassClick = { onClassClick(2) },
+                        image = team.retum.design_system.R.drawable.ic_computer,
+                        text = stringResource(R.string.second_class),
+                    )
+                }
+                Row(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    ClassEmploymentButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize(),
+                        onClassClick = { onClassClick(3) },
+                        image = team.retum.design_system.R.drawable.ic_spanner,
+                        text = stringResource(R.string.third_class),
+                    )
+                    ClassEmploymentButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize(),
+                        onClassClick = { onClassClick(4) },
+                        image = team.retum.design_system.R.drawable.ic_robot,
+                        text = stringResource(R.string.fourth_class),
+                    )
+                }
+            }
         }
     }
 }
@@ -375,30 +391,26 @@ private fun ClassEmploymentButton(
     text: String,
 ) {
     Surface(
-        modifier = modifier
-            .aspectRatio(1f),
+        modifier = modifier,
         onClick = { onClassClick(4) },
         color = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .background(JobisTheme.colors.background)
-                    .padding(8.dp),
+                    .background(JobisTheme.colors.background, shape = CircleShape)
+                    .padding(20.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    modifier = Modifier.fillMaxSize(0.7f),
+                    modifier = Modifier
+                        .fillMaxSize(0.3f),
                     painter = painterResource(image),
                     contentDescription = text,
                     tint = Color.Unspecified,
@@ -407,6 +419,7 @@ private fun ClassEmploymentButton(
             Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
+                    .padding(start = 12.dp, bottom = 12.dp)
                     .background(color = JobisTheme.colors.surfaceTint, shape = RoundedCornerShape(12.dp))
                     .align(Alignment.Start),
             ) {
