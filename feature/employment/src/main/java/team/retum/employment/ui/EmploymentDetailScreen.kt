@@ -66,10 +66,10 @@ internal fun EmploymentDetail(
     val state by employmentDetailViewModel.state.collectAsStateWithLifecycle()
     val classNameList = listOf(stringResource(R.string.soft_ware_first_class), stringResource(R.string.soft_ware_second_class), stringResource(R.string.soft_ware_embedded), stringResource(R.string.ai_class))
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(classId, employmentState.selectedYear) {
         with(employmentDetailViewModel) {
             setClassId(classId = classId.toInt() - 1)
-            fetchEmploymentStatus(employmentState.selectedYear.toInt())
+            fetchEmploymentStatus(employmentState.selectedYear)
         }
     }
 
