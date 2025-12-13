@@ -11,6 +11,9 @@ interface RecruitmentRepository {
         jobCode: Long?,
         techCode: String?,
         winterIntern: Boolean,
+        militarySupport: Boolean?,
+        years: List<Int>?,
+        recruitStatus: String?,
     ): FetchRecruitmentsResponse
 
     suspend fun fetchRecruitmentPageCount(
@@ -18,6 +21,9 @@ interface RecruitmentRepository {
         jobCode: Long?,
         techCode: String?,
         winterIntern: Boolean,
+        militarySupport: Boolean?,
+        years: List<Int>?,
+        recruitStatus: String?,
     ): FetchRecruitmentPageCountResponse
 
     suspend fun fetchRecruitmentDetails(recruitmentId: Long): FetchRecruitmentDetailsResponse

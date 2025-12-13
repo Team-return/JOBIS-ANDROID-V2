@@ -16,6 +16,9 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
         jobCode: Long?,
         techCode: String?,
         winterIntern: Boolean,
+        militarySupport: Boolean?,
+        years: List<Int>?,
+        recruitStatus: String?,
     ): FetchRecruitmentsResponse = RequestHandler<FetchRecruitmentsResponse>().request {
         recruitmentApi.fetchRecruitments(
             page = page,
@@ -23,6 +26,9 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
             jobCode = jobCode,
             techCode = techCode,
             winterIntern = winterIntern,
+            militarySupport = militarySupport,
+            years = years,
+            recruitStatus = recruitStatus,
         )
     }
 
@@ -31,6 +37,9 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
         jobCode: Long?,
         techCode: String?,
         winterIntern: Boolean,
+        militarySupport: Boolean?,
+        years: List<Int>?,
+        recruitStatus: String?,
     ): FetchRecruitmentPageCountResponse =
         RequestHandler<FetchRecruitmentPageCountResponse>().request {
             recruitmentApi.fetchRecruitmentPageCount(
@@ -38,6 +47,9 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
                 jobCode = jobCode,
                 techCode = techCode,
                 winterIntern = winterIntern,
+                militarySupport = militarySupport,
+                years = years,
+                recruitStatus = recruitStatus,
             )
         }
 

@@ -13,6 +13,9 @@ class FetchRecruitmentsUseCase @Inject constructor(
         jobCode: Long?,
         techCode: String?,
         winterIntern: Boolean,
+        militarySupport: Boolean?,
+        years: List<Int>?,
+        recruitStatus: String?,
     ) = runCatching {
         recruitmentRepository.fetchRecruitments(
             page = page,
@@ -20,6 +23,9 @@ class FetchRecruitmentsUseCase @Inject constructor(
             jobCode = jobCode,
             techCode = techCode,
             winterIntern = winterIntern,
+            militarySupport = militarySupport,
+            years = years,
+            recruitStatus = recruitStatus,
         ).toRecruitmentsEntity()
     }
 }

@@ -15,6 +15,9 @@ class RecruitmentRepositoryImpl @Inject constructor(
         jobCode: Long?,
         techCode: String?,
         winterIntern: Boolean,
+        militarySupport: Boolean?,
+        years: List<Int>?,
+        recruitStatus: String?,
     ): FetchRecruitmentsResponse =
         recruitmentDataSource.fetchRecruitments(
             page = page,
@@ -22,6 +25,9 @@ class RecruitmentRepositoryImpl @Inject constructor(
             jobCode = jobCode,
             techCode = techCode,
             winterIntern = winterIntern,
+            militarySupport = militarySupport,
+            years = years,
+            recruitStatus = recruitStatus,
         )
 
     override suspend fun fetchRecruitmentPageCount(
@@ -29,12 +35,18 @@ class RecruitmentRepositoryImpl @Inject constructor(
         jobCode: Long?,
         techCode: String?,
         winterIntern: Boolean,
+        militarySupport: Boolean?,
+        years: List<Int>?,
+        recruitStatus: String?,
     ): FetchRecruitmentPageCountResponse =
         recruitmentDataSource.fetchRecruitmentPageCount(
             name = name,
             jobCode = jobCode,
             techCode = techCode,
             winterIntern = winterIntern,
+            militarySupport = militarySupport,
+            years = years,
+            recruitStatus = recruitStatus,
         )
 
     override suspend fun fetchRecruitmentDetails(
