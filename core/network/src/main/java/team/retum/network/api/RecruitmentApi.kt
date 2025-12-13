@@ -17,6 +17,9 @@ interface RecruitmentApi {
         @Query("job_code") jobCode: Long?,
         @Query("tech_code") techCode: String?,
         @Query("winter_intern") winterIntern: Boolean,
+        @Query("military_support") militarySupport: Boolean?,
+        @Query("years") years: List<Int>?,
+        @Query("status") recruitStatus: String?,
     ): FetchRecruitmentsResponse
 
     @GET(RequestUrls.Recruitments.count)
@@ -25,6 +28,9 @@ interface RecruitmentApi {
         @Query("job_code") jobCode: Long?,
         @Query("tech_code") techCode: String?,
         @Query("winter_intern") winterIntern: Boolean,
+        @Query("military_support") militarySupport: Boolean?,
+        @Query("years") years: List<Int>?,
+        @Query("status") recruitStatus: String?,
     ): FetchRecruitmentPageCountResponse
 
     @GET(RequestUrls.Recruitments.details)
