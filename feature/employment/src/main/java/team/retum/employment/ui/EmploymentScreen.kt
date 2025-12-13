@@ -177,7 +177,7 @@ private fun EmploymentScreen(
                         modifier = Modifier
                             .fillMaxHeight()
                             .weight(1f),
-                        onClassClick = { onClassClick(1) },
+                        onClick = { onClassClick(1) },
                         image = team.retum.design_system.R.drawable.ic_computer,
                         text = stringResource(R.string.first_class),
                     )
@@ -185,7 +185,7 @@ private fun EmploymentScreen(
                         modifier = Modifier
                             .fillMaxHeight()
                             .weight(1f),
-                        onClassClick = { onClassClick(2) },
+                        onClick = { onClassClick(2) },
                         image = team.retum.design_system.R.drawable.ic_computer,
                         text = stringResource(R.string.second_class),
                     )
@@ -198,7 +198,7 @@ private fun EmploymentScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxSize(),
-                        onClassClick = { onClassClick(3) },
+                        onClick = { onClassClick(3) },
                         image = team.retum.design_system.R.drawable.ic_spanner,
                         text = stringResource(R.string.third_class),
                     )
@@ -206,7 +206,7 @@ private fun EmploymentScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxSize(),
-                        onClassClick = { onClassClick(4) },
+                        onClick = { onClassClick(4) },
                         image = team.retum.design_system.R.drawable.ic_robot,
                         text = stringResource(R.string.fourth_class),
                     )
@@ -382,13 +382,13 @@ private fun CircleProgress(
 @Composable
 private fun ClassEmploymentButton(
     modifier: Modifier = Modifier,
-    onClassClick: (Int) -> Unit,
+    onClick: () -> Unit,
     image: Int,
     text: String,
 ) {
     Surface(
         modifier = modifier,
-        onClick = { onClassClick(4) },
+        onClick = onClick,
         color = JobisTheme.colors.inverseSurface,
         shape = RoundedCornerShape(8.dp),
     ) {
