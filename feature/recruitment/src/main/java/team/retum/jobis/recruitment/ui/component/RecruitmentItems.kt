@@ -1,7 +1,9 @@
 package team.retum.jobis.recruitment.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +25,7 @@ import coil.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import team.retum.common.enums.MilitarySupport
 import team.retum.jobis.recruitment.R
+import team.retum.jobis.recruitment.model.RecruitmentStatus
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -30,6 +33,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.RecruitmentsEntity
+import java.time.LocalDate
 
 private const val DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED = 0.6f
 
@@ -75,6 +79,12 @@ private fun RecruitmentItem(
         MilitarySupport.FALSE -> stringResource(id = R.string.military_not_supported)
         else -> ""
     }
+    val (recruitmentStatus, statusTextColor, backgroundColor, borderColor) = when (recruitment.status) {
+        "RECRUITING" -> RecruitmentStatus("모집 종료", JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.inverseSurface, JobisTheme.colors.surfaceTint)
+        "DONE" ->  RecruitmentStatus("모집 중", JobisTheme.colors.onPrimary, JobisTheme.colors.background, JobisTheme.colors.onPrimary)
+        else ->  RecruitmentStatus("모집 중", JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.surfaceTint, JobisTheme.colors.onSurfaceVariant)
+    }
+    val currentYear = LocalDate.now().toString()
 
     Row(
         modifier = Modifier
@@ -128,22 +138,54 @@ private fun RecruitmentItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                JobisText(
-                    modifier = Modifier
-                        .fillMaxWidth(DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(
-                            if (recruitment.militarySupport == MilitarySupport.LOADING) {
-                                JobisTheme.colors.surfaceVariant
-                            } else {
-                                Color.Unspecified
-                            },
-                        ),
-                    text = whetherMilitarySupported,
-                    style = JobisTypography.SubBody,
-                    color = JobisTheme.colors.inverseOnSurface,
-                )
+                Row {
+                    JobisText(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(
+                                if (recruitment.militarySupport == MilitarySupport.LOADING) {
+                                    JobisTheme.colors.surfaceVariant
+                                } else {
+                                    Color.Unspecified
+                                },
+                            ),
+                        text = whetherMilitarySupported,
+                        style = JobisTypography.SubBody,
+                        color = JobisTheme.colors.inverseOnSurface,
+                    )
+                    if (recruitment.year == currentYear.take(4).toInt()) {
+                        recruitment.apply {
+                            JobisText(
+                                text = " • ",
+                                style = JobisTypography.SubBody,
+                                color = JobisTheme.colors.inverseOnSurface,
+                            )
+                            JobisText(
+                                text = "${recruitment.year}",
+                                style = JobisTypography.SubBody,
+                                color = JobisTheme.colors.onPrimary,
+                            )
+                        }
+                    }
+                }
             }
+        }
+        Box(
+            modifier = Modifier
+                .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
+                .border(
+                    width = 1.dp,
+                    color = borderColor,
+                    shape = RoundedCornerShape(100.dp)
+                )
+                .clip(RoundedCornerShape(12.dp))
+        ) {
+            JobisText(
+                modifier = Modifier.padding(vertical = 6.dp, horizontal = 16.dp),
+                text = recruitmentStatus,
+                style = JobisTypography.Description,
+                color = statusTextColor,
+            )
         }
         Spacer(modifier = Modifier.width(4.dp))
         JobisIconButton(
