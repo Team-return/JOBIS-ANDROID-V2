@@ -99,6 +99,9 @@ internal class RecruitmentViewModel @Inject constructor(
                     jobCode = jobCode,
                     techCode = techCode,
                     winterIntern = isWinterIntern,
+                    militarySupport = null,
+                    years = null,
+                    recruitStatus = null,
                 ).onSuccess {
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
@@ -147,6 +150,9 @@ internal class RecruitmentViewModel @Inject constructor(
                     jobCode = jobCode,
                     techCode = techCode,
                     winterIntern = isWinterIntern,
+                    militarySupport = null,
+                    years = null,
+                    recruitStatus = null,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
