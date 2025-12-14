@@ -77,15 +77,15 @@ private fun RecruitmentItem(
     bookmarked: Boolean,
     onBookmarked: (recruitId: Long) -> Unit,
 ) {
-    val whetherMilitarySupported = when (recruitment.militarySupport) {
-        MilitarySupport.TRUE -> stringResource(id = R.string.military_supported)
-        MilitarySupport.FALSE -> stringResource(id = R.string.military_not_supported)
-        else -> ""
+    val (whetherMilitarySupported, year) = when (recruitment.militarySupport) {
+        MilitarySupport.TRUE -> stringResource(id = R.string.military_supported) to recruitment.year
+        MilitarySupport.FALSE -> stringResource(id = R.string.military_not_supported) to recruitment.year
+        else -> "" to ""
     }
     val (recruitmentStatus, statusTextColor, backgroundColor, borderColor) = when (recruitment.status) {
         "RECRUITING" -> RecruitmentStatus("모집 중", JobisTheme.colors.onPrimary, JobisTheme.colors.background, JobisTheme.colors.onPrimary)
         "DONE" -> RecruitmentStatus("모집 종료", JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.inverseSurface, JobisTheme.colors.surfaceTint)
-        else ->  RecruitmentStatus("", JobisTheme.colors.onPrimary, JobisTheme.colors.background, JobisTheme.colors.onPrimary)
+        else ->  RecruitmentStatus("", JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant)
     }
     val currentYear = LocalDate.now().toString()
 
@@ -156,15 +156,33 @@ private fun RecruitmentItem(
                         style = JobisTypography.SubBody,
                         color = JobisTheme.colors.inverseOnSurface,
                     )
-                    if (recruitment.year == currentYear.take(4).toInt()) {
+                    if (recruitment.year != currentYear.take(4).toInt()) {
                         recruitment.apply {
                             JobisText(
+                                Modifier
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(
+                                        if (recruitment.militarySupport == MilitarySupport.LOADING) {
+                                            JobisTheme.colors.surfaceVariant
+                                        } else {
+                                            Color.Unspecified
+                                        },
+                                    ),
                                 text = " • ",
                                 style = JobisTypography.SubBody,
                                 color = JobisTheme.colors.inverseOnSurface,
                             )
                             JobisText(
-                                text = "${recruitment.year}",
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(
+                                        if (recruitment.militarySupport == MilitarySupport.LOADING) {
+                                            JobisTheme.colors.surfaceVariant
+                                        } else {
+                                            Color.Unspecified
+                                        },
+                                    ),
+                                text = year.toString(),
                                 style = JobisTypography.SubBody,
                                 color = JobisTheme.colors.onPrimary,
                             )
