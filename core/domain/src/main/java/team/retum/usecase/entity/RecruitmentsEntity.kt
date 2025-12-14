@@ -18,6 +18,8 @@ data class RecruitmentsEntity(
         val militarySupport: MilitarySupport?,
         val hiringJobs: String,
         val bookmarked: Boolean,
+        val status: String,
+        val year: Int,
     ) {
         companion object {
             fun getDefaultEntity() = RecruitmentEntity(
@@ -28,6 +30,8 @@ data class RecruitmentsEntity(
                 militarySupport = MilitarySupport.LOADING,
                 hiringJobs = "",
                 bookmarked = false,
+                status = "",
+                year = 0,
             )
         }
     }
@@ -50,4 +54,6 @@ private fun FetchRecruitmentsResponse.RecruitmentResponse.toEntity() =
         },
         hiringJobs = this.hiringJobs,
         bookmarked = this.bookmarked,
+        status = this.status,
+        year = this.year,
     )

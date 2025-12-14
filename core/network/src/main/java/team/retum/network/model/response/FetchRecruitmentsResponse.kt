@@ -16,5 +16,7 @@ data class FetchRecruitmentsResponse(
         @Json(name = "military_support") val militarySupport: Boolean?,
         @Json(name = "hiring_jobs") val hiringJobs: String,
         @Json(name = "bookmarked") val bookmarked: Boolean,
+        @Json(name = "status") val status: String,
+        @Json(name = "year") val year: Int,
     )
 }
