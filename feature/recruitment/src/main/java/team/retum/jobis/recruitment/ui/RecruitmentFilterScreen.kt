@@ -2,17 +2,16 @@ package team.retum.jobis.recruitment.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -161,16 +160,19 @@ private fun FilterInputs(
         onValueChange = onKeywordChange,
         drawableResId = JobisIcon.Search,
     )
-    Years(
+    JobisChipGroup(
         title = "연도 조회",
-        onYearSelected = setYear,
-        selectedYear = selectedYear,
-        years = years,
+        onItemClick = setYear,
+        selectedItem = selectedYear,
+        items = years,
+        itemText = { it.toString() },
     )
-    Statuses(
-        title = "모집 상태",
-        selectedStatus = selectedStatus,
-        onStatusSelected = setStatus,
+    JobisChipGroup(
+        title = "모집 분야",
+        onItemClick = setStatus,
+        selectedItem = selectedStatus,
+        items = RecruitmentStatus.entries.toPersistentList(),
+        itemText = { it.value },
     )
     Majors(
         majors = majors,
@@ -181,7 +183,6 @@ private fun FilterInputs(
         checkedSkills = checkedSkills,
         onCheckSkill = onCheckSkill,
     )
-    // TODO :: 3. 뷰모델 구현(쿼리, 선택 ui)
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -195,37 +196,19 @@ private fun Majors(
     checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
     onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
 ) {
-    JobisText(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-        text = "모집 분야",
-        style = JobisTypography.SubHeadLine,
-        color = JobisTheme.colors.inverseOnSurface,
+    JobisChipGroup(
+        title = "모집 분야",
+        onItemClick = { item ->
+            if (selectedMajor == item.keyword) {
+                onMajorUnselected()
+            } else {
+                onMajorSelected(item.keyword, item.code)
+            }
+        },
+        selectedItem = majors.find { it.keyword == selectedMajor },
+        items = majors,
+        itemText = { it.keyword },
     )
-    FlowRow(
-        maxItemsInEachRow = 5,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 24.dp,
-                vertical = 8.dp,
-            )
-            .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        majors.forEach {
-            MajorContent(
-                major = it.keyword,
-                selected = selectedMajor == it.keyword,
-                onClick = { major ->
-                    when (selectedMajor == it.keyword) {
-                        true -> onMajorUnselected()
-                        false -> onMajorSelected(major, it.code)
-                    }
-                },
-            )
-        }
-    }
     Skills(
         skills = techs.map { it.keyword }.toMutableStateList(),
         checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
@@ -238,114 +221,6 @@ private fun Majors(
             ),
             checked,
         )
-    }
-}
-
-@Composable
-private fun MajorContent(
-    major: String,
-    selected: Boolean,
-    onClick: (String) -> Unit,
-) {
-    val background by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.onPrimary
-        } else {
-            JobisTheme.colors.inverseSurface
-        },
-        label = "",
-    )
-    val textColor by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.background
-        } else {
-            JobisTheme.colors.onPrimaryContainer
-        },
-        label = "",
-    )
-
-    Box(
-        modifier = Modifier
-            .clickable(
-                enabled = true,
-                onClick = { onClick(major) },
-                onPressed = {},
-            )
-            .clip(RoundedCornerShape(30.dp))
-            .background(background),
-        contentAlignment = Alignment.Center,
-    ) {
-        JobisText(
-            modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
-            ),
-            text = major,
-            style = JobisTypography.Body,
-            color = textColor,
-        )
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun Years( // TODO :: 2. 이거 참고해서 구현
-    title: String = "",
-    years: ImmutableList<Int>,
-    selectedYear: Int?,
-    onYearSelected: (Int?) -> Unit,
-) {
-    Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
-    ) {
-        JobisText(
-            modifier = Modifier.padding(vertical = 8.dp),
-            text = title,
-            style = JobisTypography.SubHeadLine,
-            color = JobisTheme.colors.inverseOnSurface,
-        )
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            maxItemsInEachRow = 5,
-        ) {
-            years.forEach { year ->
-                JobisChip(
-                    text = year.toString(),
-                    selected = selectedYear == year,
-                    onClick = { onYearSelected(year) },
-                )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun Statuses(
-    title: String = "",
-    selectedStatus: RecruitmentStatus?,
-    onStatusSelected: (RecruitmentStatus?) -> Unit,
-) {
-    JobisText(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-        text = title,
-        style = JobisTypography.SubHeadLine,
-        color = JobisTheme.colors.inverseOnSurface,
-    )
-    FlowRow(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        maxItemsInEachRow = 5,
-    ) {
-        RecruitmentStatus.entries.forEach { status ->
-            JobisChip (
-                text = status.value,
-                selected = selectedStatus == status,
-                onClick = { onStatusSelected(status) },
-            )
-        }
     }
 }
 
@@ -409,6 +284,7 @@ fun <T> JobisChipGroup(
             )
         }
         FlowRow(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             maxItemsInEachRow = maxItemsInEachRow,
