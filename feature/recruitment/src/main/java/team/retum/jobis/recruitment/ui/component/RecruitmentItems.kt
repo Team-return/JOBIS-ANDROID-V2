@@ -25,8 +25,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import team.retum.common.enums.MilitarySupport
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.recruitment.R
-import team.retum.jobis.recruitment.model.RecruitmentStatus
+import team.retum.jobis.recruitment.model.RecruitmentItemColor
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -35,8 +36,6 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.RecruitmentsEntity
 import java.time.LocalDate
-
-private const val DEFAULT_SIZE_WHETHER_MILITARY_SUPPORTED = 0.6f
 
 @Composable
 internal fun RecruitmentItems(
@@ -80,11 +79,10 @@ private fun RecruitmentItem(
         MilitarySupport.FALSE -> stringResource(id = R.string.military_not_supported) to recruitment.year
         else -> "" to ""
     }
-    // TODO : 1. 이넘으로 변경
     val (recruitmentStatus, statusTextColor, backgroundColor, borderColor) = when (recruitment.status) {
-        "RECRUITING" -> RecruitmentStatus("모집 중", JobisTheme.colors.onPrimary, JobisTheme.colors.inverseSurface, JobisTheme.colors.onPrimary)
-        "DONE" -> RecruitmentStatus("모집 종료", JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.inverseSurface, JobisTheme.colors.surfaceTint)
-        else ->  RecruitmentStatus("", JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant)
+        RecruitmentStatus.RECRUITING -> RecruitmentItemColor("모집 중", JobisTheme.colors.onPrimary, JobisTheme.colors.inverseSurface, JobisTheme.colors.onPrimary)
+        RecruitmentStatus.DONE -> RecruitmentItemColor("모집 종료", JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.inverseSurface, JobisTheme.colors.surfaceTint)
+        else ->  RecruitmentItemColor("", JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant)
     }
     val currentYear = LocalDate.now().toString()
 

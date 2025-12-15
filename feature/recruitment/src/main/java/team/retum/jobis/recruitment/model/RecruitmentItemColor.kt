@@ -2,7 +2,7 @@ package team.retum.jobis.recruitment.model
 
 import androidx.compose.ui.graphics.Color
 
-data class RecruitmentStatus(
+data class RecruitmentItemColor(
     val status: String,
     val statusColor: Color,
     val backgroundColor: Color,
