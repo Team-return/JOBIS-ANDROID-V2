@@ -162,8 +162,8 @@ internal class RecruitmentViewModel @Inject constructor(
                     techCode = techCode,
                     winterIntern = isWinterIntern,
                     militarySupport = null,
-                    years = null,
-                    recruitStatus = null,
+                    years = years,
+                    recruitStatus = status,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()

@@ -86,7 +86,7 @@ internal fun RecruitmentFilter(
 private fun RecruitmentFilterScreen(
     onBackPressed: () -> Unit,
     state: RecruitmentFilterState,
-    setYear: (Int?) -> Unit,
+    setYear: (Int) -> Unit,
     setStatus: (RecruitmentStatus?) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
@@ -116,7 +116,7 @@ private fun RecruitmentFilterScreen(
                 checkedSkills = checkedSkills,
                 onCheckSkill = onCheckSkill,
                 years = state.years,
-                selectedYear = state.selectedYear,
+                selectedYear = state.selectedYear.toPersistentList(),
                 setYear = setYear,
                 selectedStatus = state.selectedStatus,
                 setStatus = setStatus,
@@ -127,7 +127,7 @@ private fun RecruitmentFilterScreen(
             onClick = {
                 jobCode = state.parentCode
                 techCode = checkedSkills.joinToString(separator = ",") { it.code.toString() }
-                year = listOf()
+                year = state.selectedYear
                 status = state.selectedStatus
                 onBackPressed()
             },
@@ -137,13 +137,14 @@ private fun RecruitmentFilterScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun FilterInputs(
     keyword: () -> String,
     onKeywordChange: (String) -> Unit,
     years: ImmutableList<Int>,
-    selectedYear: Int?,
-    setYear: (Int?) -> Unit,
+    selectedYear: ImmutableList<Int>,
+    setYear: (Int) -> Unit,
     selectedStatus: RecruitmentStatus?,
     setStatus: (RecruitmentStatus?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
@@ -160,13 +161,29 @@ private fun FilterInputs(
         onValueChange = onKeywordChange,
         drawableResId = JobisIcon.Search,
     )
-    JobisChipGroup(
-        title = "연도 조회",
-        onItemClick = setYear,
-        selectedItem = selectedYear,
-        items = years,
-        itemText = { it.toString() },
-    )
+    Column(
+        modifier = Modifier.padding(horizontal = 24.dp),
+    ) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = "연도 조회",
+            style = JobisTypography.SubHeadLine,
+            color = JobisTheme.colors.inverseOnSurface,
+        )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = 5,
+        ) {
+            years.forEach { year ->
+                JobisChip( // 파일 내에 이미 정의된 JobisChip 사용
+                    text = year.toString(),
+                    selected = selectedYear.contains(year), // 다중 선택 리스트에 포함 여부 확인
+                    onClick = { setYear(year) }, // 클릭 시 ViewModel 함수 호출
+                )
+            }
+        }
+    }
     JobisChipGroup(
         title = "모집 분야",
         onItemClick = setStatus,

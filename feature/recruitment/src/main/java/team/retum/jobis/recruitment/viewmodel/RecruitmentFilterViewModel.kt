@@ -5,7 +5,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
@@ -82,8 +84,14 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         }
     }
 
-    internal fun setYear(year: Int?) {
-        setState { state.value.copy(selectedYear = year) }
+    internal fun setYear(year: Int) {
+        val currentSelected = state.value.selectedYear.toMutableList()
+        if (currentSelected.contains(year)) {
+            currentSelected.remove(year)
+        } else {
+            currentSelected.add(year)
+        }
+        setState { state.value.copy(selectedYear = currentSelected.toPersistentList()) }
     }
 
     internal fun setStatus(status: RecruitmentStatus?) {
@@ -99,7 +107,7 @@ internal data class RecruitmentFilterState(
     val keyword: String?,
     val selectedMajor: String,
     val parentCode: Long?,
-    val selectedYear: Int?,
+    val selectedYear: ImmutableList<Int>,
     val years: ImmutableList<Int>,
     val selectedStatus: RecruitmentStatus?,
 ) {
@@ -113,7 +121,7 @@ internal data class RecruitmentFilterState(
                 keyword = null,
                 selectedMajor = "",
                 parentCode = null,
-                selectedYear = null,
+                selectedYear = persistentListOf(),
                 years = yearList.toImmutableList(),
                 selectedStatus = null,
             )
