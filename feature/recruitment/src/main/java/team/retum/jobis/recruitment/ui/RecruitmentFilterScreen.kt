@@ -29,6 +29,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
@@ -75,6 +76,8 @@ internal fun RecruitmentFilter(
         techs = recruitmentFilterViewModel.techs,
         onCheckSkill = recruitmentFilterViewModel::addSkill,
         checkedSkills = recruitmentFilterViewModel.checkedSkills,
+        setYear = recruitmentFilterViewModel::setYear,
+        setStatus = recruitmentFilterViewModel::setStatus,
     )
 }
 
@@ -82,6 +85,8 @@ internal fun RecruitmentFilter(
 private fun RecruitmentFilterScreen(
     onBackPressed: () -> Unit,
     state: RecruitmentFilterState,
+    setYear: (Int?) -> Unit,
+    setStatus: (String) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
@@ -109,6 +114,11 @@ private fun RecruitmentFilterScreen(
                 onMajorUnselected = { setSelectedMajor("", null) },
                 checkedSkills = checkedSkills,
                 onCheckSkill = onCheckSkill,
+                years = state.years,
+                selectedYear = state.selectedYear,
+                setYear = setYear,
+                selectedStatus = state.selectedStatus,
+                setStatus = setStatus,
             )
         }
         JobisButton(
@@ -124,11 +134,15 @@ private fun RecruitmentFilterScreen(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun FilterInputs(
     keyword: () -> String,
     onKeywordChange: (String) -> Unit,
+    years: ImmutableList<Int>,
+    selectedYear: Int?,
+    setYear: (Int?) -> Unit,
+    selectedStatus: String?,
+    setStatus: (String) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
     techs: ImmutableList<CodesEntity.CodeEntity>,
     selectedMajor: String,
@@ -142,6 +156,46 @@ private fun FilterInputs(
         hint = stringResource(id = R.string.recruitment_search_hint),
         onValueChange = onKeywordChange,
         drawableResId = JobisIcon.Search,
+    )
+    Years(
+        title = "연도 조회",
+        onYearSelected = setYear,
+        selectedYear = selectedYear,
+        years = years,
+    )
+    Statuses(
+        title = "모집 상태",
+        selectedStatus = selectedStatus,
+        onStatusSelected = setStatus,
+    )
+    Majors(
+        majors = majors,
+        techs = techs,
+        selectedMajor = selectedMajor,
+        onMajorSelected = onMajorSelected,
+        onMajorUnselected = onMajorUnselected,
+        checkedSkills = checkedSkills,
+        onCheckSkill = onCheckSkill,
+    )
+    // TODO :: 3. 뷰모델 구현(쿼리, 선택 ui)
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun Majors(
+    majors: ImmutableList<CodesEntity.CodeEntity>,
+    techs: ImmutableList<CodesEntity.CodeEntity>,
+    selectedMajor: String,
+    onMajorSelected: (String, Long?) -> Unit,
+    onMajorUnselected: () -> Unit,
+    checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
+    onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
+) {
+    JobisText(
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+        text = "모집 분야",
+        style = JobisTypography.SubHeadLine,
+        color = JobisTheme.colors.inverseOnSurface,
     )
     FlowRow(
         maxItemsInEachRow = 5,
@@ -173,15 +227,13 @@ private fun FilterInputs(
         checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
         checkSkillsId = techs.map { it.code }.toPersistentList(),
     ) { index, checked, id ->
-        checkedSkills.run {
-            onCheckSkill(
-                CodesEntity.CodeEntity(
-                    code = id,
-                    keyword = index,
-                ),
-                checked,
-            )
-        }
+        onCheckSkill(
+            CodesEntity.CodeEntity(
+                code = id,
+                keyword = index,
+            ),
+            checked,
+        )
     }
 }
 
@@ -228,5 +280,142 @@ private fun MajorContent(
             style = JobisTypography.Body,
             color = textColor,
         )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun Years( // TODO :: 2. 이거 참고해서 구현
+    title: String = "",
+    years: ImmutableList<Int>,
+    selectedYear: Int?,
+    onYearSelected: (Int?) -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
+    ) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = title,
+            style = JobisTypography.SubHeadLine,
+            color = JobisTheme.colors.inverseOnSurface,
+        )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = 5,
+        ) {
+            years.forEach { year ->
+                JobisChip(
+                    text = year.toString(),
+                    selected = selectedYear == year,
+                    onClick = { onYearSelected(year) },
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun Statuses(
+    title: String = "",
+    selectedStatus: String?,
+    onStatusSelected: (String) -> Unit,
+) {
+    JobisText(
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+        text = title,
+        style = JobisTypography.SubHeadLine,
+        color = JobisTheme.colors.inverseOnSurface,
+    )
+    FlowRow(
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        maxItemsInEachRow = 5,
+    ) {
+        RecruitmentStatus.entries.forEach { status ->
+            JobisChip (
+                text = status.value,
+                selected = selectedStatus == status.value,
+                onClick = { onStatusSelected(status.value) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun JobisChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    val background by animateColorAsState(
+        targetValue = if (selected) JobisTheme.colors.onPrimary else JobisTheme.colors.inverseSurface,
+        label = "",
+    )
+    val textColor by animateColorAsState(
+        targetValue = if (selected) JobisTheme.colors.background else JobisTheme.colors.onPrimaryContainer,
+        label = "",
+    )
+
+    Box(
+        modifier = Modifier
+            .clickable(
+                enabled = true,
+                onClick = onClick,
+                onPressed = {},
+            )
+            .clip(RoundedCornerShape(30.dp))
+            .background(background),
+        contentAlignment = Alignment.Center,
+    ) {
+        JobisText(
+            modifier = Modifier.padding(
+                horizontal = 12.dp,
+                vertical = 4.dp,
+            ),
+            text = text,
+            style = JobisTypography.Body,
+            color = textColor,
+        )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun <T> JobisChipGroup(
+    title: String,
+    items: ImmutableList<T>,
+    itemText: (T) -> String,
+    selectedItem: T?,
+    onItemClick: (T) -> Unit,
+    maxItemsInEachRow: Int = 5,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = 24.dp),
+    ) {
+        if (title.isNotBlank()) {
+            JobisText(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = title,
+                style = JobisTypography.SubHeadLine,
+                color = JobisTheme.colors.inverseOnSurface,
+            )
+        }
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = maxItemsInEachRow,
+        ) {
+            items.forEach { item ->
+                JobisChip(
+                    text = itemText(item),
+                    selected = selectedItem == item,
+                    onClick = { onItemClick(item) },
+                )
+            }
+        }
     }
 }

@@ -4,12 +4,15 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -76,6 +79,14 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         }
     }
 
+    internal fun setYear(year: Int?) {
+        setState { state.value.copy(selectedYear = year) }
+    }
+
+    internal fun setStatus(status: String?) {
+        setState { state.value.copy(selectedStatus = status) }
+    }
+
     private fun setType() =
         setState { state.value.copy(type = CodeType.TECH) }
 }
@@ -85,14 +96,25 @@ internal data class RecruitmentFilterState(
     val keyword: String?,
     val selectedMajor: String,
     val parentCode: Long?,
+    val selectedYear: Int?,
+    val years: ImmutableList<Int>,
+    val selectedStatus: String?,
 ) {
     companion object {
-        fun getDefaultState() = RecruitmentFilterState(
-            type = CodeType.JOB,
-            keyword = null,
-            selectedMajor = "",
-            parentCode = null,
-        )
+        fun getDefaultState(): RecruitmentFilterState {
+            val currentYear = LocalDate.now().year
+            val yearList = (currentYear downTo 2023).toList()
+
+            return RecruitmentFilterState(
+                type = CodeType.JOB,
+                keyword = null,
+                selectedMajor = "",
+                parentCode = null,
+                selectedYear = null,
+                years = yearList.toImmutableList(),
+                selectedStatus = null,
+            )
+        }
     }
 }
 
