@@ -2,6 +2,7 @@ package team.retum.usecase.entity
 
 import androidx.compose.runtime.Immutable
 import team.retum.common.enums.MilitarySupport
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.common.utils.ResourceKeys
 import team.retum.network.model.response.FetchRecruitmentsResponse
 
@@ -18,7 +19,7 @@ data class RecruitmentsEntity(
         val militarySupport: MilitarySupport?,
         val hiringJobs: String,
         val bookmarked: Boolean,
-        val status: String,
+        val status: RecruitmentStatus?,
         val year: Int,
     ) {
         companion object {
@@ -30,7 +31,7 @@ data class RecruitmentsEntity(
                 militarySupport = MilitarySupport.LOADING,
                 hiringJobs = "",
                 bookmarked = false,
-                status = "",
+                status = null,
                 year = 0,
             )
         }

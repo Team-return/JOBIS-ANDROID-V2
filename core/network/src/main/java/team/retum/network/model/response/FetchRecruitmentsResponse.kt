@@ -2,6 +2,7 @@ package team.retum.network.model.response
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import team.retum.common.enums.RecruitmentStatus
 
 @JsonClass(generateAdapter = true)
 data class FetchRecruitmentsResponse(
@@ -16,7 +17,7 @@ data class FetchRecruitmentsResponse(
         @Json(name = "military_support") val militarySupport: Boolean?,
         @Json(name = "hiring_jobs") val hiringJobs: String,
         @Json(name = "bookmarked") val bookmarked: Boolean,
-        @Json(name = "status") val status: String,
+        @Json(name = "status") val status: RecruitmentStatus?,
         @Json(name = "year") val year: Int,
     )
 }
