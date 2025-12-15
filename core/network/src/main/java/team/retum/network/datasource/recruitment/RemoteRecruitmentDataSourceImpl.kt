@@ -1,5 +1,6 @@
 package team.retum.network.datasource.recruitment
 
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.network.api.RecruitmentApi
 import team.retum.network.model.response.FetchRecruitmentDetailsResponse
 import team.retum.network.model.response.FetchRecruitmentPageCountResponse
@@ -18,7 +19,7 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
         winterIntern: Boolean,
         militarySupport: Boolean?,
         years: List<Int>?,
-        recruitStatus: String?,
+        recruitStatus: RecruitmentStatus?,
     ): FetchRecruitmentsResponse = RequestHandler<FetchRecruitmentsResponse>().request {
         recruitmentApi.fetchRecruitments(
             page = page,
@@ -28,7 +29,7 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
             winterIntern = winterIntern,
             militarySupport = militarySupport,
             years = years,
-            recruitStatus = recruitStatus,
+            recruitStatus = recruitStatus?.name,
         )
     }
 
@@ -39,7 +40,7 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
         winterIntern: Boolean,
         militarySupport: Boolean?,
         years: List<Int>?,
-        recruitStatus: String?,
+        recruitStatus: RecruitmentStatus?,
     ): FetchRecruitmentPageCountResponse =
         RequestHandler<FetchRecruitmentPageCountResponse>().request {
             recruitmentApi.fetchRecruitmentPageCount(
@@ -49,7 +50,7 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
                 winterIntern = winterIntern,
                 militarySupport = militarySupport,
                 years = years,
-                recruitStatus = recruitStatus,
+                recruitStatus = recruitStatus?.name,
             )
         }
 

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -82,8 +80,9 @@ private fun RecruitmentItem(
         MilitarySupport.FALSE -> stringResource(id = R.string.military_not_supported) to recruitment.year
         else -> "" to ""
     }
+    // TODO : 1. 이넘으로 변경
     val (recruitmentStatus, statusTextColor, backgroundColor, borderColor) = when (recruitment.status) {
-        "RECRUITING" -> RecruitmentStatus("모집 중", JobisTheme.colors.onPrimary, JobisTheme.colors.background, JobisTheme.colors.onPrimary)
+        "RECRUITING" -> RecruitmentStatus("모집 중", JobisTheme.colors.onPrimary, JobisTheme.colors.inverseSurface, JobisTheme.colors.onPrimary)
         "DONE" -> RecruitmentStatus("모집 종료", JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.inverseSurface, JobisTheme.colors.surfaceTint)
         else ->  RecruitmentStatus("", JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant)
     }

@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
@@ -37,6 +38,8 @@ internal fun Recruitments(
             setJobCode(RecruitmentFilterViewModel.jobCode)
             setTechCode(RecruitmentFilterViewModel.techCode)
             setWinterIntern(isWinterIntern = false)
+            setYears(RecruitmentFilterViewModel.year)
+            setStatus(RecruitmentStatus.DONE)
             clearRecruitment()
             fetchTotalRecruitmentCount()
         }

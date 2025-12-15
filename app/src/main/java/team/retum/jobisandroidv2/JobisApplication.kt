@@ -22,6 +22,8 @@ class JobisApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // TODO :: 릴리즈 버전일 시 실행 X
+
         Thread.setDefaultUncaughtExceptionHandler { _, e ->
             Firebase.crashlytics.recordException(e)
             // TODO : 에러 로그 메세지

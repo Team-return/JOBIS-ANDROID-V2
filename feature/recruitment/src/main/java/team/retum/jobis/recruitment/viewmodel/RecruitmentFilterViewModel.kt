@@ -23,6 +23,8 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     companion object {
         var jobCode: Long? = null
         var techCode: String? = null
+        var year: List<Int>? = null
+        var status: String? = null
     }
 
     private var _majors: MutableList<CodesEntity.CodeEntity> = mutableStateListOf()
@@ -83,7 +85,7 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         setState { state.value.copy(selectedYear = year) }
     }
 
-    internal fun setStatus(status: String?) {
+    internal fun setStatus(status: RecruitmentStatus?) {
         setState { state.value.copy(selectedStatus = status) }
     }
 
@@ -98,7 +100,7 @@ internal data class RecruitmentFilterState(
     val parentCode: Long?,
     val selectedYear: Int?,
     val years: ImmutableList<Int>,
-    val selectedStatus: String?,
+    val selectedStatus: RecruitmentStatus?,
 ) {
     companion object {
         fun getDefaultState(): RecruitmentFilterState {

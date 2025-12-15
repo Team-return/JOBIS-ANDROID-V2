@@ -1,5 +1,6 @@
 package team.retum.usecase.usecase.recruitment
 
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.data.repository.recruitment.RecruitmentRepository
 import team.retum.usecase.entity.toRecruitmentCountEntity
 import javax.inject.Inject
@@ -14,7 +15,7 @@ class FetchRecruitmentCountUseCase @Inject constructor(
         winterIntern: Boolean,
         militarySupport: Boolean?,
         years: List<Int>?,
-        recruitStatus: String?,
+        recruitStatus: RecruitmentStatus?,
     ) = runCatching {
         recruitmentRepository.fetchRecruitmentPageCount(
             name = name,
