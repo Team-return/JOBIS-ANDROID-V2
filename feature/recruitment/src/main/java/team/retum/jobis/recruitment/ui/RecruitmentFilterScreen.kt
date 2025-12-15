@@ -166,7 +166,7 @@ private fun FilterInputs(
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 8.dp),
-            text = "연도 조회",
+            text = stringResource(R.string.recruitment_fetching_year),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
@@ -176,16 +176,16 @@ private fun FilterInputs(
             maxItemsInEachRow = 5,
         ) {
             years.forEach { year ->
-                JobisChip( // 파일 내에 이미 정의된 JobisChip 사용
+                JobisChip(
                     text = year.toString(),
-                    selected = selectedYear.contains(year), // 다중 선택 리스트에 포함 여부 확인
-                    onClick = { setYear(year) }, // 클릭 시 ViewModel 함수 호출
+                    selected = selectedYear.contains(year),
+                    onClick = { setYear(year) },
                 )
             }
         }
     }
     JobisChipGroup(
-        title = "모집 분야",
+        title = stringResource(R.string.recruitment_status),
         onItemClick = setStatus,
         selectedItem = selectedStatus,
         items = RecruitmentStatus.entries.toPersistentList(),
@@ -214,7 +214,7 @@ private fun Majors(
     onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
 ) {
     JobisChipGroup(
-        title = "모집 분야",
+        title = stringResource(R.string.job_position_spacing),
         onItemClick = { item ->
             if (selectedMajor == item.keyword) {
                 onMajorUnselected()

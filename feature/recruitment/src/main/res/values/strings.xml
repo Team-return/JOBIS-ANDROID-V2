@@ -2,7 +2,11 @@
 <resources>
     <string name="recruitment">모집의뢰서</string>
     <string name="recruitment_experiential_field_training">체험형 현장실습</string>
-
+    <string name="recruitment_fetching_year">연도 조회</string>
+    <string name="recruitment_status">모집 상태</string>
+    <string name="recruitment_status_recruiting">모집 중</string>
+    <string name="recruitment_status_done">모집 종료</string>
+    <string name="job_position_spacing">모집분야</string>
 
     <string name="military_supported">병역특례 O</string>
     <string name="military_not_supported">병역특례 X</string>

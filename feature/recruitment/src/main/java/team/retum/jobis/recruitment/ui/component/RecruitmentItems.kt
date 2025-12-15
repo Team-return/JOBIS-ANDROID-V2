@@ -80,8 +80,8 @@ private fun RecruitmentItem(
         else -> "" to ""
     }
     val (recruitmentStatus, statusTextColor, backgroundColor, borderColor) = when (recruitment.status) {
-        RecruitmentStatus.RECRUITING -> RecruitmentItemColor("모집 중", JobisTheme.colors.onPrimary, JobisTheme.colors.inverseSurface, JobisTheme.colors.onPrimary)
-        RecruitmentStatus.DONE -> RecruitmentItemColor("모집 종료", JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.inverseSurface, JobisTheme.colors.surfaceTint)
+        RecruitmentStatus.RECRUITING -> RecruitmentItemColor(stringResource(R.string.recruitment_status_recruiting), JobisTheme.colors.onPrimary, JobisTheme.colors.inverseSurface, JobisTheme.colors.onPrimary)
+        RecruitmentStatus.DONE -> RecruitmentItemColor(stringResource(R.string.recruitment_status_done), JobisTheme.colors.onSurfaceVariant, JobisTheme.colors.inverseSurface, JobisTheme.colors.surfaceTint)
         else -> RecruitmentItemColor("", JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant, JobisTheme.colors.surfaceVariant)
     }
     val currentYear = LocalDate.now().toString()
