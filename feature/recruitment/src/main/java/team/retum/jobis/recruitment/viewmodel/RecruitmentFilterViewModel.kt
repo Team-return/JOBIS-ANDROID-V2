@@ -26,7 +26,7 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     companion object {
         var jobCode: Long? = null
         var techCode: String? = null
-        var year: List<Int>? = null
+        var year: ImmutableList<Int>? = null
         var status: RecruitmentStatus? = null
     }
 
@@ -129,6 +129,4 @@ internal data class RecruitmentFilterState(
     }
 }
 
-internal sealed interface RecruitmentFilterSideEffect {
-    data object BadRequest : RecruitmentFilterSideEffect
-}
+internal sealed interface RecruitmentFilterSideEffect

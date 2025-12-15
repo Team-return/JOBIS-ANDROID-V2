@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -91,7 +92,7 @@ internal class RecruitmentViewModel @Inject constructor(
         state.value.copy(isWinterIntern = isWinterIntern)
     }
 
-    internal fun setYears(years: List<Int>?) = setState {
+    internal fun setYears(years: ImmutableList<Int>?) = setState {
         state.value.copy(years = years)
     }
 
@@ -215,7 +216,7 @@ internal data class RecruitmentsState(
     val isWinterIntern: Boolean,
     val name: String?,
     val showRecruitmentsEmptyContent: Boolean,
-    val years: List<Int>?,
+    val years: ImmutableList<Int>?,
     val status: RecruitmentStatus?,
 ) {
     companion object {
