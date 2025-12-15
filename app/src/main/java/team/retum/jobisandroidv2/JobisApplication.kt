@@ -10,6 +10,7 @@ import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.OfflineException
 import team.retum.common.exception.ReissueException
 import team.retum.common.exception.UnknownException
+import team.retum.signin.BuildConfig
 import kotlin.system.exitProcess
 
 private const val InternetErrorMsg = "인터넷 연결을 확인해주세요."
@@ -21,26 +22,26 @@ private const val UnknownErrorMsg = "처리 중 문제가 발생했습니다."
 class JobisApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        
+        if (BuildConfig.DEBUG) {
+            Thread.setDefaultUncaughtExceptionHandler { _, e ->
+                Firebase.crashlytics.recordException(e)
+                // TODO : 에러 로그 메세지
 
-        // TODO :: 릴리즈 버전일 시 실행 X
+                when (e) {
+                    is OfflineException -> makeToast(InternetErrorMsg)
+                    is ConnectionTimeOutException -> makeToast(TimeoutErrorMsg)
+                    is ReissueException -> makeToast(LoginErrorMsg)
+                    is UnknownException -> makeToast(UnknownErrorMsg)
+                    else -> makeToast(UnknownErrorMsg)
+                }
 
-        Thread.setDefaultUncaughtExceptionHandler { _, e ->
-            Firebase.crashlytics.recordException(e)
-            // TODO : 에러 로그 메세지
-
-            when (e) {
-                is OfflineException -> makeToast(InternetErrorMsg)
-                is ConnectionTimeOutException -> makeToast(TimeoutErrorMsg)
-                is ReissueException -> makeToast(LoginErrorMsg)
-                is UnknownException -> makeToast(UnknownErrorMsg)
-                else -> makeToast(UnknownErrorMsg)
-            }
-
-            val intent = this.packageManager.getLaunchIntentForPackage(this.packageName)
-            if (intent != null) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                this.startActivity(intent)
-                exitProcess(0)
+                val intent = this.packageManager.getLaunchIntentForPackage(this.packageName)
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    this.startActivity(intent)
+                    exitProcess(0)
+                }
             }
         }
     }
