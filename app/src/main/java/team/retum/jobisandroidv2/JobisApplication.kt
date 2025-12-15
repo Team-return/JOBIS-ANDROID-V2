@@ -22,7 +22,6 @@ private const val UnknownErrorMsg = "처리 중 문제가 발생했습니다."
 class JobisApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        
         if (BuildConfig.DEBUG) {
             Thread.setDefaultUncaughtExceptionHandler { _, e ->
                 Firebase.crashlytics.recordException(e)
