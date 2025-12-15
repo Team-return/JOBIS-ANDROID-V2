@@ -88,7 +88,7 @@ private fun RecruitmentFilterScreen(
     onBackPressed: () -> Unit,
     state: RecruitmentFilterState,
     setYear: (Int?) -> Unit,
-    setStatus: (String) -> Unit,
+    setStatus: (RecruitmentStatus?) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
@@ -145,8 +145,8 @@ private fun FilterInputs(
     years: ImmutableList<Int>,
     selectedYear: Int?,
     setYear: (Int?) -> Unit,
-    selectedStatus: String?,
-    setStatus: (String) -> Unit,
+    selectedStatus: RecruitmentStatus?,
+    setStatus: (RecruitmentStatus?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
     techs: ImmutableList<CodesEntity.CodeEntity>,
     selectedMajor: String,
@@ -324,8 +324,8 @@ private fun Years( // TODO :: 2. 이거 참고해서 구현
 @Composable
 private fun Statuses(
     title: String = "",
-    selectedStatus: String?,
-    onStatusSelected: (String) -> Unit,
+    selectedStatus: RecruitmentStatus?,
+    onStatusSelected: (RecruitmentStatus?) -> Unit,
 ) {
     JobisText(
         modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
@@ -342,8 +342,8 @@ private fun Statuses(
         RecruitmentStatus.entries.forEach { status ->
             JobisChip (
                 text = status.value,
-                selected = selectedStatus == status.value,
-                onClick = { onStatusSelected(status.value) },
+                selected = selectedStatus == status,
+                onClick = { onStatusSelected(status) },
             )
         }
     }

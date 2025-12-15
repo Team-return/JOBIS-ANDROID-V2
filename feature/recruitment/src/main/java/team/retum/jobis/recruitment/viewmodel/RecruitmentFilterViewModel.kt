@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
 import java.time.LocalDate
@@ -24,7 +25,7 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         var jobCode: Long? = null
         var techCode: String? = null
         var year: List<Int>? = null
-        var status: String? = null
+        var status: RecruitmentStatus? = null
     }
 
     private var _majors: MutableList<CodesEntity.CodeEntity> = mutableStateListOf()
