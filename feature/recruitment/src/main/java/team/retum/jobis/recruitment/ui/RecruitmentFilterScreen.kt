@@ -2,17 +2,16 @@ package team.retum.jobis.recruitment.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,11 +28,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.jobCode
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.status
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.techCode
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.year
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -75,6 +77,8 @@ internal fun RecruitmentFilter(
         techs = recruitmentFilterViewModel.techs,
         onCheckSkill = recruitmentFilterViewModel::addSkill,
         checkedSkills = recruitmentFilterViewModel.checkedSkills,
+        setYear = recruitmentFilterViewModel::setYear,
+        setStatus = recruitmentFilterViewModel::setStatus,
     )
 }
 
@@ -82,6 +86,8 @@ internal fun RecruitmentFilter(
 private fun RecruitmentFilterScreen(
     onBackPressed: () -> Unit,
     state: RecruitmentFilterState,
+    setYear: (Int) -> Unit,
+    setStatus: (RecruitmentStatus?) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
@@ -109,6 +115,11 @@ private fun RecruitmentFilterScreen(
                 onMajorUnselected = { setSelectedMajor("", null) },
                 checkedSkills = checkedSkills,
                 onCheckSkill = onCheckSkill,
+                years = state.years,
+                selectedYear = state.selectedYear.toPersistentList(),
+                setYear = setYear,
+                selectedStatus = state.selectedStatus,
+                setStatus = setStatus,
             )
         }
         JobisButton(
@@ -116,6 +127,8 @@ private fun RecruitmentFilterScreen(
             onClick = {
                 jobCode = state.parentCode
                 techCode = checkedSkills.joinToString(separator = ",") { it.code.toString() }
+                year = state.selectedYear
+                status = state.selectedStatus
                 onBackPressed()
             },
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -129,6 +142,11 @@ private fun RecruitmentFilterScreen(
 private fun FilterInputs(
     keyword: () -> String,
     onKeywordChange: (String) -> Unit,
+    years: ImmutableList<Int>,
+    selectedYear: ImmutableList<Int>,
+    setYear: (Int) -> Unit,
+    selectedStatus: RecruitmentStatus?,
+    setStatus: (RecruitmentStatus?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
     techs: ImmutableList<CodesEntity.CodeEntity>,
     selectedMajor: String,
@@ -143,68 +161,98 @@ private fun FilterInputs(
         onValueChange = onKeywordChange,
         drawableResId = JobisIcon.Search,
     )
-    FlowRow(
-        maxItemsInEachRow = 5,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 24.dp,
-                vertical = 8.dp,
-            )
-            .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+    Column(
+        modifier = Modifier.padding(horizontal = 24.dp),
     ) {
-        majors.forEach {
-            MajorContent(
-                major = it.keyword,
-                selected = selectedMajor == it.keyword,
-                onClick = { major ->
-                    when (selectedMajor == it.keyword) {
-                        true -> onMajorUnselected()
-                        false -> onMajorSelected(major, it.code)
-                    }
-                },
-            )
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = stringResource(R.string.recruitment_fetching_year),
+            style = JobisTypography.SubHeadLine,
+            color = JobisTheme.colors.inverseOnSurface,
+        )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = 5,
+        ) {
+            years.forEach { year ->
+                JobisChip(
+                    text = year.toString(),
+                    selected = selectedYear.contains(year),
+                    onClick = { setYear(year) },
+                )
+            }
         }
     }
+    JobisChipGroup(
+        title = stringResource(R.string.recruitment_status),
+        onItemClick = setStatus,
+        selectedItem = selectedStatus,
+        items = RecruitmentStatus.entries.toPersistentList(),
+        itemText = { it.value },
+    )
+    Majors(
+        majors = majors,
+        techs = techs,
+        selectedMajor = selectedMajor,
+        onMajorSelected = onMajorSelected,
+        onMajorUnselected = onMajorUnselected,
+        checkedSkills = checkedSkills,
+        onCheckSkill = onCheckSkill,
+    )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun Majors(
+    majors: ImmutableList<CodesEntity.CodeEntity>,
+    techs: ImmutableList<CodesEntity.CodeEntity>,
+    selectedMajor: String,
+    onMajorSelected: (String, Long?) -> Unit,
+    onMajorUnselected: () -> Unit,
+    checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
+    onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
+) {
+    JobisChipGroup(
+        title = stringResource(R.string.job_position_spacing),
+        onItemClick = { item ->
+            if (selectedMajor == item.keyword) {
+                onMajorUnselected()
+            } else {
+                onMajorSelected(item.keyword, item.code)
+            }
+        },
+        selectedItem = majors.find { it.keyword == selectedMajor },
+        items = majors,
+        itemText = { it.keyword },
+    )
     Skills(
         skills = techs.map { it.keyword }.toMutableStateList(),
         checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
         checkSkillsId = techs.map { it.code }.toPersistentList(),
     ) { index, checked, id ->
-        checkedSkills.run {
-            onCheckSkill(
-                CodesEntity.CodeEntity(
-                    code = id,
-                    keyword = index,
-                ),
-                checked,
-            )
-        }
+        onCheckSkill(
+            CodesEntity.CodeEntity(
+                code = id,
+                keyword = index,
+            ),
+            checked,
+        )
     }
 }
 
 @Composable
-private fun MajorContent(
-    major: String,
+private fun JobisChip(
+    text: String,
     selected: Boolean,
-    onClick: (String) -> Unit,
+    onClick: () -> Unit,
 ) {
     val background by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.onPrimary
-        } else {
-            JobisTheme.colors.inverseSurface
-        },
+        targetValue = if (selected) JobisTheme.colors.onPrimary else JobisTheme.colors.inverseSurface,
         label = "",
     )
     val textColor by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.background
-        } else {
-            JobisTheme.colors.onPrimaryContainer
-        },
+        targetValue = if (selected) JobisTheme.colors.background else JobisTheme.colors.onPrimaryContainer,
         label = "",
     )
 
@@ -212,7 +260,7 @@ private fun MajorContent(
         modifier = Modifier
             .clickable(
                 enabled = true,
-                onClick = { onClick(major) },
+                onClick = onClick,
                 onPressed = {},
             )
             .clip(RoundedCornerShape(30.dp))
@@ -224,9 +272,47 @@ private fun MajorContent(
                 horizontal = 12.dp,
                 vertical = 4.dp,
             ),
-            text = major,
+            text = text,
             style = JobisTypography.Body,
             color = textColor,
         )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun <T> JobisChipGroup(
+    title: String,
+    items: ImmutableList<T>,
+    itemText: (T) -> String,
+    selectedItem: T?,
+    onItemClick: (T) -> Unit,
+    maxItemsInEachRow: Int = 5,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = 24.dp),
+    ) {
+        if (title.isNotBlank()) {
+            JobisText(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = title,
+                style = JobisTypography.SubHeadLine,
+                color = JobisTheme.colors.inverseOnSurface,
+            )
+        }
+        FlowRow(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = maxItemsInEachRow,
+        ) {
+            items.forEach { item ->
+                JobisChip(
+                    text = itemText(item),
+                    selected = selectedItem == item,
+                    onClick = { onItemClick(item) },
+                )
+            }
+        }
     }
 }

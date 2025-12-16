@@ -4,12 +4,18 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +26,8 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     companion object {
         var jobCode: Long? = null
         var techCode: String? = null
+        var year: ImmutableList<Int>? = null
+        var status: RecruitmentStatus? = null
     }
 
     private var _majors: MutableList<CodesEntity.CodeEntity> = mutableStateListOf()
@@ -76,6 +84,20 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         }
     }
 
+    internal fun setYear(year: Int) {
+        val currentSelected = state.value.selectedYear.toMutableList()
+        if (currentSelected.contains(year)) {
+            currentSelected.remove(year)
+        } else {
+            currentSelected.add(year)
+        }
+        setState { state.value.copy(selectedYear = currentSelected.toPersistentList()) }
+    }
+
+    internal fun setStatus(status: RecruitmentStatus?) {
+        setState { state.value.copy(selectedStatus = status) }
+    }
+
     private fun setType() =
         setState { state.value.copy(type = CodeType.TECH) }
 }
@@ -85,17 +107,26 @@ internal data class RecruitmentFilterState(
     val keyword: String?,
     val selectedMajor: String,
     val parentCode: Long?,
+    val selectedYear: ImmutableList<Int>,
+    val years: ImmutableList<Int>,
+    val selectedStatus: RecruitmentStatus?,
 ) {
     companion object {
-        fun getDefaultState() = RecruitmentFilterState(
-            type = CodeType.JOB,
-            keyword = null,
-            selectedMajor = "",
-            parentCode = null,
-        )
+        fun getDefaultState(): RecruitmentFilterState {
+            val currentYear = LocalDate.now().year
+            val yearList = (currentYear downTo 2023).toList()
+
+            return RecruitmentFilterState(
+                type = CodeType.JOB,
+                keyword = null,
+                selectedMajor = "",
+                parentCode = null,
+                selectedYear = persistentListOf(),
+                years = yearList.toImmutableList(),
+                selectedStatus = null,
+            )
+        }
     }
 }
 
-internal sealed interface RecruitmentFilterSideEffect {
-    data object BadRequest : RecruitmentFilterSideEffect
-}
+internal sealed interface RecruitmentFilterSideEffect

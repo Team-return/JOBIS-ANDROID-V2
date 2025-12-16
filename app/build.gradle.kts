@@ -76,6 +76,9 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+        jniLibs {
+            useLegacyPackaging = true
+        }
     }
 }
 
@@ -97,7 +100,8 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:design-system"))
     implementation(project(":core:device"))
-    implementation(project((":feature:splash")))
+    implementation(project(":core:network"))
+    implementation(project(":feature:splash"))
     implementation(project(":feature:landing"))
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))

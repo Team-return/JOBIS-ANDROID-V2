@@ -37,6 +37,8 @@ internal fun Recruitments(
             setJobCode(RecruitmentFilterViewModel.jobCode)
             setTechCode(RecruitmentFilterViewModel.techCode)
             setWinterIntern(isWinterIntern = false)
+            setYears(RecruitmentFilterViewModel.year)
+            setStatus(RecruitmentFilterViewModel.status)
             clearRecruitment()
             fetchTotalRecruitmentCount()
         }

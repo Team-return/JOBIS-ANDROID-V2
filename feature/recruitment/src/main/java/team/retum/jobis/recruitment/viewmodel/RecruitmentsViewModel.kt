@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.usecase.entity.RecruitmentsEntity
 import team.retum.usecase.usecase.bookmark.BookmarkRecruitmentUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentCountUseCase
@@ -68,6 +70,8 @@ internal class RecruitmentViewModel @Inject constructor(
     private fun clear() {
         RecruitmentFilterViewModel.jobCode = null
         RecruitmentFilterViewModel.techCode = null
+        RecruitmentFilterViewModel.year = null
+        RecruitmentFilterViewModel.status = null
         _recruitments.clear()
         setState {
             state.value.copy(
@@ -88,6 +92,14 @@ internal class RecruitmentViewModel @Inject constructor(
         state.value.copy(isWinterIntern = isWinterIntern)
     }
 
+    internal fun setYears(years: ImmutableList<Int>?) = setState {
+        state.value.copy(years = years)
+    }
+
+    internal fun setStatus(status: RecruitmentStatus?) = setState {
+        state.value.copy(status = status)
+    }
+
     internal fun fetchRecruitments() {
         addRecruitmentEntities()
         addPage()
@@ -99,6 +111,9 @@ internal class RecruitmentViewModel @Inject constructor(
                     jobCode = jobCode,
                     techCode = techCode,
                     winterIntern = isWinterIntern,
+                    militarySupport = null,
+                    years = years,
+                    recruitStatus = status,
                 ).onSuccess {
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
@@ -147,6 +162,9 @@ internal class RecruitmentViewModel @Inject constructor(
                     jobCode = jobCode,
                     techCode = techCode,
                     winterIntern = isWinterIntern,
+                    militarySupport = null,
+                    years = years,
+                    recruitStatus = status,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
@@ -198,6 +216,8 @@ internal data class RecruitmentsState(
     val isWinterIntern: Boolean,
     val name: String?,
     val showRecruitmentsEmptyContent: Boolean,
+    val years: ImmutableList<Int>?,
+    val status: RecruitmentStatus?,
 ) {
     companion object {
         fun getDefaultState() = RecruitmentsState(
@@ -208,6 +228,8 @@ internal data class RecruitmentsState(
             isWinterIntern = false,
             name = null,
             showRecruitmentsEmptyContent = false,
+            years = null,
+            status = null,
         )
     }
 }
