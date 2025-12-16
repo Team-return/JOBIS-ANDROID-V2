@@ -153,17 +153,16 @@ private fun RecruitmentItem(
                         style = JobisTypography.SubBody,
                         color = JobisTheme.colors.inverseOnSurface,
                     )
-                    if (recruitment.year != currentYear.take(4).toInt()) {
+                    if (
+                        recruitment.militarySupport != MilitarySupport.LOADING &&
+                        recruitment.year != currentYear.take(4).toInt()
+                    ) {
                         recruitment.apply {
                             JobisText(
                                 Modifier
                                     .clip(RoundedCornerShape(4.dp))
                                     .background(
-                                        if (recruitment.militarySupport == MilitarySupport.LOADING) {
-                                            JobisTheme.colors.surfaceVariant
-                                        } else {
-                                            Color.Unspecified
-                                        },
+                                        Color.Unspecified,
                                     ),
                                 text = " • ",
                                 style = JobisTypography.SubBody,
@@ -173,11 +172,7 @@ private fun RecruitmentItem(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(4.dp))
                                     .background(
-                                        if (recruitment.militarySupport == MilitarySupport.LOADING) {
-                                            JobisTheme.colors.surfaceVariant
-                                        } else {
-                                            Color.Unspecified
-                                        },
+                                        Color.Unspecified,
                                     ),
                                 text = year.toString(),
                                 style = JobisTypography.SubBody,
