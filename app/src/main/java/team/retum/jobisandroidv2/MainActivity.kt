@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.github.anrwatchdog.ANRWatchDog
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +29,14 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var deviceTokenManager: DeviceTokenManager
+
+    private val updateLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult(),
+    ) { result ->
+        if (result.resultCode != RESULT_OK) {
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,17 +78,21 @@ class MainActivity : ComponentActivity() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
-        appUpdateInfoTask.addOnSuccessListener {
-            val isUpdateAvailable = it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-
-            if (isUpdateAvailable && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                appUpdateManager.startUpdateFlowForResult(
-                    it,
-                    AppUpdateType.IMMEDIATE,
-                    this,
-                    0,
-                )
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
+                return@addOnSuccessListener
             }
+
+            val updateOptions = AppUpdateOptions
+                .newBuilder(AppUpdateType.IMMEDIATE)
+                .setAllowAssetPackDeletion(true)
+                .build()
+
+            appUpdateManager.startUpdateFlowForResult(
+                appUpdateInfo,
+                updateLauncher,
+                updateOptions,
+            )
         }
     }
 }
