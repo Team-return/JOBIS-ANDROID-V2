@@ -186,7 +186,7 @@ private fun RecruitmentItem(
         Box(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
+                .background(color = backgroundColor, shape = RoundedCornerShape(100.dp))
                 .border(
                     width = 1.dp,
                     color = borderColor,
