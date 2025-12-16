@@ -10,7 +10,7 @@ import team.retum.common.exception.ConnectionTimeOutException
 import team.retum.common.exception.OfflineException
 import team.retum.common.exception.ReissueException
 import team.retum.common.exception.UnknownException
-import team.retum.signin.BuildConfig
+import team.retum.network.BuildConfig
 import kotlin.system.exitProcess
 
 private const val InternetErrorMsg = "인터넷 연결을 확인해주세요."
