@@ -28,7 +28,7 @@ interface ReviewApi {
         @Query("type") interviewType: InterviewType?,
         @Query("company_id") companyId: Long?,
         @Query("keyword") keyword: String?,
-        @Query("year") year: Int?,
+        @Query("year") year: List<Int>?,
         @Query("code") code: Long?,
     ): FetchReviewsResponse
 
@@ -45,7 +45,7 @@ interface ReviewApi {
         @Query("location") location: InterviewLocation?,
         @Query("type") interviewType: InterviewType?,
         @Query("keyword") keyword: String?,
-        @Query("year") year: Int?,
+        @Query("year") year: List<Int>?,
         @Query("code") code: Long?,
     ): FetchReviewsCountResponse
 
