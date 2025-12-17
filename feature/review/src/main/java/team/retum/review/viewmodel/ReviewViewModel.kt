@@ -1,9 +1,12 @@
 package team.retum.review.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
@@ -49,7 +52,7 @@ internal class ReviewViewModel @Inject constructor(
         state.value.copy(code = code)
     }
 
-    internal fun setYear(year: Int?) = setState {
+    internal fun setYear(year: ImmutableList<Int>) = setState {
         state.value.copy(year = year)
     }
 
@@ -156,7 +159,7 @@ internal data class ReviewState(
     val page: Long,
     val companyId: Long,
     val code: Long?,
-    val year: Int?,
+    val year: ImmutableList<Int>,
     val interviewType: InterviewType?,
     val location: InterviewLocation?,
     val showReviewEmptyContent: Boolean,
@@ -167,7 +170,7 @@ internal data class ReviewState(
             page = 0L,
             companyId = 0,
             code = null,
-            year = null,
+            year = persistentListOf(),
             interviewType = null,
             location = null,
             showReviewEmptyContent = false,

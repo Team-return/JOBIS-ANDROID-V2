@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -75,10 +76,10 @@ private fun ReviewFilterScreen(
     state: ReviewsFilterState,
     onBackPressed: () -> Unit,
     onMajorSelected: (Long?) -> Unit,
-    onYearSelected: (Int?) -> Unit,
+    onYearSelected: (Int) -> Unit,
     onInterviewTypeSelected: (InterviewType?) -> Unit,
     onLocationSelected: (InterviewLocation?) -> Unit,
-    onApplyFilter: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
+    onApplyFilter: (Long?, ImmutableList<Int>, InterviewType?, InterviewLocation?) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
@@ -163,29 +164,28 @@ private fun Skills(
 @Composable
 private fun Years(
     years: ImmutableList<Int>,
-    selectedYear: Int?,
-    onYearSelected: (Int?) -> Unit,
+    selectedYear: ImmutableList<Int>,
+    onYearSelected: (Int) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
+        modifier = Modifier.padding(horizontal = 24.dp),
     ) {
         JobisText(
-            modifier = Modifier.padding(vertical = 12.dp),
-            text = stringResource(id = R.string.year),
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = stringResource(R.string.year),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
         FlowRow(
-            modifier = Modifier.padding(vertical = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             maxItemsInEachRow = 5,
         ) {
             years.forEach { year ->
-                YearContent(
-                    year = "$year",
-                    selected = selectedYear == year,
-                    onClick = { onYearSelected(it) },
+                JobisChip(
+                    text = year.toString(),
+                    selected = selectedYear.contains(year),
+                    onClick = { onYearSelected(year) },
                 )
             }
         }
@@ -376,5 +376,81 @@ private fun ReviewCheckBox(
             color = JobisTheme.colors.inverseOnSurface,
             modifier = Modifier.align(Alignment.CenterVertically),
         )
+    }
+}
+
+@Composable
+private fun JobisChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    val background by animateColorAsState(
+        targetValue = if (selected) JobisTheme.colors.onPrimary else JobisTheme.colors.inverseSurface,
+        label = "",
+    )
+    val textColor by animateColorAsState(
+        targetValue = if (selected) JobisTheme.colors.background else JobisTheme.colors.onPrimaryContainer,
+        label = "",
+    )
+
+    Box(
+        modifier = Modifier
+            .clickable(
+                enabled = true,
+                onClick = onClick,
+                onPressed = {},
+            )
+            .clip(RoundedCornerShape(30.dp))
+            .background(background),
+        contentAlignment = Alignment.Center,
+    ) {
+        JobisText(
+            modifier = Modifier.padding(
+                horizontal = 12.dp,
+                vertical = 4.dp,
+            ),
+            text = text,
+            style = JobisTypography.Body,
+            color = textColor,
+        )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun <T> JobisChipGroup(
+    title: String,
+    items: ImmutableList<T>,
+    itemText: (T) -> String,
+    selectedItem: T?,
+    onItemClick: (T) -> Unit,
+    maxItemsInEachRow: Int = 5,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = 24.dp),
+    ) {
+        if (title.isNotBlank()) {
+            JobisText(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = title,
+                style = JobisTypography.SubHeadLine,
+                color = JobisTheme.colors.inverseOnSurface,
+            )
+        }
+        FlowRow(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = maxItemsInEachRow,
+        ) {
+            items.forEach { item ->
+                JobisChip(
+                    text = itemText(item),
+                    selected = selectedItem == item,
+                    onClick = { onItemClick(item) },
+                )
+            }
+        }
     }
 }
