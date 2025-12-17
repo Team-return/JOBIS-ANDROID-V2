@@ -1,6 +1,5 @@
 package team.retum.review.viewmodel
 
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope

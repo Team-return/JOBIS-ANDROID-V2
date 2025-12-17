@@ -1,6 +1,5 @@
 package team.retum.jobis.recruitment.ui
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,9 +8,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,7 +15,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,13 +34,14 @@ import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Compani
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
+import team.retum.jobisdesignsystemv2.chip.JobisChip
+import team.retum.jobisdesignsystemv2.chip.JobisChipGroup
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.skills.Skills
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.textfield.JobisTextField
-import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.CodesEntity
 
 const val SEARCH_DELAY: Long = 200
@@ -238,81 +234,5 @@ private fun Majors(
             ),
             checked,
         )
-    }
-}
-
-@Composable
-private fun JobisChip(
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    val background by animateColorAsState(
-        targetValue = if (selected) JobisTheme.colors.onPrimary else JobisTheme.colors.inverseSurface,
-        label = "",
-    )
-    val textColor by animateColorAsState(
-        targetValue = if (selected) JobisTheme.colors.background else JobisTheme.colors.onPrimaryContainer,
-        label = "",
-    )
-
-    Box(
-        modifier = Modifier
-            .clickable(
-                enabled = true,
-                onClick = onClick,
-                onPressed = {},
-            )
-            .clip(RoundedCornerShape(30.dp))
-            .background(background),
-        contentAlignment = Alignment.Center,
-    ) {
-        JobisText(
-            modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
-            ),
-            text = text,
-            style = JobisTypography.Body,
-            color = textColor,
-        )
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun <T> JobisChipGroup(
-    title: String,
-    items: ImmutableList<T>,
-    itemText: (T) -> String,
-    selectedItem: T?,
-    onItemClick: (T) -> Unit,
-    maxItemsInEachRow: Int = 5,
-) {
-    Column(
-        modifier = Modifier.padding(horizontal = 24.dp),
-    ) {
-        if (title.isNotBlank()) {
-            JobisText(
-                modifier = Modifier.padding(vertical = 8.dp),
-                text = title,
-                style = JobisTypography.SubHeadLine,
-                color = JobisTheme.colors.inverseOnSurface,
-            )
-        }
-        FlowRow(
-            modifier = Modifier.verticalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            maxItemsInEachRow = maxItemsInEachRow,
-        ) {
-            items.forEach { item ->
-                JobisChip(
-                    text = itemText(item),
-                    selected = selectedItem == item,
-                    onClick = { onItemClick(item) },
-                )
-            }
-        }
     }
 }

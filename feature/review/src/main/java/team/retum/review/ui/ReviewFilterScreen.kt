@@ -16,7 +16,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,6 +34,7 @@ import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
+import team.retum.jobisdesignsystemv2.chip.JobisChip
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -376,81 +376,5 @@ private fun ReviewCheckBox(
             color = JobisTheme.colors.inverseOnSurface,
             modifier = Modifier.align(Alignment.CenterVertically),
         )
-    }
-}
-
-@Composable
-private fun JobisChip(
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    val background by animateColorAsState(
-        targetValue = if (selected) JobisTheme.colors.onPrimary else JobisTheme.colors.inverseSurface,
-        label = "",
-    )
-    val textColor by animateColorAsState(
-        targetValue = if (selected) JobisTheme.colors.background else JobisTheme.colors.onPrimaryContainer,
-        label = "",
-    )
-
-    Box(
-        modifier = Modifier
-            .clickable(
-                enabled = true,
-                onClick = onClick,
-                onPressed = {},
-            )
-            .clip(RoundedCornerShape(30.dp))
-            .background(background),
-        contentAlignment = Alignment.Center,
-    ) {
-        JobisText(
-            modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
-            ),
-            text = text,
-            style = JobisTypography.Body,
-            color = textColor,
-        )
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun <T> JobisChipGroup(
-    title: String,
-    items: ImmutableList<T>,
-    itemText: (T) -> String,
-    selectedItem: T?,
-    onItemClick: (T) -> Unit,
-    maxItemsInEachRow: Int = 5,
-) {
-    Column(
-        modifier = Modifier.padding(horizontal = 24.dp),
-    ) {
-        if (title.isNotBlank()) {
-            JobisText(
-                modifier = Modifier.padding(vertical = 8.dp),
-                text = title,
-                style = JobisTypography.SubHeadLine,
-                color = JobisTheme.colors.inverseOnSurface,
-            )
-        }
-        FlowRow(
-            modifier = Modifier.verticalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            maxItemsInEachRow = maxItemsInEachRow,
-        ) {
-            items.forEach { item ->
-                JobisChip(
-                    text = itemText(item),
-                    selected = selectedItem == item,
-                    onClick = { onItemClick(item) },
-                )
-            }
-        }
     }
 }
