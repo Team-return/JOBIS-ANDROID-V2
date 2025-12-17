@@ -93,14 +93,30 @@ private fun ReviewFilterScreen(
     onLocationSelected: (InterviewLocation?) -> Unit,
     onApplyFilter: (Long?, ImmutableList<Int>, InterviewType?, InterviewLocation?) -> Unit,
 ) {
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                return Offset.Zero
+            }
+
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+                return Offset.Zero
+            }
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
-        Column {
+        Column(modifier = Modifier.fillMaxSize()) {
             JobisSmallTopAppBar(
                 onBackPressed = onBackPressed,
                 title = stringResource(id = R.string.filter_setting),
             )
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
+                modifier = Modifier.nestedScroll(nestedScrollConnection)
             ) {
                 Skills(
                     majorList = state.majorList.toPersistentList(),
