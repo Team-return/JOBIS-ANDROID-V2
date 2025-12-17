@@ -23,25 +23,25 @@ class JobisApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
-//            Thread.setDefaultUncaughtExceptionHandler { _, e ->
-//                Firebase.crashlytics.recordException(e)
-//                // TODO : 에러 로그 메세지
-//
-//                when (e) {
-//                    is OfflineException -> makeToast(InternetErrorMsg)
-//                    is ConnectionTimeOutException -> makeToast(TimeoutErrorMsg)
-//                    is ReissueException -> makeToast(LoginErrorMsg)
-//                    is UnknownException -> makeToast(UnknownErrorMsg)
-//                    else -> makeToast(UnknownErrorMsg)
-//                }
-//
-//                val intent = this.packageManager.getLaunchIntentForPackage(this.packageName)
-//                if (intent != null) {
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    this.startActivity(intent)
-//                    exitProcess(0)
-//                }
-//            }
+            Thread.setDefaultUncaughtExceptionHandler { _, e ->
+                Firebase.crashlytics.recordException(e)
+                // TODO : 에러 로그 메세지
+
+                when (e) {
+                    is OfflineException -> makeToast(InternetErrorMsg)
+                    is ConnectionTimeOutException -> makeToast(TimeoutErrorMsg)
+                    is ReissueException -> makeToast(LoginErrorMsg)
+                    is UnknownException -> makeToast(UnknownErrorMsg)
+                    else -> makeToast(UnknownErrorMsg)
+                }
+
+                val intent = this.packageManager.getLaunchIntentForPackage(this.packageName)
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    this.startActivity(intent)
+                    exitProcess(0)
+                }
+            }
         }
     }
 
