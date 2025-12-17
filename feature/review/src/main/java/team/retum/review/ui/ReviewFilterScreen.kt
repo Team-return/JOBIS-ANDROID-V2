@@ -10,17 +10,27 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,12 +39,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.common.enums.InterviewLocation
 import team.retum.common.enums.InterviewType
+import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.review.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.chip.JobisChip
+import team.retum.jobisdesignsystemv2.chip.JobisChipGroup
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -206,21 +218,13 @@ private fun InterviewType(
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.individual_interview),
-            checked = selectedInterviewType == InterviewType.INDIVIDUAL,
-            onClick = { onInterviewTypeSelected(InterviewType.INDIVIDUAL) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.group_interview),
-            checked = selectedInterviewType == InterviewType.GROUP,
-            onClick = { onInterviewTypeSelected(InterviewType.GROUP) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.other_interview),
-            checked = selectedInterviewType == InterviewType.OTHER,
-            onClick = { onInterviewTypeSelected(InterviewType.OTHER) },
-        )
+        InterviewType.entries.forEach { interviewType ->
+            ReviewCheckBox(
+                title = interviewType.value,
+                checked = selectedInterviewType == interviewType,
+                onClick = { onInterviewTypeSelected(interviewType) },
+            )
+        }
     }
 }
 
@@ -232,32 +236,13 @@ private fun Location(
     Column(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     ) {
-        JobisText(
-            modifier = Modifier.padding(vertical = 12.dp),
-            text = stringResource(id = R.string.region),
-            style = JobisTypography.SubHeadLine,
-            color = JobisTheme.colors.inverseOnSurface,
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.daejeon),
-            checked = selectedLocation == InterviewLocation.DAEJEON,
-            onClick = { onLocationSelected(InterviewLocation.DAEJEON) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.seoul),
-            checked = selectedLocation == InterviewLocation.SEOUL,
-            onClick = { onLocationSelected(InterviewLocation.SEOUL) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.gyeonggi),
-            checked = selectedLocation == InterviewLocation.GYEONGGI,
-            onClick = { onLocationSelected(InterviewLocation.GYEONGGI) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.other),
-            checked = selectedLocation == InterviewLocation.OTHER,
-            onClick = { onLocationSelected(InterviewLocation.OTHER) },
-        )
+        InterviewLocation.entries.forEach { interviewLocation ->
+            ReviewCheckBox(
+                title = interviewLocation.value,
+                checked = selectedLocation == interviewLocation,
+                onClick = { onLocationSelected(interviewLocation) },
+            )
+        }
     }
 }
 
