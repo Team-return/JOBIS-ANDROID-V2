@@ -7,13 +7,6 @@
     <string name="review_detail_title">면접후기 상세보기</string>
     <string name="review_writer_title">%1$s님의 %2$s</string>
     <string name="interviewer_count_format">면접관 수 : %s</string>
-    <string name="individual_interview">개인 면접</string>
-    <string name="group_interview">단체 면접</string>
-    <string name="other_interview">기타 면접</string>
-    <string name="daejeon">대전</string>
-    <string name="seoul">서울</string>
-    <string name="gyeonggi">경기</string>
-    <string name="other">기타</string>
     <string name="content_description_arrow_down">arrow_down</string>
     <string name="question_q">Q</string>
     <string name="answer_a">A</string>

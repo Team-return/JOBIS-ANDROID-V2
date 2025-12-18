@@ -13,7 +13,7 @@ class FetchReviewsCountUseCase @Inject constructor(
         location: InterviewLocation?,
         interviewType: InterviewType?,
         keyword: String?,
-        year: Int?,
+        year: List<Int>?,
         code: Long?,
     ) = runCatching {
         reviewRepository.fetchReviewsCount(

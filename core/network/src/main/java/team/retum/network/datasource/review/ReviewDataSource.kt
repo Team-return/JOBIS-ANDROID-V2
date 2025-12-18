@@ -18,7 +18,7 @@ interface ReviewDataSource {
         interviewType: InterviewType?,
         companyId: Long?,
         keyword: String?,
-        year: Int?,
+        year: List<Int>?,
         code: Long?,
     ): FetchReviewsResponse
 
@@ -30,7 +30,7 @@ interface ReviewDataSource {
         location: InterviewLocation?,
         interviewType: InterviewType?,
         keyword: String?,
-        year: Int?,
+        year: List<Int>?,
         code: Long?,
     ): FetchReviewsCountResponse
 

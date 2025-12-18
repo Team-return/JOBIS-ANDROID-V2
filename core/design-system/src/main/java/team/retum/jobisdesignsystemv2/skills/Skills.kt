@@ -19,12 +19,15 @@ import team.retum.jobisdesignsystemv2.utils.clickable
 
 @Composable
 fun Skills(
+    modifier: Modifier = Modifier,
     skills: SnapshotStateList<String>,
     checkSkillsId: ImmutableList<Long>? = null,
     checkedSkills: ImmutableList<String>,
     onCheckedChange: (String, Boolean, Long) -> Unit,
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier,
+    ) {
         items(skills.size) { skill ->
             val checked = checkedSkills.contains(skills[skill])
             SkillContent(

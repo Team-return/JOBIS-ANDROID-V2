@@ -177,21 +177,21 @@ private fun StudentInfo(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             val type = when (type) {
-                InterviewType.INDIVIDUAL -> stringResource(id = R.string.individual_interview)
-                InterviewType.GROUP -> stringResource(id = R.string.group_interview)
-                InterviewType.OTHER -> stringResource(id = R.string.other_interview)
+                InterviewType.INDIVIDUAL -> InterviewType.INDIVIDUAL.value
+                InterviewType.GROUP -> InterviewType.GROUP.value
+                InterviewType.OTHER -> InterviewType.OTHER
             }
             val location = when (location) {
-                InterviewLocation.DAEJEON -> stringResource(id = R.string.daejeon)
-                InterviewLocation.SEOUL -> stringResource(id = R.string.seoul)
-                InterviewLocation.GYEONGGI -> stringResource(id = R.string.gyeonggi)
-                InterviewLocation.OTHER -> stringResource(id = R.string.other)
+                InterviewLocation.DAEJEON -> InterviewLocation.DAEJEON.value
+                InterviewLocation.SEOUL -> InterviewLocation.SEOUL.value
+                InterviewLocation.GYEONGGI -> InterviewLocation.GYEONGGI.value
+                InterviewLocation.OTHER -> InterviewLocation.OTHER.value
             }
             val items = listOf(companyName, location, type, stringResource(id = R.string.interviewer_count_format, interviewerCount))
 
             items.forEachIndexed { index, item ->
                 JobisText(
-                    text = item,
+                    text = item.toString(),
                     style = JobisTypography.SubBody,
                     color = JobisTheme.colors.inverseOnSurface,
                 )
