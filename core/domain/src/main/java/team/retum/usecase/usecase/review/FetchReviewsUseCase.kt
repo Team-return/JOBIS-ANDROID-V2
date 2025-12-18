@@ -9,7 +9,15 @@ import javax.inject.Inject
 class FetchReviewsUseCase @Inject constructor(
     private val reviewRepository: ReviewRepository,
 ) {
-    suspend operator fun invoke(page: Int?, location: InterviewLocation?, interviewType: InterviewType?, keyword: String?, year: List<Int>?, companyId: Long?, code: Long?) = runCatching {
+    suspend operator fun invoke(
+        page: Int?,
+        location: InterviewLocation?,
+        interviewType: InterviewType?,
+        keyword: String?,
+        year: List<Int>?,
+        companyId: Long?,
+        code: Long?
+    ) = runCatching {
         reviewRepository.fetchReviews(page, location, interviewType, companyId, keyword, year, code).toEntity()
     }
 }
