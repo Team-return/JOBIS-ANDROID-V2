@@ -290,53 +290,6 @@ private fun MajorContent(
 }
 
 @Composable
-private fun YearContent(
-    modifier: Modifier = Modifier,
-    year: String,
-    selected: Boolean,
-    onClick: (Int) -> Unit,
-) {
-    val background by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.onPrimary
-        } else {
-            JobisTheme.colors.inverseSurface
-        },
-        label = "",
-    )
-    val textColor by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.background
-        } else {
-            JobisTheme.colors.onPrimaryContainer
-        },
-        label = "",
-    )
-
-    Box(
-        modifier = modifier
-            .clickable(
-                enabled = true,
-                onClick = { onClick(year.toInt()) },
-                onPressed = {},
-            )
-            .clip(RoundedCornerShape(30.dp))
-            .background(background),
-        contentAlignment = Alignment.Center,
-    ) {
-        JobisText(
-            modifier = modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
-            ),
-            text = year,
-            style = JobisTypography.Body,
-            color = textColor,
-        )
-    }
-}
-
-@Composable
 private fun ReviewCheckBox(
     title: String,
     checked: Boolean,

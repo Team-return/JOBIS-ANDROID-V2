@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
         if (result.resultCode != RESULT_OK) {
-//      TODO :: 업데이트 실패 시 호출
+//      TODO :: 업데이트 실패 시 모달 호출
         }
     }
 

@@ -16,7 +16,7 @@ class FetchReviewsUseCase @Inject constructor(
         keyword: String?,
         year: List<Int>?,
         companyId: Long?,
-        code: Long?
+        code: Long?,
     ) = runCatching {
         reviewRepository.fetchReviews(page, location, interviewType, companyId, keyword, year, code).toEntity()
     }
