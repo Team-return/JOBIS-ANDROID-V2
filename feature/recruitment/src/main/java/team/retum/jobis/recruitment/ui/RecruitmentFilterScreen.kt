@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -101,22 +104,24 @@ private fun RecruitmentFilterScreen(
                 onBackPressed = onBackPressed,
                 title = stringResource(id = R.string.setting_filter),
             )
-            FilterInputs(
-                keyword = { state.keyword ?: "" },
-                onKeywordChange = setKeyword,
-                majors = majors,
-                techs = techs.toPersistentList(),
-                selectedMajor = state.selectedMajor,
-                onMajorSelected = setSelectedMajor,
-                onMajorUnselected = { setSelectedMajor("", null) },
-                checkedSkills = checkedSkills,
-                onCheckSkill = onCheckSkill,
-                years = state.years,
-                selectedYear = state.selectedYear.toPersistentList(),
-                setYear = setYear,
-                selectedStatus = state.selectedStatus,
-                setStatus = setStatus,
-            )
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                FilterInputs(
+                    keyword = { state.keyword ?: "" },
+                    onKeywordChange = setKeyword,
+                    majors = majors,
+                    techs = techs.toPersistentList(),
+                    selectedMajor = state.selectedMajor,
+                    onMajorSelected = setSelectedMajor,
+                    onMajorUnselected = { setSelectedMajor("", null) },
+                    checkedSkills = checkedSkills,
+                    onCheckSkill = onCheckSkill,
+                    years = state.years,
+                    selectedYear = state.selectedYear.toPersistentList(),
+                    setYear = setYear,
+                    selectedStatus = state.selectedStatus,
+                    setStatus = setStatus,
+                )
+            }
         }
         JobisButton(
             text = stringResource(id = R.string.appliance),
@@ -209,30 +214,33 @@ private fun Majors(
     checkedSkills: SnapshotStateList<CodesEntity.CodeEntity>,
     onCheckSkill: (CodesEntity.CodeEntity, Boolean) -> Unit,
 ) {
-    JobisChipGroup(
-        title = stringResource(R.string.job_position_spacing),
-        onItemClick = { item ->
-            if (selectedMajor == item.keyword) {
-                onMajorUnselected()
-            } else {
-                onMajorSelected(item.keyword, item.code)
-            }
-        },
-        selectedItem = majors.find { it.keyword == selectedMajor },
-        items = majors,
-        itemText = { it.keyword },
-    )
-    Skills(
-        skills = techs.map { it.keyword }.toMutableStateList(),
-        checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
-        checkSkillsId = techs.map { it.code }.toPersistentList(),
-    ) { index, checked, id ->
-        onCheckSkill(
-            CodesEntity.CodeEntity(
-                code = id,
-                keyword = index,
-            ),
-            checked,
+    Column {
+        JobisChipGroup(
+            title = stringResource(R.string.job_position_spacing),
+            onItemClick = { item ->
+                if (selectedMajor == item.keyword) {
+                    onMajorUnselected()
+                } else {
+                    onMajorSelected(item.keyword, item.code)
+                }
+            },
+            selectedItem = majors.find { it.keyword == selectedMajor },
+            items = majors,
+            itemText = { it.keyword },
         )
+        Skills(
+            modifier = Modifier.height(400.dp),
+            skills = techs.map { it.keyword }.toMutableStateList(),
+            checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
+            checkSkillsId = techs.map { it.code }.toPersistentList(),
+        ) { index, checked, id ->
+            onCheckSkill(
+                CodesEntity.CodeEntity(
+                    code = id,
+                    keyword = index,
+                ),
+                checked,
+            )
+        }
     }
 }
