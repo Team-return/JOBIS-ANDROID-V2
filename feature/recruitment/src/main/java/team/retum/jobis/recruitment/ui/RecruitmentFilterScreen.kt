@@ -230,7 +230,7 @@ private fun Majors(
         )
         Skills(
             modifier = Modifier
-                .padding(bottom = 60.dp)
+                .padding(bottom = 68.dp)
                 .height(400.dp),
             skills = techs.map { it.keyword }.toMutableStateList(),
             checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
