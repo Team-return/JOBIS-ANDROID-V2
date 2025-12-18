@@ -26,10 +26,10 @@ import team.retum.jobisdesignsystemv2.utils.clickable
  */
 @Composable
 fun JobisChip(
+    modifier: Modifier = Modifier,
     text: String,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val background by animateColorAsState(
         targetValue = if (selected) JobisTheme.colors.onPrimary else JobisTheme.colors.inverseSurface,

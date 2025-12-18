@@ -12,18 +12,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -84,22 +81,6 @@ private fun ReviewFilterScreen(
     onLocationSelected: (InterviewLocation?) -> Unit,
     onApplyFilter: (Long?, ImmutableList<Int>, InterviewType?, InterviewLocation?) -> Unit,
 ) {
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                return Offset.Zero
-            }
-
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource,
-            ): Offset {
-                return Offset.Zero
-            }
-        }
-    }
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             JobisSmallTopAppBar(
@@ -107,7 +88,7 @@ private fun ReviewFilterScreen(
                 title = stringResource(id = R.string.filter_setting),
             )
             Column(
-                modifier = Modifier.nestedScroll(nestedScrollConnection),
+                modifier = Modifier.verticalScroll(rememberScrollState()),
             ) {
                 Skills(
                     majorList = state.majorList.toPersistentList(),
@@ -190,12 +171,13 @@ private fun Years(
         modifier = Modifier.padding(horizontal = 24.dp),
     ) {
         JobisText(
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 12.dp),
             text = stringResource(R.string.year),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
         FlowRow(
+            modifier = Modifier.padding(vertical = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             maxItemsInEachRow = 5,
@@ -243,6 +225,12 @@ private fun Location(
     Column(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp),
     ) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 12.dp),
+            text = stringResource(id = R.string.interview_review),
+            style = JobisTypography.SubHeadLine,
+            color = JobisTheme.colors.inverseOnSurface,
+        )
         InterviewLocation.entries.forEach { interviewLocation ->
             ReviewCheckBox(
                 title = interviewLocation.value,
