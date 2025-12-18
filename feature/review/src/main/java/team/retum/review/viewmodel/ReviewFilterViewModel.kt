@@ -50,7 +50,7 @@ internal class ReviewFilterViewModel @Inject constructor(
     }
 
     internal fun getLocalYears() {
-        val startYear = 2020
+        val startYear = 2026
         val endYear = LocalDate.now().year + 1
         setState {
             state.value.copy(
