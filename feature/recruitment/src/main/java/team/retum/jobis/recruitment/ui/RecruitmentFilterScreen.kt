@@ -229,7 +229,9 @@ private fun Majors(
             itemText = { it.keyword },
         )
         Skills(
-            modifier = Modifier.height(400.dp),
+            modifier = Modifier
+                .padding(bottom = 60.dp)
+                .height(400.dp),
             skills = techs.map { it.keyword }.toMutableStateList(),
             checkedSkills = checkedSkills.map { it.keyword }.toPersistentList(),
             checkSkillsId = techs.map { it.code }.toPersistentList(),
