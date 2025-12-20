@@ -29,8 +29,9 @@ jobs:
       - name: Create google-cloud-platform.json
         env:
           DATA: ${{ secrets.GOOGLE_CLOUD_PLATFORM }}
-        run: echo $DATA | base64 --decode > /home/runner/work/JOBIS-ANDROID-V2/JOBIS-ANDROID-V2/app/src/main/play/google-cloud-platform.json
-
+        run: |
+          echo "$DATA" > app/src/main/play/google-cloud-platform.json
+          
       - name: Create local.properties
         run: |
           echo "BASE_URL_PROD=\"${{ secrets.BASE_URL_PROD }}\"" >> ${{ github.workspace }}/local.properties
