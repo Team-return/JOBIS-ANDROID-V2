@@ -24,7 +24,7 @@ internal class ReviewFilterViewModel @Inject constructor(
 
     companion object {
         var code: Long? = null
-        var year: Int? = null
+        var year: ImmutableList<Int> = persistentListOf()
         var interviewType: InterviewType? = null
         var location: InterviewLocation? = null
     }
@@ -50,7 +50,7 @@ internal class ReviewFilterViewModel @Inject constructor(
     }
 
     internal fun getLocalYears() {
-        val startYear = 2020
+        val startYear = 2026
         val endYear = LocalDate.now().year + 1
         setState {
             state.value.copy(
@@ -67,12 +67,14 @@ internal class ReviewFilterViewModel @Inject constructor(
         }
     }
 
-    internal fun setSelectedYear(year: Int?) {
-        setState {
-            state.value.copy(
-                selectedYear = if (state.value.selectedYear == year) null else year,
-            )
+    internal fun setSelectedYear(year: Int) {
+        val currentSelected = state.value.selectedYear.toMutableList()
+        if (currentSelected.contains(year)) {
+            currentSelected.remove(year)
+        } else {
+            currentSelected.add(year)
         }
+        setState { state.value.copy(selectedYear = currentSelected.toPersistentList()) }
     }
 
     internal fun setSelectedInterviewType(type: InterviewType?) {
@@ -96,17 +98,17 @@ internal class ReviewFilterViewModel @Inject constructor(
 data class ReviewsFilterState(
     val years: ImmutableList<Int>,
     val majorList: ImmutableList<CodesEntity.CodeEntity>,
-    val selectedMajorCode: Long? = null,
-    val selectedYear: Int? = null,
-    val selectedInterviewType: InterviewType? = null,
-    val selectedLocation: InterviewLocation? = null,
+    val selectedMajorCode: Long?,
+    val selectedYear: ImmutableList<Int>,
+    val selectedInterviewType: InterviewType?,
+    val selectedLocation: InterviewLocation?,
 ) {
     companion object {
         fun getDefaultState() = ReviewsFilterState(
             years = persistentListOf(),
             majorList = persistentListOf(),
             selectedMajorCode = null,
-            selectedYear = null,
+            selectedYear = persistentListOf(),
             selectedInterviewType = null,
             selectedLocation = null,
         )

@@ -34,6 +34,7 @@ import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
+import team.retum.jobisdesignsystemv2.chip.JobisChip
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
@@ -75,13 +76,13 @@ private fun ReviewFilterScreen(
     state: ReviewsFilterState,
     onBackPressed: () -> Unit,
     onMajorSelected: (Long?) -> Unit,
-    onYearSelected: (Int?) -> Unit,
+    onYearSelected: (Int) -> Unit,
     onInterviewTypeSelected: (InterviewType?) -> Unit,
     onLocationSelected: (InterviewLocation?) -> Unit,
-    onApplyFilter: (Long?, Int?, InterviewType?, InterviewLocation?) -> Unit,
+    onApplyFilter: (Long?, ImmutableList<Int>, InterviewType?, InterviewLocation?) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        Column {
+        Column(modifier = Modifier.fillMaxSize()) {
             JobisSmallTopAppBar(
                 onBackPressed = onBackPressed,
                 title = stringResource(id = R.string.filter_setting),
@@ -163,15 +164,15 @@ private fun Skills(
 @Composable
 private fun Years(
     years: ImmutableList<Int>,
-    selectedYear: Int?,
-    onYearSelected: (Int?) -> Unit,
+    selectedYear: ImmutableList<Int>,
+    onYearSelected: (Int) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
+        modifier = Modifier.padding(horizontal = 24.dp),
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
-            text = stringResource(id = R.string.year),
+            text = stringResource(R.string.year),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
@@ -182,10 +183,10 @@ private fun Years(
             maxItemsInEachRow = 5,
         ) {
             years.forEach { year ->
-                YearContent(
-                    year = "$year",
-                    selected = selectedYear == year,
-                    onClick = { onYearSelected(it) },
+                JobisChip(
+                    text = year.toString(),
+                    selected = selectedYear.contains(year),
+                    onClick = { onYearSelected(year) },
                 )
             }
         }
@@ -206,21 +207,13 @@ private fun InterviewType(
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.individual_interview),
-            checked = selectedInterviewType == InterviewType.INDIVIDUAL,
-            onClick = { onInterviewTypeSelected(InterviewType.INDIVIDUAL) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.group_interview),
-            checked = selectedInterviewType == InterviewType.GROUP,
-            onClick = { onInterviewTypeSelected(InterviewType.GROUP) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.other_interview),
-            checked = selectedInterviewType == InterviewType.OTHER,
-            onClick = { onInterviewTypeSelected(InterviewType.OTHER) },
-        )
+        InterviewType.entries.forEach { interviewType ->
+            ReviewCheckBox(
+                title = interviewType.value,
+                checked = selectedInterviewType == interviewType,
+                onClick = { onInterviewTypeSelected(interviewType) },
+            )
+        }
     }
 }
 
@@ -234,30 +227,17 @@ private fun Location(
     ) {
         JobisText(
             modifier = Modifier.padding(vertical = 12.dp),
-            text = stringResource(id = R.string.region),
+            text = stringResource(id = R.string.interview_review),
             style = JobisTypography.SubHeadLine,
             color = JobisTheme.colors.inverseOnSurface,
         )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.daejeon),
-            checked = selectedLocation == InterviewLocation.DAEJEON,
-            onClick = { onLocationSelected(InterviewLocation.DAEJEON) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.seoul),
-            checked = selectedLocation == InterviewLocation.SEOUL,
-            onClick = { onLocationSelected(InterviewLocation.SEOUL) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.gyeonggi),
-            checked = selectedLocation == InterviewLocation.GYEONGGI,
-            onClick = { onLocationSelected(InterviewLocation.GYEONGGI) },
-        )
-        ReviewCheckBox(
-            title = stringResource(id = R.string.other),
-            checked = selectedLocation == InterviewLocation.OTHER,
-            onClick = { onLocationSelected(InterviewLocation.OTHER) },
-        )
+        InterviewLocation.entries.forEach { interviewLocation ->
+            ReviewCheckBox(
+                title = interviewLocation.value,
+                checked = selectedLocation == interviewLocation,
+                onClick = { onLocationSelected(interviewLocation) },
+            )
+        }
     }
 }
 
@@ -303,53 +283,6 @@ private fun MajorContent(
                 vertical = 4.dp,
             ),
             text = major,
-            style = JobisTypography.Body,
-            color = textColor,
-        )
-    }
-}
-
-@Composable
-private fun YearContent(
-    modifier: Modifier = Modifier,
-    year: String,
-    selected: Boolean,
-    onClick: (Int) -> Unit,
-) {
-    val background by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.onPrimary
-        } else {
-            JobisTheme.colors.inverseSurface
-        },
-        label = "",
-    )
-    val textColor by animateColorAsState(
-        targetValue = if (selected) {
-            JobisTheme.colors.background
-        } else {
-            JobisTheme.colors.onPrimaryContainer
-        },
-        label = "",
-    )
-
-    Box(
-        modifier = modifier
-            .clickable(
-                enabled = true,
-                onClick = { onClick(year.toInt()) },
-                onPressed = {},
-            )
-            .clip(RoundedCornerShape(30.dp))
-            .background(background),
-        contentAlignment = Alignment.Center,
-    ) {
-        JobisText(
-            modifier = modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
-            ),
-            text = year,
             style = JobisTypography.Body,
             color = textColor,
         )

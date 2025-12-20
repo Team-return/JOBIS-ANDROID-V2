@@ -23,7 +23,7 @@ class ReviewRepositoryImpl @Inject constructor(
         interviewType: InterviewType?,
         companyId: Long?,
         keyword: String?,
-        year: Int?,
+        year: List<Int>?,
         code: Long?,
     ): FetchReviewsResponse =
         reviewDataSource.fetchReviews(
@@ -46,7 +46,7 @@ class ReviewRepositoryImpl @Inject constructor(
         location: InterviewLocation?,
         interviewType: InterviewType?,
         keyword: String?,
-        year: Int?,
+        year: List<Int>?,
         code: Long?,
     ): FetchReviewsCountResponse =
         reviewDataSource.fetchReviewsCount(
