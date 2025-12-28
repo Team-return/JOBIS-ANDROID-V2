@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import team.retum.common.utils.ResourceKeys
+import team.retum.jobis.local.dao.BookmarkDao
 import team.retum.jobis.local.database.JobisDatabase
 import javax.inject.Singleton
 
@@ -22,5 +23,11 @@ object DatabaseModule {
             klass = JobisDatabase::class.java,
             name = ResourceKeys.DATABASE_NAME,
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookmarkDao(database: JobisDatabase): BookmarkDao {
+        return database.bookmarkDao()
     }
 }
