@@ -21,5 +21,6 @@ dependencies {
     implementation(project(":core:common"))
 
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 }
