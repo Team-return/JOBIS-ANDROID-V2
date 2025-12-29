@@ -22,7 +22,9 @@ object DatabaseModule {
             context = context,
             klass = JobisDatabase::class.java,
             name = ResourceKeys.DATABASE_NAME,
-        ).build()
+        )
+        .fallbackToDestructiveMigration()
+        .build()
     }
 
     @Provides
