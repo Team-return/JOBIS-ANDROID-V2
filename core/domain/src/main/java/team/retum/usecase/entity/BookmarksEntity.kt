@@ -2,6 +2,7 @@ package team.retum.usecase.entity
 
 import androidx.compose.runtime.Immutable
 import team.retum.common.utils.ResourceKeys
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.network.model.response.BookmarksResponse
 
 data class BookmarksEntity(
@@ -25,4 +26,13 @@ private fun BookmarksResponse.BookmarkResponse.toEntity() = BookmarksEntity.Book
     companyName = this.companyName,
     recruitmentId = this.recruitmentId,
     createdAt = this.createdAt.substring(0..9),
+)
+
+fun List<BookmarkLocalEntity>.toBookmarkEntities() = map { it.toLocalEntity() }
+
+private fun BookmarkLocalEntity.toLocalEntity() = BookmarksEntity.BookmarkEntity(
+    companyLogoUrl = ResourceKeys.IMAGE_URL + companyLogoUrl,
+    companyName = companyName,
+    recruitmentId = recruitmentId,
+    createdAt = if (createdAt.length >= 10) createdAt.substring(0..9) else createdAt,
 )
