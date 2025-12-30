@@ -8,6 +8,12 @@ data class BookmarkLocalEntity(
     @PrimaryKey
     val recruitmentId: Long,
 
+    val companyLogoUrl: String = "",
+
+    val companyName: String = "",
+
+    val createdAt: String = "",
+
     val isBookmarked: Boolean,
 
     val updatedAt: Long = System.currentTimeMillis()

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,27 +53,24 @@ internal fun Bookmarks(
     bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val bookmarks = bookmarkViewModel.bookmarks.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
-        with(bookmarkViewModel) {
-            clearBookmarks()
-            fetchBookmarks()
-            sideEffect.collect {
-                when (it) {
-                    is BookmarkSideEffect.BadRequest -> {
-                        JobisToast.create(
-                            context = context,
-                            message = context.getString(R.string.toast_fetch_bookmark_bad_request),
-                            drawable = JobisIcon.Error,
-                        ).show()
-                    }
+        bookmarkViewModel.sideEffect.collect {
+            when (it) {
+                is BookmarkSideEffect.BadRequest -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_fetch_bookmark_bad_request),
+                        drawable = JobisIcon.Error,
+                    ).show()
                 }
             }
         }
     }
 
     BookmarkScreen(
-        bookmarks = bookmarkViewModel.bookmarks.toPersistentList(),
+        bookmarks = bookmarks.toPersistentList(),
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
         onRecruitmentDetailClick = onRecruitmentDetailClick,

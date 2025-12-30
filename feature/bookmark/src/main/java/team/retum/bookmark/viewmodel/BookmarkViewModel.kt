@@ -1,32 +1,38 @@
 package team.retum.bookmark.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
 import team.retum.usecase.entity.BookmarksEntity
-import team.retum.usecase.usecase.bookmark.BookmarkRecruitmentUseCase
-import team.retum.usecase.usecase.bookmark.BookmarkUseCase
+import team.retum.usecase.usecase.bookmark.ObserveAllBookmarksUseCase
+import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
+import team.retum.usecase.usecase.bookmark.ToggleBookmarkUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class BookmarkViewModel @Inject constructor(
-    private val bookmarkUseCase: BookmarkUseCase,
-    private val recruitmentBookmarkUseCase: BookmarkRecruitmentUseCase,
-) : BaseViewModel<Unit, BookmarkSideEffect>(Unit) {
+    private val observeAllBookmarksUseCase: ObserveAllBookmarksUseCase,
+    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
+    private val syncBookmarksFromServerUseCase: SyncBookmarksFromServerUseCase,
+) : BaseViewModel<BookmarkState, BookmarkSideEffect>(BookmarkState()) {
+    private val _bookmarks = MutableStateFlow<List<BookmarksEntity.BookmarkEntity>>(emptyList())
+    val bookmarks: StateFlow<List<BookmarksEntity.BookmarkEntity>> = _bookmarks.asStateFlow()
 
-    private val _bookmarks: SnapshotStateList<BookmarksEntity.BookmarkEntity> = mutableStateListOf()
-    internal val bookmarks: List<BookmarksEntity.BookmarkEntity> = _bookmarks
+    init {
+        syncBookmarks()
+        observeBookmarks()
+    }
 
-    internal fun fetchBookmarks() {
+    internal fun bookmarkRecruitment(recruitmentId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            bookmarkUseCase().onSuccess {
-                _bookmarks.addAll(it.bookmarks)
-            }.onFailure {
+            toggleBookmarkUseCase(recruitmentId).onFailure {
                 when (it) {
                     is BadRequestException -> {
                         postSideEffect(BookmarkSideEffect.BadRequest)
@@ -36,14 +42,18 @@ internal class BookmarkViewModel @Inject constructor(
         }
     }
 
-    internal fun clearBookmarks() {
-        _bookmarks.clear()
+    private fun observeBookmarks() {
+        viewModelScope.launch {
+            observeAllBookmarksUseCase()
+                .collect { bookmarkList ->
+                    _bookmarks.value = bookmarkList
+                }
+        }
     }
 
-    internal fun bookmarkRecruitment(recruitmentId: Long) {
-        _bookmarks.removeAt(_bookmarks.indexOf(_bookmarks.find { it.recruitmentId == recruitmentId }))
+    private fun syncBookmarks() {
         viewModelScope.launch(Dispatchers.IO) {
-            recruitmentBookmarkUseCase(recruitmentId).onFailure {
+            syncBookmarksFromServerUseCase().onFailure {
                 when (it) {
                     is BadRequestException -> {
                         postSideEffect(BookmarkSideEffect.BadRequest)
@@ -53,6 +63,10 @@ internal class BookmarkViewModel @Inject constructor(
         }
     }
 }
+
+data class BookmarkState(
+    val bookmarks: List<BookmarksEntity.BookmarkEntity> = emptyList(),
+)
 
 internal sealed interface BookmarkSideEffect {
     data object BadRequest : BookmarkSideEffect
