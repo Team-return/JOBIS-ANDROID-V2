@@ -29,25 +29,28 @@ class BookmarkRepositoryImpl @Inject constructor(
         return localDataSource.observeAllBookmarks()
     }
 
-    override suspend fun toggleBookmark(recruitmentId: Long): Result<Unit> {
+    override suspend fun toggleBookmark(recruitmentId: BookmarkLocalEntity): Result<Unit> {
         return runCatching {
-            val currentStatus = localDataSource.isBookmarked(recruitmentId) ?: false
+            val currentStatus = localDataSource.isBookmarked(recruitmentId.recruitmentId) ?: false
             val newStatus = !currentStatus
 
             localDataSource.insert(
                 BookmarkLocalEntity(
-                    recruitmentId = recruitmentId,
+                    recruitmentId = recruitmentId.recruitmentId,
+                    companyLogoUrl = recruitmentId.companyLogoUrl,
+                    companyName = recruitmentId.companyName,
+                    createdAt = recruitmentId.createdAt,
                     isBookmarked = newStatus,
                     updatedAt = System.currentTimeMillis(),
                 ),
             )
 
             try {
-                bookmarkDataSource.bookmarkRecruitment(recruitmentId)
+                bookmarkDataSource.bookmarkRecruitment(recruitmentId.recruitmentId)
             } catch (e: Exception) {
                 localDataSource.insert(
                     BookmarkLocalEntity(
-                        recruitmentId = recruitmentId,
+                        recruitmentId = recruitmentId.recruitmentId,
                         isBookmarked = currentStatus,
                         updatedAt = System.currentTimeMillis(),
                     ),
