@@ -34,6 +34,7 @@ import kotlinx.collections.immutable.toPersistentList
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -80,7 +81,7 @@ internal fun Bookmarks(
 @Composable
 private fun BookmarkScreen(
     bookmarks: ImmutableList<BookmarksEntity.BookmarkEntity>,
-    onDeleteClick: (Long) -> Unit,
+    onDeleteClick: (BookmarkLocalEntity) -> Unit,
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
 ) {
@@ -161,7 +162,7 @@ private fun BookmarkItem(
     companyName: String,
     recruitmentId: Long,
     date: String,
-    onDeleteClick: (Long) -> Unit,
+    onDeleteClick: (BookmarkLocalEntity) -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -198,7 +199,16 @@ private fun BookmarkItem(
         JobisIconButton(
             drawableResId = JobisIcon.Delete,
             contentDescription = "delete",
-            onClick = { onDeleteClick(recruitmentId) },
+            onClick = {
+                onDeleteClick(
+                    BookmarkLocalEntity(
+                        recruitmentId = recruitmentId,
+                        companyName = companyName,
+                        isBookmarked = true,
+                        companyLogoUrl = companyImageUrl,
+                    ),
+                )
+            },
         )
     }
 }

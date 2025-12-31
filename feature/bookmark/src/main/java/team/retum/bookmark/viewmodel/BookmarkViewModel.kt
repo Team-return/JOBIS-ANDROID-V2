@@ -10,10 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.usecase.entity.BookmarksEntity
 import team.retum.usecase.usecase.bookmark.ObserveAllBookmarksUseCase
 import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
 import team.retum.usecase.usecase.bookmark.ToggleBookmarkUseCase
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +32,7 @@ internal class BookmarkViewModel @Inject constructor(
         observeBookmarks()
     }
 
-    internal fun bookmarkRecruitment(recruitmentId: Long) {
+    internal fun bookmarkRecruitment(recruitmentId: BookmarkLocalEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             toggleBookmarkUseCase(recruitmentId).onFailure {
                 when (it) {
