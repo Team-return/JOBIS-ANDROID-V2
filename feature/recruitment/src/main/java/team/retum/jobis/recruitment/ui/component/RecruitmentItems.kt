@@ -26,6 +26,7 @@ import coil.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import team.retum.common.enums.MilitarySupport
 import team.retum.common.enums.RecruitmentStatus
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.model.RecruitmentItemColor
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -41,7 +42,7 @@ import java.time.LocalDate
 internal fun RecruitmentItems(
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
-    onBookmarkClick: (Long) -> Unit,
+    onBookmarkClick: (BookmarkLocalEntity) -> Unit,
     whetherFetchNextPage: (Int) -> Boolean,
     fetchNextPage: () -> Unit,
 ) {
@@ -72,7 +73,7 @@ private fun RecruitmentItem(
     recruitment: RecruitmentsEntity.RecruitmentEntity,
     onClick: (recruitId: Long) -> Unit,
     bookmarked: Boolean,
-    onBookmarked: (recruitId: Long) -> Unit,
+    onBookmarked: (recruitId: BookmarkLocalEntity) -> Unit,
 ) {
     val (whetherMilitarySupported, year) = when (recruitment.militarySupport) {
         MilitarySupport.TRUE -> stringResource(id = R.string.military_supported) to recruitment.year
@@ -200,19 +201,29 @@ private fun RecruitmentItem(
                 color = statusTextColor,
             )
         }
-        JobisIconButton(
-            modifier = Modifier.padding(vertical = 8.dp),
-            drawableResId = if (bookmarked) {
-                JobisIcon.BookmarkOn
-            } else {
-                JobisIcon.BookmarkOff
-            },
-            contentDescription = "bookmark",
-            onClick = { onBookmarked(recruitment.id) },
-            tint = if (bookmarked) {
-                JobisTheme.colors.onPrimary
-            } else {
-                JobisTheme.colors.onSurfaceVariant
+            JobisIconButton(
+                modifier = Modifier.padding(vertical = 8.dp),
+                drawableResId = if (bookmarked) {
+                    JobisIcon.BookmarkOn
+                } else {
+                    JobisIcon.BookmarkOff
+                },
+                contentDescription = "bookmark",
+                onClick = {
+                    onBookmarked(
+                        BookmarkLocalEntity(
+                            recruitmentId = recruitment.id,
+                            companyLogoUrl = recruitment.companyProfileUrl,
+                            companyName = recruitment.companyName,
+                            createdAt = LocalDate.now().toString(),
+                            isBookmarked = recruitment.bookmarked,
+                        ),
+                    )
+                },
+                tint = if (bookmarked) {
+                    JobisTheme.colors.onPrimary
+                } else {
+                    JobisTheme.colors.onSurfaceVariant
             },
         )
     }

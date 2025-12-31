@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.RecruitmentStatus
+import team.retum.jobis.local.entity.BookmarkLocalEntity
+import team.retum.usecase.entity.BookmarksEntity
 import team.retum.usecase.entity.RecruitmentsEntity
 import team.retum.usecase.usecase.bookmark.ObserveBookmarkStatusUseCase
 import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
@@ -204,7 +206,7 @@ internal class RecruitmentViewModel @Inject constructor(
         return lastVisibleItemIndex == _recruitments.lastIndex && page < totalPage
     }
 
-    internal fun bookmarkRecruitment(recruitmentId: Long) {
+    internal fun bookmarkRecruitment(recruitmentId: BookmarkLocalEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             toggleBookmarkUseCase(recruitmentId).onFailure {
                 postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)

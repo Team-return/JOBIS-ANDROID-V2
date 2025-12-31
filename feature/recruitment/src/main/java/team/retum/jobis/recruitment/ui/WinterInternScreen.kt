@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
@@ -74,7 +75,7 @@ private fun WinterInternScreen(
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: (isWinterIntern: Boolean) -> Unit,
-    onBookmarkClick: (Long) -> Unit,
+    onBookmarkClick: (BookmarkLocalEntity) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
 ) {
