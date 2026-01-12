@@ -1,12 +1,11 @@
 package team.retum.bookmark.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.exception.BadRequestException
@@ -15,7 +14,6 @@ import team.retum.usecase.entity.BookmarksEntity
 import team.retum.usecase.usecase.bookmark.ObserveAllBookmarksUseCase
 import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
 import team.retum.usecase.usecase.bookmark.ToggleBookmarkUseCase
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel

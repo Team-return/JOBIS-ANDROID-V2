@@ -201,29 +201,29 @@ private fun RecruitmentItem(
                 color = statusTextColor,
             )
         }
-            JobisIconButton(
-                modifier = Modifier.padding(vertical = 8.dp),
-                drawableResId = if (bookmarked) {
-                    JobisIcon.BookmarkOn
-                } else {
-                    JobisIcon.BookmarkOff
-                },
-                contentDescription = "bookmark",
-                onClick = {
-                    onBookmarked(
-                        BookmarkLocalEntity(
-                            recruitmentId = recruitment.id,
-                            companyLogoUrl = recruitment.companyProfileUrl,
-                            companyName = recruitment.companyName,
-                            createdAt = LocalDate.now().toString(),
-                            isBookmarked = recruitment.bookmarked,
-                        ),
-                    )
-                },
-                tint = if (bookmarked) {
-                    JobisTheme.colors.onPrimary
-                } else {
-                    JobisTheme.colors.onSurfaceVariant
+        JobisIconButton(
+            modifier = Modifier.padding(vertical = 8.dp),
+            drawableResId = if (bookmarked) {
+                JobisIcon.BookmarkOn
+            } else {
+                JobisIcon.BookmarkOff
+            },
+            contentDescription = "bookmark",
+            onClick = {
+                onBookmarked(
+                    BookmarkLocalEntity(
+                        recruitmentId = recruitment.id,
+                        companyLogoUrl = recruitment.companyProfileUrl,
+                        companyName = recruitment.companyName,
+                        createdAt = LocalDate.now().toString(),
+                        isBookmarked = recruitment.bookmarked,
+                    ),
+                )
+            },
+            tint = if (bookmarked) {
+                JobisTheme.colors.onPrimary
+            } else {
+                JobisTheme.colors.onSurfaceVariant
             },
         )
     }

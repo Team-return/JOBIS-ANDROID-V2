@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class LocalBookmarkDataSourceImpl @Inject constructor(
     private val bookmarkDao: BookmarkDao,
-): LocalBookmarkDataSource {
+) : LocalBookmarkDataSource {
     override fun observeBookmark(recruitmentId: Long): Flow<BookmarkLocalEntity?> =
         bookmarkDao.observeBookmark(recruitmentId)
 
