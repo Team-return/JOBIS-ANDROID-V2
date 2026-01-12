@@ -99,7 +99,6 @@ private fun BookmarkScreen(
         } else {
             LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
                     .background(JobisTheme.colors.background),
             ) {
                 items(
@@ -165,11 +164,13 @@ private fun BookmarkItem(
     onDeleteClick: (BookmarkLocalEntity) -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Row(
             modifier = modifier
                 .weight(1f)
-                .padding(vertical = 16.dp)
                 .clickable(onClick = { onRecruitmentDetailClick(recruitmentId) }),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -177,7 +178,7 @@ private fun BookmarkItem(
             AsyncImage(
                 model = companyImageUrl,
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(48.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
                 contentDescription = "company image",
