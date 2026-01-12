@@ -1,6 +1,5 @@
 package team.retum.data.repository.bookmark
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import team.retum.jobis.local.datasource.bookmark.LocalBookmarkDataSource
@@ -41,7 +40,6 @@ class BookmarkRepositoryImpl @Inject constructor(
                     companyName = recruitmentId.companyName,
                     createdAt = recruitmentId.createdAt,
                     isBookmarked = newStatus,
-                    updatedAt = System.currentTimeMillis(),
                 ),
             )
 
@@ -52,7 +50,6 @@ class BookmarkRepositoryImpl @Inject constructor(
                     BookmarkLocalEntity(
                         recruitmentId = recruitmentId.recruitmentId,
                         isBookmarked = currentStatus,
-                        updatedAt = System.currentTimeMillis(),
                     ),
                 )
                 throw e
@@ -70,7 +67,6 @@ class BookmarkRepositoryImpl @Inject constructor(
                     companyName = it.companyName,
                     createdAt = it.createdAt,
                     isBookmarked = true,
-                    updatedAt = System.currentTimeMillis(),
                 )
             }
 

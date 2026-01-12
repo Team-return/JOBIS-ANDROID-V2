@@ -15,6 +15,4 @@ data class BookmarkLocalEntity(
     val createdAt: String = "",
 
     val isBookmarked: Boolean,
-
-    val updatedAt: Long = System.currentTimeMillis()
 )
