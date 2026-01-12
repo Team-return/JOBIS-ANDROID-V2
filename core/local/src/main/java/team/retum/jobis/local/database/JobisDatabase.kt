@@ -7,7 +7,7 @@ import team.retum.jobis.local.entity.BookmarkLocalEntity
 
 @Database(
     entities = [BookmarkLocalEntity::class],
-    version = 3,
+    version = 4,
 )
 abstract class JobisDatabase : RoomDatabase() {
     abstract fun bookmarkDao(): BookmarkDao
