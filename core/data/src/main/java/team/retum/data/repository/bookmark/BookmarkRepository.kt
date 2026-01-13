@@ -11,6 +11,6 @@ interface BookmarkRepository {
 
     fun observeBookmarkStatus(recruitmentId: Long): Flow<Boolean>
     fun observeAllBookmarks(): Flow<List<BookmarkLocalEntity>>
-    suspend fun toggleBookmark(recruitmentId: BookmarkLocalEntity): Result<Unit>
+    suspend fun toggleBookmark(bookmark: BookmarkLocalEntity): Result<Unit>
     suspend fun syncBookmarksFromServer(): Result<Unit>
 }

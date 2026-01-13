@@ -28,27 +28,30 @@ class BookmarkRepositoryImpl @Inject constructor(
         return localDataSource.observeAllBookmarks()
     }
 
-    override suspend fun toggleBookmark(recruitmentId: BookmarkLocalEntity): Result<Unit> {
+    override suspend fun toggleBookmark(bookmark: BookmarkLocalEntity): Result<Unit> {
         return runCatching {
-            val currentStatus = localDataSource.isBookmarked(recruitmentId.recruitmentId) ?: false
+            val currentStatus = localDataSource.isBookmarked(bookmark.recruitmentId) ?: false
             val newStatus = !currentStatus
 
             localDataSource.insert(
                 BookmarkLocalEntity(
-                    recruitmentId = recruitmentId.recruitmentId,
-                    companyLogoUrl = recruitmentId.companyLogoUrl,
-                    companyName = recruitmentId.companyName,
-                    createdAt = recruitmentId.createdAt,
+                    recruitmentId = bookmark.recruitmentId,
+                    companyLogoUrl = bookmark.companyLogoUrl,
+                    companyName = bookmark.companyName,
+                    createdAt = bookmark.createdAt,
                     isBookmarked = newStatus,
                 ),
             )
 
             try {
-                bookmarkDataSource.bookmarkRecruitment(recruitmentId.recruitmentId)
+                bookmarkDataSource.bookmarkRecruitment(bookmark.recruitmentId)
             } catch (e: Exception) {
                 localDataSource.insert(
                     BookmarkLocalEntity(
-                        recruitmentId = recruitmentId.recruitmentId,
+                        recruitmentId = bookmark.recruitmentId,
+                        companyLogoUrl = bookmark.companyLogoUrl,
+                        companyName = bookmark.companyName,
+                        createdAt = bookmark.createdAt,
                         isBookmarked = currentStatus,
                     ),
                 )
@@ -70,8 +73,7 @@ class BookmarkRepositoryImpl @Inject constructor(
                 )
             }
 
-            localDataSource.deleteAll()
-            localDataSource.insertAll(bookmarks)
+            localDataSource.replaceAll(bookmarks)
         }
     }
 }
