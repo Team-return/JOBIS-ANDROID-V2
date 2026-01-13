@@ -25,7 +25,7 @@ private fun BookmarksResponse.BookmarkResponse.toEntity() = BookmarksEntity.Book
     companyLogoUrl = normalizeLogoUrl(this.companyLogoUrl),
     companyName = this.companyName,
     recruitmentId = this.recruitmentId,
-    createdAt = this.createdAt.substring(0..9),
+    createdAt = if (createdAt.length >= 10) createdAt.substring(0..9) else createdAt,
 )
 
 fun List<BookmarkLocalEntity>.toBookmarkEntities() = map { it.toLocalEntity() }
