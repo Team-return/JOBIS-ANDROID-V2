@@ -25,4 +25,7 @@ class LocalBookmarkDataSourceImpl @Inject constructor(
 
     override suspend fun deleteAll() =
         bookmarkDao.deleteAll()
+
+    override suspend fun replaceAll(bookmarks: List<BookmarkLocalEntity>) =
+        bookmarkDao.replaceAll(bookmarks)
 }

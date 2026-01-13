@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import team.retum.jobis.local.entity.BookmarkLocalEntity
 
@@ -27,4 +28,10 @@ interface BookmarkDao {
 
     @Query("DELETE FROM bookmarks")
     suspend fun deleteAll()
+
+    @Transaction
+    suspend fun replaceAll(bookmarks: List<BookmarkLocalEntity>) {
+        deleteAll()
+        insertAll(bookmarks)
+    }
 }

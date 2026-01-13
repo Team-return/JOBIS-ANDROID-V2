@@ -15,4 +15,6 @@ interface LocalBookmarkDataSource {
     suspend fun insertAll(bookmarks: List<BookmarkLocalEntity>)
 
     suspend fun deleteAll()
+
+    suspend fun replaceAll(bookmarks: List<BookmarkLocalEntity>)
 }
