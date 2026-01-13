@@ -224,7 +224,7 @@ internal class RecruitmentViewModel @Inject constructor(
                 .collect { bookmarkedIds ->
                     _recruitments.forEach { recruitment ->
                         if (recruitment.id == 0L) return@forEach
-                        updateBookmarkInList(recruitment.id, bookmarkedIds.contains(recruitment.id))
+                        updateBookmarkInList(recruitment.id, recruitment.id in bookmarkedIds)
                     }
                 }
         }
