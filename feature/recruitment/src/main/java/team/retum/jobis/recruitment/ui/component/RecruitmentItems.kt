@@ -37,6 +37,7 @@ import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.RecruitmentsEntity
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
 internal fun RecruitmentItems(
@@ -215,7 +216,7 @@ private fun RecruitmentItem(
                         recruitmentId = recruitment.id,
                         companyLogoUrl = recruitment.companyProfileUrl,
                         companyName = recruitment.companyName,
-                        createdAt = LocalDate.now().toString(),
+                        createdAt = LocalDateTime.now().toString(),
                         isBookmarked = recruitment.bookmarked,
                     ),
                 )
