@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -222,15 +223,12 @@ internal class RecruitmentViewModel @Inject constructor(
 
     private fun observeAllBookmarks() {
         viewModelScope.launch {
-            snapshotFlow { _recruitments.toList() }
-                .collectLatest { currentList ->
-                    currentList.forEach { recruitment ->
-                        launch {
-                            observeBookmarkStatusUseCase(recruitment.id)
-                                .collect { isBookmarked ->
-                                    updateBookmarkInList(recruitment.id, isBookmarked)
-                                }
-                        }
+            observeBookmarkStatusUseCase()
+                .map { bookmarks -> bookmarks.map { it.recruitmentId }.toSet() }
+                .collect { bookmarkedIds ->
+                    _recruitments.forEach { recruitment ->
+                        if (recruitment.id == 0L) return@forEach
+                        updateBookmarkInList(recruitment.id, bookmarkedIds.contains(recruitment.id))
                     }
                 }
         }
