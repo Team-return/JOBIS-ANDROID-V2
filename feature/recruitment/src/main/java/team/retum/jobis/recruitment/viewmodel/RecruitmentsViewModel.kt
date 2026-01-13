@@ -1,15 +1,12 @@
 package team.retum.jobis.recruitment.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -17,7 +14,6 @@ import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.local.entity.BookmarkLocalEntity
-import team.retum.usecase.entity.BookmarksEntity
 import team.retum.usecase.entity.RecruitmentsEntity
 import team.retum.usecase.usecase.bookmark.ObserveBookmarkStatusUseCase
 import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
