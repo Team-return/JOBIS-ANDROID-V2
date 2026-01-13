@@ -14,7 +14,7 @@ interface BookmarkDao {
     @Query("SELECT * FROM bookmarks WHERE recruitmentId = :recruitmentId")
     fun observeBookmark(recruitmentId: Long): Flow<BookmarkLocalEntity?>
 
-    @Query("SELECT * FROM bookmarks WHERE isBookmarked = 1 ORDER BY createdAt")
+    @Query("SELECT * FROM bookmarks WHERE isBookmarked = 1 ORDER BY createdAt DESC")
     fun observeAllBookmarks(): Flow<List<BookmarkLocalEntity>>
 
     @Query("SELECT isBookmarked FROM bookmarks WHERE recruitmentId = :recruitmentId")
