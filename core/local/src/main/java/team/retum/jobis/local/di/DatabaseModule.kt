@@ -23,7 +23,6 @@ object DatabaseModule {
             klass = JobisDatabase::class.java,
             name = ResourceKeys.DATABASE_NAME,
         )
-            .fallbackToDestructiveMigration()
             .build()
     }
 
