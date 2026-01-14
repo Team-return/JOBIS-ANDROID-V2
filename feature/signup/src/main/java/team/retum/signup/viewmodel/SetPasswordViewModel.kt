@@ -47,7 +47,7 @@ internal class SetPasswordViewModel @Inject constructor() :
 
     private fun setButtonEnabled() = setState {
         with(state.value) {
-            val hasBlank = password.isBlank() || repeatPassword.isBlank()
+            val hasBlank = (password.isBlank() || repeatPassword.isBlank()) && password != repeatPassword
             val hasInvalidation = showPasswordDescription || showRepeatPasswordDescription
             copy(buttonEnabled = !hasBlank && !hasInvalidation)
         }

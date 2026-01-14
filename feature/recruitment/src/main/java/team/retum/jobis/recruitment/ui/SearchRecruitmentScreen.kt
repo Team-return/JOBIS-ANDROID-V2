@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
@@ -53,7 +54,7 @@ private fun SearchRecruitmentScreen(
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onBackPressed: () -> Unit,
     onRecruitmentClick: (Long) -> Unit,
-    onBookmarkClick: (Long) -> Unit,
+    onBookmarkClick: (BookmarkLocalEntity) -> Unit,
     state: RecruitmentsState,
     onNameChange: (String) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,

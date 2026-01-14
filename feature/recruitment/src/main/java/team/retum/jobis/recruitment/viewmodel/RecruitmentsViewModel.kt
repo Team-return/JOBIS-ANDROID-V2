@@ -13,8 +13,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.RecruitmentStatus
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.usecase.entity.RecruitmentsEntity
-import team.retum.usecase.usecase.bookmark.BookmarkRecruitmentUseCase
+import team.retum.usecase.usecase.bookmark.ObserveBookmarkStatusUseCase
+import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
+import team.retum.usecase.usecase.bookmark.ToggleBookmarkUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentCountUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentsUseCase
 import javax.inject.Inject
@@ -33,9 +36,10 @@ private const val LAST_INDEX_OF_PAGE = 11
 internal class RecruitmentViewModel @Inject constructor(
     private val fetchRecruitmentsUseCase: FetchRecruitmentsUseCase,
     private val fetchRecruitmentCountUseCase: FetchRecruitmentCountUseCase,
-    private val recruitmentBookmarkUseCase: BookmarkRecruitmentUseCase,
+    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
+    private val observeBookmarkStatusUseCase: ObserveBookmarkStatusUseCase,
+    private val syncBookmarksFromServerUseCase: SyncBookmarksFromServerUseCase,
 ) : BaseViewModel<RecruitmentsState, RecruitmentsSideEffect>(RecruitmentsState.getDefaultState()) {
-
     private val _recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity> =
         mutableStateListOf()
     val recruitments: List<RecruitmentsEntity.RecruitmentEntity> = _recruitments
@@ -43,6 +47,8 @@ internal class RecruitmentViewModel @Inject constructor(
     init {
         clear()
         debounceName()
+        syncBookmarks()
+        observeAllBookmarks()
     }
 
     /**
@@ -197,13 +203,37 @@ internal class RecruitmentViewModel @Inject constructor(
         return lastVisibleItemIndex == _recruitments.lastIndex && page < totalPage
     }
 
-    internal fun bookmarkRecruitment(recruitmentId: Long) {
-        val index = _recruitments.indexOf(_recruitments.find { it.id == recruitmentId })
-        val bookmarked = _recruitments[index].bookmarked
-        _recruitments[index] = _recruitments[index].copy(bookmarked = !bookmarked)
-
+    internal fun bookmarkRecruitment(recruitmentId: BookmarkLocalEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            recruitmentBookmarkUseCase(recruitmentId)
+            toggleBookmarkUseCase(recruitmentId).onFailure {
+                postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
+            }
+        }
+    }
+
+    private fun syncBookmarks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            syncBookmarksFromServerUseCase()
+        }
+    }
+
+    private fun observeAllBookmarks() {
+        viewModelScope.launch {
+            observeBookmarkStatusUseCase()
+                .map { bookmarks -> bookmarks.map { it.recruitmentId }.toSet() }
+                .collect { bookmarkedIds ->
+                    _recruitments.forEach { recruitment ->
+                        if (recruitment.id == 0L) return@forEach
+                        updateBookmarkInList(recruitment.id, recruitment.id in bookmarkedIds)
+                    }
+                }
+        }
+    }
+
+    private fun updateBookmarkInList(recruitmentId: Long, isBookmarked: Boolean) {
+        val index = _recruitments.indexOfFirst { it.id == recruitmentId }
+        if (index != -1 && _recruitments[index].bookmarked != isBookmarked) {
+            _recruitments[index] = _recruitments[index].copy(bookmarked = isBookmarked)
         }
     }
 }
