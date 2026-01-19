@@ -115,6 +115,7 @@ androidx-compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room-runtime" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room-runtime" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room-runtime" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit-ktx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

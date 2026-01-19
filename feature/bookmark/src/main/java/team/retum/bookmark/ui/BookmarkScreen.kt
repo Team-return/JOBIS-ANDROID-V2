@@ -27,12 +27,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
+import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
@@ -52,27 +54,24 @@ internal fun Bookmarks(
     bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val bookmarks = bookmarkViewModel.bookmarks.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
-        with(bookmarkViewModel) {
-            clearBookmarks()
-            fetchBookmarks()
-            sideEffect.collect {
-                when (it) {
-                    is BookmarkSideEffect.BadRequest -> {
-                        JobisToast.create(
-                            context = context,
-                            message = context.getString(R.string.toast_fetch_bookmark_bad_request),
-                            drawable = JobisIcon.Error,
-                        ).show()
-                    }
+        bookmarkViewModel.sideEffect.collect {
+            when (it) {
+                is BookmarkSideEffect.BadRequest -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_fetch_bookmark_bad_request),
+                        drawable = JobisIcon.Error,
+                    ).show()
                 }
             }
         }
     }
 
     BookmarkScreen(
-        bookmarks = bookmarkViewModel.bookmarks.toPersistentList(),
+        bookmarks = bookmarks.toPersistentList(),
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
         onRecruitmentDetailClick = onRecruitmentDetailClick,
@@ -82,7 +81,7 @@ internal fun Bookmarks(
 @Composable
 private fun BookmarkScreen(
     bookmarks: ImmutableList<BookmarksEntity.BookmarkEntity>,
-    onDeleteClick: (Long) -> Unit,
+    onDeleteClick: (BookmarkLocalEntity) -> Unit,
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
 ) {
@@ -100,7 +99,6 @@ private fun BookmarkScreen(
         } else {
             LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
                     .background(JobisTheme.colors.background),
             ) {
                 items(
@@ -163,14 +161,16 @@ private fun BookmarkItem(
     companyName: String,
     recruitmentId: Long,
     date: String,
-    onDeleteClick: (Long) -> Unit,
+    onDeleteClick: (BookmarkLocalEntity) -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Row(
             modifier = modifier
                 .weight(1f)
-                .padding(vertical = 16.dp)
                 .clickable(onClick = { onRecruitmentDetailClick(recruitmentId) }),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -178,7 +178,7 @@ private fun BookmarkItem(
             AsyncImage(
                 model = companyImageUrl,
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(48.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
                 contentDescription = "company image",
@@ -200,7 +200,16 @@ private fun BookmarkItem(
         JobisIconButton(
             drawableResId = JobisIcon.Delete,
             contentDescription = "delete",
-            onClick = { onDeleteClick(recruitmentId) },
+            onClick = {
+                onDeleteClick(
+                    BookmarkLocalEntity(
+                        recruitmentId = recruitmentId,
+                        companyName = companyName,
+                        isBookmarked = true,
+                        companyLogoUrl = companyImageUrl,
+                    ),
+                )
+            },
         )
     }
 }
