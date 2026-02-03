@@ -37,12 +37,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
 import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
-import team.retum.jobisdesignsystemv2.utils.clickable
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -53,9 +55,7 @@ fun JobisCalendar(
     modifier: Modifier = Modifier,
     weekendTextColor: Color = JobisTheme.colors.surfaceTint,
     weekdaysTextColor: Color = JobisTheme.colors.onSurfaceVariant,
-    selectedDate: LocalDate = LocalDate.now(),
-    onDateSelected: (LocalDate) -> Unit,
-    eventDates: Set<LocalDate> = emptySet(),
+    eventDates: ImmutableSet<LocalDate> = persistentSetOf(),
 ) {
     val initialPage = Int.MAX_VALUE / 2
     val pagerState = rememberPagerState(initialPage = initialPage) { Int.MAX_VALUE }
@@ -100,8 +100,6 @@ fun JobisCalendar(
             CalendarMonthPage(
                 modifier = Modifier.fillMaxWidth(),
                 month = month,
-                selectedDate = selectedDate,
-                onDateSelected = onDateSelected,
                 eventDates = eventDates,
             )
         }
@@ -190,8 +188,6 @@ private fun CalendarWeekDayRow(
 private fun CalendarMonthPage(
     modifier: Modifier = Modifier,
     month: YearMonth,
-    selectedDate: LocalDate,
-    onDateSelected: (LocalDate) -> Unit,
     eventDates: Set<LocalDate>,
 ) {
     Column(
@@ -224,8 +220,6 @@ private fun CalendarMonthPage(
                     CalendarDayCell(
                         date = date,
                         displayMonth = month,
-                        selectedDate = selectedDate,
-                        onDateSelected = onDateSelected,
                         hasEvent = eventDates.contains(date),
                         isWeekend = dayOfWeekIndex == 0 || dayOfWeekIndex == 6,
                     )
@@ -242,25 +236,22 @@ private fun CalendarMonthPage(
 private fun CalendarDayCell(
     date: LocalDate,
     displayMonth: YearMonth,
-    selectedDate: LocalDate,
-    onDateSelected: (LocalDate) -> Unit,
     hasEvent: Boolean,
     isWeekend: Boolean,
 ) {
     val isToday = date == LocalDate.now()
-    val isSelected = date == selectedDate
     val isCurrentMonthDisplayed = date.month == displayMonth.month && date.year == displayMonth.year
+    val showEventHighlight = hasEvent && isCurrentMonthDisplayed
 
     val textColor = when {
-        isSelected -> JobisTheme.colors.background
+        showEventHighlight -> JobisTheme.colors.background
         isToday -> JobisTheme.colors.primaryContainer
         !isCurrentMonthDisplayed -> JobisTheme.colors.surfaceTint
-        isWeekend -> JobisTheme.colors.surfaceTint
         else -> JobisTheme.colors.onSurfaceVariant
     }
 
-    val backgroundColor = if (isSelected) JobisTheme.colors.primaryContainer else JobisTheme.colors.surface
-    val borderColor = if (isToday && !isSelected) JobisTheme.colors.primaryContainer else JobisTheme.colors.surface
+    val backgroundColor = if (showEventHighlight) JobisTheme.colors.primaryContainer else JobisTheme.colors.surface
+    val borderColor = if (isToday && !showEventHighlight) JobisTheme.colors.primaryContainer else JobisTheme.colors.surface
 
     Box(
         modifier = Modifier
@@ -268,11 +259,10 @@ private fun CalendarDayCell(
             .clip(CircleShape)
             .background(backgroundColor)
             .border(
-                width = if (isToday && !isSelected) 1.dp else 0.dp,
+                width = if (isToday && !showEventHighlight) 1.dp else 0.dp,
                 color = borderColor,
                 shape = CircleShape,
-            )
-            .clickable(onClick = { onDateSelected(date) }),
+            ),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -281,39 +271,23 @@ private fun CalendarDayCell(
             color = textColor,
             textAlign = TextAlign.Center,
         )
-        if (hasEvent && isCurrentMonthDisplayed) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 2.dp)
-                    .size(4.dp)
-                    .clip(CircleShape)
-                    .background(JobisTheme.colors.primaryContainer),
-            )
-        }
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewJobisCalendar() {
-    // Use a fixed date for initial selection
-    val initialSelectedDate = LocalDate.of(2026, 2, 2)
-    var selectedDate by remember { mutableStateOf(initialSelectedDate) }
-
     // Use fixed dates for events
     val eventDates = setOf(
-        LocalDate.of(2026, 2, 5), // Today + 3 days (relative to a fixed point)
-        LocalDate.of(2026, 2, 15), // Current month 15th (relative to a fixed point)
-        LocalDate.of(2026, 1, 10), // Previous month 10th (relative to a fixed point)
+        LocalDate.of(2026, 2, 5),
+        LocalDate.of(2026, 2, 15),
+        LocalDate.of(2026, 1, 10),
     )
 
     JobisDesignSystemV2Theme {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             JobisCalendar(
-                selectedDate = selectedDate,
-                onDateSelected = { selectedDate = it },
-                eventDates = eventDates,
+                eventDates = eventDates.toPersistentSet(),
             )
         }
     }
