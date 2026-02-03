@@ -9,7 +9,7 @@
     <string name="check_employment_status">반별 취업 현황 확인하기</string>
     <string name="all_statistics">전체 통계</string>
 
-    <string name="class_employment">%s/%s</string>
+    <string name="class_employment">%1$s/%2$s</string>
 
     <string name="first_class">1반</string>
     <string name="second_class">2반</string>
