@@ -38,3 +38,7 @@ google-cloud-platform.json
 .DS_Store
 
 *.aab
+
+# skills and reference file
+/.claude
+.agents
