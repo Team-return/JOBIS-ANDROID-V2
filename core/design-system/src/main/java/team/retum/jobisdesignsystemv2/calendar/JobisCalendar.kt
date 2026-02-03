@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,14 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
-import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
-import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
+import team.retum.design_system.R
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -49,22 +47,38 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
+/**
+ * JOBIS에서 사용하는 캘린더 컴포넌트
+ *
+ * @param modifier [JobisCalendar]에 적용될 [Modifier]
+ * @param initialMonth 캘린더에 처음 표시될 월
+ * @param eventDates 이벤트가 있는 날짜 목록
+ * @param weekendTextColor 주말 텍스트 색상
+ * @param weekdaysTextColor 평일 텍스트 색상
+ * @param onMonthChanged 월 변경 시 호출되는 콜백
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun JobisCalendar(
     modifier: Modifier = Modifier,
+    initialMonth: YearMonth = YearMonth.now(),
+    eventDates: ImmutableSet<LocalDate> = persistentSetOf(),
     weekendTextColor: Color = JobisTheme.colors.surfaceTint,
     weekdaysTextColor: Color = JobisTheme.colors.onSurfaceVariant,
-    eventDates: ImmutableSet<LocalDate> = persistentSetOf(),
+    onMonthChanged: ((YearMonth) -> Unit)? = null,
 ) {
     val initialPage = Int.MAX_VALUE / 2
     val pagerState = rememberPagerState(initialPage = initialPage) { Int.MAX_VALUE }
 
-    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+    var currentMonth by remember { mutableStateOf(initialMonth) }
 
     LaunchedEffect(pagerState.currentPage) {
         val monthOffset = pagerState.currentPage - initialPage
-        currentMonth = YearMonth.now().plusMonths(monthOffset.toLong())
+        val newMonth = initialMonth.plusMonths(monthOffset.toLong())
+        if (currentMonth != newMonth) {
+            currentMonth = newMonth
+            onMonthChanged?.invoke(newMonth)
+        }
     }
 
     Column(
@@ -79,10 +93,9 @@ fun JobisCalendar(
             modifier = Modifier.fillMaxWidth(),
             displayedMonth = currentMonth,
             pagerState = pagerState,
-            initialPage = initialPage,
         )
         Spacer(modifier = Modifier.height(27.dp))
-        CalendarWeekDayRow(
+        CalendarWeekDay(
             modifier = Modifier.fillMaxWidth(),
             weekendTextColor = weekendTextColor,
             weekdaysTextColor = weekdaysTextColor,
@@ -95,9 +108,9 @@ fun JobisCalendar(
             contentPadding = PaddingValues(horizontal = 0.dp),
         ) { page ->
             val monthOffset = page - initialPage
-            val month = YearMonth.now().plusMonths(monthOffset.toLong())
+            val month = initialMonth.plusMonths(monthOffset.toLong())
 
-            CalendarMonthPage(
+            CalendarMonthContent(
                 modifier = Modifier.fillMaxWidth(),
                 month = month,
                 eventDates = eventDates,
@@ -112,7 +125,6 @@ private fun CalendarHeader(
     modifier: Modifier = Modifier,
     displayedMonth: YearMonth,
     pagerState: PagerState,
-    initialPage: Int,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -131,7 +143,7 @@ private fun CalendarHeader(
         ) {
             Image(
                 painter = painterResource(id = JobisIcon.Arrow),
-                contentDescription = "Previous Month",
+                contentDescription = stringResource(id = R.string.content_description_previous_month),
                 modifier = Modifier.size(24.dp),
             )
         }
@@ -150,7 +162,7 @@ private fun CalendarHeader(
         ) {
             Image(
                 painter = painterResource(id = JobisIcon.ArrowRight),
-                contentDescription = "Next Month",
+                contentDescription = stringResource(id = R.string.content_description_next_month),
                 modifier = Modifier.size(24.dp),
             )
         }
@@ -158,7 +170,7 @@ private fun CalendarHeader(
 }
 
 @Composable
-private fun CalendarWeekDayRow(
+private fun CalendarWeekDay(
     modifier: Modifier = Modifier,
     weekendTextColor: Color,
     weekdaysTextColor: Color,
@@ -185,7 +197,7 @@ private fun CalendarWeekDayRow(
 }
 
 @Composable
-private fun CalendarMonthPage(
+private fun CalendarMonthContent(
     modifier: Modifier = Modifier,
     month: YearMonth,
     eventDates: Set<LocalDate>,
@@ -216,12 +228,11 @@ private fun CalendarMonthPage(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                weekDates.forEachIndexed { dayOfWeekIndex, date ->
+                weekDates.forEachIndexed { _, date ->
                     CalendarDayCell(
                         date = date,
                         displayMonth = month,
                         hasEvent = eventDates.contains(date),
-                        isWeekend = dayOfWeekIndex == 0 || dayOfWeekIndex == 6,
                     )
                 }
             }
@@ -237,7 +248,6 @@ private fun CalendarDayCell(
     date: LocalDate,
     displayMonth: YearMonth,
     hasEvent: Boolean,
-    isWeekend: Boolean,
 ) {
     val isToday = date == LocalDate.now()
     val isCurrentMonthDisplayed = date.month == displayMonth.month && date.year == displayMonth.year
@@ -271,24 +281,5 @@ private fun CalendarDayCell(
             color = textColor,
             textAlign = TextAlign.Center,
         )
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewJobisCalendar() {
-    // Use fixed dates for events
-    val eventDates = setOf(
-        LocalDate.of(2026, 2, 5),
-        LocalDate.of(2026, 2, 15),
-        LocalDate.of(2026, 1, 10),
-    )
-
-    JobisDesignSystemV2Theme {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            JobisCalendar(
-                eventDates = eventDates.toPersistentSet(),
-            )
-        }
     }
 }

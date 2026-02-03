@@ -25,4 +25,6 @@
     <string name="content_description_information">정보</string>
     <string name="authentication">인증 하기</string>
     <string name="re_send_authentication_code">재발송</string>
+    <string name="content_description_previous_month">이전 달</string>
+    <string name="content_description_next_month">다음 달</string>
 </resources>
