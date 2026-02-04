@@ -39,6 +39,7 @@ google-cloud-platform.json
 
 *.aab
 
-# skills and reference file
+# ai skills and reference file
 /.claude
 .agents
+.opencode
