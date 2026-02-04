@@ -120,6 +120,7 @@ dependencies {
     implementation(project(":feature:application"))
     implementation(project(":feature:employment"))
     implementation(project(":feature:post-review"))
+    implementation(project(":feature:interview-schedule"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)

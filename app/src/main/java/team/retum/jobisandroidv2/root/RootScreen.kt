@@ -47,6 +47,7 @@ internal fun Root(
     initialTab: String?,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
@@ -79,6 +80,7 @@ internal fun Root(
         initialTab = initialTab,
         applicationId = applicationId,
         onAlarmClick = onAlarmClick,
+        onCalendarClick = onCalendarClick,
         showRejectionModal = {
             applicationData = it
             coroutineScope.launch {
@@ -122,6 +124,7 @@ private fun RootScreen(
     initialTab: String?,
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
@@ -181,6 +184,7 @@ private fun RootScreen(
                 home(
                     applicationId = applicationId,
                     onAlarmClick = onAlarmClick,
+                    onCalendarClick = onCalendarClick,
                     showRejectionModal = showRejectionModal,
                     onCompaniesClick = onCompaniesClick,
                     onEmploymentClick = onEmploymentClick,
