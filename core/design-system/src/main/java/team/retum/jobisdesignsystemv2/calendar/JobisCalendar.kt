@@ -67,14 +67,15 @@ fun JobisCalendar(
     weekdaysTextColor: Color = JobisTheme.colors.onSurfaceVariant,
     onMonthChanged: ((YearMonth) -> Unit)? = null,
 ) {
+    val rememberedInitialMonth = remember { initialMonth }
     val initialPage = Int.MAX_VALUE / 2
     val pagerState = rememberPagerState(initialPage = initialPage) { Int.MAX_VALUE }
 
-    var currentMonth by remember { mutableStateOf(initialMonth) }
+    var currentMonth by remember { mutableStateOf(rememberedInitialMonth) }
 
     LaunchedEffect(pagerState.currentPage) {
         val monthOffset = pagerState.currentPage - initialPage
-        val newMonth = initialMonth.plusMonths(monthOffset.toLong())
+        val newMonth = rememberedInitialMonth.plusMonths(monthOffset.toLong())
         if (currentMonth != newMonth) {
             currentMonth = newMonth
             onMonthChanged?.invoke(newMonth)
@@ -108,7 +109,7 @@ fun JobisCalendar(
             contentPadding = PaddingValues(horizontal = 0.dp),
         ) { page ->
             val monthOffset = page - initialPage
-            val month = initialMonth.plusMonths(monthOffset.toLong())
+            val month = rememberedInitialMonth.plusMonths(monthOffset.toLong())
 
             CalendarMonthContent(
                 modifier = Modifier.fillMaxWidth(),
