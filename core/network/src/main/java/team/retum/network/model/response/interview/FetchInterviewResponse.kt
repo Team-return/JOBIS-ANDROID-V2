@@ -2,6 +2,7 @@ package team.retum.network.model.response.interview
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import team.retum.common.enums.HiringProgress
 
 @JsonClass(generateAdapter = true)
 data class FetchInterviewResponse(
@@ -11,7 +12,7 @@ data class FetchInterviewResponse(
     @JsonClass(generateAdapter = true)
     data class InterviewResponse(
         @Json(name = "id") val id: Long,
-        @Json(name = "interview_type") val interviewType: String,
+        @Json(name = "interview_type") val interviewType: HiringProgress,
         @Json(name = "start_date") val startDate: String,
         @Json(name = "end_date") val endDate: String,
         @Json(name = "interview_time") val interviewTime: String,

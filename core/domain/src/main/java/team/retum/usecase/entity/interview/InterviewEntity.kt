@@ -1,6 +1,7 @@
 package team.retum.usecase.entity.interview
 
 import androidx.compose.runtime.Immutable
+import team.retum.common.enums.HiringProgress
 import team.retum.network.model.response.interview.FetchInterviewResponse
 
 @Immutable
@@ -11,7 +12,7 @@ data class InterviewsEntity(
     @Immutable
     data class InterviewEntity(
         val id: Long,
-        val interviewType: String,
+        val interviewType: HiringProgress,
         val startDate: String,
         val endDate: String,
         val interviewTime: String,
