@@ -19,6 +19,7 @@ import team.retum.jobis.change.password.navigation.navigateToResetPassword
 import team.retum.jobis.interests.navigation.navigateToInterests
 import team.retum.jobis.interests.navigation.navigateToInterestsComplete
 import team.retum.jobis.interview.schedule.navigation.navigateToInterviewSchedule
+import team.retum.jobis.interview.schedule.navigation.navigateToWriteInterviewSchedule
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices
@@ -238,6 +239,14 @@ internal class JobisNavigator(
 
     fun navigateToInterviewSchedule() {
         navController.navigateToInterviewSchedule()
+    }
+
+    fun navigateToWriteInterviewSchedule() {
+        navController.navigateToWriteInterviewSchedule()
+    }
+
+    fun navigateToWriteInterviewSchedule(interviewId: Long) {
+        navController.navigateToWriteInterviewSchedule(interviewId)
     }
 
     private fun popBackStack() {

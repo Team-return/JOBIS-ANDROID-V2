@@ -11,6 +11,7 @@ import team.retum.jobis.application.navigation.application
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.interestsComplete
 import team.retum.jobis.interview.schedule.navigation.interviewSchedule
+import team.retum.jobis.interview.schedule.navigation.writeInterviewSchedule
 import team.retum.jobis.notice.navigation.noticeDetails
 import team.retum.jobis.notice.navigation.notices
 import team.retum.jobis.recruitment.navigation.recruitmentDetails
@@ -153,6 +154,11 @@ internal fun NavGraphBuilder.mainNavigation(
             onReviewDetailClick = navigator::navigateToReviewDetails,
         )
         interviewSchedule(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onAddClick = { navigator.navigateToWriteInterviewSchedule() },
+            onEditClick = navigator::navigateToWriteInterviewSchedule,
+        )
+        writeInterviewSchedule(
             onBackPressed = navigator::popBackStackIfNotHome,
         )
     }
