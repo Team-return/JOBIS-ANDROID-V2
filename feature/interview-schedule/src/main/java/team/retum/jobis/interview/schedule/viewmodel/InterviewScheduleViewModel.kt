@@ -9,7 +9,6 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.HiringProgress
 import team.retum.usecase.entity.interview.InterviewsEntity
 import team.retum.usecase.usecase.interview.FetchInterviewUseCase
-import team.retum.usecase.usecase.interview.SetInterviewUseCase
 import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
@@ -17,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 internal class InterviewScheduleViewModel @Inject constructor(
     private val fetchInterviewUseCase: FetchInterviewUseCase,
-    private val setInterviewUseCase: SetInterviewUseCase,
 ) : BaseViewModel<InterviewScheduleState, InterviewScheduleSideEffect>(InterviewScheduleState.getInitialState()) {
 
     init {
@@ -33,6 +31,8 @@ internal class InterviewScheduleViewModel @Inject constructor(
                         totalCount = it.totalCount,
                     )
                 }
+            }.onFailure {
+                postSideEffect(InterviewScheduleSideEffect.FetchFailInterviewSuccess)
             }
         }
     }
@@ -43,34 +43,21 @@ internal class InterviewScheduleViewModel @Inject constructor(
         }
     }
 
-    internal fun setSelectedDate(date: LocalDate) {
-        setState {
-            state.value.copy(selectedDate = date)
-        }
-    }
-
     internal fun setCurrentMonth(month: YearMonth) {
         setState {
             state.value.copy(currentMonth = month)
         }
     }
 
-    internal fun setInterview(interviewModel: InterviewModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            setInterviewUseCase(
-                interviewType = interviewModel.interviewType,
-                startDate = interviewModel.startDate,
-                endDate = interviewModel.endDate,
-                interviewTime = interviewModel.interviewTime,
-                companyName = interviewModel.companyName,
-                location = interviewModel.location,
-                studentId = interviewModel.studentId,
-            ).onSuccess {
-                fetchInterviews()
-                postSideEffect(InterviewScheduleSideEffect.SetInterviewSuccess)
-            }.onFailure {
-                postSideEffect(InterviewScheduleSideEffect.SetInterviewFailed)
-            }
+    internal fun setSelectedInterviewId(interviewId: Long?) {
+        setState {
+            state.value.copy(
+                selectedInterviewId = if (state.value.selectedInterviewId == interviewId) {
+                    null
+                } else {
+                    interviewId
+                }
+            )
         }
     }
 }
@@ -92,6 +79,7 @@ internal data class InterviewScheduleState(
     val selectedTabIndex: Int,
     val selectedDate: LocalDate,
     val currentMonth: YearMonth,
+    val selectedInterviewId: Long?,
 ) {
     companion object {
         fun getInitialState() = InterviewScheduleState(
@@ -100,6 +88,7 @@ internal data class InterviewScheduleState(
             selectedTabIndex = 0,
             selectedDate = LocalDate.now(),
             currentMonth = YearMonth.now(),
+            selectedInterviewId = null,
         )
     }
 
@@ -110,17 +99,8 @@ internal data class InterviewScheduleState(
             }.getOrNull()
         }.toSet()
     }
-
-    fun getInterviewsForSelectedDate(): List<InterviewsEntity.InterviewEntity> {
-        return interviews.filter { interview ->
-            runCatching {
-                LocalDate.parse(interview.startDate) == selectedDate
-            }.getOrDefault(false)
-        }
-    }
 }
 
 internal sealed interface InterviewScheduleSideEffect {
-    data object SetInterviewSuccess : InterviewScheduleSideEffect
-    data object SetInterviewFailed : InterviewScheduleSideEffect
+    data object FetchFailInterviewSuccess : InterviewScheduleSideEffect
 }

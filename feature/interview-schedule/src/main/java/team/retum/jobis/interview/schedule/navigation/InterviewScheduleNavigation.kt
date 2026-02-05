@@ -9,10 +9,14 @@ const val NAVIGATION_INTERVIEW_SCHEDULE = "interviewSchedule"
 
 fun NavGraphBuilder.interviewSchedule(
     onBackPressed: () -> Unit,
+    onAddClick: () -> Unit,
+    onEditClick: (Long) -> Unit,
 ) {
     composable(NAVIGATION_INTERVIEW_SCHEDULE) {
         InterviewSchedule(
             onBackPressed = onBackPressed,
+            onAddClick = onAddClick,
+            onEditClick = onEditClick,
         )
     }
 }
