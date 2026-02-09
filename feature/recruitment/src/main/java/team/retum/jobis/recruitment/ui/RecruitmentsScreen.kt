@@ -47,10 +47,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import okhttp3.internal.wait
 import androidx.compose.foundation.border
-
-
+import androidx.compose.foundation.layout.PaddingValues
 
 
 @Composable
@@ -115,6 +113,15 @@ private fun RecruitmentsScreen(
         mutableStateOf("기본순")
     }
 
+    val sortItems = listOf(
+        "기본순",
+        "매출",
+        "직원 ↓",
+        "직원 ↑",
+        "공고마감 ↓",
+        "공고마감 ↑"
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -142,19 +149,20 @@ private fun RecruitmentsScreen(
             fetchNextPage = fetchNextPage,
         )
     }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 70.dp, end = 24.dp, bottom = 8.dp),
-            horizontalArrangement = Arrangement.End,
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.clickable {
-                    sortExpanded = true
-                }
-            )
-            { Row(
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 24.dp, top = 70.dp, end = 24.dp, bottom = 8.dp),
+        horizontalArrangement = Arrangement.End,
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.clickable {
+                sortExpanded = true
+            }
+        )
+        {
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
@@ -170,69 +178,48 @@ private fun RecruitmentsScreen(
                     tint = Color(0xFF7F7F7F)
                 )
             }
-                DropdownMenu(
-                    expanded = sortExpanded,
-                    onDismissRequest = { sortExpanded = false },
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .border(
-                            width = 1.dp,
-                            color = Color(0xFF7F7F7F),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .background(Color.White),
-                    tonalElevation = 0.dp,
-                    shadowElevation = 0.dp
-                ) {
-                    DropdownMenuItem(
-                        text = { Text("기본순") },
-                        onClick = {
-                            selectedSort = "기본순"
-                            sortExpanded = false
-                            // TODO : viewModel에 정렬할 값 전달할 수 있게
-                        }
+            DropdownMenu(
+                expanded = sortExpanded,
+                onDismissRequest = { sortExpanded = false },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .border(
+                        width = 1.dp,
+                        color = Color(0xFFCCCCCC),
+                        shape = RoundedCornerShape(8.dp)
                     )
+                    .background(Color.White),
+                tonalElevation = 0.dp,
+                shadowElevation = 0.dp
+            ) {
+                sortItems.forEach { text ->
+                    val isSelected: Boolean
+                    if (text == selectedSort) {
+                        isSelected = true
+                    } else {
+                        isSelected = false
+                    }
                     DropdownMenuItem(
-                        text = { Text("매출") },
+                        text = {
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                            Text(
+                                text = text,
+                                color = if (isSelected) Color(0xFF2F53FF) else Color(0xFF7F7F7F),
+                                fontSize = 14.sp
+                            )
+                                }
+                        },
                         onClick = {
-                            selectedSort = "매출"
+                            selectedSort = text
                             sortExpanded = false
-                            // TODO : viewModel에 정렬할 값 전달할 수 있게
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("직원 ↓") },
-                        onClick = {
-                            selectedSort = "직원 ↓"
-                            sortExpanded = false
-                            // TODO : viewModel에 정렬할 값 전달할 수 있게
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("직원 ↑") },
-                        onClick = {
-                            selectedSort = "직원 ↑"
-                            sortExpanded = false
-                            // TODO : viewModel에 정렬할 값 전달할 수 있게
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("공고마감 ↓") },
-                        onClick = {
-                            selectedSort = "공고마감 ↓"
-                            sortExpanded = false
-                            // TODO : viewModel에 정렬할 값 전달할 수 있게
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("공고마감 ↑") },
-                        onClick = {
-                            selectedSort = "공고마감 ↑"
-                            sortExpanded = false
-                            // TODO : viewModel에 정렬할 값 전달할 수 있게
-                        }
+                        },
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                     )
                 }
+            }
         }
     }
 }
