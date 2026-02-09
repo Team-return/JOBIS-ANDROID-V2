@@ -40,12 +40,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import okhttp3.internal.wait
+import androidx.compose.foundation.border
+
+
 
 
 @Composable
@@ -168,6 +173,16 @@ private fun RecruitmentsScreen(
                 DropdownMenu(
                     expanded = sortExpanded,
                     onDismissRequest = { sortExpanded = false },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .border(
+                            width = 1.dp,
+                            color = Color(0xFF7F7F7F),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .background(Color.White),
+                    tonalElevation = 0.dp,
+                    shadowElevation = 0.dp
                 ) {
                     DropdownMenuItem(
                         text = { Text("기본순") },
