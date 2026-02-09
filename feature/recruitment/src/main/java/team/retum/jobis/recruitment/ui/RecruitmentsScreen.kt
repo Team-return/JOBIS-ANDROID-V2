@@ -25,8 +25,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.RecruitmentsEntity
-import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.collections.immutable.persistentListOf
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenu
@@ -40,6 +38,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.collections.immutable.persistentListOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -131,78 +137,110 @@ private fun RecruitmentsScreen(
             fetchNextPage = fetchNextPage,
         )
     }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 24.dp, top = 72.dp, end = 24.dp, bottom = 8.dp),
-        horizontalArrangement = Arrangement.End,
-    ) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.clickable {
-            sortExpanded = true
-        }
-    )
-    {
-        Text(
-            text = "$selectedSort ▾ ",
-            maxLines = 1,
-        )
-        DropdownMenu(
-            expanded = sortExpanded,
-            onDismissRequest = { sortExpanded = false },
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 24.dp, top = 70.dp, end = 24.dp, bottom = 8.dp),
+            horizontalArrangement = Arrangement.End,
         ) {
-            DropdownMenuItem(
-                text = { Text("기본순") },
-                onClick = {
-                    selectedSort = "기본순"
-                    sortExpanded = false
-                    // TODO : viewModel에 정렬할 값 전달할 수 있게
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.clickable {
+                    sortExpanded = true
                 }
             )
-            DropdownMenuItem(
-                text = { Text("매출") },
-                onClick = {
-                    selectedSort = "매출"
-                    sortExpanded = false
-                    // TODO : viewModel에 정렬할 값 전달할 수 있게
+            { Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "$selectedSort",
+                    maxLines = 1,
+                    color = Color(0xFF7F7F7F),
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.width(2.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_down),
+                    contentDescription = "정렬 펼치기",
+                    tint = Color(0xFF7F7F7F)
+                )
+            }
+                DropdownMenu(
+                    expanded = sortExpanded,
+                    onDismissRequest = { sortExpanded = false },
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("기본순") },
+                        onClick = {
+                            selectedSort = "기본순"
+                            sortExpanded = false
+                            // TODO : viewModel에 정렬할 값 전달할 수 있게
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("매출") },
+                        onClick = {
+                            selectedSort = "매출"
+                            sortExpanded = false
+                            // TODO : viewModel에 정렬할 값 전달할 수 있게
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("직원 ↓") },
+                        onClick = {
+                            selectedSort = "직원 ↓"
+                            sortExpanded = false
+                            // TODO : viewModel에 정렬할 값 전달할 수 있게
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("직원 ↑") },
+                        onClick = {
+                            selectedSort = "직원 ↑"
+                            sortExpanded = false
+                            // TODO : viewModel에 정렬할 값 전달할 수 있게
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("공고마감 ↓") },
+                        onClick = {
+                            selectedSort = "공고마감 ↓"
+                            sortExpanded = false
+                            // TODO : viewModel에 정렬할 값 전달할 수 있게
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("공고마감 ↑") },
+                        onClick = {
+                            selectedSort = "공고마감 ↑"
+                            sortExpanded = false
+                            // TODO : viewModel에 정렬할 값 전달할 수 있게
+                        }
+                    )
                 }
-            )
-            DropdownMenuItem(
-                text = { Text("직원 ↓") },
-                onClick = {
-                    selectedSort = "직원 ↓"
-                    sortExpanded = false
-                    // TODO : viewModel에 정렬할 값 전달할 수 있게
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("직원 ↑") },
-                onClick = {
-                    selectedSort = "직원 ↑"
-                    sortExpanded = false
-                    // TODO : viewModel에 정렬할 값 전달할 수 있게
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("공고마감 ↓") },
-                onClick = {
-                    selectedSort = "공고마감 ↓"
-                    sortExpanded = false
-                    // TODO : viewModel에 정렬할 값 전달할 수 있게
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("공고마감 ↑") },
-                onClick = {
-                    selectedSort = "공고마감 ↑"
-                    sortExpanded = false
-                    // TODO : viewModel에 정렬할 값 전달할 수 있게
-                }
-            )
         }
     }
-    }
+}
 
+@Preview(showBackground = true)
+@Composable
+fun RecruitmentPreview() {
+    RecruitmentsScreen(
+        recruitments = persistentListOf(
+            RecruitmentsEntity.RecruitmentEntity.getDefaultEntity().copy(
+                id = 1,
+                companyName = "당근마켓",
+                hiringJobs = "Android",
+                trainPay = 3000000,
+                bookmarked = true,
+                year = 2025,
+            )
+        ),
+        onRecruitmentClick = {},
+        onRecruitmentFilterClick = {},
+        onSearchRecruitmentClick = {},
+        onBookmarkClick = {},
+        whetherFetchNextPage = { false },
+        fetchNextPage = {}
+    )
 }
