@@ -261,8 +261,8 @@ private fun CalendarDayCell(
         else -> JobisTheme.colors.onSurfaceVariant
     }
 
-    val backgroundColor = if (showEventHighlight) JobisTheme.colors.primaryContainer else JobisTheme.colors.surface
-    val borderColor = if (isToday && !showEventHighlight) JobisTheme.colors.primaryContainer else JobisTheme.colors.surface
+    val backgroundColor = if (showEventHighlight) JobisTheme.colors.onPrimary else JobisTheme.colors.surface
+    val borderColor = if (isToday && !showEventHighlight) JobisTheme.colors.onPrimary else JobisTheme.colors.surface
 
     Box(
         modifier = Modifier
