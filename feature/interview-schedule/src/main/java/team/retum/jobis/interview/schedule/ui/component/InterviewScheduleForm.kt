@@ -1,7 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package team.retum.jobis.interview.schedule.ui.component
 
+import android.view.MenuItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -9,22 +8,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.MenuItemColors
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview_schedule.R
@@ -71,59 +69,70 @@ fun InterviewScheduleForm(
             },
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        ExposedDropdownMenuBox(
-            expanded = showHiringProgressDropdown,
-            onExpandedChange = { onHiringProgressDropdownClick() },
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+                .padding(
+                    horizontal = 24.dp,
+                    vertical = 12.dp,
+                ),
         ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(),
-                value = hiringProgress.value,
-                onValueChange = { },
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showHiringProgressDropdown) },
-                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                placeholder = {
-                    JobisText(
-                        text = stringResource(id = R.string.interview_type_hint),
-                        style = JobisTypography.Body,
-                        color = JobisTheme.colors.onSurfaceVariant,
-                    )
-                },
-                label = {
-                    JobisText(
-                        text = stringResource(id = R.string.interview_type),
-                        style = JobisTypography.Description,
-                        color = JobisTheme.colors.onSurface,
-                    )
-                }
+            JobisText(
+                modifier = Modifier.padding(bottom = 4.dp),
+                text = stringResource(id = R.string.interview_type),
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onSurface,
             )
-
-            ExposedDropdownMenu(
-                expanded = showHiringProgressDropdown,
-                onDismissRequest = { onHiringProgressDropdownClick() },
-            ) {
-                HiringProgress.entries.forEach { progress ->
-                    DropdownMenuItem(
-                        text = {
-                            JobisText(
-                                text = progress.value,
-                                style = JobisTypography.Body,
-                            )
-                        },
-                        onClick = { onHiringProgressSelected(progress) },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                    )
+            Box {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 48.dp)
+                        .clickable(onClick = onHiringProgressDropdownClick),
+                    shape = RoundedCornerShape(12.dp),
+                    color = JobisTheme.colors.inverseSurface,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 16.dp,
+                                vertical = 8.dp,
+                            ),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        JobisText(
+                            modifier = Modifier.weight(1f),
+                            text = hiringProgress.value,
+                            style = JobisTypography.Body,
+                            color = JobisTheme.colors.onBackground,
+                        )
+                        Icon(
+                            painter = painterResource(id = JobisIcon.ArrowRight),
+                            contentDescription = "dropdown",
+                            tint = JobisTheme.colors.onSurfaceVariant,
+                        )
+                    }
+                }
+                DropdownMenu(
+                    expanded = showHiringProgressDropdown,
+                    onDismissRequest = onHiringProgressDropdownClick,
+                    containerColor = JobisTheme.colors.background,
+                ) {
+                    HiringProgress.entries.forEach { progress ->
+                        DropdownMenuItem(
+                            text = {
+                                JobisText(
+                                    text = progress.value,
+                                    style = JobisTypography.Body,
+                                )
+                            },
+                            onClick = { onHiringProgressSelected(progress) },
+                        )
+                    }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(12.dp))
 
         JobisTextField(
             title = stringResource(id = R.string.interview_location),
@@ -229,11 +238,6 @@ private fun DateCard(
                 color = JobisTheme.colors.inverseSurface,
                 shape = RoundedCornerShape(12.dp),
             )
-            .border(
-                width = 1.dp,
-                color = JobisTheme.colors.surfaceVariant,
-                shape = RoundedCornerShape(12.dp),
-            )
             .padding(
                 horizontal = 16.dp,
                 vertical = 12.dp,
@@ -244,15 +248,16 @@ private fun DateCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Icon(
-                painter = painterResource(id = JobisIcon.Calendar),
-                contentDescription = "calendar",
-                tint = JobisTheme.colors.onSurfaceVariant,
-            )
             JobisText(
                 text = date.format(dateFormatter),
                 style = JobisTypography.Body,
                 color = JobisTheme.colors.onBackground,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(id = JobisIcon.InterviewCalendar),
+                contentDescription = "calendar",
+                tint = JobisTheme.colors.onSurfaceVariant,
             )
         }
     }

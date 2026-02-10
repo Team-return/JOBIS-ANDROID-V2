@@ -147,7 +147,7 @@ private fun CalendarTabContent(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         JobisCalendar(
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
             initialMonth = state.currentMonth,
             eventDates = state.getEventDates().toImmutableSet(),
             onMonthChanged = onMonthChanged,
@@ -155,7 +155,7 @@ private fun CalendarTabContent(
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(17.dp)
+                .height(16.dp)
                 .background(JobisTheme.colors.inverseSurface),
         )
         if (state.interviews.isEmpty()) {
