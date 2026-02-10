@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package team.retum.jobis.interview.schedule.ui.component
 
 import androidx.compose.foundation.background
@@ -10,9 +12,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview_schedule.R
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -35,10 +42,12 @@ import java.time.format.DateTimeFormatter
 fun InterviewScheduleForm(
     company: String,
     onCompanyChange: (String) -> Unit,
-    interviewType: String,
-    onInterviewTypeChange: (String) -> Unit,
     location: String,
     onLocationChange: (String) -> Unit,
+    hiringProgress: HiringProgress,
+    showHiringProgressDropdown: Boolean,
+    onHiringProgressSelected: (HiringProgress) -> Unit,
+    onHiringProgressDropdownClick: () -> Unit,
     startDate: LocalDate,
     endDate: LocalDate,
     isDateRange: Boolean,
@@ -62,15 +71,59 @@ fun InterviewScheduleForm(
             },
         )
 
-        JobisTextField(
-            modifier = Modifier.height(92.dp),
-            title = stringResource(id = R.string.interview_type),
-            value = { interviewType },
-            hint = stringResource(id = R.string.interview_type_hint),
-            onValueChange = onInterviewTypeChange,
-            singleLine = false,
-            imeAction = ImeAction.Default,
-        )
+        Spacer(modifier = Modifier.height(12.dp))
+
+        ExposedDropdownMenuBox(
+            expanded = showHiringProgressDropdown,
+            onExpandedChange = { onHiringProgressDropdownClick() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor(),
+                value = hiringProgress.value,
+                onValueChange = { },
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showHiringProgressDropdown) },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                placeholder = {
+                    JobisText(
+                        text = stringResource(id = R.string.interview_type_hint),
+                        style = JobisTypography.Body,
+                        color = JobisTheme.colors.onSurfaceVariant,
+                    )
+                },
+                label = {
+                    JobisText(
+                        text = stringResource(id = R.string.interview_type),
+                        style = JobisTypography.Description,
+                        color = JobisTheme.colors.onSurface,
+                    )
+                }
+            )
+
+            ExposedDropdownMenu(
+                expanded = showHiringProgressDropdown,
+                onDismissRequest = { onHiringProgressDropdownClick() },
+            ) {
+                HiringProgress.entries.forEach { progress ->
+                    DropdownMenuItem(
+                        text = {
+                            JobisText(
+                                text = progress.value,
+                                style = JobisTypography.Body,
+                            )
+                        },
+                        onClick = { onHiringProgressSelected(progress) },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(12.dp))
 
         JobisTextField(
             title = stringResource(id = R.string.interview_location),

@@ -36,12 +36,13 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import team.retum.common.enums.HiringProgress
 
 @Composable
 internal fun WriteInterviewSchedule(
     onBackPressed: () -> Unit,
-    writeInterviewScheduleViewModel: WriteInterviewScheduleViewModel = hiltViewModel(),
 ) {
+    val writeInterviewScheduleViewModel: WriteInterviewScheduleViewModel = hiltViewModel()
     val state by writeInterviewScheduleViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -84,10 +85,11 @@ internal fun WriteInterviewSchedule(
         onBackPressed = onBackPressed,
         state = state,
         onCompanyChange = writeInterviewScheduleViewModel::setCompany,
-        onInterviewTypeChange = writeInterviewScheduleViewModel::setInterviewType,
         onLocationChange = writeInterviewScheduleViewModel::setLocation,
-        onStartDateClick = writeInterviewScheduleViewModel::showStartDatePicker,
-        onEndDateClick = writeInterviewScheduleViewModel::showEndDatePicker,
+        onHiringProgressSelected = writeInterviewScheduleViewModel::onHiringProgressSelected,
+        onHiringProgressDropdownClick = writeInterviewScheduleViewModel::onHiringProgressDropdownClick,
+        onStartDateClick = writeInterviewScheduleViewModel::onStartDateClick,
+        onEndDateClick = writeInterviewScheduleViewModel::onEndDateClick,
         onIsDateRangeChange = writeInterviewScheduleViewModel::setIsDateRange,
         onTimeChange = writeInterviewScheduleViewModel::setTime,
         onSaveClick = writeInterviewScheduleViewModel::onSaveClick,
@@ -97,12 +99,9 @@ internal fun WriteInterviewSchedule(
                 DatePickerTarget.END -> writeInterviewScheduleViewModel.setEndDate(date)
             }
         },
-        onDismissDatePicker = writeInterviewScheduleViewModel::hideDatePicker,
-        onConfirmEdit = {
-            writeInterviewScheduleViewModel.hideConfirmDialog()
-            writeInterviewScheduleViewModel.saveInterview()
-        },
-        onDismissConfirmDialog = writeInterviewScheduleViewModel::hideConfirmDialog,
+        onDismissDatePicker = writeInterviewScheduleViewModel::onDismissDatePicker,
+        onConfirmEdit = writeInterviewScheduleViewModel::onConfirmEdit,
+        onDismissConfirmDialog = writeInterviewScheduleViewModel::onDismissConfirmDialog,
     )
 }
 
@@ -112,8 +111,9 @@ private fun WriteInterviewScheduleScreen(
     onBackPressed: () -> Unit,
     state: WriteInterviewScheduleState,
     onCompanyChange: (String) -> Unit,
-    onInterviewTypeChange: (String) -> Unit,
     onLocationChange: (String) -> Unit,
+    onHiringProgressSelected: (HiringProgress) -> Unit,
+    onHiringProgressDropdownClick: () -> Unit,
     onStartDateClick: () -> Unit,
     onEndDateClick: () -> Unit,
     onIsDateRangeChange: (Boolean) -> Unit,
@@ -149,10 +149,12 @@ private fun WriteInterviewScheduleScreen(
             InterviewScheduleForm(
                 company = state.company,
                 onCompanyChange = if (state.isEditMode) { _ -> } else onCompanyChange,
-                interviewType = state.interviewType,
-                onInterviewTypeChange = onInterviewTypeChange,
                 location = state.location,
                 onLocationChange = onLocationChange,
+                hiringProgress = state.hiringProgress,
+                showHiringProgressDropdown = state.showHiringProgressDropdown,
+                onHiringProgressSelected = onHiringProgressSelected,
+                onHiringProgressDropdownClick = onHiringProgressDropdownClick,
                 startDate = state.startDate,
                 endDate = state.endDate,
                 isDateRange = state.isDateRange,

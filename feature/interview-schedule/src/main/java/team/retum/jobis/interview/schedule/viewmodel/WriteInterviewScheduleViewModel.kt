@@ -70,7 +70,7 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
                     setState {
                         state.value.copy(
                             company = it.companyName,
-                            interviewType = it.interviewType.value,
+                            hiringProgress = it.interviewType,
                             location = it.location,
                             startDate = startDate,
                             endDate = endDate ?: startDate,
@@ -89,15 +89,24 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
         }
     }
 
-    internal fun setInterviewType(interviewType: String) {
-        setState {
-            state.value.copy(interviewType = interviewType).updateButtonEnabled()
-        }
-    }
-
     internal fun setLocation(location: String) {
         setState {
             state.value.copy(location = location).updateButtonEnabled()
+        }
+    }
+
+    internal fun onHiringProgressSelected(hiringProgress: HiringProgress) {
+        setState {
+            state.value.copy(
+                hiringProgress = hiringProgress,
+                showHiringProgressDropdown = false,
+            ).updateButtonEnabled()
+        }
+    }
+
+    internal fun onHiringProgressDropdownClick() {
+        setState {
+            state.value.copy(showHiringProgressDropdown = !state.value.showHiringProgressDropdown)
         }
     }
 
@@ -133,31 +142,31 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
         }
     }
 
-    internal fun showStartDatePicker() {
+    internal fun onStartDateClick() {
         setState {
             state.value.copy(showDatePicker = DatePickerTarget.START)
         }
     }
 
-    internal fun showEndDatePicker() {
+    internal fun onEndDateClick() {
         setState {
             state.value.copy(showDatePicker = DatePickerTarget.END)
         }
     }
 
-    internal fun hideDatePicker() {
+    internal fun onDismissDatePicker() {
         setState {
             state.value.copy(showDatePicker = null)
         }
     }
 
-    internal fun showConfirmDialog() {
+    internal fun onConfirmEditClick() {
         setState {
             state.value.copy(showConfirmDialog = true)
         }
     }
 
-    internal fun hideConfirmDialog() {
+    internal fun onDismissConfirmDialog() {
         setState {
             state.value.copy(showConfirmDialog = false)
         }
@@ -165,13 +174,18 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
 
     internal fun onSaveClick() {
         if (isEditMode) {
-            showConfirmDialog()
+            onConfirmEditClick()
         } else {
             saveInterview()
         }
     }
 
-    internal fun saveInterview() {
+    internal fun onConfirmEdit() {
+        setState { state.value.copy(showConfirmDialog = false) }
+        saveInterview()
+    }
+
+    private fun saveInterview() {
         val currentState = state.value
         if (currentState.isLoading) return
 
@@ -186,7 +200,7 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             setInterviewUseCase(
-                interviewType = HiringProgress.TECH_INTERVIEW,
+                interviewType = currentState.hiringProgress,
                 startDate = currentState.startDate.format(DATE_FORMATTER),
                 endDate = if (currentState.isDateRange) {
                     currentState.endDate.format(DATE_FORMATTER)
@@ -224,7 +238,6 @@ internal data class WriteInterviewScheduleState(
     val isEditMode: Boolean,
     val studentId: Long,
     val company: String,
-    val interviewType: String,
     val location: String,
     val startDate: LocalDate,
     val endDate: LocalDate,
@@ -234,13 +247,14 @@ internal data class WriteInterviewScheduleState(
     val showConfirmDialog: Boolean,
     val isLoading: Boolean,
     val buttonEnabled: Boolean,
+    val hiringProgress: HiringProgress,
+    val showHiringProgressDropdown: Boolean,
 ) {
     companion object {
         fun getInitialState() = WriteInterviewScheduleState(
             isEditMode = false,
             studentId = 0L,
             company = "",
-            interviewType = "",
             location = "",
             startDate = LocalDate.now(),
             endDate = LocalDate.now(),
@@ -250,15 +264,17 @@ internal data class WriteInterviewScheduleState(
             showConfirmDialog = false,
             isLoading = false,
             buttonEnabled = false,
+            hiringProgress = HiringProgress.DOCUMENT,
+            showHiringProgressDropdown = false,
         )
     }
 
     fun updateButtonEnabled(): WriteInterviewScheduleState {
         return copy(
             buttonEnabled = company.isNotBlank() &&
-                    interviewType.isNotBlank() &&
                     location.isNotBlank() &&
-                    time.isNotBlank()
+                    time.isNotBlank() &&
+                    hiringProgress != HiringProgress.DOCUMENT
         )
     }
 }
