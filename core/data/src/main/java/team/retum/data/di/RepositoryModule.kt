@@ -24,10 +24,10 @@ import team.retum.data.repository.file.FileRepository
 import team.retum.data.repository.file.FileRepositoryImpl
 import team.retum.data.repository.interests.InterestsRepository
 import team.retum.data.repository.interests.InterestsRepositoryImpl
-import team.retum.data.repository.interview.InterviewRepository
-import team.retum.data.repository.interview.InterviewRepositoryImpl
 import team.retum.data.repository.intern.WinterInterRepository
 import team.retum.data.repository.intern.WinterInternRepositoryImpl
+import team.retum.data.repository.interview.InterviewRepository
+import team.retum.data.repository.interview.InterviewRepositoryImpl
 import team.retum.data.repository.notice.NoticeRepository
 import team.retum.data.repository.notice.NoticeRepositoryImpl
 import team.retum.data.repository.notification.NotificationRepository
