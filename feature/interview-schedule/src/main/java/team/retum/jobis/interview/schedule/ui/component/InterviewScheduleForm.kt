@@ -101,11 +101,20 @@ fun InterviewScheduleForm(
                             ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        val isPlaceholder = hiringProgress == HiringProgress.DOCUMENT
                         JobisText(
                             modifier = Modifier.weight(1f),
-                            text = hiringProgress.value,
+                            text = if (isPlaceholder) {
+                                stringResource(id = R.string.interview_type_hint)
+                            } else {
+                                hiringProgress.value
+                            },
                             style = JobisTypography.Body,
-                            color = JobisTheme.colors.onBackground,
+                            color = if (isPlaceholder) {
+                                JobisTheme.colors.onSurfaceVariant
+                            } else {
+                                JobisTheme.colors.onBackground
+                            },
                         )
                         Icon(
                             painter = painterResource(id = JobisIcon.ArrowRight),
