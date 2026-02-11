@@ -3,6 +3,8 @@ package team.retum.jobis.interview.schedule.ui
 import android.accounts.AccountManager
 import android.app.Activity
 import android.util.Log
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
+
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -57,9 +59,43 @@ internal fun WriteInterviewSchedule(
     val googleCalendarHelper = remember { GoogleCalendarHelper(context) }
     val scope = rememberCoroutineScope()
 
+    val consentLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            state.pendingCalendarEvent?.let { eventData ->
+                scope.launch {
+                    googleCalendarHelper.insertEvent(eventData)
+                        .onSuccess {
+                            JobisToast.create(
+                                context = context,
+                                message = context.getString(R.string.calendar_add_success),
+                            ).show()
+                        }
+                        .onFailure { e ->
+                            Log.e("GoogleCalendar", "Failed to insert event after consent", e)
+                            JobisToast.create(
+                                context = context,
+                                message = context.getString(R.string.calendar_add_failed),
+                                drawable = JobisIcon.Error,
+                            ).show()
+                        }
+                    onBackPressed()
+                }
+            }
+        } else {
+            JobisToast.create(
+                context = context,
+                message = context.getString(R.string.add_success_message),
+            ).show()
+            onBackPressed()
+        }
+    }
+
     val accountPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) { result ->
+        writeInterviewScheduleViewModel.dismissCalendarDialog()
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)?.let { accountName ->
                 googleCalendarHelper.credential.selectedAccountName = accountName
@@ -67,28 +103,23 @@ internal fun WriteInterviewSchedule(
                     scope.launch {
                         googleCalendarHelper.insertEvent(eventData)
                             .onSuccess {
-                                Log.d("GoogleCalendar", "Event created successfully: $it")
                                 JobisToast.create(
                                     context = context,
                                     message = context.getString(R.string.calendar_add_success),
                                 ).show()
-                                JobisToast.create(
-                                    context = context,
-                                    message = context.getString(R.string.add_success_message),
-                                ).show()
                                 onBackPressed()
                             }
                             .onFailure { e ->
-                                JobisToast.create(
-                                    context = context,
-                                    message = context.getString(R.string.calendar_add_failed),
-                                    drawable = JobisIcon.Error,
-                                ).show()
-                                JobisToast.create(
-                                    context = context,
-                                    message = context.getString(R.string.add_success_message),
-                                ).show()
-                                onBackPressed()
+                                if (e is UserRecoverableAuthIOException) {
+                                    consentLauncher.launch(e.intent)
+                                } else {
+                                    JobisToast.create(
+                                        context = context,
+                                        message = context.getString(R.string.calendar_add_failed),
+                                        drawable = JobisIcon.Error,
+                                    ).show()
+                                    onBackPressed()
+                                }
                             }
                     }
                 }
@@ -100,7 +131,6 @@ internal fun WriteInterviewSchedule(
             ).show()
             onBackPressed()
         }
-        writeInterviewScheduleViewModel.dismissCalendarDialog()
     }
 
     LaunchedEffect(Unit) {
@@ -170,6 +200,8 @@ internal fun WriteInterviewSchedule(
         onBackPressed = onBackPressed,
         state = state,
         onCompanyChange = writeInterviewScheduleViewModel::setCompany,
+        onCompanySelected = writeInterviewScheduleViewModel::onCompanySelected,
+        onDismissCompanySuggestions = writeInterviewScheduleViewModel::dismissCompanySuggestions,
         onLocationChange = writeInterviewScheduleViewModel::setLocation,
         onHiringProgressSelected = writeInterviewScheduleViewModel::onHiringProgressSelected,
         onHiringProgressDropdownClick = writeInterviewScheduleViewModel::onHiringProgressDropdownClick,
@@ -196,6 +228,8 @@ private fun WriteInterviewScheduleScreen(
     onBackPressed: () -> Unit,
     state: WriteInterviewScheduleState,
     onCompanyChange: (String) -> Unit,
+    onCompanySelected: (Long, String) -> Unit,
+    onDismissCompanySuggestions: () -> Unit,
     onLocationChange: (String) -> Unit,
     onHiringProgressSelected: (HiringProgress) -> Unit,
     onHiringProgressDropdownClick: () -> Unit,
@@ -234,6 +268,10 @@ private fun WriteInterviewScheduleScreen(
             InterviewScheduleForm(
                 company = state.company,
                 onCompanyChange = if (state.isEditMode) { _ -> } else onCompanyChange,
+                companySuggestions = if (state.isEditMode) emptyList() else state.companySuggestions,
+                showCompanySuggestions = if (state.isEditMode) false else state.showCompanySuggestions,
+                onCompanySelected = onCompanySelected,
+                onDismissCompanySuggestions = onDismissCompanySuggestions,
                 location = state.location,
                 onLocationChange = onLocationChange,
                 hiringProgress = state.hiringProgress,

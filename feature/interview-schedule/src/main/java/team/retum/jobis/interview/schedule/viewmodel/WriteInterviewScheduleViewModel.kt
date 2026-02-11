@@ -5,14 +5,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview.schedule.navigation.ARG_INTERVIEW_ID
 import team.retum.jobis.interview.schedule.util.CalendarEventData
-import team.retum.usecase.usecase.interests.FetchInterestsUseCase
+import team.retum.usecase.usecase.company.FetchCompaniesUseCase
+import team.retum.usecase.usecase.company.FetchCompanyDetailsUseCase
 import team.retum.usecase.usecase.interview.FetchInterviewUseCase
 import team.retum.usecase.usecase.interview.SetInterviewUseCase
+import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -22,16 +26,20 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val setInterviewUseCase: SetInterviewUseCase,
     private val fetchInterviewUseCase: FetchInterviewUseCase,
-    private val fetchInterestsUseCase: FetchInterestsUseCase,
+    private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
+    private val fetchCompaniesUseCase: FetchCompaniesUseCase,
+    private val fetchCompanyDetailsUseCase: FetchCompanyDetailsUseCase,
 ) : BaseViewModel<WriteInterviewScheduleState, WriteInterviewScheduleSideEffect>(
     WriteInterviewScheduleState.getInitialState()
 ) {
 
     private val interviewId: Long = savedStateHandle.get<Long>(ARG_INTERVIEW_ID) ?: 0L
     private val isEditMode: Boolean get() = interviewId != 0L
+    private var searchJob: Job? = null
 
     companion object {
         private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        private const val DEBOUNCE_DELAY = 500L
     }
 
     init {
@@ -44,11 +52,8 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
 
     private fun fetchStudentId() {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchInterestsUseCase().onSuccess { interestsEntity ->
-                if (interestsEntity.interests.isNotEmpty()) {
-                    val id = interestsEntity.interests.first().studentId.toLong()
-                    setState { state.value.copy(studentId = id) }
-                }
+            fetchStudentInformationUseCase().onSuccess {
+                setState { state.value.copy(studentId = it.studentId) }
             }
         }
     }
@@ -87,6 +92,56 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
     internal fun setCompany(company: String) {
         setState {
             state.value.copy(company = company).updateButtonEnabled()
+        }
+        searchJob?.cancel()
+        if (company.isBlank()) {
+            setState {
+                state.value.copy(
+                    companySuggestions = emptyList(),
+                    showCompanySuggestions = false,
+                )
+            }
+            return
+        }
+        searchJob = viewModelScope.launch(Dispatchers.IO) {
+            delay(DEBOUNCE_DELAY)
+            fetchCompaniesUseCase(page = 1, name = company).onSuccess { result ->
+                val suggestions = result.companies.map {
+                    CompanySuggestion(id = it.id, name = it.name)
+                }
+                setState {
+                    state.value.copy(
+                        companySuggestions = suggestions,
+                        showCompanySuggestions = suggestions.isNotEmpty(),
+                    )
+                }
+            }
+        }
+    }
+
+    internal fun onCompanySelected(id: Long, name: String) {
+        searchJob?.cancel()
+        setState {
+            state.value.copy(
+                company = name,
+                companySuggestions = emptyList(),
+                showCompanySuggestions = false,
+            ).updateButtonEnabled()
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchCompanyDetailsUseCase(companyId = id).onSuccess { details ->
+                details.mainAddress?.let { address ->
+                    setState {
+                        state.value.copy(location = address).updateButtonEnabled()
+                    }
+                }
+            }
+        }
+    }
+
+    internal fun dismissCompanySuggestions() {
+        setState {
+            state.value.copy(showCompanySuggestions = false)
         }
     }
 
@@ -231,6 +286,7 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
                 location = currentState.location,
                 studentId = currentState.studentId,
             ).onSuccess {
+                setState { state.value.copy(isLoading = false) }
                 if (isEditMode) {
                     postSideEffect(WriteInterviewScheduleSideEffect.EditSuccess)
                 } else {
@@ -263,6 +319,12 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
 }
 
 @Immutable
+internal data class CompanySuggestion(
+    val id: Long,
+    val name: String,
+)
+
+@Immutable
 internal data class WriteInterviewScheduleState(
     val isEditMode: Boolean,
     val studentId: Long,
@@ -280,6 +342,8 @@ internal data class WriteInterviewScheduleState(
     val showHiringProgressDropdown: Boolean,
     val showCalendarDialog: Boolean,
     val pendingCalendarEvent: CalendarEventData?,
+    val companySuggestions: List<CompanySuggestion>,
+    val showCompanySuggestions: Boolean,
 ) {
     companion object {
         fun getInitialState() = WriteInterviewScheduleState(
@@ -299,6 +363,8 @@ internal data class WriteInterviewScheduleState(
             showHiringProgressDropdown = false,
             showCalendarDialog = false,
             pendingCalendarEvent = null,
+            companySuggestions = emptyList(),
+            showCompanySuggestions = false,
         )
     }
 

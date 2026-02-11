@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import team.retum.common.enums.HiringProgress
+import team.retum.jobis.interview.schedule.viewmodel.CompanySuggestion
 import team.retum.jobis.interview_schedule.R
 import team.retum.jobisdesignsystemv2.checkbox.JobisCheckBox
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
@@ -37,9 +38,13 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun InterviewScheduleForm(
+internal fun InterviewScheduleForm(
     company: String,
     onCompanyChange: (String) -> Unit,
+    companySuggestions: List<CompanySuggestion>,
+    showCompanySuggestions: Boolean,
+    onCompanySelected: (Long, String) -> Unit,
+    onDismissCompanySuggestions: () -> Unit,
     location: String,
     onLocationChange: (String) -> Unit,
     hiringProgress: HiringProgress,
@@ -57,17 +62,36 @@ fun InterviewScheduleForm(
     isEditMode: Boolean = false,
 ) {
     Column {
-        JobisTextField(
-            title = stringResource(id = R.string.company),
-            value = { company },
-            hint = stringResource(id = R.string.company_hint),
-            onValueChange = onCompanyChange,
-            fieldColor = if (isEditMode) {
-                JobisTheme.colors.surfaceVariant
-            } else {
-                JobisTheme.colors.inverseSurface
-            },
-        )
+        Box {
+            JobisTextField(
+                title = stringResource(id = R.string.company),
+                value = { company },
+                hint = stringResource(id = R.string.company_hint),
+                onValueChange = onCompanyChange,
+                fieldColor = if (isEditMode) {
+                    JobisTheme.colors.surfaceVariant
+                } else {
+                    JobisTheme.colors.inverseSurface
+                },
+            )
+            DropdownMenu(
+                expanded = showCompanySuggestions,
+                onDismissRequest = onDismissCompanySuggestions,
+                containerColor = JobisTheme.colors.background,
+            ) {
+                companySuggestions.forEach { suggestion ->
+                    DropdownMenuItem(
+                        text = {
+                            JobisText(
+                                text = suggestion.name,
+                                style = JobisTypography.Body,
+                            )
+                        },
+                        onClick = { onCompanySelected(suggestion.id, suggestion.name) },
+                    )
+                }
+            }
+        }
 
         Column(
             modifier = Modifier
