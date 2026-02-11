@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
+import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 
 
 @Composable
@@ -166,8 +167,9 @@ private fun RecruitmentsScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "$selectedSort",
+                    text = selectedSort,
                     maxLines = 1,
+                    style = JobisTypography.Description,
                     color = Color(0xFF7F7F7F),
                     fontSize = 14.sp
                 )
@@ -208,7 +210,8 @@ private fun RecruitmentsScreen(
                             Text(
                                 text = text,
                                 color = if (isSelected) Color(0xFF2F53FF) else Color(0xFF7F7F7F),
-                                fontSize = 14.sp
+                                fontSize = 14.sp,
+                                style = JobisTypography.Description
                             )
                                 }
                         },
