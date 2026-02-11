@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
-import team.retum.common.enums.HiringProgress
 import team.retum.usecase.entity.interview.InterviewsEntity
 import team.retum.usecase.usecase.interview.FetchInterviewUseCase
 import java.time.LocalDate
@@ -18,11 +17,7 @@ internal class InterviewScheduleViewModel @Inject constructor(
     private val fetchInterviewUseCase: FetchInterviewUseCase,
 ) : BaseViewModel<InterviewScheduleState, InterviewScheduleSideEffect>(InterviewScheduleState.getInitialState()) {
 
-    init {
-        fetchInterviews()
-    }
-
-    private fun fetchInterviews() {
+    internal fun fetchInterviews() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchInterviewUseCase().onSuccess {
                 setState {
@@ -32,7 +27,7 @@ internal class InterviewScheduleViewModel @Inject constructor(
                     )
                 }
             }.onFailure {
-                postSideEffect(InterviewScheduleSideEffect.FetchFailInterviewSuccess)
+                postSideEffect(InterviewScheduleSideEffect.FetchInterviewFailed)
             }
         }
     }
@@ -61,16 +56,6 @@ internal class InterviewScheduleViewModel @Inject constructor(
         }
     }
 }
-
-internal data class InterviewModel(
-     val interviewType: HiringProgress,
-     val startDate: String,
-     val endDate: String,
-     val interviewTime: String,
-     val companyName: String,
-     val location: String,
-     val studentId: Long
-)
 
 @Immutable
 internal data class InterviewScheduleState(
@@ -102,5 +87,5 @@ internal data class InterviewScheduleState(
 }
 
 internal sealed interface InterviewScheduleSideEffect {
-    data object FetchFailInterviewSuccess : InterviewScheduleSideEffect
+    data object FetchInterviewFailed : InterviewScheduleSideEffect
 }
