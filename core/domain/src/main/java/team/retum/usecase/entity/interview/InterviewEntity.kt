@@ -14,7 +14,7 @@ data class InterviewsEntity(
         val id: Long,
         val interviewType: HiringProgress,
         val startDate: String,
-        val endDate: String,
+        val endDate: String?,
         val interviewTime: String,
         val companyName: String,
         val location: String,

@@ -25,7 +25,7 @@ fun InterviewsEntity.InterviewEntity.toUiModel(isSelected: Boolean = false): Int
         interviewType = interviewType.value,
         location = location,
         startDate = formatDate(startDate),
-        endDate = if (endDate.isNotEmpty()) formatDate(endDate) else null,
+        endDate = endDate?.takeIf { it.isNotEmpty() }?.let { formatDate(it) },
         interviewTime = formatTime(interviewTime),
         isSelected = isSelected,
     )
