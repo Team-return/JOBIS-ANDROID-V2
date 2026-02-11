@@ -95,3 +95,9 @@
 
 # keep everything in this package from being renamed only
 -keepnames class _COROUTINE.** { *; }
+
+# Google Calendar API
+-keep class com.google.api.** { *; }
+-keep class com.google.http.** { *; }
+-dontwarn com.google.api.client.**
+-dontwarn com.google.http.client.**

@@ -19,4 +19,8 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.play.services.auth)
+    implementation(libs.google.api.client.android)
+    implementation(libs.google.api.services.calendar)
+    implementation(libs.google.http.client.gson)
 }
