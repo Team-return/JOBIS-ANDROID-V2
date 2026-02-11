@@ -10,7 +10,7 @@
     <string name="company">기업</string>
     <string name="company_hint">면접을 보는 기업을 알려주세요</string>
     <string name="interview_type">면접 종류</string>
-    <string name="interview_type_hint">면접 종류를 입력해주세요</string>
+    <string name="interview_type_hint">면접 종류를 선택해주세요</string>
     <string name="interview_location">면접 장소</string>
     <string name="interview_location_hint">면접 장소를 입력해주세요</string>
     <string name="interview_date">면접 일자</string>
@@ -36,4 +36,12 @@
     <string name="edit_success_message">면접 일정이 수정되었습니다.</string>
     <string name="edit_failed_message">면접 일정 수정에 실패했습니다.</string>
     <string name="fetch_interview_fail">면접 일정을 조회 하지 못했어요</string>
+
+    <!-- Google Calendar -->
+    <string name="calendar_dialog_title">Google Calendar에 추가</string>
+    <string name="calendar_dialog_description">면접 일정을 Google Calendar에 추가하시겠습니까?</string>
+    <string name="calendar_dialog_confirm">추가</string>
+    <string name="calendar_dialog_cancel">괜찮아요</string>
+    <string name="calendar_add_success">캘린더에 추가되었습니다.</string>
+    <string name="calendar_add_failed">캘린더 추가에 실패했습니다.</string>
 </resources>

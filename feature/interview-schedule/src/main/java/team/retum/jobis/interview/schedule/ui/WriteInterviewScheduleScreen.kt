@@ -1,5 +1,10 @@
 package team.retum.jobis.interview.schedule.ui
 
+import android.accounts.AccountManager
+import android.app.Activity
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,12 +20,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
+import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview.schedule.ui.component.InterviewScheduleForm
+import team.retum.jobis.interview.schedule.util.GoogleCalendarHelper
 import team.retum.jobis.interview.schedule.viewmodel.DatePickerTarget
 import team.retum.jobis.interview.schedule.viewmodel.WriteInterviewScheduleSideEffect
 import team.retum.jobis.interview.schedule.viewmodel.WriteInterviewScheduleState
@@ -36,7 +46,6 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import team.retum.common.enums.HiringProgress
 
 @Composable
 internal fun WriteInterviewSchedule(
@@ -45,16 +54,60 @@ internal fun WriteInterviewSchedule(
     val writeInterviewScheduleViewModel: WriteInterviewScheduleViewModel = hiltViewModel()
     val state by writeInterviewScheduleViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val googleCalendarHelper = remember { GoogleCalendarHelper(context) }
+    val scope = rememberCoroutineScope()
+
+    val accountPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)?.let { accountName ->
+                googleCalendarHelper.credential.selectedAccountName = accountName
+                state.pendingCalendarEvent?.let { eventData ->
+                    scope.launch {
+                        googleCalendarHelper.insertEvent(eventData)
+                            .onSuccess {
+                                Log.d("GoogleCalendar", "Event created successfully: $it")
+                                JobisToast.create(
+                                    context = context,
+                                    message = context.getString(R.string.calendar_add_success),
+                                ).show()
+                                JobisToast.create(
+                                    context = context,
+                                    message = context.getString(R.string.add_success_message),
+                                ).show()
+                                onBackPressed()
+                            }
+                            .onFailure { e ->
+                                JobisToast.create(
+                                    context = context,
+                                    message = context.getString(R.string.calendar_add_failed),
+                                    drawable = JobisIcon.Error,
+                                ).show()
+                                JobisToast.create(
+                                    context = context,
+                                    message = context.getString(R.string.add_success_message),
+                                ).show()
+                                onBackPressed()
+                            }
+                    }
+                }
+            }
+        } else {
+            JobisToast.create(
+                context = context,
+                message = context.getString(R.string.add_success_message),
+            ).show()
+            onBackPressed()
+        }
+        writeInterviewScheduleViewModel.dismissCalendarDialog()
+    }
 
     LaunchedEffect(Unit) {
         writeInterviewScheduleViewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is WriteInterviewScheduleSideEffect.AddSuccess -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.add_success_message),
-                    ).show()
-                    onBackPressed()
+                is WriteInterviewScheduleSideEffect.AddSuccessRequestCalendar -> {
+                    writeInterviewScheduleViewModel.showCalendarDialog(sideEffect.eventData)
                 }
                 is WriteInterviewScheduleSideEffect.AddFailed -> {
                     JobisToast.create(
@@ -79,6 +132,38 @@ internal fun WriteInterviewSchedule(
                 }
             }
         }
+    }
+
+    if (state.showCalendarDialog) {
+        JobisDialog(
+            onDismissRequest = {
+                writeInterviewScheduleViewModel.dismissCalendarDialog()
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.add_success_message),
+                ).show()
+                onBackPressed()
+            },
+            title = stringResource(id = R.string.calendar_dialog_title),
+            description = stringResource(id = R.string.calendar_dialog_description),
+            subButtonText = stringResource(id = R.string.calendar_dialog_cancel),
+            mainButtonText = stringResource(id = R.string.calendar_dialog_confirm),
+            subButtonColor = ButtonColor.Default,
+            mainButtonColor = ButtonColor.Primary,
+            onSubButtonClick = {
+                writeInterviewScheduleViewModel.dismissCalendarDialog()
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.add_success_message),
+                ).show()
+                onBackPressed()
+            },
+            onMainButtonClick = {
+                accountPickerLauncher.launch(
+                    googleCalendarHelper.credential.newChooseAccountIntent()
+                )
+            },
+        )
     }
 
     WriteInterviewScheduleScreen(

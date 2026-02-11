@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview.schedule.navigation.ARG_INTERVIEW_ID
+import team.retum.jobis.interview.schedule.util.CalendarEventData
 import team.retum.usecase.usecase.interests.FetchInterestsUseCase
 import team.retum.usecase.usecase.interview.FetchInterviewUseCase
 import team.retum.usecase.usecase.interview.SetInterviewUseCase
@@ -185,6 +186,24 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
         saveInterview()
     }
 
+    internal fun showCalendarDialog(eventData: CalendarEventData) {
+        setState {
+            state.value.copy(
+                showCalendarDialog = true,
+                pendingCalendarEvent = eventData,
+            )
+        }
+    }
+
+    internal fun dismissCalendarDialog() {
+        setState {
+            state.value.copy(
+                showCalendarDialog = false,
+                pendingCalendarEvent = null,
+            )
+        }
+    }
+
     private fun saveInterview() {
         val currentState = state.value
         if (currentState.isLoading) return
@@ -212,13 +231,23 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
                 location = currentState.location,
                 studentId = currentState.studentId,
             ).onSuccess {
-                postSideEffect(
-                    if (isEditMode) {
-                        WriteInterviewScheduleSideEffect.EditSuccess
-                    } else {
-                        WriteInterviewScheduleSideEffect.AddSuccess
-                    }
-                )
+                if (isEditMode) {
+                    postSideEffect(WriteInterviewScheduleSideEffect.EditSuccess)
+                } else {
+                    val eventData = CalendarEventData(
+                        title = "${currentState.company} 면접",
+                        description = "면접 유형: ${currentState.hiringProgress.value}",
+                        location = currentState.location,
+                        startDate = currentState.startDate.format(DATE_FORMATTER),
+                        endDate = if (currentState.isDateRange) {
+                            currentState.endDate.format(DATE_FORMATTER)
+                        } else {
+                            currentState.startDate.format(DATE_FORMATTER)
+                        },
+                        interviewTime = formattedTime,
+                    )
+                    postSideEffect(WriteInterviewScheduleSideEffect.AddSuccessRequestCalendar(eventData))
+                }
             }.onFailure {
                 setState { state.value.copy(isLoading = false) }
                 postSideEffect(
@@ -249,6 +278,8 @@ internal data class WriteInterviewScheduleState(
     val buttonEnabled: Boolean,
     val hiringProgress: HiringProgress,
     val showHiringProgressDropdown: Boolean,
+    val showCalendarDialog: Boolean,
+    val pendingCalendarEvent: CalendarEventData?,
 ) {
     companion object {
         fun getInitialState() = WriteInterviewScheduleState(
@@ -266,6 +297,8 @@ internal data class WriteInterviewScheduleState(
             buttonEnabled = false,
             hiringProgress = HiringProgress.DOCUMENT,
             showHiringProgressDropdown = false,
+            showCalendarDialog = false,
+            pendingCalendarEvent = null,
         )
     }
 
@@ -285,7 +318,7 @@ internal enum class DatePickerTarget {
 }
 
 internal sealed interface WriteInterviewScheduleSideEffect {
-    data object AddSuccess : WriteInterviewScheduleSideEffect
+    data class AddSuccessRequestCalendar(val eventData: CalendarEventData) : WriteInterviewScheduleSideEffect
     data object AddFailed : WriteInterviewScheduleSideEffect
     data object EditSuccess : WriteInterviewScheduleSideEffect
     data object EditFailed : WriteInterviewScheduleSideEffect
