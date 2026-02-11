@@ -74,6 +74,7 @@ internal class SearchRecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = null,
                     recruitStatus = null,
+                    sortType = null,
                 ).onSuccess {
                     recruitments.addAll(it.recruitments)
                 }
@@ -92,6 +93,7 @@ internal class SearchRecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = null,
                     recruitStatus = null,
+                    sortType = null,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                 }

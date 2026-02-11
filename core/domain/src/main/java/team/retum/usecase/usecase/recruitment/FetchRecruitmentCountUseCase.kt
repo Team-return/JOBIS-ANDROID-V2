@@ -16,6 +16,7 @@ class FetchRecruitmentCountUseCase @Inject constructor(
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
+        sortType: String?,
     ) = runCatching {
         recruitmentRepository.fetchRecruitmentPageCount(
             name = name,
@@ -25,6 +26,7 @@ class FetchRecruitmentCountUseCase @Inject constructor(
             militarySupport = militarySupport,
             years = years,
             recruitStatus = recruitStatus,
+            sortType = sortType,
         ).toRecruitmentCountEntity()
     }
 }

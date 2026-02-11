@@ -106,6 +106,10 @@ internal class RecruitmentViewModel @Inject constructor(
         state.value.copy(status = status)
     }
 
+    internal fun setSortType(sortType: String?) = setState {
+        state.value.copy(sortType = sortType)
+    }
+
     internal fun fetchRecruitments() {
         addRecruitmentEntities()
         addPage()
@@ -120,6 +124,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = years,
                     recruitStatus = status,
+                    sortType = sortType,
                 ).onSuccess {
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
@@ -171,6 +176,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = years,
                     recruitStatus = status,
+                    sortType = sortType,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
@@ -248,6 +254,7 @@ internal data class RecruitmentsState(
     val showRecruitmentsEmptyContent: Boolean,
     val years: ImmutableList<Int>?,
     val status: RecruitmentStatus?,
+    val sortType: String?,
 ) {
     companion object {
         fun getDefaultState() = RecruitmentsState(
@@ -260,6 +267,7 @@ internal data class RecruitmentsState(
             showRecruitmentsEmptyContent = false,
             years = null,
             status = null,
+            sortType = null,
         )
     }
 }

@@ -17,6 +17,7 @@ class FetchRecruitmentsUseCase @Inject constructor(
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
+        sortType: String?,
     ) = runCatching {
         recruitmentRepository.fetchRecruitments(
             page = page,
@@ -27,6 +28,7 @@ class FetchRecruitmentsUseCase @Inject constructor(
             militarySupport = militarySupport,
             years = years,
             recruitStatus = recruitStatus,
+            sortType = sortType,
         ).toRecruitmentsEntity()
     }
 }
