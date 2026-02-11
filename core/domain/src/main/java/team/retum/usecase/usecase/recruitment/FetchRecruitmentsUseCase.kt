@@ -1,5 +1,6 @@
 package team.retum.usecase.usecase.recruitment
 
+import team.retum.common.enums.RecruitSortType
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.data.repository.recruitment.RecruitmentRepository
 import team.retum.usecase.entity.toRecruitmentsEntity
@@ -17,7 +18,7 @@ class FetchRecruitmentsUseCase @Inject constructor(
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
-        sortType: String?,
+        sortType: RecruitSortType?,
     ) = runCatching {
         recruitmentRepository.fetchRecruitments(
             page = page,
@@ -28,7 +29,7 @@ class FetchRecruitmentsUseCase @Inject constructor(
             militarySupport = militarySupport,
             years = years,
             recruitStatus = recruitStatus,
-            sortType = sortType,
+            sortType = sortType?.apiValue,
         ).toRecruitmentsEntity()
     }
 }
