@@ -21,6 +21,8 @@ import team.retum.usecase.usecase.bookmark.ToggleBookmarkUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentCountUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentsUseCase
 import javax.inject.Inject
+import team.retum.common.enums.RecruitSortType
+
 
 private const val NUMBER_OF_ITEM_ON_PAGE = 12
 private const val LAST_INDEX_OF_PAGE = 11
@@ -106,8 +108,15 @@ internal class RecruitmentViewModel @Inject constructor(
         state.value.copy(status = status)
     }
 
-    internal fun setSortType(sortType: String?) = setState {
-        state.value.copy(sortType = sortType)
+    internal fun setSortType(sortType: RecruitSortType?) {
+        _recruitments.clear()
+        setState {
+            state.value.copy(
+                page = 0L,
+                sortType = sortType,
+            )
+        }
+        fetchTotalRecruitmentCount()
     }
 
     internal fun fetchRecruitments() {
@@ -176,7 +185,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = years,
                     recruitStatus = status,
-                    sortType = sortType,
+                    sortType = sortType?.apiValue,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
@@ -254,7 +263,7 @@ internal data class RecruitmentsState(
     val showRecruitmentsEmptyContent: Boolean,
     val years: ImmutableList<Int>?,
     val status: RecruitmentStatus?,
-    val sortType: String?,
+    val sortType: RecruitSortType?
 ) {
     companion object {
         fun getDefaultState() = RecruitmentsState(
@@ -267,7 +276,7 @@ internal data class RecruitmentsState(
             showRecruitmentsEmptyContent = false,
             years = null,
             status = null,
-            sortType = null,
+            sortType = RecruitSortType.TAKE
         )
     }
 }
