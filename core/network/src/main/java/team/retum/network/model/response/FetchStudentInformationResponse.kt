@@ -6,6 +6,7 @@ import team.retum.common.enums.Department
 
 @JsonClass(generateAdapter = true)
 data class FetchStudentInformationResponse(
+    @Json(name = "student_id") val studentId: Long,
     @Json(name = "student_name") val studentName: String,
     @Json(name = "student_gcn") val studentGcn: String,
     @Json(name = "department") val department: Department,

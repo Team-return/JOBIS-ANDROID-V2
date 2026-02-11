@@ -135,6 +135,7 @@ internal data class MyPageState(
                 studentGcn = "",
                 department = Department.SOFTWARE_DEVELOP,
                 profileImageUrl = "",
+                studentId = 0,
             ),
             showSignOutModal = false,
             showWithdrawalModal = false,
