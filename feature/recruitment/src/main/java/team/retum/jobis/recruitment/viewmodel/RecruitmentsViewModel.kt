@@ -276,7 +276,7 @@ internal data class RecruitmentsState(
             showRecruitmentsEmptyContent = false,
             years = null,
             status = null,
-            sortType = RecruitSortType.TAKE
+            sortType = null
         )
     }
 }

@@ -1,5 +1,6 @@
 package team.retum.jobis.recruitment.ui
 
+import androidx.compose.runtime.collectAsState
 import RecruitSortType
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -61,6 +62,8 @@ internal fun Recruitments(
     recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val state by recruitmentViewModel.state.collectAsState()
+    val currentSortType = state.sortType
 
     LaunchedEffect(Unit) {
         with(recruitmentViewModel) {
@@ -88,14 +91,15 @@ internal fun Recruitments(
 
     RecruitmentsScreen(
         recruitments = recruitmentViewModel.recruitments.toPersistentList(),
+        currentSortType = currentSortType,
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
         onSearchRecruitmentClick = onSearchRecruitmentClick,
         onBookmarkClick = recruitmentViewModel::bookmarkRecruitment,
         whetherFetchNextPage = recruitmentViewModel::whetherFetchNextPage,
         fetchNextPage = recruitmentViewModel::fetchRecruitments,
-        onSortChange = { sortType ->
-            recruitmentViewModel.setSortType(sortType)
+        onSortChange = { newSortType ->
+            recruitmentViewModel.setSortType(newSortType)
         }
     )
 }
@@ -103,20 +107,17 @@ internal fun Recruitments(
 @Composable
 private fun RecruitmentsScreen(
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
+    currentSortType: RecruitSortType?,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: (Boolean) -> Unit,
     onBookmarkClick: (BookmarkLocalEntity) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
-    onSortChange: (RecruitSortType) -> Unit,
+    onSortChange: (RecruitSortType?) -> Unit,
 ) {
     var sortExpanded by remember {
         mutableStateOf(false)
-    }
-
-    var selectedSort by remember {
-        mutableStateOf("기본순")
     }
 
     val sortItems = listOf(
@@ -128,15 +129,27 @@ private fun RecruitmentsScreen(
         "공고마감 ↑"
     )
 
-    fun getSortType(label: String): RecruitSortType = when (label) {
-        "기본순" -> RecruitSortType.TAKE
-        "직원 ↓" -> RecruitSortType.WORKERS_COUNT_DESC
-        "직원 ↑" -> RecruitSortType.WORKERS_COUNT_ASC
-        "공고마감 ↓" -> RecruitSortType.DEADLINE_DESC
-        "공고마감 ↑" -> RecruitSortType.DEADLINE_ASC
+    val selectedSortText = when (currentSortType) {
+        null -> "기본순"
+        RecruitSortType.TAKE -> "매출"
+        RecruitSortType.WORKERS_COUNT_ASC -> "직원 ↓"
+        RecruitSortType.WORKERS_COUNT_DESC -> "직원 ↑"
+        RecruitSortType.DEADLINE_ASC -> "공고마감 ↓"
+        RecruitSortType.DEADLINE_DESC -> "공고마감 ↑"
+        else -> "기본순"
+    }
+
+    fun getSortType(label: String): RecruitSortType? = when (label) {
+        "기본순" -> null
+        "매출" -> RecruitSortType.TAKE
+        "직원 ↓" -> RecruitSortType.WORKERS_COUNT_ASC
+        "직원 ↑" -> RecruitSortType.WORKERS_COUNT_DESC
+        "공고마감 ↓" -> RecruitSortType.DEADLINE_ASC
+        "공고마감 ↑" -> RecruitSortType.DEADLINE_DESC
         else -> RecruitSortType.TAKE
     }
 
+    RecruitSortType.DEADLINE_DESC
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -181,7 +194,7 @@ private fun RecruitmentsScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = selectedSort,
+                    text = selectedSortText,
                     maxLines = 1,
                     style = JobisTypography.Description,
                     color = Color(0xFF7F7F7F),
@@ -210,7 +223,7 @@ private fun RecruitmentsScreen(
             ) {
                 sortItems.forEach { text ->
                     val isSelected: Boolean
-                    if (text == selectedSort) {
+                    if (text == selectedSortText) {
                         isSelected = true
                     } else {
                         isSelected = false
@@ -230,7 +243,6 @@ private fun RecruitmentsScreen(
                                 }
                         },
                         onClick = {
-                            selectedSort = text
                             sortExpanded = false
                             onSortChange(getSortType(text))
                         },
@@ -246,6 +258,7 @@ private fun RecruitmentsScreen(
 @Composable
 fun RecruitmentPreview() {
     RecruitmentsScreen(
+        currentSortType = RecruitSortType.TAKE,
         recruitments = persistentListOf(
             RecruitmentsEntity.RecruitmentEntity.getDefaultEntity().copy(
                 id = 1,
