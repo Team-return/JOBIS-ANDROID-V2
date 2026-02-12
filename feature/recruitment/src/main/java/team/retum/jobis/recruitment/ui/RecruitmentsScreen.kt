@@ -1,5 +1,6 @@
 package team.retum.jobis.recruitment.ui
 
+import RecruitSortType
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -93,6 +94,9 @@ internal fun Recruitments(
         onBookmarkClick = recruitmentViewModel::bookmarkRecruitment,
         whetherFetchNextPage = recruitmentViewModel::whetherFetchNextPage,
         fetchNextPage = recruitmentViewModel::fetchRecruitments,
+        onSortChange = { sortType ->
+            recruitmentViewModel.setSortType(sortType)
+        }
     )
 }
 
@@ -105,6 +109,7 @@ private fun RecruitmentsScreen(
     onBookmarkClick: (BookmarkLocalEntity) -> Unit,
     whetherFetchNextPage: (lastVisibleItemIndex: Int) -> Boolean,
     fetchNextPage: () -> Unit,
+    onSortChange: (RecruitSortType) -> Unit,
 ) {
     var sortExpanded by remember {
         mutableStateOf(false)
@@ -122,6 +127,15 @@ private fun RecruitmentsScreen(
         "공고마감 ↓",
         "공고마감 ↑"
     )
+
+    fun getSortType(label: String): RecruitSortType = when (label) {
+        "기본순" -> RecruitSortType.TAKE
+        "직원 ↓" -> RecruitSortType.WORKERS_COUNT_DESC
+        "직원 ↑" -> RecruitSortType.WORKERS_COUNT_ASC
+        "공고마감 ↓" -> RecruitSortType.DEADLINE_DESC
+        "공고마감 ↑" -> RecruitSortType.DEADLINE_ASC
+        else -> RecruitSortType.TAKE
+    }
 
     Column(
         modifier = Modifier
@@ -218,6 +232,7 @@ private fun RecruitmentsScreen(
                         onClick = {
                             selectedSort = text
                             sortExpanded = false
+                            onSortChange(getSortType(text))
                         },
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                     )
@@ -246,6 +261,7 @@ fun RecruitmentPreview() {
         onSearchRecruitmentClick = {},
         onBookmarkClick = {},
         whetherFetchNextPage = { false },
-        fetchNextPage = {}
+        fetchNextPage = {},
+        onSortChange = {},
     )
 }
