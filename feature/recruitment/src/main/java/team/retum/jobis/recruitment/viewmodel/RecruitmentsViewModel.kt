@@ -1,5 +1,6 @@
 package team.retum.jobis.recruitment.viewmodel
 
+import RecruitSortType
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
@@ -21,7 +22,6 @@ import team.retum.usecase.usecase.bookmark.ToggleBookmarkUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentCountUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentsUseCase
 import javax.inject.Inject
-import team.retum.common.enums.RecruitSortType
 
 
 private const val NUMBER_OF_ITEM_ON_PAGE = 12
@@ -185,7 +185,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = years,
                     recruitStatus = status,
-                    sortType = sortType?.apiValue,
+                    sortType = sortType?.name,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
