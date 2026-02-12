@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 
 
@@ -211,6 +212,7 @@ private fun RecruitmentsScreen(
                 expanded = sortExpanded,
                 onDismissRequest = { sortExpanded = false },
                 modifier = Modifier
+                    .width(120.dp)
                     .align(Alignment.TopEnd)
                     .border(
                         width = 1.dp,
@@ -229,6 +231,7 @@ private fun RecruitmentsScreen(
                         isSelected = false
                     }
                     DropdownMenuItem(
+                        modifier = Modifier.height(36.dp),
                         text = {
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
@@ -246,7 +249,7 @@ private fun RecruitmentsScreen(
                             sortExpanded = false
                             onSortChange(getSortType(text))
                         },
-                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
                     )
                 }
             }
