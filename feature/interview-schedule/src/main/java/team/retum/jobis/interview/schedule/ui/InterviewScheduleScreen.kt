@@ -243,7 +243,7 @@ private fun EditTabContent(
                 ) { interview ->
                     InterviewScheduleItem(
                         interview = interview.toUiModel(
-                            isSelected = interview.id == state.selectedInterviewId
+                            isSelected = interview.id == state.selectedInterviewId,
                         ),
                         isSelectable = true,
                         onClick = { onInterviewSelected(interview.id) },

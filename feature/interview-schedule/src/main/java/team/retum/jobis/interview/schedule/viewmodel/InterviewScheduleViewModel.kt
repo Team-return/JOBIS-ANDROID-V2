@@ -51,7 +51,7 @@ internal class InterviewScheduleViewModel @Inject constructor(
                     null
                 } else {
                     interviewId
-                }
+                },
             )
         }
     }

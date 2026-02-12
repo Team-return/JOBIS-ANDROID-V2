@@ -30,7 +30,7 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
     private val fetchCompaniesUseCase: FetchCompaniesUseCase,
     private val fetchCompanyDetailsUseCase: FetchCompanyDetailsUseCase,
 ) : BaseViewModel<WriteInterviewScheduleState, WriteInterviewScheduleSideEffect>(
-    WriteInterviewScheduleState.getInitialState()
+    WriteInterviewScheduleState.getInitialState(),
 ) {
 
     private val interviewId: Long = savedStateHandle.get<Long>(ARG_INTERVIEW_ID) ?: 0L
@@ -311,7 +311,7 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
                         WriteInterviewScheduleSideEffect.EditFailed
                     } else {
                         WriteInterviewScheduleSideEffect.AddFailed
-                    }
+                    },
                 )
             }
         }
@@ -370,10 +370,7 @@ internal data class WriteInterviewScheduleState(
 
     fun updateButtonEnabled(): WriteInterviewScheduleState {
         return copy(
-            buttonEnabled = company.isNotBlank() &&
-                    location.isNotBlank() &&
-                    time.isNotBlank() &&
-                    hiringProgress != HiringProgress.DOCUMENT
+            buttonEnabled = company.isNotBlank() && location.isNotBlank() && time.isNotBlank() && hiringProgress != HiringProgress.DOCUMENT,
         )
     }
 }

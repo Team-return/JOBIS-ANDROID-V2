@@ -3,8 +3,6 @@ package team.retum.jobis.interview.schedule.ui
 import android.accounts.AccountManager
 import android.app.Activity
 import android.util.Log
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
-
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -29,7 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.launch
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview.schedule.ui.component.InterviewScheduleForm
 import team.retum.jobis.interview.schedule.util.GoogleCalendarHelper
@@ -48,7 +46,7 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-
+import kotlinx.coroutines.launch
 @Composable
 internal fun WriteInterviewSchedule(
     onBackPressed: () -> Unit,
@@ -190,7 +188,7 @@ internal fun WriteInterviewSchedule(
             },
             onMainButtonClick = {
                 accountPickerLauncher.launch(
-                    googleCalendarHelper.credential.newChooseAccountIntent()
+                    googleCalendarHelper.credential.newChooseAccountIntent(),
                 )
             },
         )
@@ -256,7 +254,7 @@ private fun WriteInterviewScheduleScreen(
                     R.string.edit_interview_schedule
                 } else {
                     R.string.add_interview_schedule
-                }
+                },
             ),
             onBackPressed = onBackPressed,
         )
@@ -295,7 +293,7 @@ private fun WriteInterviewScheduleScreen(
                     R.string.edit_button
                 } else {
                     R.string.add_button
-                }
+                },
             ),
             color = ButtonColor.Primary,
             enabled = state.buttonEnabled,
@@ -313,7 +311,7 @@ private fun WriteInterviewScheduleScreen(
                 initialSelectedDateMillis = initialDate
                     .atStartOfDay(ZoneId.systemDefault())
                     .toInstant()
-                    .toEpochMilli()
+                    .toEpochMilli(),
             )
 
             DatePickerDialog(
@@ -328,7 +326,7 @@ private fun WriteInterviewScheduleScreen(
                                     .toLocalDate()
                                 onDateSelected(target, selectedDate)
                             }
-                        }
+                        },
                     ) {
                         Text(stringResource(id = R.string.confirm))
                     }

@@ -19,7 +19,7 @@ fun NavGraphBuilder.writeInterviewSchedule(
             navArgument(ARG_INTERVIEW_ID) {
                 type = NavType.LongType
                 defaultValue = 0L
-            }
+            },
         ),
     ) {
         WriteInterviewSchedule(

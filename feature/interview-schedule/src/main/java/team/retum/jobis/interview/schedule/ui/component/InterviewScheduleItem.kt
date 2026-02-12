@@ -38,7 +38,7 @@ fun InterviewScheduleItem(
                     Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
-                }
+                },
             )
             .padding(
                 horizontal = 24.dp,
