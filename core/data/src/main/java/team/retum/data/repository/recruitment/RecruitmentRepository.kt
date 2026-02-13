@@ -15,7 +15,7 @@ interface RecruitmentRepository {
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
-        sortType:String?,
+        sortType: String?,
     ): FetchRecruitmentsResponse
 
     suspend fun fetchRecruitmentPageCount(
