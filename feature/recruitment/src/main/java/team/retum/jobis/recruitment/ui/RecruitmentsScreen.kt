@@ -47,11 +47,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
+import androidx.compose.ui.unit.DpOffset
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 
 
@@ -198,28 +198,29 @@ private fun RecruitmentsScreen(
                     text = selectedSortText,
                     maxLines = 1,
                     style = JobisTypography.Description,
-                    color = Color(0xFF7F7F7F),
+                    color = JobisTheme.colors.onSurfaceVariant,
                     fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_down),
                     contentDescription = "정렬 펼치기",
-                    tint = Color(0xFF7F7F7F)
+                    tint = JobisTheme.colors.onSurfaceVariant
                 )
             }
             DropdownMenu(
                 expanded = sortExpanded,
                 onDismissRequest = { sortExpanded = false },
+                offset = DpOffset(x = 0.dp, y = 8.dp),
                 modifier = Modifier
                     .width(120.dp)
                     .align(Alignment.TopEnd)
                     .border(
                         width = 1.dp,
-                        color = Color(0xFFCCCCCC),
+                        color = JobisTheme.colors.surfaceTint,
                         shape = RoundedCornerShape(8.dp)
                     )
-                    .background(Color.White),
+                    .background(JobisTheme.colors.background),
                 tonalElevation = 0.dp,
                 shadowElevation = 0.dp
             ) {
@@ -239,7 +240,7 @@ private fun RecruitmentsScreen(
                             ) {
                             Text(
                                 text = text,
-                                color = if (isSelected) Color(0xFF2F53FF) else Color(0xFF7F7F7F),
+                                color = if (isSelected) JobisTheme.colors.onPrimary else JobisTheme.colors.onSurfaceVariant,
                                 fontSize = 14.sp,
                                 style = JobisTypography.Description
                             )
