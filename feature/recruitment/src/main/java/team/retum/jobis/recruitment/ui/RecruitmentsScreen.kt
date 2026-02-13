@@ -45,8 +45,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.collections.immutable.persistentListOf
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
@@ -256,29 +254,4 @@ private fun RecruitmentsScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RecruitmentPreview() {
-    RecruitmentsScreen(
-        currentSortType = RecruitSortType.TAKE,
-        recruitments = persistentListOf(
-            RecruitmentsEntity.RecruitmentEntity.getDefaultEntity().copy(
-                id = 1,
-                companyName = "당근마켓",
-                hiringJobs = "Android",
-                trainPay = 3000000,
-                bookmarked = true,
-                year = 2025,
-            )
-        ),
-        onRecruitmentClick = {},
-        onRecruitmentFilterClick = {},
-        onSearchRecruitmentClick = {},
-        onBookmarkClick = {},
-        whetherFetchNextPage = { false },
-        fetchNextPage = {},
-        onSortChange = {},
-    )
 }
