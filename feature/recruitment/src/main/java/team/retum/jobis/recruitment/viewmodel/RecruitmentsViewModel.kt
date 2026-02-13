@@ -23,7 +23,6 @@ import team.retum.usecase.usecase.recruitment.FetchRecruitmentCountUseCase
 import team.retum.usecase.usecase.recruitment.FetchRecruitmentsUseCase
 import javax.inject.Inject
 
-
 private const val NUMBER_OF_ITEM_ON_PAGE = 12
 private const val LAST_INDEX_OF_PAGE = 11
 
@@ -263,7 +262,7 @@ internal data class RecruitmentsState(
     val showRecruitmentsEmptyContent: Boolean,
     val years: ImmutableList<Int>?,
     val status: RecruitmentStatus?,
-    val sortType: RecruitSortType?
+    val sortType: RecruitSortType?,
 ) {
     companion object {
         fun getDefaultState() = RecruitmentsState(
@@ -276,7 +275,7 @@ internal data class RecruitmentsState(
             showRecruitmentsEmptyContent = false,
             years = null,
             status = null,
-            sortType = null
+            sortType = null,
         )
     }
 }

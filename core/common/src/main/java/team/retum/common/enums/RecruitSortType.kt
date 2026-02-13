@@ -1,4 +1,4 @@
-enum class RecruitSortType{
+enum class RecruitSortType {
     TAKE,
     WORKERS_COUNT_DESC,
     WORKERS_COUNT_ASC,
