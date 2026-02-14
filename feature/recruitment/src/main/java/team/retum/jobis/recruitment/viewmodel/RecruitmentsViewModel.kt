@@ -1,6 +1,6 @@
 package team.retum.jobis.recruitment.viewmodel
 
-import RecruitSortType
+import team.retum.common.enums.RecruitSortType
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
@@ -184,7 +184,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = years,
                     recruitStatus = status,
-                    sortType = sortType?.name,
+                    sortType = sortType,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
