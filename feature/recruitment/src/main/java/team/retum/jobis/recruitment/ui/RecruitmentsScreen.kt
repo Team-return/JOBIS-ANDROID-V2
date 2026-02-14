@@ -52,6 +52,20 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.RecruitmentsEntity
 
+private val sortLabelByType: LinkedHashMap<RecruitSortType?, String> = linkedMapOf(
+    null to "기본순",
+    RecruitSortType.TAKE to "매출",
+    RecruitSortType.WORKERS_COUNT_ASC to "직원 ↓",
+    RecruitSortType.WORKERS_COUNT_DESC to "직원 ↑",
+    RecruitSortType.DEADLINE_ASC to "공고마감 ↓",
+    RecruitSortType.DEADLINE_DESC to "공고마감 ↑",
+)
+
+private val sortItems = sortLabelByType.values.toList()
+
+private val sortTypeByLabel: Map<String, RecruitSortType?> =
+    sortLabelByType.entries.associate { (type, label) -> label to type }
+
 @Composable
 internal fun Recruitments(
     onRecruitmentDetailsClick: (Long) -> Unit,
@@ -118,34 +132,7 @@ private fun RecruitmentsScreen(
         mutableStateOf(false)
     }
 
-    val sortItems = listOf(
-        "기본순",
-        "매출",
-        "직원 ↓",
-        "직원 ↑",
-        "공고마감 ↓",
-        "공고마감 ↑",
-    )
-
-    val selectedSortText = when (currentSortType) {
-        null -> "기본순"
-        RecruitSortType.TAKE -> "매출"
-        RecruitSortType.WORKERS_COUNT_ASC -> "직원 ↓"
-        RecruitSortType.WORKERS_COUNT_DESC -> "직원 ↑"
-        RecruitSortType.DEADLINE_ASC -> "공고마감 ↓"
-        RecruitSortType.DEADLINE_DESC -> "공고마감 ↑"
-        else -> "기본순"
-    }
-
-    fun getSortType(label: String): RecruitSortType? = when (label) {
-        "기본순" -> null
-        "매출" -> RecruitSortType.TAKE
-        "직원 ↓" -> RecruitSortType.WORKERS_COUNT_ASC
-        "직원 ↑" -> RecruitSortType.WORKERS_COUNT_DESC
-        "공고마감 ↓" -> RecruitSortType.DEADLINE_ASC
-        "공고마감 ↑" -> RecruitSortType.DEADLINE_DESC
-        else -> null
-    }
+    val selectedSortText = sortLabelByType[currentSortType] ?: sortLabelByType.getValue(null)
 
     Column(
         modifier = Modifier
@@ -237,7 +224,7 @@ private fun RecruitmentsScreen(
                         },
                         onClick = {
                             sortExpanded = false
-                            val newSortType = getSortType(text)
+                            val newSortType = sortTypeByLabel[text]
                             if (newSortType != currentSortType) {
                                 onSortChange(newSortType)
                             }
