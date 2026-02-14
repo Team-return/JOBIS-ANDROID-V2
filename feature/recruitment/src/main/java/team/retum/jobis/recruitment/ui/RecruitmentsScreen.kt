@@ -1,6 +1,6 @@
 package team.retum.jobis.recruitment.ui
 
-import RecruitSortType
+import team.retum.common.enums.RecruitSortType
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
