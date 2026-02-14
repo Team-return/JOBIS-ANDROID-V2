@@ -1,6 +1,5 @@
 package team.retum.jobis.recruitment.ui
 
-import team.retum.common.enums.RecruitSortType
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -38,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import team.retum.common.enums.RecruitSortType
 import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems

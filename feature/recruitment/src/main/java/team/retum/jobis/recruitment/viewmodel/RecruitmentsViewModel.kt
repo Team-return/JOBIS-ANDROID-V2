@@ -1,6 +1,5 @@
 package team.retum.jobis.recruitment.viewmodel
 
-import team.retum.common.enums.RecruitSortType
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.RecruitSortType
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.usecase.entity.RecruitmentsEntity
