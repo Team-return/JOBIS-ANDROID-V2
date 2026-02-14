@@ -144,7 +144,7 @@ private fun RecruitmentsScreen(
         "직원 ↑" -> RecruitSortType.WORKERS_COUNT_DESC
         "공고마감 ↓" -> RecruitSortType.DEADLINE_ASC
         "공고마감 ↑" -> RecruitSortType.DEADLINE_DESC
-        else -> RecruitSortType.TAKE
+        else -> null
     }
 
     RecruitSortType.DEADLINE_DESC
