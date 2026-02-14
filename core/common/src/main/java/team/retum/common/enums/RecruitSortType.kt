@@ -1,3 +1,5 @@
+package team.retum.common.enums
+
 enum class RecruitSortType {
     TAKE,
     WORKERS_COUNT_DESC,
