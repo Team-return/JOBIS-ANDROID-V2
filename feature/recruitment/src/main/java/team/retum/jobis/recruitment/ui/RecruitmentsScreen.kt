@@ -219,12 +219,7 @@ private fun RecruitmentsScreen(
                 shadowElevation = 0.dp,
             ) {
                 sortItems.forEach { text ->
-                    val isSelected: Boolean
-                    if (text == selectedSortText) {
-                        isSelected = true
-                    } else {
-                        isSelected = false
-                    }
+                    val isSelected = text == selectedSortText
                     DropdownMenuItem(
                         modifier = Modifier.height(36.dp),
                         text = {
