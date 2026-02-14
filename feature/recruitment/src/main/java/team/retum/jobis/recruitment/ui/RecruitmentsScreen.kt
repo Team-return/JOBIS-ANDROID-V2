@@ -146,8 +146,7 @@ private fun RecruitmentsScreen(
         "공고마감 ↑" -> RecruitSortType.DEADLINE_DESC
         else -> null
     }
-
-    RecruitSortType.DEADLINE_DESC
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
