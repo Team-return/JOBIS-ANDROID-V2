@@ -1,10 +1,10 @@
 package team.retum.usecase.usecase.recruitment
 
+import team.retum.common.enums.RecruitSortType
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.data.repository.recruitment.RecruitmentRepository
 import team.retum.usecase.entity.toRecruitmentCountEntity
 import javax.inject.Inject
-import team.retum.common.enums.RecruitSortType
 
 class FetchRecruitmentCountUseCase @Inject constructor(
     private val recruitmentRepository: RecruitmentRepository,
