@@ -18,9 +18,9 @@ import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
 import team.retum.jobis.interests.navigation.navigateToInterests
 import team.retum.jobis.interests.navigation.navigateToInterestsComplete
-import team.retum.jobis.interview.schedule.navigation.navigateToInterviewSchedule
 import team.retum.jobis.interview.schedule.navigation.navigateToAddInterviewSchedule
 import team.retum.jobis.interview.schedule.navigation.navigateToEditInterviewSchedule
+import team.retum.jobis.interview.schedule.navigation.navigateToInterviewSchedule
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices

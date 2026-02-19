@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
+import kotlinx.coroutines.launch
 import team.retum.jobis.interview.schedule.ui.component.InterviewScheduleForm
 import team.retum.jobis.interview.schedule.util.GoogleCalendarHelper
 import team.retum.jobis.interview.schedule.viewmodel.AddInterviewScheduleSideEffect
@@ -43,7 +44,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import java.time.Instant
 import java.time.ZoneId
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
