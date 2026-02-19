@@ -47,6 +47,7 @@ internal fun Notifications(
     navigateToRecruitment: (Long) -> Unit,
     navigateToHome: (Long) -> Unit,
     navigateToNotice: (Long) -> Unit,
+    navigateToInterviewSchedule: () -> Unit,
     notificationsViewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -70,6 +71,10 @@ internal fun Notifications(
 
                 is NotificationsSideEffect.MoveToNoticeDetail -> {
                     navigateToNotice(it.noticeId)
+                }
+
+                is NotificationsSideEffect.MoveToInterviewSchedule -> {
+                    navigateToInterviewSchedule()
                 }
 
                 is NotificationsSideEffect.CanNotCurrentNotifications -> {

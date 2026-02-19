@@ -73,6 +73,7 @@ internal fun NavGraphBuilder.mainNavigation(
             navigateToRecruitment = navigator::navigateToRecruitmentDetails,
             navigateToHome = navigator::navigateToRoot,
             navigateToNotice = navigator::navigateToNoticeDetails,
+            navigateToInterviewSchedule = navigator::navigateToInterviewSchedule,
         )
         recruitmentDetails(
             onBackPressed = navigator::popBackStackIfNotHome,
