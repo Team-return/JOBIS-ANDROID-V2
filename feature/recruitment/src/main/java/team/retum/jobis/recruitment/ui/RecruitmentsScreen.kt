@@ -201,7 +201,10 @@ private fun RecruitmentsScreen(
                         color = JobisTheme.colors.surfaceTint,
                         shape = RoundedCornerShape(8.dp),
                     )
-                    .background(JobisTheme.colors.background),
+                    .background(
+                        color = JobisTheme.colors.background,
+                        shape = RoundedCornerShape(8.dp),
+                    ),
                 tonalElevation = 0.dp,
                 shadowElevation = 0.dp,
             ) {
