@@ -64,6 +64,6 @@ class RequestHandler<T> {
         } catch (e: UnknownHostException) {
             throw OfflineException
         } catch (e: Throwable) {
-            throw UnknownException
+            throw e
         }
 }
