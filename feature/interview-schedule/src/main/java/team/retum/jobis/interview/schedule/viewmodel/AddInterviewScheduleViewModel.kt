@@ -1,7 +1,6 @@
 package team.retum.jobis.interview.schedule.viewmodel
 
 import androidx.compose.runtime.Immutable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -10,11 +9,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.HiringProgress
-import team.retum.jobis.interview.schedule.navigation.ARG_INTERVIEW_ID
 import team.retum.jobis.interview.schedule.util.CalendarEventData
 import team.retum.usecase.usecase.company.FetchCompaniesUseCase
 import team.retum.usecase.usecase.company.FetchCompanyDetailsUseCase
-import team.retum.usecase.usecase.interview.FetchInterviewUseCase
 import team.retum.usecase.usecase.interview.SetInterviewUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.time.LocalDate
@@ -22,19 +19,15 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
-internal class WriteInterviewScheduleViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+internal class AddInterviewScheduleViewModel @Inject constructor(
     private val setInterviewUseCase: SetInterviewUseCase,
-    private val fetchInterviewUseCase: FetchInterviewUseCase,
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val fetchCompaniesUseCase: FetchCompaniesUseCase,
     private val fetchCompanyDetailsUseCase: FetchCompanyDetailsUseCase,
-) : BaseViewModel<WriteInterviewScheduleState, WriteInterviewScheduleSideEffect>(
+) : BaseViewModel<WriteInterviewScheduleState, AddInterviewScheduleSideEffect>(
     WriteInterviewScheduleState.getInitialState(),
 ) {
 
-    private val interviewId: Long = savedStateHandle.get<Long>(ARG_INTERVIEW_ID) ?: 0L
-    private val isEditMode: Boolean get() = interviewId != 0L
     private var searchJob: Job? = null
 
     companion object {
@@ -43,48 +36,13 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
     }
 
     init {
-        setState { state.value.copy(isEditMode = isEditMode) }
         fetchStudentId()
-        if (isEditMode) {
-            fetchInterviewDetails()
-        }
     }
 
     private fun fetchStudentId() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchStudentInformationUseCase().onSuccess {
                 setState { state.value.copy(studentId = it.studentId) }
-            }
-        }
-    }
-
-    private fun fetchInterviewDetails() {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchInterviewUseCase().onSuccess { interviews ->
-                val interview = interviews.interviews.find { it.id == interviewId }
-                interview?.let {
-                    val startDate = runCatching {
-                        LocalDate.parse(it.startDate)
-                    }.getOrDefault(LocalDate.now())
-
-                    val endDate = runCatching {
-                        it.endDate?.let { date -> LocalDate.parse(date) }
-                    }.getOrNull()
-
-                    val isDateRange = endDate != null && endDate != startDate
-
-                    setState {
-                        state.value.copy(
-                            company = it.companyName,
-                            hiringProgress = it.interviewType,
-                            location = it.location,
-                            startDate = startDate,
-                            endDate = endDate ?: startDate,
-                            isDateRange = isDateRange,
-                            time = it.interviewTime.replace(":", "."),
-                        ).updateButtonEnabled()
-                    }
-                }
             }
         }
     }
@@ -216,28 +174,7 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
         }
     }
 
-    internal fun onConfirmEditClick() {
-        setState {
-            state.value.copy(showConfirmDialog = true)
-        }
-    }
-
-    internal fun onDismissConfirmDialog() {
-        setState {
-            state.value.copy(showConfirmDialog = false)
-        }
-    }
-
     internal fun onSaveClick() {
-        if (isEditMode) {
-            onConfirmEditClick()
-        } else {
-            saveInterview()
-        }
-    }
-
-    internal fun onConfirmEdit() {
-        setState { state.value.copy(showConfirmDialog = false) }
         saveInterview()
     }
 
@@ -287,42 +224,31 @@ internal class WriteInterviewScheduleViewModel @Inject constructor(
                 studentId = currentState.studentId,
             ).onSuccess {
                 setState { state.value.copy(isLoading = false) }
-                if (isEditMode) {
-                    postSideEffect(WriteInterviewScheduleSideEffect.EditSuccess)
-                } else {
-                    val eventData = CalendarEventData(
-                        title = "${currentState.company} 면접",
-                        description = "면접 유형: ${currentState.hiringProgress.value}",
-                        location = currentState.location,
-                        startDate = currentState.startDate.format(DATE_FORMATTER),
-                        endDate = if (currentState.isDateRange) {
-                            currentState.endDate.format(DATE_FORMATTER)
-                        } else {
-                            currentState.startDate.format(DATE_FORMATTER)
-                        },
-                        interviewTime = formattedTime,
-                    )
-                    postSideEffect(WriteInterviewScheduleSideEffect.AddSuccessRequestCalendar(eventData))
-                }
+                val eventData = CalendarEventData(
+                    title = "${currentState.company} 면접",
+                    description = "면접 유형: ${currentState.hiringProgress.value}",
+                    location = currentState.location,
+                    startDate = currentState.startDate.format(DATE_FORMATTER),
+                    endDate = if (currentState.isDateRange) {
+                        currentState.endDate.format(DATE_FORMATTER)
+                    } else {
+                        currentState.startDate.format(DATE_FORMATTER)
+                    },
+                    interviewTime = formattedTime,
+                )
+                postSideEffect(AddInterviewScheduleSideEffect.AddSuccessRequestCalendar(eventData))
             }.onFailure {
                 setState { state.value.copy(isLoading = false) }
-                postSideEffect(
-                    if (isEditMode) {
-                        WriteInterviewScheduleSideEffect.EditFailed
-                    } else {
-                        WriteInterviewScheduleSideEffect.AddFailed
-                    },
-                )
+                postSideEffect(AddInterviewScheduleSideEffect.AddFailed)
             }
         }
     }
 }
 
-@Immutable
-internal data class CompanySuggestion(
-    val id: Long,
-    val name: String,
-)
+internal sealed interface AddInterviewScheduleSideEffect {
+    data class AddSuccessRequestCalendar(val eventData: CalendarEventData) : AddInterviewScheduleSideEffect
+    data object AddFailed : AddInterviewScheduleSideEffect
+}
 
 @Immutable
 internal data class WriteInterviewScheduleState(
@@ -375,14 +301,13 @@ internal data class WriteInterviewScheduleState(
     }
 }
 
+@Immutable
+internal data class CompanySuggestion(
+    val id: Long,
+    val name: String,
+)
+
 internal enum class DatePickerTarget {
     START,
     END,
-}
-
-internal sealed interface WriteInterviewScheduleSideEffect {
-    data class AddSuccessRequestCalendar(val eventData: CalendarEventData) : WriteInterviewScheduleSideEffect
-    data object AddFailed : WriteInterviewScheduleSideEffect
-    data object EditSuccess : WriteInterviewScheduleSideEffect
-    data object EditFailed : WriteInterviewScheduleSideEffect
 }

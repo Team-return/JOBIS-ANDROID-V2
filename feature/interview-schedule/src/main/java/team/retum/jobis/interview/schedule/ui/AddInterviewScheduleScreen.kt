@@ -28,13 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
-import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview.schedule.ui.component.InterviewScheduleForm
 import team.retum.jobis.interview.schedule.util.GoogleCalendarHelper
+import team.retum.jobis.interview.schedule.viewmodel.AddInterviewScheduleSideEffect
+import team.retum.jobis.interview.schedule.viewmodel.AddInterviewScheduleViewModel
 import team.retum.jobis.interview.schedule.viewmodel.DatePickerTarget
-import team.retum.jobis.interview.schedule.viewmodel.WriteInterviewScheduleSideEffect
-import team.retum.jobis.interview.schedule.viewmodel.WriteInterviewScheduleState
-import team.retum.jobis.interview.schedule.viewmodel.WriteInterviewScheduleViewModel
 import team.retum.jobis.interview_schedule.R
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -44,18 +42,20 @@ import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun WriteInterviewSchedule(
+internal fun AddInterviewSchedule(
     onBackPressed: () -> Unit,
 ) {
-    val writeInterviewScheduleViewModel: WriteInterviewScheduleViewModel = hiltViewModel()
-    val state by writeInterviewScheduleViewModel.state.collectAsStateWithLifecycle()
+    val addInterviewScheduleViewModel: AddInterviewScheduleViewModel = hiltViewModel()
+    val state by addInterviewScheduleViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val googleCalendarHelper = remember { GoogleCalendarHelper(context) }
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     val consentLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -93,7 +93,7 @@ internal fun WriteInterviewSchedule(
     val accountPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) { result ->
-        writeInterviewScheduleViewModel.dismissCalendarDialog()
+        addInterviewScheduleViewModel.dismissCalendarDialog()
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)?.let { accountName ->
                 googleCalendarHelper.credential.selectedAccountName = accountName
@@ -132,29 +132,15 @@ internal fun WriteInterviewSchedule(
     }
 
     LaunchedEffect(Unit) {
-        writeInterviewScheduleViewModel.sideEffect.collect { sideEffect ->
+        addInterviewScheduleViewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is WriteInterviewScheduleSideEffect.AddSuccessRequestCalendar -> {
-                    writeInterviewScheduleViewModel.showCalendarDialog(sideEffect.eventData)
+                is AddInterviewScheduleSideEffect.AddSuccessRequestCalendar -> {
+                    addInterviewScheduleViewModel.showCalendarDialog(sideEffect.eventData)
                 }
-                is WriteInterviewScheduleSideEffect.AddFailed -> {
+                is AddInterviewScheduleSideEffect.AddFailed -> {
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.add_failed_message),
-                        drawable = JobisIcon.Error,
-                    ).show()
-                }
-                is WriteInterviewScheduleSideEffect.EditSuccess -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.edit_success_message),
-                    ).show()
-                    onBackPressed()
-                }
-                is WriteInterviewScheduleSideEffect.EditFailed -> {
-                    JobisToast.create(
-                        context = context,
-                        message = context.getString(R.string.edit_failed_message),
                         drawable = JobisIcon.Error,
                     ).show()
                 }
@@ -165,7 +151,7 @@ internal fun WriteInterviewSchedule(
     if (state.showCalendarDialog) {
         JobisDialog(
             onDismissRequest = {
-                writeInterviewScheduleViewModel.dismissCalendarDialog()
+                addInterviewScheduleViewModel.dismissCalendarDialog()
                 JobisToast.create(
                     context = context,
                     message = context.getString(R.string.add_success_message),
@@ -179,7 +165,7 @@ internal fun WriteInterviewSchedule(
             subButtonColor = ButtonColor.Default,
             mainButtonColor = ButtonColor.Primary,
             onSubButtonClick = {
-                writeInterviewScheduleViewModel.dismissCalendarDialog()
+                addInterviewScheduleViewModel.dismissCalendarDialog()
                 JobisToast.create(
                     context = context,
                     message = context.getString(R.string.add_success_message),
@@ -194,68 +180,13 @@ internal fun WriteInterviewSchedule(
         )
     }
 
-    WriteInterviewScheduleScreen(
-        onBackPressed = onBackPressed,
-        state = state,
-        onCompanyChange = writeInterviewScheduleViewModel::setCompany,
-        onCompanySelected = writeInterviewScheduleViewModel::onCompanySelected,
-        onDismissCompanySuggestions = writeInterviewScheduleViewModel::dismissCompanySuggestions,
-        onLocationChange = writeInterviewScheduleViewModel::setLocation,
-        onHiringProgressSelected = writeInterviewScheduleViewModel::onHiringProgressSelected,
-        onHiringProgressDropdownClick = writeInterviewScheduleViewModel::onHiringProgressDropdownClick,
-        onStartDateClick = writeInterviewScheduleViewModel::onStartDateClick,
-        onEndDateClick = writeInterviewScheduleViewModel::onEndDateClick,
-        onIsDateRangeChange = writeInterviewScheduleViewModel::setIsDateRange,
-        onTimeChange = writeInterviewScheduleViewModel::setTime,
-        onSaveClick = writeInterviewScheduleViewModel::onSaveClick,
-        onDateSelected = { target, date ->
-            when (target) {
-                DatePickerTarget.START -> writeInterviewScheduleViewModel.setStartDate(date)
-                DatePickerTarget.END -> writeInterviewScheduleViewModel.setEndDate(date)
-            }
-        },
-        onDismissDatePicker = writeInterviewScheduleViewModel::onDismissDatePicker,
-        onConfirmEdit = writeInterviewScheduleViewModel::onConfirmEdit,
-        onDismissConfirmDialog = writeInterviewScheduleViewModel::onDismissConfirmDialog,
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun WriteInterviewScheduleScreen(
-    onBackPressed: () -> Unit,
-    state: WriteInterviewScheduleState,
-    onCompanyChange: (String) -> Unit,
-    onCompanySelected: (Long, String) -> Unit,
-    onDismissCompanySuggestions: () -> Unit,
-    onLocationChange: (String) -> Unit,
-    onHiringProgressSelected: (HiringProgress) -> Unit,
-    onHiringProgressDropdownClick: () -> Unit,
-    onStartDateClick: () -> Unit,
-    onEndDateClick: () -> Unit,
-    onIsDateRangeChange: (Boolean) -> Unit,
-    onTimeChange: (String) -> Unit,
-    onSaveClick: () -> Unit,
-    onDateSelected: (DatePickerTarget, LocalDate) -> Unit,
-    onDismissDatePicker: () -> Unit,
-    onConfirmEdit: () -> Unit,
-    onDismissConfirmDialog: () -> Unit,
-) {
-    val scrollState = rememberScrollState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(JobisTheme.colors.background),
     ) {
         JobisSmallTopAppBar(
-            title = stringResource(
-                id = if (state.isEditMode) {
-                    R.string.edit_interview_schedule
-                } else {
-                    R.string.add_interview_schedule
-                },
-            ),
+            title = stringResource(id = R.string.add_interview_schedule),
             onBackPressed = onBackPressed,
         )
         Column(
@@ -265,39 +196,33 @@ private fun WriteInterviewScheduleScreen(
         ) {
             InterviewScheduleForm(
                 company = state.company,
-                onCompanyChange = if (state.isEditMode) { _ -> } else onCompanyChange,
-                companySuggestions = if (state.isEditMode) emptyList() else state.companySuggestions,
-                showCompanySuggestions = if (state.isEditMode) false else state.showCompanySuggestions,
-                onCompanySelected = onCompanySelected,
-                onDismissCompanySuggestions = onDismissCompanySuggestions,
+                onCompanyChange = addInterviewScheduleViewModel::setCompany,
+                companySuggestions = state.companySuggestions,
+                showCompanySuggestions = state.showCompanySuggestions,
+                onCompanySelected = addInterviewScheduleViewModel::onCompanySelected,
+                onDismissCompanySuggestions = addInterviewScheduleViewModel::dismissCompanySuggestions,
                 location = state.location,
-                onLocationChange = onLocationChange,
+                onLocationChange = addInterviewScheduleViewModel::setLocation,
                 hiringProgress = state.hiringProgress,
                 showHiringProgressDropdown = state.showHiringProgressDropdown,
-                onHiringProgressSelected = onHiringProgressSelected,
-                onHiringProgressDropdownClick = onHiringProgressDropdownClick,
+                onHiringProgressSelected = addInterviewScheduleViewModel::onHiringProgressSelected,
+                onHiringProgressDropdownClick = addInterviewScheduleViewModel::onHiringProgressDropdownClick,
                 startDate = state.startDate,
                 endDate = state.endDate,
                 isDateRange = state.isDateRange,
-                onStartDateClick = onStartDateClick,
-                onEndDateClick = onEndDateClick,
-                onIsDateRangeChange = onIsDateRangeChange,
+                onStartDateClick = addInterviewScheduleViewModel::onStartDateClick,
+                onEndDateClick = addInterviewScheduleViewModel::onEndDateClick,
+                onIsDateRangeChange = addInterviewScheduleViewModel::setIsDateRange,
                 time = state.time,
-                onTimeChange = onTimeChange,
-                isEditMode = state.isEditMode,
+                onTimeChange = addInterviewScheduleViewModel::setTime,
+                isEditMode = false,
             )
         }
         JobisButton(
-            text = stringResource(
-                id = if (state.isEditMode) {
-                    R.string.edit_button
-                } else {
-                    R.string.add_button
-                },
-            ),
+            text = stringResource(id = R.string.add_button),
             color = ButtonColor.Primary,
             enabled = state.buttonEnabled,
-            onClick = onSaveClick,
+            onClick = addInterviewScheduleViewModel::onSaveClick,
         )
     }
 
@@ -313,9 +238,8 @@ private fun WriteInterviewScheduleScreen(
                     .toInstant()
                     .toEpochMilli(),
             )
-
             DatePickerDialog(
-                onDismissRequest = onDismissDatePicker,
+                onDismissRequest = addInterviewScheduleViewModel::onDismissDatePicker,
                 confirmButton = {
                     TextButton(
                         onClick = {
@@ -324,7 +248,10 @@ private fun WriteInterviewScheduleScreen(
                                     .ofEpochMilli(millis)
                                     .atZone(ZoneId.systemDefault())
                                     .toLocalDate()
-                                onDateSelected(target, selectedDate)
+                                when (target) {
+                                    DatePickerTarget.START -> addInterviewScheduleViewModel.setStartDate(selectedDate)
+                                    DatePickerTarget.END -> addInterviewScheduleViewModel.setEndDate(selectedDate)
+                                }
                             }
                         },
                     ) {
@@ -332,7 +259,7 @@ private fun WriteInterviewScheduleScreen(
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = onDismissDatePicker) {
+                    TextButton(onClick = addInterviewScheduleViewModel::onDismissDatePicker) {
                         Text(stringResource(id = R.string.cancel))
                     }
                 },
@@ -340,19 +267,5 @@ private fun WriteInterviewScheduleScreen(
                 DatePicker(state = datePickerState)
             }
         }
-    }
-
-    if (state.showConfirmDialog) {
-        JobisDialog(
-            onDismissRequest = onDismissConfirmDialog,
-            title = stringResource(id = R.string.edit_confirm_title),
-            description = stringResource(id = R.string.edit_confirm_description),
-            subButtonText = stringResource(id = R.string.cancel),
-            mainButtonText = stringResource(id = R.string.confirm),
-            subButtonColor = ButtonColor.Default,
-            mainButtonColor = ButtonColor.Primary,
-            onSubButtonClick = onDismissConfirmDialog,
-            onMainButtonClick = onConfirmEdit,
-        )
     }
 }
