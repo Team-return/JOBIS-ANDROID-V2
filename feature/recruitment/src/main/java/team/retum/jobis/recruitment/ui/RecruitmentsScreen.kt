@@ -28,6 +28,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -133,7 +135,7 @@ private fun RecruitmentsScreen(
     }
 
     val selectedSortText = sortLabelByType[currentSortType] ?: sortLabelByType.getValue(null)
-
+    val menuShape = RoundedCornerShape(8.dp)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -194,46 +196,49 @@ private fun RecruitmentsScreen(
                 onDismissRequest = { sortExpanded = false },
                 offset = DpOffset(x = 0.dp, y = 8.dp),
                 modifier = Modifier
-                    .width(120.dp)
-                    .align(Alignment.TopEnd)
-                    .border(
-                        width = 1.dp,
-                        color = JobisTheme.colors.surfaceTint,
-                        shape = RoundedCornerShape(8.dp),
-                    )
-                    .background(
-                        color = JobisTheme.colors.background,
-                        shape = RoundedCornerShape(8.dp),
-                    ),
+                    .align(Alignment.TopEnd),
+                containerColor = Color.Transparent,
                 tonalElevation = 0.dp,
                 shadowElevation = 0.dp,
             ) {
-                sortItems.forEach { text ->
-                    val isSelected = text == selectedSortText
-                    DropdownMenuItem(
-                        modifier = Modifier.height(36.dp),
-                        text = {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(
-                                    text = text,
-                                    color = if (isSelected) JobisTheme.colors.onPrimary else JobisTheme.colors.onSurfaceVariant,
-                                    fontSize = 14.sp,
-                                    style = JobisTypography.Description,
-                                )
-                            }
-                        },
-                        onClick = {
-                            sortExpanded = false
-                            val newSortType = sortTypeByLabel[text]
-                            if (newSortType != currentSortType) {
-                                onSortChange(newSortType)
-                            }
-                        },
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                    )
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .clip(menuShape)
+                        .background(JobisTheme.colors.background)
+                        .border(1.dp, JobisTheme.colors.surfaceTint, menuShape),
+                ) {
+                    Column (
+                        modifier = Modifier.padding(vertical = 6.dp)
+                    ){
+                        sortItems.forEach { text ->
+                            val isSelected = text == selectedSortText
+                            DropdownMenuItem(
+                                modifier = Modifier.height(36.dp),
+                                text = {
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        Text(
+                                            text = text,
+                                            color = if (isSelected) JobisTheme.colors.onPrimary else JobisTheme.colors.onSurfaceVariant,
+                                            fontSize = 14.sp,
+                                            style = JobisTypography.Description,
+                                        )
+                                    }
+                                },
+                                onClick = {
+                                    sortExpanded = false
+                                    val newSortType = sortTypeByLabel[text]
+                                    if (newSortType != currentSortType) {
+                                        onSortChange(newSortType)
+                                    }
+                                },
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                            )
+                        }
+                    }
                 }
             }
         }
