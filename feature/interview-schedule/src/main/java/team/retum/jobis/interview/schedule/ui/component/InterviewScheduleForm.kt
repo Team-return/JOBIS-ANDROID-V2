@@ -70,6 +70,7 @@ internal fun InterviewScheduleForm(
                 } else {
                     JobisTheme.colors.inverseSurface
                 },
+                enabled = !isEditMode,
             )
             DropdownMenu(
                 expanded = showCompanySuggestions,
