@@ -141,7 +141,6 @@ internal data class HomeState(
                 studentGcn = "",
                 department = Department.SOFTWARE_DEVELOP,
                 profileImageUrl = "",
-                studentId = 0,
             ),
             rate = "",
             totalStudentCount = 0,

@@ -150,14 +150,6 @@ internal fun AddInterviewSchedule(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
-
-                is AddInterviewScheduleSideEffect.FetchStudentIdFailed -> {
-                    JobisToast.create(
-                        context = context,
-                        message = sideEffect.message,
-                        drawable = JobisIcon.Error
-                    ).show()
-                }
             }
         }
     }

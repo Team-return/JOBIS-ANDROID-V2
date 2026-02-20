@@ -6,7 +6,6 @@ import team.retum.network.model.response.FetchStudentInformationResponse
 
 @Immutable
 data class StudentInformationEntity(
-    val studentId: Long,
     val studentName: String,
     val studentGcn: String,
     val department: Department,
@@ -14,7 +13,6 @@ data class StudentInformationEntity(
 )
 
 internal fun FetchStudentInformationResponse.toEntity() = StudentInformationEntity(
-    studentId = this.studentId,
     studentName = this.studentName,
     studentGcn = this.studentGcn,
     department = this.department,

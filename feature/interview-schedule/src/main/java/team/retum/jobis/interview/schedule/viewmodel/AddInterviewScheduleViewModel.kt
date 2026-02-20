@@ -1,6 +1,5 @@
 package team.retum.jobis.interview.schedule.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +13,6 @@ import team.retum.jobis.interview.schedule.util.CalendarEventData
 import team.retum.usecase.usecase.company.FetchCompaniesUseCase
 import team.retum.usecase.usecase.company.FetchCompanyDetailsUseCase
 import team.retum.usecase.usecase.interview.SetInterviewUseCase
-import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -22,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 internal class AddInterviewScheduleViewModel @Inject constructor(
     private val setInterviewUseCase: SetInterviewUseCase,
-    private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val fetchCompaniesUseCase: FetchCompaniesUseCase,
     private val fetchCompanyDetailsUseCase: FetchCompanyDetailsUseCase,
 ) : BaseViewModel<InterviewScheduleFormState, AddInterviewScheduleSideEffect>(
@@ -34,21 +31,6 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
     companion object {
         private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         private const val DEBOUNCE_DELAY = 500L
-    }
-
-    init {
-        fetchStudentId()
-    }
-
-    private fun fetchStudentId() {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchStudentInformationUseCase().onSuccess {
-                setState { state.value.copy(studentId = it.studentId) }
-            }.onFailure {
-                Log.d("TEST", it.toString())
-                postSideEffect(AddInterviewScheduleSideEffect.FetchStudentIdFailed("학생 정보 조회에 실패했어요"))
-            }
-        }
     }
 
     internal fun setCompany(company: String) {
@@ -225,7 +207,6 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
                 interviewTime = formattedTime,
                 companyName = currentState.company,
                 location = currentState.location,
-                studentId = currentState.studentId,
             ).onSuccess {
                 setState { state.value.copy(isLoading = false) }
                 val eventData = CalendarEventData(
@@ -252,13 +233,11 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
 internal sealed interface AddInterviewScheduleSideEffect {
     data class SuccessRequestCalendar(val eventData: CalendarEventData) : AddInterviewScheduleSideEffect
     data object Failed : AddInterviewScheduleSideEffect
-    data class FetchStudentIdFailed(val message: String) : AddInterviewScheduleSideEffect
 }
 
 @Immutable
 internal data class InterviewScheduleFormState(
     val isEditMode: Boolean,
-    val studentId: Long,
     val company: String,
     val location: String,
     val startDate: LocalDate,
@@ -279,7 +258,6 @@ internal data class InterviewScheduleFormState(
     companion object {
         fun getInitialState() = InterviewScheduleFormState(
             isEditMode = false,
-            studentId = 0L,
             company = "",
             location = "",
             startDate = LocalDate.now(),

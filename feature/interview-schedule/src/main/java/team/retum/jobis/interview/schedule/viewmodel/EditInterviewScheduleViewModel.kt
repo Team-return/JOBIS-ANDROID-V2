@@ -1,17 +1,16 @@
 package team.retum.jobis.interview.schedule.viewmodel
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview.schedule.navigation.INTERVIEW_ID
 import team.retum.usecase.usecase.interview.FetchInterviewUseCase
 import team.retum.usecase.usecase.interview.SetInterviewUseCase
-import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -21,7 +20,6 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val setInterviewUseCase: SetInterviewUseCase,
     private val fetchInterviewUseCase: FetchInterviewUseCase,
-    private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
 ) : BaseViewModel<InterviewScheduleFormState, EditInterviewScheduleSideEffect>(
     InterviewScheduleFormState.getInitialState().copy(isEditMode = true),
 ) {
@@ -34,20 +32,9 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
 
     init {
         if (interviewId == null) {
-            viewModelScope.launch {
-                postSideEffect(EditInterviewScheduleSideEffect.NavigateBack)
-            }
+            postSideEffect(EditInterviewScheduleSideEffect.NavigateBack)
         } else {
-            fetchStudentId()
             fetchInterviewDetails()
-        }
-    }
-
-    private fun fetchStudentId() {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchStudentInformationUseCase().onSuccess {
-                setState { state.value.copy(studentId = it.studentId) }
-            }
         }
     }
 
@@ -176,7 +163,6 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
         saveInterview()
     }
 
-    @SuppressLint("DefaultLocale")
     private fun saveInterview() {
         val currentState = state.value
         if (currentState.isLoading) return
@@ -187,7 +173,7 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
             val timeParts = currentState.time.replace(".", ":").split(":")
             val hour = timeParts.getOrNull(0)?.toIntOrNull() ?: 0
             val minute = timeParts.getOrNull(1)?.toIntOrNull() ?: 0
-            String.format("%02d:%02d", hour, minute)
+            String.format(Locale.KO, "%02d:%02d", hour, minute)
         }.getOrDefault(currentState.time)
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -202,7 +188,6 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
                 interviewTime = formattedTime,
                 companyName = currentState.company,
                 location = currentState.location,
-                studentId = currentState.studentId,
             ).onSuccess {
                 setState { state.value.copy(isLoading = false) }
                 postSideEffect(EditInterviewScheduleSideEffect.EditSuccess)

@@ -15,7 +15,6 @@ class SetInterviewUseCase @Inject constructor(
         interviewTime: String,
         companyName: String,
         location: String,
-        studentId: Long,
     ) = runCatching {
         interviewRepository.setInterview(
             interview = InterviewRequest(
@@ -25,7 +24,6 @@ class SetInterviewUseCase @Inject constructor(
                 interviewTime = interviewTime,
                 companyName = companyName,
                 location = location,
-                studentId = studentId,
             ),
         )
     }

@@ -12,5 +12,4 @@ data class InterviewRequest(
     @Json(name = "interview_time") val interviewTime: String,
     @Json(name = "company_name") val companyName: String,
     @Json(name = "location") val location: String,
-    @Json(name = "student_id") val studentId: Long,
 )
