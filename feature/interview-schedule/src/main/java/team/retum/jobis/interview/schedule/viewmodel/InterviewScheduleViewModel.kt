@@ -23,7 +23,6 @@ internal class InterviewScheduleViewModel @Inject constructor(
                 setState {
                     state.value.copy(
                         interviews = it.interviews,
-                        totalCount = it.totalCount,
                     )
                 }
             }.onFailure {
@@ -60,18 +59,14 @@ internal class InterviewScheduleViewModel @Inject constructor(
 @Immutable
 internal data class InterviewScheduleState(
     val interviews: List<InterviewsEntity.InterviewEntity>,
-    val totalCount: Int,
     val selectedTabIndex: Int,
-    val selectedDate: LocalDate,
     val currentMonth: YearMonth,
     val selectedInterviewId: Long?,
 ) {
     companion object {
         fun getInitialState() = InterviewScheduleState(
             interviews = emptyList(),
-            totalCount = 0,
             selectedTabIndex = 0,
-            selectedDate = LocalDate.now(),
             currentMonth = YearMonth.now(),
             selectedInterviewId = null,
         )
