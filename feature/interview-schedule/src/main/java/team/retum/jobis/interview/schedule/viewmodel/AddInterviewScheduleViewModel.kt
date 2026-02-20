@@ -1,5 +1,6 @@
 package team.retum.jobis.interview.schedule.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,8 +25,8 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
     private val fetchCompaniesUseCase: FetchCompaniesUseCase,
     private val fetchCompanyDetailsUseCase: FetchCompanyDetailsUseCase,
-) : BaseViewModel<WriteInterviewScheduleState, AddInterviewScheduleSideEffect>(
-    WriteInterviewScheduleState.getInitialState(),
+) : BaseViewModel<InterviewScheduleFormState, AddInterviewScheduleSideEffect>(
+    InterviewScheduleFormState.getInitialState(),
 ) {
 
     private var searchJob: Job? = null
@@ -43,6 +44,9 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             fetchStudentInformationUseCase().onSuccess {
                 setState { state.value.copy(studentId = it.studentId) }
+            }.onFailure {
+                Log.d("TEST", it.toString())
+                postSideEffect(AddInterviewScheduleSideEffect.FetchStudentIdFailed("학생 정보 조회에 실패했어요"))
             }
         }
     }
@@ -97,7 +101,7 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
         }
     }
 
-    internal fun dismissCompanySuggestions() {
+    internal fun onDismissCompanySuggestions() {
         setState {
             state.value.copy(showCompanySuggestions = false)
         }
@@ -178,7 +182,7 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
         saveInterview()
     }
 
-    internal fun showCalendarDialog(eventData: CalendarEventData) {
+    internal fun onShowCalendarDialog(eventData: CalendarEventData) {
         setState {
             state.value.copy(
                 showCalendarDialog = true,
@@ -187,7 +191,7 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
         }
     }
 
-    internal fun dismissCalendarDialog() {
+    internal fun onDismissCalendarDialog() {
         setState {
             state.value.copy(
                 showCalendarDialog = false,
@@ -236,22 +240,23 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
                     },
                     interviewTime = formattedTime,
                 )
-                postSideEffect(AddInterviewScheduleSideEffect.AddSuccessRequestCalendar(eventData))
+                postSideEffect(AddInterviewScheduleSideEffect.SuccessRequestCalendar(eventData))
             }.onFailure {
                 setState { state.value.copy(isLoading = false) }
-                postSideEffect(AddInterviewScheduleSideEffect.AddFailed)
+                postSideEffect(AddInterviewScheduleSideEffect.Failed)
             }
         }
     }
 }
 
 internal sealed interface AddInterviewScheduleSideEffect {
-    data class AddSuccessRequestCalendar(val eventData: CalendarEventData) : AddInterviewScheduleSideEffect
-    data object AddFailed : AddInterviewScheduleSideEffect
+    data class SuccessRequestCalendar(val eventData: CalendarEventData) : AddInterviewScheduleSideEffect
+    data object Failed : AddInterviewScheduleSideEffect
+    data class FetchStudentIdFailed(val message: String) : AddInterviewScheduleSideEffect
 }
 
 @Immutable
-internal data class WriteInterviewScheduleState(
+internal data class InterviewScheduleFormState(
     val isEditMode: Boolean,
     val studentId: Long,
     val company: String,
@@ -272,7 +277,7 @@ internal data class WriteInterviewScheduleState(
     val showCompanySuggestions: Boolean,
 ) {
     companion object {
-        fun getInitialState() = WriteInterviewScheduleState(
+        fun getInitialState() = InterviewScheduleFormState(
             isEditMode = false,
             studentId = 0L,
             company = "",
@@ -294,7 +299,7 @@ internal data class WriteInterviewScheduleState(
         )
     }
 
-    fun updateButtonEnabled(): WriteInterviewScheduleState {
+    fun updateButtonEnabled(): InterviewScheduleFormState {
         return copy(
             buttonEnabled = company.isNotBlank() && location.isNotBlank() && time.isNotBlank() && hiringProgress != HiringProgress.DOCUMENT,
         )

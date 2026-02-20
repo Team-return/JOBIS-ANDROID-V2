@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.HiringProgress
-import team.retum.jobis.interview.schedule.navigation.ARG_INTERVIEW_ID
+import team.retum.jobis.interview.schedule.navigation.INTERVIEW_ID
 import team.retum.usecase.usecase.interview.FetchInterviewUseCase
 import team.retum.usecase.usecase.interview.SetInterviewUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
@@ -22,19 +22,25 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
     private val setInterviewUseCase: SetInterviewUseCase,
     private val fetchInterviewUseCase: FetchInterviewUseCase,
     private val fetchStudentInformationUseCase: FetchStudentInformationUseCase,
-) : BaseViewModel<WriteInterviewScheduleState, EditInterviewScheduleSideEffect>(
-    WriteInterviewScheduleState.getInitialState().copy(isEditMode = true),
+) : BaseViewModel<InterviewScheduleFormState, EditInterviewScheduleSideEffect>(
+    InterviewScheduleFormState.getInitialState().copy(isEditMode = true),
 ) {
 
-    private val interviewId: Long = savedStateHandle.get<Long>(ARG_INTERVIEW_ID) ?: 0L
+    private val interviewId: Long? = savedStateHandle.get<Long>(INTERVIEW_ID)?.takeIf { it != 0L }
 
     companion object {
         private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     }
 
     init {
-        fetchStudentId()
-        fetchInterviewDetails()
+        if (interviewId == null) {
+            viewModelScope.launch {
+                postSideEffect(EditInterviewScheduleSideEffect.NavigateBack)
+            }
+        } else {
+            fetchStudentId()
+            fetchInterviewDetails()
+        }
     }
 
     private fun fetchStudentId() {
@@ -46,32 +52,38 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
     }
 
     private fun fetchInterviewDetails() {
+        val id = interviewId ?: return
         viewModelScope.launch(Dispatchers.IO) {
             fetchInterviewUseCase().onSuccess { interviews ->
-                val interview = interviews.interviews.find { it.id == interviewId }
-                interview?.let {
-                    val startDate = runCatching {
-                        LocalDate.parse(it.startDate)
-                    }.getOrDefault(LocalDate.now())
-
-                    val endDate = runCatching {
-                        it.endDate?.let { date -> LocalDate.parse(date) }
-                    }.getOrNull()
-
-                    val isDateRange = endDate != null && endDate != startDate
-
-                    setState {
-                        state.value.copy(
-                            company = it.companyName,
-                            hiringProgress = it.interviewType,
-                            location = it.location,
-                            startDate = startDate,
-                            endDate = endDate ?: startDate,
-                            isDateRange = isDateRange,
-                            time = it.interviewTime.replace(":", "."),
-                        ).updateButtonEnabled()
-                    }
+                val interview = interviews.interviews.find { it.id == id }
+                if (interview == null) {
+                    postSideEffect(EditInterviewScheduleSideEffect.NavigateBack)
+                    return@launch
                 }
+
+                val startDate = runCatching {
+                    LocalDate.parse(interview.startDate)
+                }.getOrDefault(LocalDate.now())
+
+                val endDate = runCatching {
+                    interview.endDate?.let { date -> LocalDate.parse(date) }
+                }.getOrNull()
+
+                val isDateRange = endDate != null && endDate != startDate
+
+                setState {
+                    state.value.copy(
+                        company = interview.companyName,
+                        hiringProgress = interview.interviewType,
+                        location = interview.location,
+                        startDate = startDate,
+                        endDate = endDate ?: startDate,
+                        isDateRange = isDateRange,
+                        time = interview.interviewTime.replace(":", "."),
+                    ).updateButtonEnabled()
+                }
+            }.onFailure {
+                postSideEffect(EditInterviewScheduleSideEffect.NavigateBack)
             }
         }
     }
@@ -205,4 +217,5 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
 internal sealed interface EditInterviewScheduleSideEffect {
     data object EditSuccess : EditInterviewScheduleSideEffect
     data object EditFailed : EditInterviewScheduleSideEffect
+    data object NavigateBack : EditInterviewScheduleSideEffect
 }
