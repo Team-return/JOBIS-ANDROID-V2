@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Locale
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.HiringProgress
 import team.retum.jobis.interview.schedule.navigation.INTERVIEW_ID
@@ -13,6 +12,7 @@ import team.retum.usecase.usecase.interview.FetchInterviewUseCase
 import team.retum.usecase.usecase.interview.SetInterviewUseCase
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -173,7 +173,7 @@ internal class EditInterviewScheduleViewModel @Inject constructor(
             val timeParts = currentState.time.replace(".", ":").split(":")
             val hour = timeParts.getOrNull(0)?.toIntOrNull() ?: 0
             val minute = timeParts.getOrNull(1)?.toIntOrNull() ?: 0
-            String.format(Locale.KO, "%02d:%02d", hour, minute)
+            String.format(Locale.KOREA, "%02d:%02d", hour, minute)
         }.getOrDefault(currentState.time)
 
         viewModelScope.launch(Dispatchers.IO) {
