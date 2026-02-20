@@ -46,6 +46,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.tab.TabBar
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.jobisdesignsystemv2.toast.JobisToast
+import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
@@ -57,7 +58,7 @@ internal fun InterviewSchedule(
     val interviewScheduleViewModel: InterviewScheduleViewModel = hiltViewModel()
     val state by interviewScheduleViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-   val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -168,7 +169,12 @@ private fun CalendarTabContent(
                 .height(16.dp)
                 .background(JobisTheme.colors.inverseSurface),
         )
-        if (state.interviews.isEmpty()) {
+        val filteredInterviews = state.interviews.filter { interview ->
+            runCatching {
+                YearMonth.from(LocalDate.parse(interview.startDate)) == state.currentMonth
+            }.getOrDefault(false)
+        }
+        if (filteredInterviews.isEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -188,7 +194,7 @@ private fun CalendarTabContent(
                     .weight(1f),
             ) {
                 items(
-                    items = state.interviews,
+                    items = filteredInterviews,
                     key = { it.id },
                 ) { interview ->
                     InterviewScheduleItem(
