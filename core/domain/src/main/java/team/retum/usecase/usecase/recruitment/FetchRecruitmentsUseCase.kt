@@ -1,6 +1,6 @@
 package team.retum.usecase.usecase.recruitment
 
-import RecruitSortType
+import team.retum.common.enums.RecruitSortType
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.data.repository.recruitment.RecruitmentRepository
 import team.retum.usecase.entity.toRecruitmentsEntity
