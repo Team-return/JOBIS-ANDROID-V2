@@ -208,9 +208,9 @@ private fun RecruitmentsScreen(
                         .background(JobisTheme.colors.background)
                         .border(1.dp, JobisTheme.colors.surfaceTint, menuShape),
                 ) {
-                    Column (
-                        modifier = Modifier.padding(vertical = 6.dp)
-                    ){
+                    Column(
+                        modifier = Modifier.padding(vertical = 6.dp),
+                    ) {
                         sortItems.forEach { text ->
                             val isSelected = text == selectedSortText
                             DropdownMenuItem(
