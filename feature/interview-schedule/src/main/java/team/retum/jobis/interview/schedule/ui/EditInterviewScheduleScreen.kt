@@ -62,6 +62,9 @@ internal fun EditInterviewSchedule(
                         drawable = JobisIcon.Error,
                     ).show()
                 }
+                is EditInterviewScheduleSideEffect.NavigateBack -> {
+                    onBackPressed()
+                }
             }
         }
     }
@@ -132,7 +135,7 @@ internal fun EditInterviewSchedule(
                             datePickerState.selectedDateMillis?.let { millis ->
                                 val selectedDate = Instant
                                     .ofEpochMilli(millis)
-                                    .atZone(ZoneId.systemDefault())
+                                    .atZone(ZoneId.of("UTC"))
                                     .toLocalDate()
                                 when (target) {
                                     DatePickerTarget.START -> editInterviewScheduleViewModel.setStartDate(selectedDate)
