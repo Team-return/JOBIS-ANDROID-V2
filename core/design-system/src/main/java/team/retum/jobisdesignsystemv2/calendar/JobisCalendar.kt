@@ -57,7 +57,6 @@ import java.time.format.DateTimeFormatter
  * @param weekdaysTextColor 평일 텍스트 색상
  * @param onMonthChanged 월 변경 시 호출되는 콜백
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun JobisCalendar(
     modifier: Modifier = Modifier,
