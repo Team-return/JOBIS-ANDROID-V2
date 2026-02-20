@@ -93,7 +93,7 @@ internal fun AddInterviewSchedule(
     val accountPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) { result ->
-        addInterviewScheduleViewModel.dismissCalendarDialog()
+        addInterviewScheduleViewModel.onDismissCalendarDialog()
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)?.let { accountName ->
                 googleCalendarHelper.credential.selectedAccountName = accountName
@@ -121,6 +121,12 @@ internal fun AddInterviewSchedule(
                             }
                     }
                 }
+            } ?: run {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.add_success_message),
+                ).show()
+                onBackPressed()
             }
         } else {
             JobisToast.create(
@@ -134,14 +140,22 @@ internal fun AddInterviewSchedule(
     LaunchedEffect(Unit) {
         addInterviewScheduleViewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is AddInterviewScheduleSideEffect.AddSuccessRequestCalendar -> {
-                    addInterviewScheduleViewModel.showCalendarDialog(sideEffect.eventData)
+                is AddInterviewScheduleSideEffect.SuccessRequestCalendar -> {
+                    addInterviewScheduleViewModel.onShowCalendarDialog(sideEffect.eventData)
                 }
-                is AddInterviewScheduleSideEffect.AddFailed -> {
+                is AddInterviewScheduleSideEffect.Failed -> {
                     JobisToast.create(
                         context = context,
                         message = context.getString(R.string.add_failed_message),
                         drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is AddInterviewScheduleSideEffect.FetchStudentIdFailed -> {
+                    JobisToast.create(
+                        context = context,
+                        message = sideEffect.message,
+                        drawable = JobisIcon.Error
                     ).show()
                 }
             }
@@ -151,7 +165,7 @@ internal fun AddInterviewSchedule(
     if (state.showCalendarDialog) {
         JobisDialog(
             onDismissRequest = {
-                addInterviewScheduleViewModel.dismissCalendarDialog()
+                addInterviewScheduleViewModel.onDismissCalendarDialog()
                 JobisToast.create(
                     context = context,
                     message = context.getString(R.string.add_success_message),
@@ -165,7 +179,7 @@ internal fun AddInterviewSchedule(
             subButtonColor = ButtonColor.Default,
             mainButtonColor = ButtonColor.Primary,
             onSubButtonClick = {
-                addInterviewScheduleViewModel.dismissCalendarDialog()
+                addInterviewScheduleViewModel.onDismissCalendarDialog()
                 JobisToast.create(
                     context = context,
                     message = context.getString(R.string.add_success_message),
@@ -200,7 +214,7 @@ internal fun AddInterviewSchedule(
                 companySuggestions = state.companySuggestions,
                 showCompanySuggestions = state.showCompanySuggestions,
                 onCompanySelected = addInterviewScheduleViewModel::onCompanySelected,
-                onDismissCompanySuggestions = addInterviewScheduleViewModel::dismissCompanySuggestions,
+                onDismissCompanySuggestions = addInterviewScheduleViewModel::onDismissCompanySuggestions,
                 location = state.location,
                 onLocationChange = addInterviewScheduleViewModel::setLocation,
                 hiringProgress = state.hiringProgress,
@@ -234,7 +248,7 @@ internal fun AddInterviewSchedule(
             }
             val datePickerState = rememberDatePickerState(
                 initialSelectedDateMillis = initialDate
-                    .atStartOfDay(ZoneId.systemDefault())
+                    .atStartOfDay(ZoneId.of("UTC"))
                     .toInstant()
                     .toEpochMilli(),
             )
