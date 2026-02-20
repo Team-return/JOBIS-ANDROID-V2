@@ -144,4 +144,10 @@ internal object RequestUrls {
         const val interests = path
         const val interestsRecruitments = "$path/recruitment"
     }
+
+    data object Interviews {
+        private const val path = "/interviews"
+
+        const val interviews = path
+    }
 }

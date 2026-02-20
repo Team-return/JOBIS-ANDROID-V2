@@ -24,6 +24,8 @@ import team.retum.network.datasource.file.RemoteFileDataSource
 import team.retum.network.datasource.file.RemoteFileDataSourceImpl
 import team.retum.network.datasource.interests.InterestsDataSource
 import team.retum.network.datasource.interests.InterestsDataSourceImpl
+import team.retum.network.datasource.interview.InterviewDataSource
+import team.retum.network.datasource.interview.InterviewDataSourceImpl
 import team.retum.network.datasource.notice.NoticeDataSource
 import team.retum.network.datasource.notice.NoticeDataSourceImpl
 import team.retum.network.datasource.notification.NotificationDataSource
@@ -110,4 +112,8 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindInterestsDataSource(interestsDataSourceImpl: InterestsDataSourceImpl): InterestsDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindInterviewDataSource(interviewDataSourceImpl: InterviewDataSourceImpl): InterviewDataSource
 }

@@ -75,6 +75,8 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/DEPENDENCIES"
         }
         jniLibs {
             useLegacyPackaging = true
@@ -120,6 +122,7 @@ dependencies {
     implementation(project(":feature:application"))
     implementation(project(":feature:employment"))
     implementation(project(":feature:post-review"))
+    implementation(project(":feature:interview-schedule"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)

@@ -5,4 +5,5 @@ enum class AlarmType {
     RECRUITMENT,
     NOTICE,
     WINTER_INTERN,
+    INTERVIEW,
 }

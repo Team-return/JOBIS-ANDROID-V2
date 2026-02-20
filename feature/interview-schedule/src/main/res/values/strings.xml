@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_management">일정 관리</string>
+    <string name="tab_calendar">캘린더</string>
+    <string name="tab_edit">수정</string>
+    <string name="interview_schedule_empty">면접 일정이 없습니다</string>
+
+    <!-- 추가 화면 -->
+    <string name="add_interview_schedule">면접 일정 추가</string>
+    <string name="company">기업</string>
+    <string name="company_hint">면접을 보는 기업을 알려주세요</string>
+    <string name="interview_type">면접 종류</string>
+    <string name="interview_type_hint">면접 종류를 선택해주세요</string>
+    <string name="interview_location">면접 장소</string>
+    <string name="interview_location_hint">면접 장소를 입력해주세요</string>
+    <string name="interview_date">면접 일자</string>
+    <string name="interview_period">면접기간</string>
+    <string name="interview_time">면접시간</string>
+    <string name="interview_time_hint">hh.mm</string>
+    <string name="add_button">추가하기</string>
+
+    <!-- 수정 탭/화면 -->
+    <string name="scheduled_interviews">예정된 면접</string>
+    <string name="edit_interview_schedule">일정 수정</string>
+    <string name="edit_button">수정하기</string>
+
+    <!-- 확인 모달 -->
+    <string name="edit_confirm_title">면접 일자 수정 확인</string>
+    <string name="edit_confirm_description">작성한 내용으로 수정하시겠습니까?</string>
+    <string name="cancel">취소</string>
+    <string name="confirm">확인</string>
+
+    <!-- 토스트 메시지 -->
+    <string name="add_success_message">면접 일정이 추가되었습니다.</string>
+    <string name="add_failed_message">면접 일정 추가에 실패했습니다.</string>
+    <string name="edit_success_message">면접 일정이 수정되었습니다.</string>
+    <string name="edit_failed_message">면접 일정 수정에 실패했습니다.</string>
+    <string name="fetch_interview_fail">면접 일정을 조회 하지 못했어요</string>
+
+    <!-- Google Calendar -->
+    <string name="calendar_dialog_title">Google Calendar에 추가</string>
+    <string name="calendar_dialog_description">면접 일정을 Google Calendar에 추가하시겠습니까?</string>
+    <string name="calendar_dialog_confirm">추가</string>
+    <string name="calendar_dialog_cancel">괜찮아요</string>
+    <string name="calendar_add_success">캘린더에 추가되었습니다.</string>
+    <string name="calendar_add_failed">캘린더 추가에 실패했습니다.</string>
+</resources>

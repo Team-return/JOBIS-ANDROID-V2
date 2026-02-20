@@ -75,6 +75,7 @@ private const val PAGER_AUTO_SCROLL_TIME = 3000L
 internal fun Home(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
@@ -122,6 +123,7 @@ internal fun Home(
     HomeScreen(
         scrollState = scrollState,
         onAlarmClick = onAlarmClick,
+        onCalendarClick = onCalendarClick,
         onCompaniesClick = onCompaniesClick,
         onWinterInternClick = onWinterInternClick,
         onEmploymentClick = onEmploymentClick,
@@ -147,6 +149,7 @@ internal fun Home(
 private fun HomeScreen(
     scrollState: ScrollState,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
@@ -167,6 +170,11 @@ private fun HomeScreen(
         verticalArrangement = Arrangement.Top,
     ) {
         JobisSmallTopAppBar(showLogo = true) {
+            JobisIconButton(
+                drawableResId = JobisIcon.Calendar,
+                contentDescription = "calendar",
+                onClick = onCalendarClick,
+            )
             JobisIconButton(
                 drawableResId = JobisIcon.Bell,
                 contentDescription = "notification",

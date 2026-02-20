@@ -11,7 +11,6 @@ import team.retum.common.exception.OfflineException
 import team.retum.common.exception.ServerException
 import team.retum.common.exception.TooManyRequestException
 import team.retum.common.exception.UnAuthorizedException
-import team.retum.common.exception.UnknownException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -64,6 +63,6 @@ class RequestHandler<T> {
         } catch (e: UnknownHostException) {
             throw OfflineException
         } catch (e: Throwable) {
-            throw UnknownException
+            throw e
         }
 }

@@ -10,6 +10,9 @@ import team.retum.employment.navigation.employmentNavigation
 import team.retum.jobis.application.navigation.application
 import team.retum.jobis.interests.navigation.interests
 import team.retum.jobis.interests.navigation.interestsComplete
+import team.retum.jobis.interview.schedule.navigation.addInterviewSchedule
+import team.retum.jobis.interview.schedule.navigation.editInterviewSchedule
+import team.retum.jobis.interview.schedule.navigation.interviewSchedule
 import team.retum.jobis.notice.navigation.noticeDetails
 import team.retum.jobis.notice.navigation.notices
 import team.retum.jobis.recruitment.navigation.recruitmentDetails
@@ -41,6 +44,7 @@ internal fun NavGraphBuilder.mainNavigation(
     ) {
         root(
             onAlarmClick = navigator::navigateToNotification,
+            onCalendarClick = navigator::navigateToInterviewSchedule,
             onEmploymentClick = navigator::navigateToEmployment,
             onWinterInternClick = navigator::navigateToWinterIntern,
             onRecruitmentDetailsClick = navigator::navigateToRecruitmentDetails,
@@ -69,6 +73,7 @@ internal fun NavGraphBuilder.mainNavigation(
             navigateToRecruitment = navigator::navigateToRecruitmentDetails,
             navigateToHome = navigator::navigateToRoot,
             navigateToNotice = navigator::navigateToNoticeDetails,
+            navigateToInterviewSchedule = navigator::navigateToInterviewSchedule,
         )
         recruitmentDetails(
             onBackPressed = navigator::popBackStackIfNotHome,
@@ -149,6 +154,17 @@ internal fun NavGraphBuilder.mainNavigation(
         searchReview(
             onBackPressed = navigator::popBackStackIfNotHome,
             onReviewDetailClick = navigator::navigateToReviewDetails,
+        )
+        interviewSchedule(
+            onBackPressed = navigator::popBackStackIfNotHome,
+            onAddClick = navigator::navigateToAddInterviewSchedule,
+            onEditClick = navigator::navigateToEditInterviewSchedule,
+        )
+        addInterviewSchedule(
+            onBackPressed = navigator::popBackStackIfNotHome,
+        )
+        editInterviewSchedule(
+            onBackPressed = navigator::popBackStackIfNotHome,
         )
     }
 }

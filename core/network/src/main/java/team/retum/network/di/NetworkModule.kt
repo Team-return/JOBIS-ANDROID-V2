@@ -23,6 +23,7 @@ import team.retum.network.api.CodeApi
 import team.retum.network.api.CompanyApi
 import team.retum.network.api.FileApi
 import team.retum.network.api.InterestsApi
+import team.retum.network.api.InterviewApi
 import team.retum.network.api.NoticeApi
 import team.retum.network.api.NotificationApi
 import team.retum.network.api.RecruitmentApi
@@ -194,5 +195,11 @@ object NetworkModule {
     @Singleton
     fun provideInterestsApi(retrofit: Retrofit): InterestsApi {
         return retrofit.create(InterestsApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInterviewApi(retrofit: Retrofit): InterviewApi {
+        return retrofit.create(InterviewApi::class.java)
     }
 }

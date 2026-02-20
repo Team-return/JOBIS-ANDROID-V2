@@ -53,6 +53,11 @@ appcompat = "1.7.0"
 tiles-tooling-preview = "1.4.1"
 ui-tooling-preview-android = "1.7.8"
 
+play-services-auth = "21.3.0"
+google-api-client-android = "2.7.2"
+google-api-services-calendar = "v3-rev20250115-2.0.0"
+google-http-client-gson = "1.45.3"
+
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
@@ -120,6 +125,11 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit-ktx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-services-auth" }
+google-api-client-android = { group = "com.google.api-client", name = "google-api-client-android", version.ref = "google-api-client-android" }
+google-api-services-calendar = { group = "com.google.apis", name = "google-api-services-calendar", version.ref = "google-api-services-calendar" }
+google-http-client-gson = { group = "com.google.http-client", name = "google-http-client-gson", version.ref = "google-http-client-gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

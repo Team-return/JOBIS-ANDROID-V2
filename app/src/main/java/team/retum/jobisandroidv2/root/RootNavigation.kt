@@ -13,6 +13,7 @@ const val INITIAL_TAB = "initialTab"
 
 fun NavGraphBuilder.root(
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
@@ -50,6 +51,7 @@ fun NavGraphBuilder.root(
             initialTab = it.arguments?.getString(INITIAL_TAB),
             applicationId = it.arguments?.getLong(APPLICATION_ID),
             onAlarmClick = onAlarmClick,
+            onCalendarClick = onCalendarClick,
             onEmploymentClick = onEmploymentClick,
             onWinterInternClick = onWinterInternClick,
             onRecruitmentDetailsClick = onRecruitmentDetailsClick,

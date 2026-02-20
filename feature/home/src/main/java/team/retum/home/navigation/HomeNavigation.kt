@@ -10,6 +10,7 @@ const val NAVIGATION_HOME = "home"
 fun NavGraphBuilder.home(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
@@ -22,6 +23,7 @@ fun NavGraphBuilder.home(
         Home(
             applicationId = applicationId,
             onAlarmClick = onAlarmClick,
+            onCalendarClick = onCalendarClick,
             showRejectionModal = showRejectionModal,
             onCompaniesClick = onCompaniesClick,
             onEmploymentClick = onEmploymentClick,
