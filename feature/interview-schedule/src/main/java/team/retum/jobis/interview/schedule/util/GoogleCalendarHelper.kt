@@ -52,7 +52,7 @@ class GoogleCalendarHelper(context: Context) {
                 )
                 val zoneId = ZoneId.of("Asia/Seoul")
                 val startLocalDateTime = LocalDate.parse(eventData.startDate).atTime(startTime)
-                val endLocalDateTime = startLocalDateTime.plusHours(1)
+                val endLocalDateTime = LocalDate.parse(eventData.endDate).atTime(startTime.plusHours(1))
 
                 val startDateTime = startLocalDateTime.atZone(zoneId)
                     .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
