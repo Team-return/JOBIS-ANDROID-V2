@@ -187,7 +187,7 @@ private fun RecruitmentsScreen(
                 Spacer(modifier = Modifier.width(2.dp))
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_down),
-                    contentDescription = "정렬 펼치기",
+                    contentDescription = null,
                     tint = JobisTheme.colors.onSurfaceVariant,
                 )
             }
