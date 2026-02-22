@@ -195,8 +195,6 @@ private fun RecruitmentsScreen(
                 expanded = sortExpanded,
                 onDismissRequest = { sortExpanded = false },
                 offset = DpOffset(x = 0.dp, y = 8.dp),
-                modifier = Modifier
-                    .align(Alignment.TopEnd),
                 containerColor = Color.Transparent,
                 tonalElevation = 0.dp,
                 shadowElevation = 0.dp,
