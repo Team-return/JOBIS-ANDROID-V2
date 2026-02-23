@@ -40,4 +40,11 @@
 
     <string name="setting_filter">필터 설정</string>
     <string name="appliance">적용하기</string>
+
+    <string name="sort_default">기본순</string>
+    <string name="sort_take">매출</string>
+    <string name="sort_workers_asc">직원 ↓</string>
+    <string name="sort_workers_desc">직원 ↑</string>
+    <string name="sort_deadline_asc">공고마감 ↓</string>
+    <string name="sort_deadline_desc">공고마감 ↑</string>
 </resources>

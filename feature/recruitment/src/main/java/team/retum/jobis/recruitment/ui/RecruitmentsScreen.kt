@@ -54,20 +54,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.RecruitmentsEntity
 
-private val sortLabelByType: LinkedHashMap<RecruitSortType?, String> = linkedMapOf(
-    null to "기본순",
-    RecruitSortType.TAKE to "매출",
-    RecruitSortType.WORKERS_COUNT_ASC to "직원 ↓",
-    RecruitSortType.WORKERS_COUNT_DESC to "직원 ↑",
-    RecruitSortType.DEADLINE_ASC to "공고마감 ↓",
-    RecruitSortType.DEADLINE_DESC to "공고마감 ↑",
-)
-
-private val sortItems = sortLabelByType.values.toList()
-
-private val sortTypeByLabel: Map<String, RecruitSortType?> =
-    sortLabelByType.entries.associate { (type, label) -> label to type }
-
 @Composable
 internal fun Recruitments(
     onRecruitmentDetailsClick: (Long) -> Unit,
@@ -134,6 +120,18 @@ private fun RecruitmentsScreen(
         mutableStateOf(false)
     }
 
+    val sortLabelByType = linkedMapOf(
+        null to stringResource(R.string.sort_default),
+        RecruitSortType.TAKE to stringResource(R.string.sort_take),
+        RecruitSortType.WORKERS_COUNT_ASC to stringResource(R.string.sort_workers_asc),
+        RecruitSortType.WORKERS_COUNT_DESC to stringResource(R.string.sort_workers_desc),
+        RecruitSortType.DEADLINE_ASC to stringResource(R.string.sort_deadline_asc),
+        RecruitSortType.DEADLINE_DESC to stringResource(R.string.sort_deadline_desc),
+    )
+
+    val sortItems = sortLabelByType.values.toList()
+    val sortTypeByLabel: Map<String, RecruitSortType?> =
+        sortLabelByType.entries.associate { (type, label) -> label to type }
     val selectedSortText = sortLabelByType[currentSortType] ?: sortLabelByType.getValue(null)
     val menuShape = RoundedCornerShape(8.dp)
     Column(
