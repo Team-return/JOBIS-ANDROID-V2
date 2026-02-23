@@ -171,7 +171,7 @@ private fun RecruitmentsScreen(
             contentAlignment = Alignment.Center,
             modifier = Modifier.clickable(
                 onClickLabel = sortContentDescription,
-            ){
+            ) {
                 sortExpanded = true
             },
         ) {
