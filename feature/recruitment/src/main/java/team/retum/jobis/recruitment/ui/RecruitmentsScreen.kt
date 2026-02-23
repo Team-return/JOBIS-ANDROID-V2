@@ -120,18 +120,40 @@ private fun RecruitmentsScreen(
         mutableStateOf(false)
     }
 
-    val sortLabelByType = linkedMapOf(
-        null to stringResource(R.string.sort_default),
-        RecruitSortType.TAKE to stringResource(R.string.sort_take),
-        RecruitSortType.WORKERS_COUNT_ASC to stringResource(R.string.sort_workers_asc),
-        RecruitSortType.WORKERS_COUNT_DESC to stringResource(R.string.sort_workers_desc),
-        RecruitSortType.DEADLINE_ASC to stringResource(R.string.sort_deadline_asc),
-        RecruitSortType.DEADLINE_DESC to stringResource(R.string.sort_deadline_desc),
-    )
+    val labelDefault = stringResource(R.string.sort_default)
+    val labelTake = stringResource(R.string.sort_take)
+    val labelWorkersAsc = stringResource(R.string.sort_workers_asc)
+    val labelWorkersDesc = stringResource(R.string.sort_workers_desc)
+    val labelDeadlineAsc = stringResource(R.string.sort_deadline_asc)
+    val labelDeadlineDesc = stringResource(R.string.sort_deadline_desc)
 
-    val sortItems = sortLabelByType.values.toList()
-    val sortTypeByLabel: Map<String, RecruitSortType?> =
-        sortLabelByType.entries.associate { (type, label) -> label to type }
+    val sortLabelByType = remember(
+        labelDefault,
+        labelTake,
+        labelWorkersAsc,
+        labelWorkersDesc,
+        labelDeadlineAsc,
+        labelDeadlineDesc,
+    ) {
+        linkedMapOf(
+            null to labelDefault,
+            RecruitSortType.TAKE to labelTake,
+            RecruitSortType.WORKERS_COUNT_ASC to labelWorkersAsc,
+            RecruitSortType.WORKERS_COUNT_DESC to labelWorkersDesc,
+            RecruitSortType.DEADLINE_ASC to labelDeadlineAsc,
+            RecruitSortType.DEADLINE_DESC to labelDeadlineDesc,
+        )
+    }
+
+    val sortItems = remember(sortLabelByType) {
+        sortLabelByType.values.toList()
+    }
+
+    val sortTypeByLabel: Map<String, RecruitSortType?> = remember(sortLabelByType) {
+        sortLabelByType.entries.associate { (type, label) ->
+            label to type
+        }
+    }
     val selectedSortText = sortLabelByType[currentSortType] ?: sortLabelByType.getValue(null)
     val menuShape = RoundedCornerShape(8.dp)
     Column(
