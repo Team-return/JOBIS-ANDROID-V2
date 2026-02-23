@@ -47,4 +47,6 @@
     <string name="sort_workers_desc">직원 ↑</string>
     <string name="sort_deadline_asc">공고마감 ↓</string>
     <string name="sort_deadline_desc">공고마감 ↑</string>
+
+    <string name="sort_expand">정렬 메뉴 열기</string>
 </resources>

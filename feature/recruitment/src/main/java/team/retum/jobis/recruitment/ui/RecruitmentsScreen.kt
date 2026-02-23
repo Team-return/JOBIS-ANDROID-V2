@@ -166,9 +166,12 @@ private fun RecruitmentsScreen(
             .padding(start = 24.dp, top = 70.dp, end = 24.dp, bottom = 8.dp),
         horizontalArrangement = Arrangement.End,
     ) {
+        val sortContentDescription = stringResource(R.string.sort_expand)
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.clickable {
+            modifier = Modifier.clickable(
+                onClickLabel = sortContentDescription,
+            ){
                 sortExpanded = true
             },
         ) {
