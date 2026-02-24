@@ -207,7 +207,6 @@ private fun RecruitmentsScreen(
                     maxLines = 1,
                     style = JobisTypography.Description,
                     color = JobisTheme.colors.onSurfaceVariant,
-                    fontSize = 14.sp,
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Icon(
