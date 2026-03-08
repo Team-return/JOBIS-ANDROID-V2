@@ -252,10 +252,7 @@ private fun RecruitmentsScreen(
                                 },
                                 onClick = {
                                     sortExpanded = false
-                                    val newSortType = sortTypeByLabel[text]
-                                    if (newSortType != currentSortType) {
-                                        onSortChange(newSortType)
-                                    }
+                                    onSortChange(type)
                                 },
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
                             )
