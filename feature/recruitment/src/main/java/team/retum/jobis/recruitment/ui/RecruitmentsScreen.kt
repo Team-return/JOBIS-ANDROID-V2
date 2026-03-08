@@ -233,8 +233,8 @@ private fun RecruitmentsScreen(
                     Column(
                         modifier = Modifier.padding(vertical = 6.dp),
                     ) {
-                        sortItems.forEach { text ->
-                            val isSelected = text == selectedSortText
+                        sortItems.forEach { (type,text) ->
+                            val isSelected = type == currentSortType
                             DropdownMenuItem(
                                 modifier = Modifier.height(36.dp),
                                 text = {
