@@ -151,12 +151,7 @@ private fun RecruitmentsScreen(
     val sortItems = remember(sortLabelByType) {
         sortLabelByType.entries.toList()
     }
-
-    val sortTypeByLabel: Map<String, RecruitSortType?> = remember(sortLabelByType) {
-        sortLabelByType.entries.associate { (type, label) ->
-            label to type
-        }
-    }
+    
     val selectedSortText = sortLabelByType[currentSortType] ?: sortLabelByType.getValue(null)
     val menuShape = RoundedCornerShape(8.dp)
     Column(
