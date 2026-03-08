@@ -147,7 +147,7 @@ private fun RecruitmentsScreen(
     }
 
     val sortItems = remember(sortLabelByType) {
-        sortLabelByType.values.toList()
+        sortLabelByType.entries.toList()
     }
 
     val sortTypeByLabel: Map<String, RecruitSortType?> = remember(sortLabelByType) {
