@@ -100,7 +100,9 @@ internal fun Recruitments(
         whetherFetchNextPage = recruitmentViewModel::whetherFetchNextPage,
         fetchNextPage = recruitmentViewModel::fetchRecruitments,
         onSortChange = { newSortType ->
-            recruitmentViewModel.setSortType(newSortType)
+            if(newSortType != currentSortType) {
+                recruitmentViewModel.setSortType(newSortType)
+            }
         },
     )
 }
