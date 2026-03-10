@@ -100,7 +100,7 @@ internal fun Recruitments(
         whetherFetchNextPage = recruitmentViewModel::whetherFetchNextPage,
         fetchNextPage = recruitmentViewModel::fetchRecruitments,
         onSortChange = { newSortType ->
-            if(newSortType != currentSortType) {
+            if (newSortType != currentSortType) {
                 recruitmentViewModel.setSortType(newSortType)
             }
         },
@@ -151,7 +151,7 @@ private fun RecruitmentsScreen(
     val sortItems = remember(sortLabelByType) {
         sortLabelByType.entries.toList()
     }
-    
+
     val selectedSortText = sortLabelByType[currentSortType] ?: sortLabelByType.getValue(null)
     val menuShape = RoundedCornerShape(8.dp)
     Column(
@@ -230,7 +230,7 @@ private fun RecruitmentsScreen(
                     Column(
                         modifier = Modifier.padding(vertical = 6.dp),
                     ) {
-                        sortItems.forEach { (type,text) ->
+                        sortItems.forEach { (type, text) ->
                             val isSelected = type == currentSortType
                             DropdownMenuItem(
                                 modifier = Modifier.height(36.dp),

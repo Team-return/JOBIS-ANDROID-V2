@@ -26,4 +26,3 @@ dependencies {
 
     implementation(libs.kotlinx.collections.immutable)
 }
-
