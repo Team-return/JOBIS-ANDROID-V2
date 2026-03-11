@@ -190,16 +190,7 @@ private fun HomeScreen(
                 banners = banners,
                 onEmploymentClick = onEmploymentClick,
             )
-            StudentInformation(
-                modifier = Modifier.padding(
-                    horizontal = 24.dp,
-                    vertical = 12.dp,
-                ),
-                profileImageUrl = studentInformation.profileImageUrl,
-                number = studentInformation.studentGcn,
-                name = studentInformation.studentName,
-                department = studentInformation.department.value,
-            )
+            
             Menus(
                 modifier = Modifier.padding(
                     vertical = 12.dp,
@@ -354,41 +345,6 @@ private fun EmploymentRate(
             painter = painterResource(id = JobisIcon.File),
             contentDescription = "file",
         )
-    }
-}
-
-@Composable
-private fun StudentInformation(
-    modifier: Modifier = Modifier,
-    profileImageUrl: String,
-    number: String,
-    name: String,
-    department: String,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(56.dp)
-                .clip(CircleShape),
-            model = profileImageUrl,
-            contentDescription = "user profile image",
-            contentScale = ContentScale.Crop,
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            JobisText(
-                text = "$number $name",
-                style = JobisTypography.SubHeadLine,
-            )
-            JobisText(
-                text = department,
-                style = JobisTypography.Description,
-                color = JobisTheme.colors.inverseOnSurface,
-            )
-        }
     }
 }
 
