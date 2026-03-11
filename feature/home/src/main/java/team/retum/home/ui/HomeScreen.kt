@@ -190,7 +190,6 @@ private fun HomeScreen(
                 banners = banners,
                 onEmploymentClick = onEmploymentClick,
             )
-            
             Menus(
                 modifier = Modifier.padding(
                     vertical = 12.dp,
@@ -199,6 +198,12 @@ private fun HomeScreen(
                 isWinterIntern = state.isWinterIntern,
                 onCompaniesClick = onCompaniesClick,
                 onWinterInternClick = onWinterInternClick,
+            )
+            RecentlyViewedCompanies(
+                modifier = Modifier.padding(
+                    vertical = 12.dp,
+                    horizontal = 24.dp,
+                )
             )
             // TODO :: 지원 했을 때 홈 진입 시 ui에 바로 반영
             ApplyStatus(
