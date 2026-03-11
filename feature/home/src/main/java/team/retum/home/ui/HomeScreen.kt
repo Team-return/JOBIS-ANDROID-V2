@@ -400,6 +400,25 @@ private fun Menus(
 }
 
 @Composable
+private fun RecentlyViewedCompanies(
+    modifier: Modifier = Modifier,
+) {
+    val companies = listOf(
+        CarouselItem(
+            name = "(주)자비스",
+            revenue = "연매출 120억"
+        ),
+        CarouselItem(
+            name = "(주)자비스",
+            revenue = "연매출 120억"
+        ),
+        CarouselItem(
+            name = "(주)자비스",
+            revenue = "연매출 120억"
+        ),
+    )
+}
+@Composable
 private fun Menu(
     modifier: Modifier = Modifier,
     text: String,
