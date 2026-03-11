@@ -406,18 +406,27 @@ private fun RecentlyViewedCompanies(
     val companies = listOf(
         CarouselItem(
             name = "(주)자비스",
-            revenue = "연매출 120억"
+            take = "연매출 120억"
         ),
         CarouselItem(
             name = "(주)자비스",
-            revenue = "연매출 120억"
+            take = "연매출 120억"
         ),
         CarouselItem(
             name = "(주)자비스",
-            revenue = "연매출 120억"
+            take = "연매출 120억"
         ),
     )
+    Column(modifier = modifier) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = "최근 본 기업",
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+    }
 }
+
 @Composable
 private fun Menu(
     modifier: Modifier = Modifier,
