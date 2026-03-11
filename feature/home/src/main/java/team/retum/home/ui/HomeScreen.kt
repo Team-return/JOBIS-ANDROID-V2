@@ -53,6 +53,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.model.ApplicationData
 import team.retum.home.R
+import team.retum.home.model.CarouselItem
 import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
@@ -427,6 +428,27 @@ private fun RecentlyViewedCompanies(
     }
 }
 
+@Composable
+private fun CompanyCarousel(
+    companies: List<CarouselItem>,
+) {
+    val pagerState = rememberPagerState { companies.size }
+
+    HorizontalPager(
+        state = pagerState,
+        pageSpacing = 12.dp,
+    ) {
+        page ->
+        CompanyItem(
+            item = companies[page]
+        )
+    }
+}
+
+@Composable
+private fun CompanyItem() {
+
+}
 @Composable
 private fun Menu(
     modifier: Modifier = Modifier,
