@@ -446,7 +446,34 @@ private fun CompanyCarousel(
 }
 
 @Composable
-private fun CompanyItem() {
+private fun CompanyItem(
+    item: CarouselItem,
+) {
+    Column (
+        modifier = Modifier.width(160.dp)
+    ){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(
+                    color = JobisTheme.colors.surfaceVariant,
+                    shape = RoundedCornerShape(8.dp)
+                )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        JobisText(
+            text = item.name,
+            style = JobisTypography.Body,
+        )
+        JobisText(
+            text = item.take,
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.surfaceVariant,
+
+        )
+    }
 
 }
 @Composable
