@@ -197,15 +197,6 @@ private fun HomeScreen(
                     horizontal = 24.dp,
                 )
             )
-            Menus(
-                modifier = Modifier.padding(
-                    vertical = 12.dp,
-                    horizontal = 24.dp,
-                ),
-                isWinterIntern = state.isWinterIntern,
-                onCompaniesClick = onCompaniesClick,
-                onWinterInternClick = onWinterInternClick,
-            )
             // TODO :: 지원 했을 때 홈 진입 시 ui에 바로 반영
             ApplyStatus(
                 modifier = Modifier.padding(
@@ -403,9 +394,9 @@ private fun CompanyCarousel(
 private fun CompanyItem(
     item: CarouselItem,
 ) {
-    Column (
+    Column(
         modifier = Modifier.width(160.dp)
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -427,90 +418,6 @@ private fun CompanyItem(
             color = JobisTheme.colors.surfaceVariant,
 
             )
-    }
-
-}
-
-@Composable
-private fun Menus(
-    modifier: Modifier = Modifier,
-    isWinterIntern: Boolean,
-    onCompaniesClick: () -> Unit,
-    onWinterInternClick: () -> Unit,
-) {
-    Column(modifier = modifier) {
-        JobisText(
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-                .align(Alignment.Start),
-            text = stringResource(id = R.string.search_information),
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Menu(
-                modifier = Modifier.weight(1f),
-                text = stringResource(
-                    id = if (isWinterIntern) {
-                        R.string.explore_other_companies
-                    } else {
-                        R.string.how_about_other_companies
-                    },
-                ),
-                onClick = onCompaniesClick,
-                icon = JobisIcon.Building,
-            )
-            if (isWinterIntern) {
-                Menu(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.experiential_field_training),
-                    onClick = onWinterInternClick,
-                    icon = JobisIcon.SnowMan,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun Menu(
-    modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit,
-    icon: Int,
-) {
-    JobisCard(
-        modifier = modifier,
-        onClick = onClick,
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
-        ) {
-            JobisText(
-                text = "$text ->",
-                style = JobisTypography.HeadLine,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Surface(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(JobisTheme.colors.background)
-                    .padding(12.dp)
-                    .align(Alignment.End),
-            ) {
-                Image(
-                    modifier = Modifier.background(JobisTheme.colors.background),
-                    painter = painterResource(id = icon),
-                    contentDescription = "menu icon",
-                )
-            }
-        }
     }
 }
 
