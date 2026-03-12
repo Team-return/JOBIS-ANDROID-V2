@@ -191,6 +191,12 @@ private fun HomeScreen(
                 banners = banners,
                 onEmploymentClick = onEmploymentClick,
             )
+            RecentlyViewedCompanies(
+                modifier = Modifier.padding(
+                    vertical = 12.dp,
+                    horizontal = 24.dp,
+                )
+            )
             Menus(
                 modifier = Modifier.padding(
                     vertical = 12.dp,
@@ -199,12 +205,6 @@ private fun HomeScreen(
                 isWinterIntern = state.isWinterIntern,
                 onCompaniesClick = onCompaniesClick,
                 onWinterInternClick = onWinterInternClick,
-            )
-            RecentlyViewedCompanies(
-                modifier = Modifier.padding(
-                    vertical = 12.dp,
-                    horizontal = 24.dp,
-                )
             )
             // TODO :: 지원 했을 때 홈 진입 시 ui에 바로 반영
             ApplyStatus(
@@ -355,6 +355,83 @@ private fun EmploymentRate(
 }
 
 @Composable
+private fun RecentlyViewedCompanies(
+    modifier: Modifier = Modifier,
+) {
+    val companies = listOf(
+        CarouselItem(
+            name = "(주)자비스",
+            take = "연매출 120억"
+        ),
+        CarouselItem(
+            name = "(주)자비스",
+            take = "연매출 120억"
+        ),
+        CarouselItem(
+            name = "(주)자비스",
+            take = "연매출 120억"
+        ),
+    )
+    Column(modifier = modifier) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = "최근 본 기업",
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun CompanyCarousel(
+    companies: List<CarouselItem>,
+) {
+    val pagerState = rememberPagerState { companies.size }
+
+    HorizontalPager(
+        state = pagerState,
+        pageSpacing = 12.dp,
+    ) {
+            page ->
+        CompanyItem(
+            item = companies[page]
+        )
+    }
+}
+
+@Composable
+private fun CompanyItem(
+    item: CarouselItem,
+) {
+    Column (
+        modifier = Modifier.width(160.dp)
+    ){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(
+                    color = JobisTheme.colors.surfaceVariant,
+                    shape = RoundedCornerShape(8.dp)
+                )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        JobisText(
+            text = item.name,
+            style = JobisTypography.Body,
+        )
+        JobisText(
+            text = item.take,
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.surfaceVariant,
+
+            )
+    }
+
+}
+
+@Composable
 private fun Menus(
     modifier: Modifier = Modifier,
     isWinterIntern: Boolean,
@@ -400,82 +477,6 @@ private fun Menus(
     }
 }
 
-@Composable
-private fun RecentlyViewedCompanies(
-    modifier: Modifier = Modifier,
-) {
-    val companies = listOf(
-        CarouselItem(
-            name = "(주)자비스",
-            take = "연매출 120억"
-        ),
-        CarouselItem(
-            name = "(주)자비스",
-            take = "연매출 120억"
-        ),
-        CarouselItem(
-            name = "(주)자비스",
-            take = "연매출 120억"
-        ),
-    )
-    Column(modifier = modifier) {
-        JobisText(
-            modifier = Modifier.padding(vertical = 8.dp),
-            text = "최근 본 기업",
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
-        )
-    }
-}
-
-@Composable
-private fun CompanyCarousel(
-    companies: List<CarouselItem>,
-) {
-    val pagerState = rememberPagerState { companies.size }
-
-    HorizontalPager(
-        state = pagerState,
-        pageSpacing = 12.dp,
-    ) {
-        page ->
-        CompanyItem(
-            item = companies[page]
-        )
-    }
-}
-
-@Composable
-private fun CompanyItem(
-    item: CarouselItem,
-) {
-    Column (
-        modifier = Modifier.width(160.dp)
-    ){
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .background(
-                    color = JobisTheme.colors.surfaceVariant,
-                    shape = RoundedCornerShape(8.dp)
-                )
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        JobisText(
-            text = item.name,
-            style = JobisTypography.Body,
-        )
-        JobisText(
-            text = item.take,
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.surfaceVariant,
-
-        )
-    }
-
-}
 @Composable
 private fun Menu(
     modifier: Modifier = Modifier,
