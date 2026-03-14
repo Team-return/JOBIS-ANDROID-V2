@@ -7,6 +7,7 @@ import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
+import team.retum.network.model.response.RecentResponse
 import javax.inject.Inject
 
 class StudentRepositoryImpl @Inject constructor(
@@ -39,6 +40,10 @@ class StudentRepositoryImpl @Inject constructor(
 
     override suspend fun comparePassword(password: String) {
         remoteStudentDataSource.comparePassword(password = password)
+    }
+
+    override suspend fun fetchRecentCompanies(): RecentResponse {
+        return remoteStudentDataSource.fetchRecentCompanies()
     }
 
     override suspend fun resetPassword(forgottenPasswordRequest: ForgottenPasswordRequest) {

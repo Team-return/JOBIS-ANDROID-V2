@@ -5,6 +5,7 @@ import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
+import team.retum.network.model.response.RecentResponse
 import team.retum.network.model.response.TokenResponse
 
 interface RemoteStudentDataSource {
@@ -23,4 +24,6 @@ interface RemoteStudentDataSource {
     suspend fun changePassword(changePasswordRequest: ChangePasswordRequest)
 
     suspend fun editProfileImage(editProfileImageRequest: EditProfileImageRequest)
+
+    suspend fun fetchRecentCompanies(): RecentResponse
 }

@@ -5,6 +5,8 @@ import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
+import team.retum.network.model.response.RecentResponse
+
 interface StudentRepository {
     suspend fun checkStudentExists(
         gcn: String,
@@ -21,4 +23,6 @@ interface StudentRepository {
     suspend fun changePassword(changePasswordRequest: ChangePasswordRequest)
 
     suspend fun editProfileImage(editProfileImageRequest: EditProfileImageRequest)
+
+    suspend fun fetchRecentCompanies(): RecentResponse
 }
