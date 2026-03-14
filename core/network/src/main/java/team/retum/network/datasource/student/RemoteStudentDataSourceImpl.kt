@@ -63,6 +63,8 @@ class RemoteStudentDataSourceImpl @Inject constructor(
     }
 
     override suspend fun fetchRecentCompanies(): RecentResponse {
-        return studentApi.fetchRecentCompanies()
+        return RequestHandler<RecentResponse>().request {
+            studentApi.fetchRecentCompanies()
+        }
     }
 }
