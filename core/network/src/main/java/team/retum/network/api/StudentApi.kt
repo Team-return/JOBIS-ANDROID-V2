@@ -12,6 +12,7 @@ import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
 import team.retum.network.model.response.TokenResponse
+import team.retum.network.model.response.RecentResponse
 
 interface StudentApi {
     @GET(RequestUrls.Students.exists)
@@ -32,6 +33,9 @@ interface StudentApi {
     suspend fun comparePassword(
         @Query("password") password: String,
     )
+
+    @GET(RequestUrls.Students.recent)
+    suspend fun fetchRecentCompanies(): RecentResponse
 
     @PATCH(RequestUrls.Students.forgottenPassword)
     suspend fun resetPassword(
