@@ -7,7 +7,7 @@ import javax.inject.Inject
 class FetchRecentCompaniesUseCase @Inject constructor(
     private val studentRepository: StudentRepository,
 ) {
-    suspend fun invoke(): RecentResponse {
+    suspend operator fun invoke(): RecentResponse {
         return studentRepository.fetchRecentCompanies()
     }
 }

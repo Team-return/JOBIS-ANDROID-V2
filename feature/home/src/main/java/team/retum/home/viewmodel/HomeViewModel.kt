@@ -18,11 +18,13 @@ import team.retum.usecase.usecase.application.FetchAppliedCompaniesUseCase
 import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
 import team.retum.usecase.usecase.application.FetchRejectionReasonUseCase
 import team.retum.usecase.usecase.banner.FetchBannersUseCase
+import team.retum.usecase.usecase.student.FetchRecentCompaniesUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.text.DecimalFormat
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.math.roundToInt
+import team.retum.home.model.CarouselItem
 
 private const val SCHOOL_ESTABLISHMENT = 2015
 
@@ -34,6 +36,7 @@ internal class HomeViewModel @Inject constructor(
     private val fetchRejectionReasonUseCase: FetchRejectionReasonUseCase,
     private val fetchBannersUseCase: FetchBannersUseCase,
     private val fetchWinterInternUseCase: FetchWinterInternUseCase,
+    private val fetchRecentCompaniesUseCase: FetchRecentCompaniesUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
     internal fun calculateTerm() = setState {
@@ -111,6 +114,24 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
+    internal fun fetchRecentCompanies() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = fetchRecentCompaniesUseCase()
+            setState {
+                state.value.copy(
+                    recentCompanies = response.companies.map { company ->
+                        CarouselItem(
+                            id = company.company_id,
+                            name = company.company_name,
+                            description = company.company_introduce,
+                            logoUrl = company.company_logo_url,
+                        )
+                    },
+                )
+            }
+        }
+    }
+
     internal fun fetchScroll(
         applicationId: Long?,
         position: Float,
@@ -131,6 +152,7 @@ internal data class HomeState(
     val term: Int,
     val banners: List<BannersEntity.BannerEntity>,
     val appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    val recentCompanies: List<CarouselItem>,
     val isWinterIntern: Boolean,
     val employmentYear: Int,
 ) {
@@ -150,6 +172,7 @@ internal data class HomeState(
             appliedCompanies = emptyList(),
             isWinterIntern = false,
             employmentYear = LocalDate.now().year,
+            recentCompanies = emptyList(),
         )
     }
 }
