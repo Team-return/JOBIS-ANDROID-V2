@@ -6,7 +6,6 @@ import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
-import team.retum.network.model.response.RecentResponse
 import team.retum.network.model.response.TokenResponse
 import team.retum.network.util.RequestHandler
 import javax.inject.Inject

@@ -10,6 +10,7 @@ import team.retum.common.enums.Department
 import team.retum.common.exception.NotFoundException
 import team.retum.common.model.ApplicationData
 import team.retum.common.utils.ResourceKeys
+import team.retum.home.model.CarouselItem
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
@@ -24,7 +25,6 @@ import java.text.DecimalFormat
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import team.retum.home.model.CarouselItem
 
 private const val SCHOOL_ESTABLISHMENT = 2015
 
@@ -117,6 +117,9 @@ internal class HomeViewModel @Inject constructor(
     internal fun fetchRecentCompanies() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = fetchRecentCompaniesUseCase()
+
+            println("recentCompanies size = ${response.companies.size}")
+
             setState {
                 state.value.copy(
                     recentCompanies = response.companies.map { company ->
@@ -131,7 +134,6 @@ internal class HomeViewModel @Inject constructor(
             }
         }
     }
-
     internal fun fetchScroll(
         applicationId: Long?,
         position: Float,

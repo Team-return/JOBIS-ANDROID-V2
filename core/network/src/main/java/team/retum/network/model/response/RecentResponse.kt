@@ -1,6 +1,6 @@
 package team.retum.network.model.response
 
-data class RecentResponse (
+data class RecentResponse(
     val companies: List<RecentCompanyResponse>,
 )
 

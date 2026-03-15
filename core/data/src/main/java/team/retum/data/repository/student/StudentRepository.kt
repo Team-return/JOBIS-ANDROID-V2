@@ -5,7 +5,6 @@ import team.retum.network.model.request.student.EditProfileImageRequest
 import team.retum.network.model.request.student.ForgottenPasswordRequest
 import team.retum.network.model.request.student.PostSignUpRequest
 import team.retum.network.model.response.FetchStudentInformationResponse
-import team.retum.network.model.response.RecentResponse
 
 interface StudentRepository {
     suspend fun checkStudentExists(
