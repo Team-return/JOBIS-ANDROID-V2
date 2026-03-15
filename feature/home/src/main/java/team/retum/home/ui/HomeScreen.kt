@@ -359,7 +359,7 @@ private fun RecentlyViewedCompanies(
             modifier = Modifier.padding(vertical = 8.dp),
             text = "최근 본 기업",
             style = JobisTypography.Description,
-            color = JobisTheme.colors.surfaceVariant,
+            color = JobisTheme.colors.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(8.dp))
         if(companies.isNotEmpty()) {
