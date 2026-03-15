@@ -72,6 +72,7 @@ import team.retum.usecase.entity.student.StudentInformationEntity
 import java.net.URLEncoder
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.text.style.TextOverflow
 
 private const val PAGER_AUTO_SCROLL_TIME = 3000L
 
@@ -405,12 +406,15 @@ private fun CompanyItem(
         JobisText(
             text = item.name,
             style = JobisTypography.Body,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         JobisText(
             text = item.description,
             style = JobisTypography.Description,
             color = JobisTheme.colors.onSurfaceVariant,
-
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             )
     }
 }
