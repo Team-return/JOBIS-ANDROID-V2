@@ -24,6 +24,4 @@ interface RemoteStudentDataSource {
     suspend fun changePassword(changePasswordRequest: ChangePasswordRequest)
 
     suspend fun editProfileImage(editProfileImageRequest: EditProfileImageRequest)
-
-    suspend fun fetchRecentCompanies(): RecentResponse
 }

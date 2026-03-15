@@ -61,10 +61,4 @@ class RemoteStudentDataSourceImpl @Inject constructor(
             studentApi.editProfileImage(editProfileImageRequest = editProfileImageRequest)
         }
     }
-
-    override suspend fun fetchRecentCompanies(): RecentResponse {
-        return RequestHandler<RecentResponse>().request {
-            studentApi.fetchRecentCompanies()
-        }
-    }
 }

@@ -3,6 +3,7 @@ package team.retum.network.datasource.company
 import team.retum.network.api.CompanyApi
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
+import team.retum.network.model.response.RecentResponse
 import team.retum.network.model.response.company.FetchCompanyDetailsResponse
 import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import team.retum.network.util.RequestHandler
@@ -27,6 +28,11 @@ class CompanyDataSourceImpl @Inject constructor(
     override suspend fun fetchCompanyDetails(companyId: Long): FetchCompanyDetailsResponse {
         return RequestHandler<FetchCompanyDetailsResponse>().request {
             companyApi.fetchCompanyDetails(companyId = companyId)
+        }
+    }
+    override suspend fun fetchRecentCompanies(): RecentResponse {
+        return RequestHandler<RecentResponse>().request {
+            companyApi.fetchRecentCompanies()
         }
     }
 }

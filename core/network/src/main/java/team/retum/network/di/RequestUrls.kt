@@ -41,6 +41,7 @@ internal object RequestUrls {
         const val count = "$path/student/count"
         const val review = "$path/review"
         const val details = "$path/{${PATH.companyId}}"
+        const val recent = "$path/student/recent"
     }
 
     data object Students {
@@ -52,7 +53,6 @@ internal object RequestUrls {
         const val exists = "$path/exists"
         const val profile = "$path/profile"
         const val password = "$path/password"
-        const val recent = "$path/student/recent"
     }
 
     data object Codes {

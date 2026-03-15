@@ -1,13 +1,13 @@
 package team.retum.usecase.usecase.student
 
-import team.retum.data.repository.student.StudentRepository
+import team.retum.data.repository.company.CompanyRepository
 import team.retum.network.model.response.RecentResponse
 import javax.inject.Inject
 
 class FetchRecentCompaniesUseCase @Inject constructor(
-    private val studentRepository: StudentRepository,
+    private val companyRepository: CompanyRepository,
 ) {
     suspend operator fun invoke(): RecentResponse {
-        return studentRepository.fetchRecentCompanies()
+        return companyRepository.fetchRecentCompanies()
     }
 }

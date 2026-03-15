@@ -6,6 +6,7 @@ import retrofit2.http.Query
 import team.retum.network.di.RequestUrls
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
+import team.retum.network.model.response.RecentResponse
 import team.retum.network.model.response.company.FetchCompanyDetailsResponse
 import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 
@@ -23,6 +24,9 @@ interface CompanyApi {
 
     @GET(RequestUrls.Companies.review)
     suspend fun fetchReviewableCompanies(): FetchReviewableCompaniesResponse
+
+    @GET(RequestUrls.Companies.recent)
+    suspend fun fetchRecentCompanies(): RecentResponse
 
     @GET(RequestUrls.Companies.details)
     suspend fun fetchCompanyDetails(

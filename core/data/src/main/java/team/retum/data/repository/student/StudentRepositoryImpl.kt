@@ -42,10 +42,6 @@ class StudentRepositoryImpl @Inject constructor(
         remoteStudentDataSource.comparePassword(password = password)
     }
 
-    override suspend fun fetchRecentCompanies(): RecentResponse {
-        return remoteStudentDataSource.fetchRecentCompanies()
-    }
-
     override suspend fun resetPassword(forgottenPasswordRequest: ForgottenPasswordRequest) {
         remoteStudentDataSource.resetPassword(forgottenPasswordRequest = forgottenPasswordRequest)
     }
