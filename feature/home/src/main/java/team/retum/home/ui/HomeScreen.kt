@@ -98,6 +98,7 @@ internal fun Home(
             fetchEmploymentCount(state.employmentYear)
             fetchBanners()
             fetchWinterIntern()
+            fetchRecentCompanies()
         }
 
         homeViewModel.sideEffect.collect {
@@ -133,6 +134,7 @@ internal fun Home(
         banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
         appliedCompanies = state.appliedCompanies.toPersistentList(),
+        recentCompanies = state.recentCompanies,
         applicationId = applicationId,
         setScroll = { position ->
             homeViewModel.fetchScroll(
@@ -159,6 +161,7 @@ private fun HomeScreen(
     banners: ImmutableList<BannersEntity.BannerEntity>,
     studentInformation: StudentInformationEntity,
     appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
+    recentCompanies: List<CarouselItem>,
     applicationId: Long?,
     setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -195,7 +198,8 @@ private fun HomeScreen(
                 modifier = Modifier.padding(
                     vertical = 12.dp,
                     horizontal = 24.dp,
-                )
+                ),
+                companies = recentCompanies,
             )
             // TODO :: 지원 했을 때 홈 진입 시 ui에 바로 반영
             ApplyStatus(
@@ -348,28 +352,19 @@ private fun EmploymentRate(
 @Composable
 private fun RecentlyViewedCompanies(
     modifier: Modifier = Modifier,
+    companies: List<CarouselItem>,
 ) {
-    val companies = listOf(
-        CarouselItem(
-            name = "(주)자비스",
-            take = "연매출 120억"
-        ),
-        CarouselItem(
-            name = "(주)자비스",
-            take = "연매출 120억"
-        ),
-        CarouselItem(
-            name = "(주)자비스",
-            take = "연매출 120억"
-        ),
-    )
     Column(modifier = modifier) {
         JobisText(
             modifier = Modifier.padding(vertical = 8.dp),
             text = "최근 본 기업",
             style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
+            color = JobisTheme.colors.surfaceVariant,
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        if(companies.isNotEmpty()) {
+            CompanyCarousel(companies = companies)
+        }
     }
 }
 
@@ -397,14 +392,14 @@ private fun CompanyItem(
     Column(
         modifier = Modifier.width(160.dp)
     ) {
-        Box(
+        AsyncImage(
+            model = item.logoUrl,
+            contentDescription = item.name,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
-                .background(
-                    color = JobisTheme.colors.surfaceVariant,
-                    shape = RoundedCornerShape(8.dp)
-                )
+                .clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Crop,
         )
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -413,7 +408,7 @@ private fun CompanyItem(
             style = JobisTypography.Body,
         )
         JobisText(
-            text = item.take,
+            text = item.description,
             style = JobisTypography.Description,
             color = JobisTheme.colors.surfaceVariant,
 
