@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -69,6 +70,8 @@ import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.net.URLEncoder
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 
 private const val PAGER_AUTO_SCROLL_TIME = 3000L
 
@@ -372,16 +375,12 @@ private fun RecentlyViewedCompanies(
 private fun CompanyCarousel(
     companies: List<CarouselItem>,
 ) {
-    val pagerState = rememberPagerState { companies.size }
-
-    HorizontalPager(
-        state = pagerState,
-        pageSpacing = 12.dp,
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-            page ->
-        CompanyItem(
-            item = companies[page]
-        )
+        items(companies) { company ->
+            CompanyItem(item = company)
+        }
     }
 }
 
@@ -390,14 +389,14 @@ private fun CompanyItem(
     item: CarouselItem,
 ) {
     Column(
-        modifier = Modifier.width(160.dp)
+        modifier = Modifier.width(200.dp)
     ) {
         AsyncImage(
             model = item.logoUrl,
             contentDescription = item.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(120.dp)
                 .clip(RoundedCornerShape(8.dp)),
             contentScale = ContentScale.Crop,
         )
@@ -410,7 +409,7 @@ private fun CompanyItem(
         JobisText(
             text = item.description,
             style = JobisTypography.Description,
-            color = JobisTheme.colors.surfaceVariant,
+            color = JobisTheme.colors.onSurfaceVariant,
 
             )
     }
