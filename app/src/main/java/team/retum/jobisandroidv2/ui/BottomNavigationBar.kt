@@ -26,7 +26,6 @@ private val bottomMenus = listOf(
     BottomMenu.Home,
     BottomMenu.Recruitments,
     BottomMenu.Review,
-    BottomMenu.Bookmark,
     BottomMenu.MyPage,
 )
 
