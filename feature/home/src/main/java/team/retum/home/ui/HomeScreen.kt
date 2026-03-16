@@ -375,7 +375,7 @@ private fun CompanyCarousel(
     companies: List<CarouselItem>,
 ) {
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
         contentPadding = PaddingValues(horizontal = 0.dp),
     ) {
         items(companies) { company ->
@@ -404,7 +404,7 @@ private fun CompanyItem(
             contentDescription = item.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(108.dp),
+                .height(96.dp),
             contentScale = ContentScale.Crop,
         )
 
@@ -413,7 +413,7 @@ private fun CompanyItem(
                 start = 14.dp,
                 end = 14.dp,
                 top = 10.dp,
-                bottom = 14.dp,
+                bottom = 10.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
