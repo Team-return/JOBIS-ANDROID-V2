@@ -223,7 +223,7 @@ private fun MyPageScreen(
                 contentItemInfo = ContentItemInfo(
                     items = listOf(
                         ListItemInfo(
-                            imageResource = painterResource(id = JobisIcon.BookmarkOn),
+                            imageResource = painterResource(id = JobisIcon.BookmarkOff),
                             description = "bookmark icon",
                             contentTitle = stringResource(id = R.string.bookmark),
                             onClick = onBookmarkClick,
