@@ -6,6 +6,7 @@
     <string name="notice">공지사항</string>
     <string name="notification">알림</string>
     <string name="help">도움말</string>
+    <string name="bookmark">북마크</string>
     <string name="account">계정</string>
     <string name="interest_field">관심 분야 선택</string>
     <string name="password_change">비밀번호 변경</string>
