@@ -200,6 +200,7 @@ private fun RootScreen(
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
                 bookmarks(
+                    navController = navController,
                     onRecruitmentsClick = navController::navigateToRecruitments,
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
                 )
