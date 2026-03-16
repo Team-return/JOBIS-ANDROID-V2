@@ -122,7 +122,6 @@ private fun BookmarkScreen(
     }
 }
 
-
 @Composable
 private fun EmptyBookmarkContent(onRecruitmentsClick: () -> Unit) {
     Column(

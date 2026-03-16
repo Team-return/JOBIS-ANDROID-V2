@@ -229,8 +229,8 @@ private fun MyPageScreen(
                             onClick = onBookmarkClick,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
-                    )
-                )
+                    ),
+                ),
             )
             ContentListItem(
                 contentListTitle = stringResource(id = R.string.help),

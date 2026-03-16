@@ -27,6 +27,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.bookmarks
+import team.retum.bookmark.navigation.navigateToBookmark
 import team.retum.common.model.ApplicationData
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
@@ -41,7 +42,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.review.navigation.review
-import team.retum.bookmark.navigation.navigateToBookmark
 
 @Composable
 internal fun Root(
