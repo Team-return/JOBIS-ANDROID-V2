@@ -70,6 +70,7 @@ import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.net.URLEncoder
+import androidx.compose.ui.draw.shadow
 
 private const val PAGER_AUTO_SCROLL_TIME = 3000L
 
@@ -375,6 +376,7 @@ private fun CompanyCarousel(
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp),
     ) {
         items(companies) { company ->
             CompanyItem(item = company)
@@ -387,32 +389,48 @@ private fun CompanyItem(
     item: CarouselItem,
 ) {
     Column(
-        modifier = Modifier.width(200.dp),
+        modifier = Modifier
+            .width(184.dp)
+            .shadow(
+                elevation = 2.dp,
+                shape = RoundedCornerShape(12.dp),
+                clip = false,
+            )
+            .clip(RoundedCornerShape(12.dp))
+            .background(JobisTheme.colors.background),
     ) {
         AsyncImage(
             model = item.logoUrl,
             contentDescription = item.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .height(108.dp),
             contentScale = ContentScale.Crop,
         )
-        Spacer(modifier = Modifier.height(8.dp))
 
-        JobisText(
-            text = item.name,
-            style = JobisTypography.Body,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        JobisText(
-            text = item.description,
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+        Column(
+            modifier = Modifier.padding(
+                start = 14.dp,
+                end = 14.dp,
+                top = 10.dp,
+                bottom = 14.dp,
+            ),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            JobisText(
+                text = item.name,
+                style = JobisTypography.Body,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            JobisText(
+                text = item.description,
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
 
