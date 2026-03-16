@@ -11,7 +11,7 @@ fun NavGraphBuilder.bookmarks(
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
 ) {
-    composable(NAVIGATION_BOOKMARK) {
+    composable(route = NAVIGATION_BOOKMARK) {
         Bookmarks(
             onRecruitmentsClick = onRecruitmentsClick,
             onRecruitmentDetailClick = onRecruitmentDetailClick,
@@ -19,6 +19,8 @@ fun NavGraphBuilder.bookmarks(
     }
 }
 
-fun NavController.navigateToBookmarks() {
-    navigate(NAVIGATION_BOOKMARK)
+fun NavController.navigateToBookmark() {
+    navigate(NAVIGATION_BOOKMARK) {
+        launchSingleTop = true
+    }
 }

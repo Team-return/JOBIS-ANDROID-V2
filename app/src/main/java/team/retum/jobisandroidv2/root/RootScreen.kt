@@ -41,6 +41,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.review.navigation.review
+import team.retum.bookmark.navigation.navigateToBookmark
 
 @Composable
 internal fun Root(
@@ -212,6 +213,9 @@ private fun RootScreen(
                     onChangePasswordClick = onChangePasswordClick,
                     onReportBugClick = onReportBugClick,
                     onNoticeClick = onNoticeClick,
+                    onBookmarkClick = {
+                        navController.navigateToBookmark()
+                    },
                     onPostReviewClick = onPostReviewClick,
                     navigateToLanding = navigateToLanding,
                     onNotificationSettingClick = onNotificationSettingClick,
