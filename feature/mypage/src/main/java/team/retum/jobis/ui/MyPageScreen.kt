@@ -224,7 +224,7 @@ private fun MyPageScreen(
                     items = listOf(
                         ListItemInfo(
                             imageResource = painterResource(id = JobisIcon.BookmarkOff),
-                            description = "bookmark icon",
+                            description = stringResource(id = R.string.bookmark_icon_description),
                             contentTitle = stringResource(id = R.string.bookmark),
                             onClick = onBookmarkClick,
                             iconColor = JobisTheme.colors.onPrimary,
