@@ -26,13 +26,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import team.retum.bookmark.navigation.bookmarks
 import team.retum.common.model.ApplicationData
+import team.retum.company.navigation.companies
+import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobis.navigation.myPage
-import team.retum.jobis.recruitment.navigation.navigateToRecruitments
 import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -41,8 +41,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.review.navigation.review
-import team.retum.company.navigation.companies
-import team.retum.company.navigation.navigateToSearchCompanies
 
 @Composable
 internal fun Root(
