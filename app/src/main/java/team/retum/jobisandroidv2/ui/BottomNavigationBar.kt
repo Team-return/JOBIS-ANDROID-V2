@@ -25,8 +25,8 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 private val bottomMenus = listOf(
     BottomMenu.Home,
     BottomMenu.Recruitments,
+    BottomMenu.Company,
     BottomMenu.Review,
-    BottomMenu.Bookmark,
     BottomMenu.MyPage,
 )
 
