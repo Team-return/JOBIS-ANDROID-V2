@@ -61,13 +61,12 @@ fun BottomNavigationBar( navController: NavController, )  {
                     selected = selected,
                     onClick = {
                         if (!selected) {
-                            if (it.route == NAVIGATION_COMPANIES) {
-                                navController.navigateToCompanies()
-                            } else {
-                                navController.navigateToRoot(
-                                    applicationId = 0,
-                                    initialTab = it.route,
-                                )
+                            navController.navigate(it.route) {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         }
                     },
