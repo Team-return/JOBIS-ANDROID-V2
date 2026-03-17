@@ -27,7 +27,7 @@ sealed class BottomMenu(
         title = R.string.recruitment,
     )
 
-    data object Bookmark : BottomMenu(
+    data object Company : BottomMenu(
         route = NAVIGATION_COMPANIES,
         icon = R.drawable.ic_company,
         title = R.string.company,

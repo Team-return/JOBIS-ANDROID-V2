@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import team.retum.company.navigation.NAVIGATION_COMPANIES
+import team.retum.company.navigation.navigateToCompanies
 import team.retum.jobisandroidv2.root.navigateToRoot
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -59,10 +61,14 @@ fun BottomNavigationBar( navController: NavController, )  {
                     selected = selected,
                     onClick = {
                         if (!selected) {
-                            navController.navigateToRoot(
-                                applicationId = 0,
-                                initialTab = it.route,
-                            )
+                            if (it.route == NAVIGATION_COMPANIES) {
+                                navController.navigateToCompanies()
+                            } else {
+                                navController.navigateToRoot(
+                                    applicationId = 0,
+                                    initialTab = it.route,
+                                )
+                            }
                         }
                     },
                     icon = {
