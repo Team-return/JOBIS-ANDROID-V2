@@ -127,7 +127,7 @@ internal class HomeViewModel @Inject constructor(
                             id = company.company_id,
                             name = company.company_name,
                             description = company.company_introduce,
-                            logoUrl = company.company_logo_url,
+                            logoUrl = ResourceKeys.IMAGE_URL + company.company_logo_url,
                         )
                     },
                 )
