@@ -207,7 +207,7 @@ private fun RootScreen(
                     onBackPressed = {},
                     onSearchClick = onSearchCompaniesClick,
                     onCompanyContentClick = onCompanyContentClick,
-                    )
+                )
                 review(
                     onReviewFilterClick = onReviewFilterClick,
                     onSearchReviewClick = onSearchReviewClick,
