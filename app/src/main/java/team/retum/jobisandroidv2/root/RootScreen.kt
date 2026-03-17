@@ -28,7 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.common.model.ApplicationData
 import team.retum.company.navigation.companies
-import team.retum.company.navigation.navigateToSearchCompanies
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
@@ -60,6 +59,7 @@ internal fun Root(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onPostReviewClick: (String, Long) -> Unit,
+    onSearchCompaniesClick: () -> Unit,
     onReviewFilterClick: () -> Unit,
     onCompanyContentClick: (Long) -> Unit,
     onSearchReviewClick: () -> Unit,
@@ -104,6 +104,7 @@ internal fun Root(
         onPostReviewClick = onPostReviewClick,
         onReviewFilterClick = onReviewFilterClick,
         onCompanyContentClick = onCompanyContentClick,
+        onSearchCompaniesClick = onSearchCompaniesClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
@@ -143,6 +144,7 @@ private fun RootScreen(
     navigateToLanding: () -> Unit,
     onPostReviewClick: (String, Long) -> Unit,
     onCompanyContentClick: (Long) -> Unit,
+    onSearchCompaniesClick: () -> Unit,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
@@ -203,9 +205,9 @@ private fun RootScreen(
                 )
                 companies(
                     onBackPressed = {},
-                    onSearchClick = navController::navigateToSearchCompanies,
+                    onSearchClick = onSearchCompaniesClick,
                     onCompanyContentClick = onCompanyContentClick,
-                )
+                    )
                 review(
                     onReviewFilterClick = onReviewFilterClick,
                     onSearchReviewClick = onSearchReviewClick,
