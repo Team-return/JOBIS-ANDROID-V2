@@ -41,6 +41,8 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
 import team.retum.review.navigation.review
+import team.retum.company.navigation.companies
+import team.retum.company.navigation.navigateToSearchCompanies
 
 @Composable
 internal fun Root(
@@ -61,6 +63,7 @@ internal fun Root(
     onReportBugClick: () -> Unit,
     onPostReviewClick: (String, Long) -> Unit,
     onReviewFilterClick: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
     navigateToLanding: () -> Unit,
@@ -102,6 +105,7 @@ internal fun Root(
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
         onReviewFilterClick = onReviewFilterClick,
+        onCompanyContentClick = onCompanyContentClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
@@ -140,6 +144,7 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (String, Long) -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
@@ -198,9 +203,10 @@ private fun RootScreen(
                     onRecruitmentFilterClick = onRecruitmentFilterClick,
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
-                bookmarks(
-                    onRecruitmentsClick = navController::navigateToRecruitments,
-                    onRecruitmentDetailClick = onRecruitmentDetailsClick,
+                companies(
+                    onBackPressed = {},
+                    onSearchClick = navController::navigateToSearchCompanies,
+                    onCompanyContentClick = onCompanyContentClick,
                 )
                 review(
                     onReviewFilterClick = onReviewFilterClick,
