@@ -32,6 +32,9 @@ fun NavGraphBuilder.root(
     onReviewDetailClick: (Long) -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    onBookmarkClick: () -> Unit,
+    onBookmarkBackClick: () -> Unit,
+    onRecruitmentsClick: () -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
     composable(
@@ -68,6 +71,9 @@ fun NavGraphBuilder.root(
             onSearchReviewClick = onSearchReviewClick,
             onPostReviewClick = onPostReviewClick,
             onReviewDetailClick = onReviewDetailClick,
+            onBookmarkClick = onBookmarkClick,
+            onBookmarkBackClick = onBookmarkBackClick,
+            onRecruitmentsClick = onRecruitmentsClick,
             navigateToApplication = navigateToApplication,
             navigateToRecruitmentDetails = navigateToRecruitmentDetails,
             navigatedFromNotifications = navigatedFromNotifications,
