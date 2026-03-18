@@ -27,13 +27,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.bookmarks
-import team.retum.bookmark.navigation.navigateToBookmark
 import team.retum.common.model.ApplicationData
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobis.navigation.myPage
-import team.retum.jobis.recruitment.navigation.navigateToRecruitments
 import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
