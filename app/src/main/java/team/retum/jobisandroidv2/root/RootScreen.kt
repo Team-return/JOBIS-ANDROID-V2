@@ -64,6 +64,9 @@ internal fun Root(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
+    onBookmarkClick: () -> Unit,
+    onBookmarkBackClick: () -> Unit,
+    onRecruitmentsClick: () -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -103,6 +106,9 @@ internal fun Root(
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
         onReviewFilterClick = onReviewFilterClick,
+        onBookmarkClick = onBookmarkClick,
+        onBookmarkBackClick = onBookmarkBackClick,
+        onRecruitmentsClick = onRecruitmentsClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
@@ -144,6 +150,9 @@ private fun RootScreen(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
+    onBookmarkClick: () -> Unit,
+    onBookmarkBackClick: () -> Unit,
+    onRecruitmentsClick: () -> Unit,
     navigateToApplicationByRejectionBottomSheet: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -200,9 +209,9 @@ private fun RootScreen(
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
                 bookmarks(
-                    navController = navController,
-                    onRecruitmentsClick = navController::navigateToRecruitments,
+                    onRecruitmentsClick = onRecruitmentsClick,
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
+                    onBackPressed = onBookmarkBackClick,
                 )
                 review(
                     onReviewFilterClick = onReviewFilterClick,
@@ -214,9 +223,7 @@ private fun RootScreen(
                     onChangePasswordClick = onChangePasswordClick,
                     onReportBugClick = onReportBugClick,
                     onNoticeClick = onNoticeClick,
-                    onBookmarkClick = {
-                        navController.navigateToBookmark()
-                    },
+                    onBookmarkClick = onBookmarkClick,
                     onPostReviewClick = onPostReviewClick,
                     navigateToLanding = navigateToLanding,
                     onNotificationSettingClick = onNotificationSettingClick,
