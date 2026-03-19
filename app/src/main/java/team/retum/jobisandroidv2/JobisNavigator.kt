@@ -52,6 +52,7 @@ import team.retum.signup.navigation.navigateToSetPassword
 import team.retum.signup.navigation.navigateToSetProfile
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.navigateToTerms
+import team.retum.bookmark.navigation.navigateToBookmark
 
 internal class JobisNavigator(
     val navController: NavHostController,
@@ -105,6 +106,14 @@ internal class JobisNavigator(
 
     fun navigateToCompanies() {
         navController.navigateToCompanies()
+    }
+
+    fun navigateToBookmark() {
+        navController.navigateToBookmark()
+    }
+
+    fun navigateToRecruitments() {
+        navController.navigateToRoot(applicationId = 0)
     }
 
     fun navigateToRecruitmentFilter() {
