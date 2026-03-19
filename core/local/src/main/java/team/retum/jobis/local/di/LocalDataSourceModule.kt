@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import team.retum.jobis.local.datasource.bookmark.LocalBookmarkDataSource
 import team.retum.jobis.local.datasource.bookmark.LocalBookmarkDataSourceImpl
+import team.retum.jobis.local.datasource.code.LocalCodeDataSource
+import team.retum.jobis.local.datasource.code.LocalCodeDataSourceImpl
 import team.retum.jobis.local.datasource.device.LocalDeviceDataSource
 import team.retum.jobis.local.datasource.device.LocalDeviceDataSourceImpl
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
@@ -26,4 +28,8 @@ abstract class LocalDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindLocalBookmarkDataSource(localBookmarkDataSourceImpl: LocalBookmarkDataSourceImpl): LocalBookmarkDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindLocalCodeDataSource(localCodeDataSourceImpl: LocalCodeDataSourceImpl): LocalCodeDataSource
 }
