@@ -362,14 +362,14 @@ private fun RecentlyViewedCompanies(
     onCompanyItemClick: (Long) -> Unit,
 ) {
     if (companies.isNotEmpty()) {
-    Column(modifier = modifier) {
-        JobisText(
-            modifier = Modifier.padding(vertical = 8.dp),
-            text = "최근 본 기업",
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+        Column(modifier = modifier) {
+            JobisText(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = "최근 본 기업",
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             CompanyCarousel(
                 companies = companies,
                 onCompanyItemClick = onCompanyItemClick,
