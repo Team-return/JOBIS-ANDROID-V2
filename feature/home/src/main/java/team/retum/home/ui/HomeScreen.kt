@@ -419,6 +419,11 @@ private fun CompanyItem(
             contentScale = ContentScale.Crop,
         )
 
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = JobisTheme.colors.surfaceVariant.copy(alpha = 0.5f),
+        )
+
         Column(
             modifier = Modifier.padding(
                 start = 10.dp,
