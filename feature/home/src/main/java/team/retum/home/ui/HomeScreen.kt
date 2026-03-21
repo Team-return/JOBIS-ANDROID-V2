@@ -361,6 +361,7 @@ private fun RecentlyViewedCompanies(
     companies: List<CarouselItem>,
     onCompanyItemClick: (Long) -> Unit,
 ) {
+    if (companies.isNotEmpty()) {
     Column(modifier = modifier) {
         JobisText(
             modifier = Modifier.padding(vertical = 8.dp),
@@ -369,7 +370,6 @@ private fun RecentlyViewedCompanies(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        if (companies.isNotEmpty()) {
             CompanyCarousel(
                 companies = companies,
                 onCompanyItemClick = onCompanyItemClick,
