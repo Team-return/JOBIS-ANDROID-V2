@@ -84,6 +84,7 @@ internal fun Home(
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    onCompanyClick: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
     navigateToApplication: (ApplicationData) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
@@ -146,6 +147,7 @@ internal fun Home(
             )
         },
         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+        onCompanyClick = onCompanyClick,
         navigateToApplication = navigateToApplication,
     )
 }
@@ -167,6 +169,7 @@ private fun HomeScreen(
     applicationId: Long?,
     setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    onCompanyClick: (Long) -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
 ) {
     Column(
@@ -202,6 +205,7 @@ private fun HomeScreen(
                     horizontal = 24.dp,
                 ),
                 companies = recentCompanies,
+                onCompanyClick = onCompanyClick,
             )
             // TODO :: 지원 했을 때 홈 진입 시 ui에 바로 반영
             ApplyStatus(
@@ -355,6 +359,7 @@ private fun EmploymentRate(
 private fun RecentlyViewedCompanies(
     modifier: Modifier = Modifier,
     companies: List<CarouselItem>,
+    onCompanyClick: (Long) -> Unit,
 ) {
     Column(modifier = modifier) {
         JobisText(
@@ -365,7 +370,10 @@ private fun RecentlyViewedCompanies(
         )
         Spacer(modifier = Modifier.height(8.dp))
         if (companies.isNotEmpty()) {
-            CompanyCarousel(companies = companies)
+            CompanyCarousel(
+                companies = companies,
+                onCompanyClick = onCompanyClick,
+            )
         }
     }
 }
@@ -373,13 +381,14 @@ private fun RecentlyViewedCompanies(
 @Composable
 private fun CompanyCarousel(
     companies: List<CarouselItem>,
+    onCompanyClick: (Long) -> Unit,
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         contentPadding = PaddingValues(horizontal = 0.dp),
     ) {
         items(companies) { company ->
-            CompanyItem(item = company)
+            CompanyItem(item = company, onCompanyClick = onCompanyClick,)
         }
     }
 }
@@ -387,10 +396,12 @@ private fun CompanyCarousel(
 @Composable
 private fun CompanyItem(
     item: CarouselItem,
+    onCompanyClick: (Long) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .width(200.dp)
+            .clickable { onCompanyClick(item.id) }
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(12.dp),
