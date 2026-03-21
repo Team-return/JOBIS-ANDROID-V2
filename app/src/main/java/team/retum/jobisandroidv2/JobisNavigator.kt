@@ -43,6 +43,7 @@ import team.retum.post.review.navigation.navigateToPostExpectReview
 import team.retum.post.review.navigation.navigateToPostNextReview
 import team.retum.post.review.navigation.navigateToPostReview
 import team.retum.post.review.navigation.navigateToPostReviewComplete
+import team.retum.review.navigation.NAVIGATION_REVIEW
 import team.retum.review.navigation.navigateToReviewDetails
 import team.retum.review.navigation.navigateToReviewFilter
 import team.retum.review.navigation.navigateToSearchReview
@@ -117,6 +118,17 @@ internal class JobisNavigator(
         navController.navigateToRoot(
             applicationId = 0,
             initialTab = NAVIGATION_RECRUITMENTS,
+        )
+    }
+
+    fun navigateToHomeTab() {
+        navController.navigateToRoot(applicationId = 0)
+    }
+
+    fun navigateToReviewTab() {
+        navController.navigateToRoot(
+            applicationId = 0,
+            initialTab = NAVIGATION_REVIEW,
         )
     }
 
