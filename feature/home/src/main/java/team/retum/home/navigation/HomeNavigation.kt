@@ -16,6 +16,7 @@ fun NavGraphBuilder.home(
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    onCompanyItemClick: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
     navigateToApplication: (ApplicationData) -> Unit,
 ) {
@@ -29,6 +30,7 @@ fun NavGraphBuilder.home(
             onEmploymentClick = onEmploymentClick,
             onWinterInternClick = onWinterInternClick,
             navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+            onCompanyItemClick = onCompanyItemClick,
             navigatedFromNotifications = navigatedFromNotifications,
             navigateToApplication = navigateToApplication,
         )

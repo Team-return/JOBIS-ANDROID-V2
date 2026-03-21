@@ -18,6 +18,7 @@ fun NavGraphBuilder.root(
     onWinterInternClick: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
+    onCompanyItemClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
     onSearchRecruitmentClick: (Boolean) -> Unit,
     onNotificationSettingClick: () -> Unit,
@@ -69,6 +70,7 @@ fun NavGraphBuilder.root(
             onPostReviewClick = onPostReviewClick,
             onReviewDetailClick = onReviewDetailClick,
             navigateToApplication = navigateToApplication,
+            onCompanyItemClick = onCompanyItemClick,
             navigateToRecruitmentDetails = navigateToRecruitmentDetails,
             navigatedFromNotifications = navigatedFromNotifications,
         )
