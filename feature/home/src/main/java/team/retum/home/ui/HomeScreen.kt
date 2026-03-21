@@ -417,16 +417,29 @@ private fun CompanyItem(
             ),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(
+                        if(item.isRecruiting) {
+                            JobisTheme.colors.primary.copy(alpha = 0.1f)
+                        }
+                        else {
+                            JobisTheme.colors.surfaceVariant
+                        }
+                    )
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                JobisText(
+                    text = if (item.isRecruiting) "지원 가능" else "지원 불가",
+                    style = JobisTypography.Caption,
+                    color = if (item.isRecruiting) JobisTheme.colors.primary
+                    else JobisTheme.colors.onSurfaceVariant,
+                )
+            }
             JobisText(
                 text = item.name,
                 style = JobisTypography.Body,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            JobisText(
-                text = item.description,
-                style = JobisTypography.Description,
-                color = JobisTheme.colors.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
