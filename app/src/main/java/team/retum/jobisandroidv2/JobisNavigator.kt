@@ -25,6 +25,7 @@ import team.retum.jobis.interview.schedule.navigation.navigateToInterviewSchedul
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices
+import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -113,7 +114,10 @@ internal class JobisNavigator(
     }
 
     fun navigateToRecruitments() {
-        navController.navigateToRoot(applicationId = 0)
+        navController.navigateToRoot(
+            applicationId = 0,
+            initialTab = NAVIGATION_RECRUITMENTS,
+        )
     }
 
     fun navigateToRecruitmentFilter() {
