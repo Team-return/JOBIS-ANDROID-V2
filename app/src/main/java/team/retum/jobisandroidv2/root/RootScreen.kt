@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.bookmarks
@@ -65,6 +66,10 @@ internal fun Root(
     onBookmarkClick: () -> Unit,
     onBookmarkBackClick: () -> Unit,
     onRecruitmentsClick: () -> Unit,
+    onHomeTabClick: () -> Unit,
+    onRecruitmentsTabClick: () -> Unit,
+    onReviewTabClick: () -> Unit,
+    onMyPageTabClick: () -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -107,6 +112,10 @@ internal fun Root(
         onBookmarkClick = onBookmarkClick,
         onBookmarkBackClick = onBookmarkBackClick,
         onRecruitmentsClick = onRecruitmentsClick,
+        onHomeTabClick = onHomeTabClick,
+        onRecruitmentsTabClick = onRecruitmentsTabClick,
+        onReviewTabClick = onReviewTabClick,
+        onMyPageTabClick = onMyPageTabClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
@@ -151,11 +160,17 @@ private fun RootScreen(
     onBookmarkClick: () -> Unit,
     onBookmarkBackClick: () -> Unit,
     onRecruitmentsClick: () -> Unit,
+    onHomeTabClick: () -> Unit,
+    onRecruitmentsTabClick: () -> Unit,
+    onReviewTabClick: () -> Unit,
+    onMyPageTabClick: () -> Unit,
     navigateToApplicationByRejectionBottomSheet: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
+    val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
     LaunchedEffect(initialTab) {
         if (initialTab != null) {
             navController.navigate(initialTab) {
@@ -181,7 +196,17 @@ private fun RootScreen(
             topEnd = 24.dp,
         ),
     ) {
-        Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
+        Scaffold(
+            bottomBar = {
+                BottomNavigationBar(
+                    selectedRoute = selectedRoute,
+                    onHomeClick = onHomeTabClick,
+                    onRecruitmentsClick = onRecruitmentsTabClick,
+                    onReviewClick = onReviewTabClick,
+                    onMyPageClick = onMyPageTabClick,
+                )
+            },
+        ) {
             NavHost(
                 navController = navController,
                 startDestination = NAVIGATION_HOME,

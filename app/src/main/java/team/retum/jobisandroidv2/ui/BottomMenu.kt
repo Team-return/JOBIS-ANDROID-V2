@@ -32,12 +32,6 @@ sealed class BottomMenu(
         title = R.string.review,
     )
 
-    data object Bookmark : BottomMenu(
-        route = NAVIGATION_BOOKMARK,
-        icon = R.drawable.ic_bookmark,
-        title = R.string.bookmark,
-    )
-
     data object MyPage : BottomMenu(
         route = NAVIGATION_MY_PAGE,
         icon = R.drawable.ic_my_page,
