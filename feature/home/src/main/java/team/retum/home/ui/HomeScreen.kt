@@ -390,9 +390,9 @@ private fun CompanyItem(
 ) {
     Column(
         modifier = Modifier
-            .width(184.dp)
+            .width(200.dp)
             .shadow(
-                elevation = 2.dp,
+                elevation = 4.dp,
                 shape = RoundedCornerShape(12.dp),
                 clip = false,
             )
@@ -404,37 +404,42 @@ private fun CompanyItem(
             contentDescription = item.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(96.dp),
+                .height(100.dp),
             contentScale = ContentScale.Crop,
         )
 
         Column(
             modifier = Modifier.padding(
-                start = 14.dp,
+                start = 10.dp,
                 end = 14.dp,
                 top = 10.dp,
                 bottom = 10.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
+            val badgeColor = if (item.isRecruiting) {
+                JobisTheme.colors.onPrimary
+            } else {
+                JobisTheme.colors.onSurfaceVariant
+            }
+
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(
-                        if(item.isRecruiting) {
-                            JobisTheme.colors.primary.copy(alpha = 0.1f)
-                        }
-                        else {
-                            JobisTheme.colors.surfaceVariant
-                        }
+                    .align(Alignment.Start)
+                    .border(
+                        width = 1.dp,
+                        color = badgeColor,
+                        shape = RoundedCornerShape(999.dp),
                     )
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 3.dp,
+                    ),
             ) {
                 JobisText(
                     text = if (item.isRecruiting) "지원 가능" else "지원 불가",
                     style = JobisTypography.Caption,
-                    color = if (item.isRecruiting) JobisTheme.colors.primary
-                    else JobisTheme.colors.onSurfaceVariant,
+                    color = badgeColor,
                 )
             }
             JobisText(
