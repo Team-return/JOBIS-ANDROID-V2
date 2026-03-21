@@ -36,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
@@ -70,7 +71,6 @@ import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import java.net.URLEncoder
-import androidx.compose.ui.draw.shadow
 
 private const val PAGER_AUTO_SCROLL_TIME = 3000L
 
@@ -388,7 +388,7 @@ private fun CompanyCarousel(
         contentPadding = PaddingValues(horizontal = 0.dp),
     ) {
         items(companies) { company ->
-            CompanyItem(item = company, onCompanyItemClick = onCompanyItemClick,)
+            CompanyItem(item = company, onCompanyItemClick = onCompanyItemClick)
         }
     }
 }
