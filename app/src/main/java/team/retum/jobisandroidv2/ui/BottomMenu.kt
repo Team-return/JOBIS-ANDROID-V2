@@ -2,7 +2,6 @@ package team.retum.jobisandroidv2.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import team.retum.bookmark.navigation.NAVIGATION_BOOKMARK
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobis.R
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE

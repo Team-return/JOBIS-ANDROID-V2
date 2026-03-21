@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import team.retum.bookmark.navigation.navigateToBookmark
 import team.retum.bug.navigation.navigateToReportBug
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.common.model.ApplicationData
@@ -52,7 +53,6 @@ import team.retum.signup.navigation.navigateToSetPassword
 import team.retum.signup.navigation.navigateToSetProfile
 import team.retum.signup.navigation.navigateToSignUp
 import team.retum.signup.navigation.navigateToTerms
-import team.retum.bookmark.navigation.navigateToBookmark
 
 internal class JobisNavigator(
     val navController: NavHostController,
