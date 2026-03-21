@@ -126,8 +126,8 @@ internal class HomeViewModel @Inject constructor(
                         CarouselItem(
                             id = company.company_id,
                             name = company.company_name,
-                            description = company.company_introduce,
                             logoUrl = ResourceKeys.IMAGE_URL + company.company_logo_url,
+                            isRecruiting = company.is_recruiting,
                         )
                     },
                 )
