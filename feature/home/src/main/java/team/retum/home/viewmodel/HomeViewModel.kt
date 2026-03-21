@@ -124,10 +124,10 @@ internal class HomeViewModel @Inject constructor(
                 state.value.copy(
                     recentCompanies = response.companies.map { company ->
                         CarouselItem(
-                            id = company.company_id,
-                            name = company.company_name,
-                            logoUrl = ResourceKeys.IMAGE_URL + company.company_logo_url,
-                            isRecruiting = company.is_recruiting,
+                            id = company.companyId,
+                            name = company.companyName,
+                            logoUrl = ResourceKeys.IMAGE_URL + company.companyLogoUrl,
+                            isRecruiting = company.isRecruiting,
                         )
                     },
                 )
