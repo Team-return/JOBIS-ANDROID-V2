@@ -132,11 +132,9 @@ internal class HomeViewModel @Inject constructor(
                         },
                     )
                 }
-            }
-            catch (e: CancellationException) {
+            } catch (e: CancellationException) {
                 throw e
-            }
-            catch (e: CancellationException) {
+            } catch (e: CancellationException) {
                 // 필요하면 프로젝트 로거로만 기록하고 기존 상태 유지
             }
         }
