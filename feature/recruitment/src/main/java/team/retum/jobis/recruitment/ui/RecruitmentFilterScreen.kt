@@ -32,6 +32,7 @@ import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.jobCode
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.region
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.status
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.techCode
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.year
@@ -135,6 +136,7 @@ private fun RecruitmentFilterScreen(
                 techCode = checkedSkills.joinToString(separator = ",") { it.code.toString() }
                 year = state.selectedYear
                 status = state.selectedStatus
+                region = state.selectedRegion
                 onBackPressed()
             },
             modifier = Modifier.align(Alignment.BottomCenter),
