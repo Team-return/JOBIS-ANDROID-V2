@@ -10,6 +10,10 @@
     <string name="today">현재</string>
     <string name="get_a_job">명이 취업했어요</string>
 
+    <string name="recent_viewed_companies">최근 본 기업</string>
+    <string name="company_recruiting_open">지원 가능</string>
+    <string name="company_recruiting_closed">지원 불가</string>
+
     <string name="search_information">정보 조회</string>
 
     <string name="apply_status">지원 현황</string>

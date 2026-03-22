@@ -365,7 +365,7 @@ private fun RecentlyViewedCompanies(
         Column(modifier = modifier) {
             JobisText(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = "최근 본 기업",
+                text = stringResource(R.string.recent_viewed_companies),
                 style = JobisTypography.Description,
                 color = JobisTheme.colors.onSurfaceVariant,
             )
@@ -453,7 +453,10 @@ private fun CompanyItem(
                     ),
             ) {
                 JobisText(
-                    text = if (item.isRecruiting) "지원 가능" else "지원 불가",
+                    text = stringResource(
+                        if (item.isRecruiting) R.string.company_recruiting_open
+                        else R.string.company_recruiting_closed,
+                    ),
                     style = JobisTypography.Caption,
                     color = badgeColor,
                 )
