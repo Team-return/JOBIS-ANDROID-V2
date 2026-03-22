@@ -15,6 +15,7 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.RecruitSortType
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.local.entity.BookmarkLocalEntity
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.region
 import team.retum.usecase.entity.RecruitmentsEntity
 import team.retum.usecase.usecase.bookmark.ObserveBookmarkStatusUseCase
 import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
@@ -133,6 +134,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     years = years,
                     recruitStatus = status,
                     sortType = sortType,
+                    region = region,
                 ).onSuccess {
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
@@ -185,6 +187,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     years = years,
                     recruitStatus = status,
                     sortType = null,
+                    region = region,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()

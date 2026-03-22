@@ -1,5 +1,6 @@
 package team.retum.network.datasource.recruitment
 
+import team.retum.common.enums.RecruitmentRegion
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.network.model.response.FetchRecruitmentDetailsResponse
 import team.retum.network.model.response.FetchRecruitmentPageCountResponse
@@ -17,6 +18,7 @@ interface RemoteRecruitmentDataSource {
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
         sortType: String?,
+        region: String?,
     ): FetchRecruitmentsResponse
 
     suspend fun fetchRecruitmentPageCount(
@@ -28,6 +30,7 @@ interface RemoteRecruitmentDataSource {
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
         sortType: String?,
+        region: String?,
     ): FetchRecruitmentPageCountResponse
 
     suspend fun fetchRecruitmentDetails(recruitmentId: Long): FetchRecruitmentDetailsResponse
