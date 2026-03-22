@@ -80,6 +80,7 @@ internal class RecruitmentViewModel @Inject constructor(
         RecruitmentFilterViewModel.techCode = null
         RecruitmentFilterViewModel.year = null
         RecruitmentFilterViewModel.status = null
+        RecruitmentFilterViewModel.region = null
         _recruitments.clear()
         setState {
             state.value.copy(
