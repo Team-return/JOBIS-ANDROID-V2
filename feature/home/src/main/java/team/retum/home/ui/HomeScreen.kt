@@ -454,8 +454,11 @@ private fun CompanyItem(
             ) {
                 JobisText(
                     text = stringResource(
-                        if (item.isRecruiting) R.string.company_recruiting_open
-                        else R.string.company_recruiting_closed,
+                        if (item.isRecruiting) {
+                            R.string.company_recruiting_open
+                        } else {
+                            R.string.company_recruiting_closed
+                        },
                     ),
                     style = JobisTypography.Caption,
                     color = badgeColor,
