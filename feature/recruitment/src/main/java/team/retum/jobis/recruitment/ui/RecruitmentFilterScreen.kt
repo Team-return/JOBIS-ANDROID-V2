@@ -26,6 +26,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.RecruitmentRegion
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
@@ -78,6 +79,7 @@ internal fun RecruitmentFilter(
         checkedSkills = recruitmentFilterViewModel.checkedSkills,
         setYear = recruitmentFilterViewModel::setYear,
         setStatus = recruitmentFilterViewModel::setStatus,
+        setRegion = recruitmentFilterViewModel::setRegion,
     )
 }
 
@@ -87,6 +89,7 @@ private fun RecruitmentFilterScreen(
     state: RecruitmentFilterState,
     setYear: (Int) -> Unit,
     setStatus: (RecruitmentStatus?) -> Unit,
+    setRegion: (RecruitmentRegion?) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
@@ -120,6 +123,8 @@ private fun RecruitmentFilterScreen(
                     setYear = setYear,
                     selectedStatus = state.selectedStatus,
                     setStatus = setStatus,
+                    selectedRegion = state.selectedRegion,
+                    setRegion = state.selectedRegion,
                 )
             }
         }
@@ -148,6 +153,8 @@ private fun FilterInputs(
     setYear: (Int) -> Unit,
     selectedStatus: RecruitmentStatus?,
     setStatus: (RecruitmentStatus?) -> Unit,
+    selectedRegion: RecruitmentRegion?,
+    setRegion: (RecruitmentRegion?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
     techs: ImmutableList<CodesEntity.CodeEntity>,
     selectedMajor: String,
@@ -185,6 +192,17 @@ private fun FilterInputs(
             }
         }
     }
+    JobisChipGroup(
+        title = "지역",
+        onItemClick = { region ->
+            setRegion(
+                if (selectedRegion == region) null else region
+            )
+        },
+        selectedItem = selectedRegion,
+        items = RecruitmentRegion.entries.toPersistentList(),
+        itemText = { it.value },
+    )
     JobisChipGroup(
         title = stringResource(R.string.recruitment_status),
         onItemClick = setStatus,
