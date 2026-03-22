@@ -385,9 +385,8 @@ private fun CompanyCarousel(
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        contentPadding = PaddingValues(horizontal = 0.dp),
     ) {
-        items(companies) { company ->
+        items(companies, key = { it.id }) { company ->
             CompanyItem(item = company, onCompanyItemClick = onCompanyItemClick)
         }
     }
