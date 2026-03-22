@@ -124,7 +124,7 @@ private fun RecruitmentFilterScreen(
                     selectedStatus = state.selectedStatus,
                     setStatus = setStatus,
                     selectedRegion = state.selectedRegion,
-                    setRegion = state.selectedRegion,
+                    setRegion = setRegion,
                 )
             }
         }
