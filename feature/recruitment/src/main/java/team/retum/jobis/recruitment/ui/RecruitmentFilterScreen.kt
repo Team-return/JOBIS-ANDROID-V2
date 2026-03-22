@@ -195,7 +195,7 @@ private fun FilterInputs(
         }
     }
     JobisChipGroup(
-        title = "지역",
+        title = stringResource(R.string.recruitment_region),
         onItemClick = { region ->
             setRegion(
                 if (selectedRegion == region) null else region,
