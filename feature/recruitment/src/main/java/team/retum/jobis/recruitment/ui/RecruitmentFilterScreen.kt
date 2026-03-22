@@ -198,7 +198,7 @@ private fun FilterInputs(
         title = "지역",
         onItemClick = { region ->
             setRegion(
-                if (selectedRegion == region) null else region
+                if (selectedRegion == region) null else region,
             )
         },
         selectedItem = selectedRegion,
