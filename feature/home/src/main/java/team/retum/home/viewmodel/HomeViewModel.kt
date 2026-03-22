@@ -24,6 +24,7 @@ import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.text.DecimalFormat
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.roundToInt
 
 private const val SCHOOL_ESTABLISHMENT = 2015
@@ -116,21 +117,27 @@ internal class HomeViewModel @Inject constructor(
 
     internal fun fetchRecentCompanies() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = fetchRecentCompaniesUseCase()
+            try {
+                val response = fetchRecentCompaniesUseCase()
 
-            println("recentCompanies size = ${response.companies.size}")
-
-            setState {
-                state.value.copy(
-                    recentCompanies = response.companies.map { company ->
-                        CarouselItem(
-                            id = company.companyId,
-                            name = company.companyName,
-                            logoUrl = ResourceKeys.IMAGE_URL + company.companyLogoUrl,
-                            isRecruiting = company.isRecruiting,
-                        )
-                    },
-                )
+                setState {
+                    state.value.copy(
+                        recentCompanies = response.companies.map { company ->
+                            CarouselItem(
+                                id = company.companyId,
+                                name = company.companyName,
+                                logoUrl = ResourceKeys.IMAGE_URL + company.companyLogoUrl,
+                                isRecruiting = company.isRecruiting,
+                            )
+                        },
+                    )
+                }
+            }
+            catch (e: CancellationException) {
+                throw e
+            }
+            catch (e: CancellationException) {
+                // 필요하면 프로젝트 로거로만 기록하고 기존 상태 유지
             }
         }
     }
