@@ -7,6 +7,8 @@ import androidx.benchmark.macro.StartupTimingMetric;
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.Until;
 
 import kotlin.Unit;
 
@@ -68,14 +70,10 @@ public class StartupBenchmarks {
                 measureScope -> {
                     measureScope.startActivityAndWait();
 
-                    // TODO Add interactions to wait for when your app is fully drawn.
-                    // The app is fully drawn when Activity.reportFullyDrawn is called.
-                    // For Jetpack Compose, you can use ReportDrawn, ReportDrawnWhen and ReportDrawnAfter
-                    // from the AndroidX Activity library.
+                    // Landing 화면이 실제로 렌더링될 때까지 대기 (정확한 측정을 위해)
+                    measureScope.getDevice().wait(Until.hasObject(By.text("새 계정으로 시작하기")), 10_000);
+                    measureScope.getDevice().waitForIdle();
 
-                    // Check the UiAutomator documentation for more information on how to
-                    // interact with the app.
-                    // https://d.android.com/training/testing/other-components/ui-automator
                     return Unit.INSTANCE;
                 }
         );

@@ -21,8 +21,6 @@ import team.retum.jobisdesignsystemv2.foundation.JobisDesignSystemV2Theme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import javax.inject.Inject
 
-private const val ANR_TIME = 10000
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var delay = 0L
@@ -40,11 +38,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /**
-         * ANR 발생 제한 시간(5s)을 10s로 늦추기 위해 사용
-         * TODO: ANR이 발생하는 원인을 제거할 필요가 있음
-         */
-        ANRWatchDog(ANR_TIME).start()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         checkAppUpdate()
         setContent {
@@ -56,6 +49,7 @@ class MainActivity : ComponentActivity() {
                 JobisApp()
             }
         }
+        reportFullyDrawn()
 
         lifecycleScope.launch {
             deviceTokenManager.fetchDeviceToken()

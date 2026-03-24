@@ -3,6 +3,8 @@ package com.uson.baselineprofile;
 import androidx.benchmark.macro.junit4.BaselineProfileRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.Until;
 
 import kotlin.Unit;
 
@@ -39,33 +41,49 @@ public class BaselineProfileGenerator {
     @Rule
     public BaselineProfileRule baselineProfileRule = new BaselineProfileRule();
 
+    // 앱 스타트업 최적화: Splash → Landing 화면까지
     @Test
-    public void generate() {
-        // This example works only with the variant with application id `team.retum.jobis`.
+    public void generateStartupProfile() {
         baselineProfileRule.collect(
                 /* packageName = */ "team.retum.jobis",
-                /* maxIterations = */ 15,
+                /* maxIterations = */ 10,
                 /* stableIterations = */ 3,
                 /* outputFilePrefix = */ null,
-                // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
                 /* includeInStartupProfile = */ true,
                 scope -> {
-                    // This block defines the app's critical user journey. Here we are interested in
-                    // optimizing for app startup. But you can also navigate and scroll
-                    // through your most important UI.
-
-                    // Start default activity for your app
                     scope.pressHome();
                     scope.startActivityAndWait();
 
-                    // TODO Write more interactions to optimize advanced journeys of your app.
-                    // For example:
-                    // 1. Wait until the content is asynchronously loaded
-                    // 2. Scroll the feed content
-                    // 3. Navigate to detail screen
+                    // Landing 화면 버튼이 실제로 렌더링될 때까지 대기
+                    scope.getDevice().wait(Until.hasObject(By.text("새 계정으로 시작하기")), 10_000);
+                    scope.getDevice().waitForIdle();
 
-                    // Check UiAutomator documentation for more information how to interact with the app.
-                    // https://d.android.com/training/testing/other-components/ui-automator
+                    return Unit.INSTANCE;
+                });
+    }
+
+    // Landing 인터랙션 최적화: 버튼 클릭 → SignIn 화면 전환
+    @Test
+    public void generateLandingInteractionProfile() {
+        baselineProfileRule.collect(
+                /* packageName = */ "team.retum.jobis",
+                /* maxIterations = */ 8,
+                /* stableIterations = */ 2,
+                /* outputFilePrefix = */ null,
+                /* includeInStartupProfile = */ false,
+                scope -> {
+                    scope.pressHome();
+                    scope.startActivityAndWait();
+
+                    boolean landingLoaded = scope.getDevice().wait(
+                            Until.hasObject(By.text("기존 계정으로 로그인하기")), 10_000);
+                    if (!landingLoaded) return Unit.INSTANCE;
+                    scope.getDevice().waitForIdle();
+
+                    // 로그인 화면 진입해 SignIn Composable 트리 미리 컴파일
+                    scope.getDevice().findObject(By.text("기존 계정으로 로그인하기")).click();
+                    scope.getDevice().wait(Until.hasObject(By.text("로그인")), 5_000);
+                    scope.getDevice().waitForIdle();
 
                     return Unit.INSTANCE;
                 });
