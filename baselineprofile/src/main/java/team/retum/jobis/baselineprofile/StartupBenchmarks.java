@@ -1,4 +1,4 @@
-package com.uson.baselineprofile;
+package team.retum.jobis.baselineprofile;
 
 import androidx.benchmark.macro.BaselineProfileMode;
 import androidx.benchmark.macro.CompilationMode;

@@ -1,4 +1,4 @@
-package com.uson.baselineprofile;
+package team.retum.jobis.baselineprofile;
 
 import androidx.benchmark.macro.junit4.BaselineProfileRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
