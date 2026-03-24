@@ -24,14 +24,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import team.retum.bookmark.navigation.NAVIGATION_BOOKMARK
+import team.retum.bookmark.navigation.bookmarks
 import team.retum.common.model.ApplicationData
 import team.retum.company.navigation.companies
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobis.navigation.myPage
+import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -64,6 +68,10 @@ internal fun Root(
     onCompanyContentClick: (Long) -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
+    onHomeTabClick: () -> Unit,
+    onRecruitmentsTabClick: () -> Unit,
+    onReviewTabClick: () -> Unit,
+    onMyPageTabClick: () -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -105,6 +113,10 @@ internal fun Root(
         onReviewFilterClick = onReviewFilterClick,
         onCompanyContentClick = onCompanyContentClick,
         onSearchCompaniesClick = onSearchCompaniesClick,
+        onHomeTabClick = onHomeTabClick,
+        onRecruitmentsTabClick = onRecruitmentsTabClick,
+        onReviewTabClick = onReviewTabClick,
+        onMyPageTabClick = onMyPageTabClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
@@ -148,11 +160,17 @@ private fun RootScreen(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
+    onHomeTabClick: () -> Unit,
+    onRecruitmentsTabClick: () -> Unit,
+    onReviewTabClick: () -> Unit,
+    onMyPageTabClick: () -> Unit,
     navigateToApplicationByRejectionBottomSheet: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
+    val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
     LaunchedEffect(initialTab) {
         if (initialTab != null) {
             navController.navigate(initialTab) {
@@ -178,7 +196,17 @@ private fun RootScreen(
             topEnd = 24.dp,
         ),
     ) {
-        Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
+        Scaffold(
+            bottomBar = {
+                BottomNavigationBar(
+                    selectedRoute = selectedRoute,
+                    onHomeClick = onHomeTabClick,
+                    onRecruitmentsClick = onRecruitmentsTabClick,
+                    onReviewClick = onReviewTabClick,
+                    onMyPageClick = onMyPageTabClick,
+                )
+            },
+        ) {
             NavHost(
                 navController = navController,
                 startDestination = NAVIGATION_HOME,
@@ -208,6 +236,23 @@ private fun RootScreen(
                     onSearchClick = onSearchCompaniesClick,
                     onCompanyContentClick = onCompanyContentClick,
                 )
+                bookmarks(
+                    onRecruitmentsClick = {
+                        navController.navigate(NAVIGATION_RECRUITMENTS) {
+                            popUpTo(NAVIGATION_HOME) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+
+                    onRecruitmentDetailClick = onRecruitmentDetailsClick,
+
+                    onBackPressed = {
+                        navController.popBackStack()
+                    },
+                )
                 review(
                     onReviewFilterClick = onReviewFilterClick,
                     onSearchReviewClick = onSearchReviewClick,
@@ -218,6 +263,11 @@ private fun RootScreen(
                     onChangePasswordClick = onChangePasswordClick,
                     onReportBugClick = onReportBugClick,
                     onNoticeClick = onNoticeClick,
+                    onBookmarkClick = {
+                        navController.navigate(NAVIGATION_BOOKMARK) {
+                            launchSingleTop = true
+                        }
+                    },
                     onPostReviewClick = onPostReviewClick,
                     navigateToLanding = navigateToLanding,
                     onNotificationSettingClick = onNotificationSettingClick,

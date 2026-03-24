@@ -48,5 +48,7 @@
     <string name="sort_deadline_asc">공고마감 ↓</string>
     <string name="sort_deadline_desc">공고마감 ↑</string>
 
+    <string name="recruitment_region">지역</string>
+
     <string name="sort_expand">정렬 메뉴 열기</string>
 </resources>

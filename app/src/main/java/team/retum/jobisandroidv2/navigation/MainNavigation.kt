@@ -65,6 +65,11 @@ internal fun NavGraphBuilder.mainNavigation(
             onReviewDetailClick = navigator::navigateToReviewDetails,
             navigateToApplication = navigator::navigateToApplication,
             navigateToRecruitmentDetails = navigator::navigateToRecruitmentDetails,
+            onHomeTabClick = navigator::navigateToHomeTab,
+            onRecruitmentsTabClick = navigator::navigateToRecruitments,
+            onReviewTabClick = navigator::navigateToReviewTab,
+            onMyPageTabClick = navigator::navigateToMyPage,
+
             navigatedFromNotifications = navigator.navigatedFromNotifications(),
         )
         notificationSetting(onBackPressed = navigator::popBackStackIfNotHome)

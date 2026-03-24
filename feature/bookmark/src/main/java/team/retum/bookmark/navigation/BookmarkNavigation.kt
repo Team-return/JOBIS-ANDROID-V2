@@ -10,15 +10,19 @@ const val NAVIGATION_BOOKMARK = "bookmark"
 fun NavGraphBuilder.bookmarks(
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
+    onBackPressed: () -> Unit,
 ) {
-    composable(NAVIGATION_BOOKMARK) {
+    composable(route = NAVIGATION_BOOKMARK) {
         Bookmarks(
+            onBackPressed = onBackPressed,
             onRecruitmentsClick = onRecruitmentsClick,
             onRecruitmentDetailClick = onRecruitmentDetailClick,
         )
     }
 }
 
-fun NavController.navigateToBookmarks() {
-    navigate(NAVIGATION_BOOKMARK)
+fun NavController.navigateToBookmark() {
+    navigate(NAVIGATION_BOOKMARK) {
+        launchSingleTop = true
+    }
 }
