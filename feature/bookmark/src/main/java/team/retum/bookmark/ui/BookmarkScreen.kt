@@ -35,7 +35,7 @@ import team.retum.bookmark.R
 import team.retum.bookmark.viewmodel.BookmarkSideEffect
 import team.retum.bookmark.viewmodel.BookmarkViewModel
 import team.retum.jobis.local.entity.BookmarkLocalEntity
-import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
+import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
@@ -49,6 +49,7 @@ import team.retum.usecase.entity.BookmarksEntity
 
 @Composable
 internal fun Bookmarks(
+    onBackPressed: () -> Unit,
     onRecruitmentsClick: () -> Unit,
     onRecruitmentDetailClick: (Long) -> Unit,
     bookmarkViewModel: BookmarkViewModel = hiltViewModel(),
@@ -71,6 +72,7 @@ internal fun Bookmarks(
     }
 
     BookmarkScreen(
+        onBackPressed = onBackPressed,
         bookmarks = bookmarks.toPersistentList(),
         onDeleteClick = bookmarkViewModel::bookmarkRecruitment,
         onRecruitmentsClick = onRecruitmentsClick,
@@ -80,6 +82,7 @@ internal fun Bookmarks(
 
 @Composable
 private fun BookmarkScreen(
+    onBackPressed: () -> Unit,
     bookmarks: ImmutableList<BookmarksEntity.BookmarkEntity>,
     onDeleteClick: (BookmarkLocalEntity) -> Unit,
     onRecruitmentsClick: () -> Unit,
@@ -90,16 +93,16 @@ private fun BookmarkScreen(
             .fillMaxSize()
             .background(JobisTheme.colors.background),
     ) {
-        JobisLargeTopAppBar(
+        JobisSmallTopAppBar(
             title = stringResource(id = R.string.bookmark),
-            onBackPressed = null,
+            onBackPressed = onBackPressed,
         )
+
         if (bookmarks.isEmpty()) {
             EmptyBookmarkContent(onRecruitmentsClick = onRecruitmentsClick)
         } else {
             LazyColumn(
-                modifier = Modifier
-                    .background(JobisTheme.colors.background),
+                modifier = Modifier.background(JobisTheme.colors.background),
             ) {
                 items(
                     items = bookmarks,
