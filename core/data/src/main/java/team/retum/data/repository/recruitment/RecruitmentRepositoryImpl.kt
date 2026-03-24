@@ -20,6 +20,7 @@ class RecruitmentRepositoryImpl @Inject constructor(
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
         sortType: String?,
+        region: String?,
     ): FetchRecruitmentsResponse =
         recruitmentDataSource.fetchRecruitments(
             page = page,
@@ -31,6 +32,7 @@ class RecruitmentRepositoryImpl @Inject constructor(
             years = years,
             recruitStatus = recruitStatus,
             sortType = sortType,
+            region = region,
         )
 
     override suspend fun fetchRecruitmentPageCount(
@@ -42,6 +44,7 @@ class RecruitmentRepositoryImpl @Inject constructor(
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
         sortType: String?,
+        region: String?,
     ): FetchRecruitmentPageCountResponse =
         recruitmentDataSource.fetchRecruitmentPageCount(
             name = name,
@@ -52,6 +55,7 @@ class RecruitmentRepositoryImpl @Inject constructor(
             years = years,
             recruitStatus = recruitStatus,
             sortType = sortType,
+            region = region,
         )
 
     override suspend fun fetchRecruitmentDetails(

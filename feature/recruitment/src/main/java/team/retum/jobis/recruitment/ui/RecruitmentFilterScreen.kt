@@ -26,11 +26,13 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.RecruitmentRegion
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterState
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.jobCode
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.region
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.status
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.techCode
 import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.year
@@ -78,6 +80,7 @@ internal fun RecruitmentFilter(
         checkedSkills = recruitmentFilterViewModel.checkedSkills,
         setYear = recruitmentFilterViewModel::setYear,
         setStatus = recruitmentFilterViewModel::setStatus,
+        setRegion = recruitmentFilterViewModel::setRegion,
     )
 }
 
@@ -87,6 +90,7 @@ private fun RecruitmentFilterScreen(
     state: RecruitmentFilterState,
     setYear: (Int) -> Unit,
     setStatus: (RecruitmentStatus?) -> Unit,
+    setRegion: (RecruitmentRegion?) -> Unit,
     setKeyword: (String) -> Unit,
     setSelectedMajor: (String, Long?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
@@ -120,6 +124,8 @@ private fun RecruitmentFilterScreen(
                     setYear = setYear,
                     selectedStatus = state.selectedStatus,
                     setStatus = setStatus,
+                    selectedRegion = state.selectedRegion,
+                    setRegion = setRegion,
                 )
             }
         }
@@ -130,6 +136,7 @@ private fun RecruitmentFilterScreen(
                 techCode = checkedSkills.joinToString(separator = ",") { it.code.toString() }
                 year = state.selectedYear
                 status = state.selectedStatus
+                region = state.selectedRegion
                 onBackPressed()
             },
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -148,6 +155,8 @@ private fun FilterInputs(
     setYear: (Int) -> Unit,
     selectedStatus: RecruitmentStatus?,
     setStatus: (RecruitmentStatus?) -> Unit,
+    selectedRegion: RecruitmentRegion?,
+    setRegion: (RecruitmentRegion?) -> Unit,
     majors: ImmutableList<CodesEntity.CodeEntity>,
     techs: ImmutableList<CodesEntity.CodeEntity>,
     selectedMajor: String,
@@ -185,6 +194,17 @@ private fun FilterInputs(
             }
         }
     }
+    JobisChipGroup(
+        title = stringResource(R.string.recruitment_region),
+        onItemClick = { region ->
+            setRegion(
+                if (selectedRegion == region) null else region,
+            )
+        },
+        selectedItem = selectedRegion,
+        items = RecruitmentRegion.entries.toPersistentList(),
+        itemText = { it.value },
+    )
     JobisChipGroup(
         title = stringResource(R.string.recruitment_status),
         onItemClick = setStatus,

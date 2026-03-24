@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.CodeType
+import team.retum.common.enums.RecruitmentRegion
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.usecase.entity.CodesEntity
 import team.retum.usecase.usecase.code.FetchCodeUseCase
@@ -28,6 +29,7 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         var techCode: String? = null
         var year: ImmutableList<Int>? = null
         var status: RecruitmentStatus? = null
+        var region: RecruitmentRegion? = null
     }
 
     private var _majors: MutableList<CodesEntity.CodeEntity> = mutableStateListOf()
@@ -98,6 +100,10 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         setState { state.value.copy(selectedStatus = status) }
     }
 
+    internal fun setRegion(region: RecruitmentRegion?) {
+        setState { state.value.copy(selectedRegion = region) }
+    }
+
     private fun setType() =
         setState { state.value.copy(type = CodeType.TECH) }
 }
@@ -110,6 +116,7 @@ internal data class RecruitmentFilterState(
     val selectedYear: ImmutableList<Int>,
     val years: ImmutableList<Int>,
     val selectedStatus: RecruitmentStatus?,
+    val selectedRegion: RecruitmentRegion?,
 ) {
     companion object {
         fun getDefaultState(): RecruitmentFilterState {
@@ -124,6 +131,7 @@ internal data class RecruitmentFilterState(
                 selectedYear = persistentListOf(),
                 years = yearList.toImmutableList(),
                 selectedStatus = null,
+                selectedRegion = null,
             )
         }
     }
