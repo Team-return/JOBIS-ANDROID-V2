@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.uson.baselineprofile"
+    namespace = "team.retum.jobis.baselineprofile"
     compileSdk = 36
 
     compileOptions {
