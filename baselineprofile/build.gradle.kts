@@ -1,3 +1,4 @@
+@file:Suppress("UnstableApiUsage")
 plugins {
     id("com.android.test")
     alias(libs.plugins.baselineprofile)
@@ -21,7 +22,7 @@ android {
     }
 
     targetProjectPath = ":app"
-
+    experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
 // This is the configuration block for the Baseline Profile plugin.
