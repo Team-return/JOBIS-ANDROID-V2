@@ -30,6 +30,8 @@ import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.NAVIGATION_BOOKMARK
 import team.retum.bookmark.navigation.bookmarks
 import team.retum.common.model.ApplicationData
+import team.retum.company.navigation.NAVIGATION_COMPANIES
+import team.retum.company.navigation.companies
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
@@ -62,7 +64,9 @@ internal fun Root(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onPostReviewClick: (String, Long) -> Unit,
+    onSearchCompaniesClick: () -> Unit,
     onReviewFilterClick: () -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
     onHomeTabClick: () -> Unit,
@@ -108,6 +112,8 @@ internal fun Root(
         navigateToLanding = navigateToLanding,
         onPostReviewClick = onPostReviewClick,
         onReviewFilterClick = onReviewFilterClick,
+        onCompanyContentClick = onCompanyContentClick,
+        onSearchCompaniesClick = onSearchCompaniesClick,
         onHomeTabClick = onHomeTabClick,
         onRecruitmentsTabClick = onRecruitmentsTabClick,
         onReviewTabClick = onReviewTabClick,
@@ -150,6 +156,8 @@ private fun RootScreen(
     rejectionReason: String,
     navigateToLanding: () -> Unit,
     onPostReviewClick: (String, Long) -> Unit,
+    onCompanyContentClick: (Long) -> Unit,
+    onSearchCompaniesClick: () -> Unit,
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
@@ -163,6 +171,16 @@ private fun RootScreen(
     navigatedFromNotifications: Boolean,
 ) {
     val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    val navigateToCompaniesTab = {
+        navController.navigate(NAVIGATION_COMPANIES) {
+            popUpTo(NAVIGATION_HOME) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
 
     LaunchedEffect(initialTab) {
         if (initialTab != null) {
@@ -195,6 +213,7 @@ private fun RootScreen(
                     selectedRoute = selectedRoute,
                     onHomeClick = onHomeTabClick,
                     onRecruitmentsClick = onRecruitmentsTabClick,
+                    onCompaniesClick = navigateToCompaniesTab,
                     onReviewClick = onReviewTabClick,
                     onMyPageClick = onMyPageTabClick,
                 )
@@ -224,6 +243,11 @@ private fun RootScreen(
                     onRecruitmentFilterClick = onRecruitmentFilterClick,
                     onSearchRecruitmentClick = onSearchRecruitmentClick,
                 )
+                companies(
+                    onBackPressed = {},
+                    onSearchClick = onSearchCompaniesClick,
+                    onCompanyContentClick = onCompanyContentClick,
+                )
                 bookmarks(
                     onRecruitmentsClick = {
                         navController.navigate(NAVIGATION_RECRUITMENTS) {
@@ -234,9 +258,7 @@ private fun RootScreen(
                             restoreState = true
                         }
                     },
-
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
-
                     onBackPressed = {
                         navController.popBackStack()
                     },

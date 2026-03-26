@@ -59,6 +59,8 @@ internal fun NavGraphBuilder.mainNavigation(
             navigateToLanding = { navigator.navigateToLanding(NAVIGATION_ROOT) },
             onPostReviewClick = navigator::navigateToPostReview,
             onSearchReviewClick = navigator::navigateToSearchReview,
+            onSearchCompaniesClick = navigator::navigateToSearchCompanies,
+            onCompanyContentClick = navigator::navigateToCompanyDetails,
             onReviewFilterClick = navigator::navigateToReviewFilter,
             onReviewDetailClick = navigator::navigateToReviewDetails,
             navigateToApplication = navigator::navigateToApplication,

@@ -2,6 +2,7 @@ package team.retum.jobisandroidv2.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import team.retum.company.navigation.NAVIGATION_COMPANIES
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.jobis.R
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
@@ -23,6 +24,12 @@ sealed class BottomMenu(
         route = NAVIGATION_RECRUITMENTS,
         icon = R.drawable.ic_recruitment,
         title = R.string.recruitment,
+    )
+
+    data object Company : BottomMenu(
+        route = NAVIGATION_COMPANIES,
+        icon = R.drawable.ic_company,
+        title = R.string.company,
     )
 
     data object Review : BottomMenu(

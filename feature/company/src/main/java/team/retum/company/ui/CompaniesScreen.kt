@@ -15,7 +15,7 @@ import team.retum.company.component.CompanyItems
 import team.retum.company.viewmodel.CompaniesSideEffect
 import team.retum.company.viewmodel.CompaniesViewModel
 import team.retum.jobis.company.R
-import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.appbar.JobisLargeTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -72,9 +72,8 @@ private fun CompaniesScreen(
             .fillMaxSize()
             .background(JobisTheme.colors.background),
     ) {
-        JobisSmallTopAppBar(
+        JobisLargeTopAppBar(
             title = stringResource(id = R.string.company),
-            onBackPressed = onBackPressed,
         ) {
             JobisIconButton(
                 drawableResId = JobisIcon.Search,
