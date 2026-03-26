@@ -32,6 +32,7 @@ fun BottomNavigationBar(
     selectedRoute: String?,
     onHomeClick: () -> Unit,
     onRecruitmentsClick: () -> Unit,
+    onCompaniesClick: () -> Unit,
     onReviewClick: () -> Unit,
     onMyPageClick: () -> Unit,
 ) {
@@ -63,6 +64,7 @@ fun BottomNavigationBar(
                             when (menu) {
                                 BottomMenu.Home -> onHomeClick()
                                 BottomMenu.Recruitments -> onRecruitmentsClick()
+                                BottomMenu.Company -> onCompaniesClick()
                                 BottomMenu.Review -> onReviewClick()
                                 BottomMenu.MyPage -> onMyPageClick()
                             }

@@ -202,6 +202,7 @@ private fun RootScreen(
                     selectedRoute = selectedRoute,
                     onHomeClick = onHomeTabClick,
                     onRecruitmentsClick = onRecruitmentsTabClick,
+                    onCompaniesClick = onCompaniesClick,
                     onReviewClick = onReviewTabClick,
                     onMyPageClick = onMyPageTabClick,
                 )
