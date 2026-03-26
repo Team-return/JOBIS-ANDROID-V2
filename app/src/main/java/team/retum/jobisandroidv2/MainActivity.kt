@@ -48,7 +48,6 @@ class MainActivity : ComponentActivity() {
                 JobisApp()
             }
         }
-        reportFullyDrawn()
 
         lifecycleScope.launch {
             deviceTokenManager.fetchDeviceToken()
