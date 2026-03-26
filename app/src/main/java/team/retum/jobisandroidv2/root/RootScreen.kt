@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import team.retum.common.model.ApplicationData
@@ -64,6 +65,10 @@ internal fun Root(
     onCompanyContentClick: (Long) -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
+    onHomeTabClick: () -> Unit,
+    onRecruitmentsTabClick: () -> Unit,
+    onReviewTabClick: () -> Unit,
+    onMyPageTabClick: () -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -148,11 +153,17 @@ private fun RootScreen(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
+    onHomeTabClick: () -> Unit,
+    onRecruitmentsTabClick: () -> Unit,
+    onReviewTabClick: () -> Unit,
+    onMyPageTabClick: () -> Unit,
     navigateToApplicationByRejectionBottomSheet: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
 ) {
+    val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
     LaunchedEffect(initialTab) {
         if (initialTab != null) {
             navController.navigate(initialTab) {
@@ -178,7 +189,17 @@ private fun RootScreen(
             topEnd = 24.dp,
         ),
     ) {
-        Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
+        Scaffold(
+            bottomBar = {
+                BottomNavigationBar(
+                    selectedRoute = selectedRoute,
+                    onHomeClick = onHomeTabClick,
+                    onRecruitmentsClick = onRecruitmentsTabClick,
+                    onReviewClick = onReviewTabClick,
+                    onMyPageClick = onMyPageTabClick,
+                )
+            },
+        ) {
             NavHost(
                 navController = navController,
                 startDestination = NAVIGATION_HOME,
@@ -218,6 +239,11 @@ private fun RootScreen(
                     onChangePasswordClick = onChangePasswordClick,
                     onReportBugClick = onReportBugClick,
                     onNoticeClick = onNoticeClick,
+                    onBookmarkClick = {
+                        navController.navigate(NAVIGATION_BOOKMARK) {
+                            launchSingleTop = true
+                        }
+                    },
                     onPostReviewClick = onPostReviewClick,
                     navigateToLanding = navigateToLanding,
                     onNotificationSettingClick = onNotificationSettingClick,

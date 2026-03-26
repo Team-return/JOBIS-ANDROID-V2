@@ -55,6 +55,7 @@ internal fun MyPage(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
     navigateToLanding: () -> Unit,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
     onPostReviewClick: (String, Long) -> Unit,
@@ -122,6 +123,7 @@ internal fun MyPage(
         onChangePasswordClick = onChangePasswordClick,
         onReportBugClick = onReportBugClick,
         onNoticeClick = onNoticeClick,
+        onBookmarkClick = onBookmarkClick,
         state = state,
         scrollState = scrollState,
         setShowSignOutModal = myPageViewModel::setShowSignOutModal,
@@ -141,6 +143,7 @@ private fun MyPageScreen(
     onChangePasswordClick: () -> Unit,
     onReportBugClick: () -> Unit,
     onNoticeClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
     state: MyPageState,
     scrollState: ScrollState,
     setShowSignOutModal: (Boolean) -> Unit,
@@ -210,6 +213,20 @@ private fun MyPageScreen(
                             description = "bell icon",
                             contentTitle = stringResource(id = R.string.notification_setting),
                             onClick = onNotificationSettingClick,
+                            iconColor = JobisTheme.colors.onPrimary,
+                        ),
+                    ),
+                ),
+            )
+            ContentListItem(
+                contentListTitle = stringResource(id = R.string.bookmark),
+                contentItemInfo = ContentItemInfo(
+                    items = listOf(
+                        ListItemInfo(
+                            imageResource = painterResource(id = JobisIcon.BookmarkOff),
+                            description = stringResource(id = R.string.bookmark_icon_description),
+                            contentTitle = stringResource(id = R.string.bookmark),
+                            onClick = onBookmarkClick,
                             iconColor = JobisTheme.colors.onPrimary,
                         ),
                     ),

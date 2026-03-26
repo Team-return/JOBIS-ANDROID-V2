@@ -42,8 +42,8 @@ fun BottomNavigationBar(navController: NavController) {
             contentColor = JobisTheme.colors.background,
             containerColor = JobisTheme.colors.background,
         ) {
-            bottomMenus.forEach {
-                val selected = selectedRoute?.startsWith(it.route) == true
+            bottomMenus.forEach { menu ->
+                val selected = selectedRoute?.startsWith(menu.route) == true
                 val color by animateColorAsState(
                     targetValue = if (selected) {
                         JobisTheme.colors.onBackground
@@ -69,18 +69,20 @@ fun BottomNavigationBar(navController: NavController) {
                     icon = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(
-                                painter = painterResource(id = it.icon),
-                                contentDescription = it.route,
+                                painter = painterResource(id = menu.icon),
+                                contentDescription = menu.route,
                                 tint = color,
                             )
                             Text(
-                                text = stringResource(id = it.title),
+                                text = stringResource(id = menu.title),
                                 style = JobisTypography.Caption,
                                 color = color,
                             )
                         }
                     },
-                    colors = NavigationBarItemDefaults.colors(indicatorColor = JobisTheme.colors.background),
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = JobisTheme.colors.background,
+                    ),
                 )
             }
         }
