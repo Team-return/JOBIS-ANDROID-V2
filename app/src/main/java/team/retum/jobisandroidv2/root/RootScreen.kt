@@ -27,12 +27,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import team.retum.bookmark.navigation.NAVIGATION_BOOKMARK
+import team.retum.bookmark.navigation.bookmarks
 import team.retum.common.model.ApplicationData
 import team.retum.company.navigation.companies
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
 import team.retum.jobis.navigation.myPage
+import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobis.recruitment.navigation.recruitments
 import team.retum.jobisandroidv2.ui.BottomNavigationBar
 import team.retum.jobisdesignsystemv2.button.ButtonColor
@@ -110,6 +113,10 @@ internal fun Root(
         onReviewFilterClick = onReviewFilterClick,
         onCompanyContentClick = onCompanyContentClick,
         onSearchCompaniesClick = onSearchCompaniesClick,
+        onHomeTabClick = onHomeTabClick,
+        onRecruitmentsTabClick = onRecruitmentsTabClick,
+        onReviewTabClick = onReviewTabClick,
+        onMyPageTabClick = onMyPageTabClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
@@ -228,6 +235,23 @@ private fun RootScreen(
                     onBackPressed = {},
                     onSearchClick = onSearchCompaniesClick,
                     onCompanyContentClick = onCompanyContentClick,
+                )
+                bookmarks(
+                    onRecruitmentsClick = {
+                        navController.navigate(NAVIGATION_RECRUITMENTS) {
+                            popUpTo(NAVIGATION_HOME) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+
+                    onRecruitmentDetailClick = onRecruitmentDetailsClick,
+
+                    onBackPressed = {
+                        navController.popBackStack()
+                    },
                 )
                 review(
                     onReviewFilterClick = onReviewFilterClick,

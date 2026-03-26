@@ -16,8 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 
@@ -30,8 +28,13 @@ private val bottomMenus = listOf(
 )
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
-    val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+fun BottomNavigationBar(
+    selectedRoute: String?,
+    onHomeClick: () -> Unit,
+    onRecruitmentsClick: () -> Unit,
+    onReviewClick: () -> Unit,
+    onMyPageClick: () -> Unit,
+) {
     Column {
         HorizontalDivider(
             thickness = 0.3.dp,
@@ -57,12 +60,11 @@ fun BottomNavigationBar(navController: NavController) {
                     selected = selected,
                     onClick = {
                         if (!selected) {
-                            navController.navigate(it.route) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                            when (menu) {
+                                BottomMenu.Home -> onHomeClick()
+                                BottomMenu.Recruitments -> onRecruitmentsClick()
+                                BottomMenu.Review -> onReviewClick()
+                                BottomMenu.MyPage -> onMyPageClick()
                             }
                         }
                     },
