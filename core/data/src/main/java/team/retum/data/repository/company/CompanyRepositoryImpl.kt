@@ -3,6 +3,7 @@ package team.retum.data.repository.company
 import team.retum.network.datasource.company.CompanyDataSource
 import team.retum.network.model.response.FetchCompaniesResponse
 import team.retum.network.model.response.FetchCompanyPageCountResponse
+import team.retum.network.model.response.RecentResponse
 import team.retum.network.model.response.company.FetchCompanyDetailsResponse
 import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 import javax.inject.Inject
@@ -21,5 +22,8 @@ class CompanyRepositoryImpl @Inject constructor(
     }
     override suspend fun fetchCompanyDetails(companyId: Long): FetchCompanyDetailsResponse {
         return companyDataSource.fetchCompanyDetails(companyId = companyId)
+    }
+    override suspend fun fetchRecentCompanies(): RecentResponse {
+        return companyDataSource.fetchRecentCompanies()
     }
 }

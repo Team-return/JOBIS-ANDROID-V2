@@ -49,6 +49,7 @@ internal fun NavGraphBuilder.mainNavigation(
             onWinterInternClick = navigator::navigateToWinterIntern,
             onRecruitmentDetailsClick = navigator::navigateToRecruitmentDetails,
             onCompaniesClick = navigator::navigateToCompanies,
+            onCompanyItemClick = navigator::navigateToCompanyDetails,
             onRecruitmentFilterClick = navigator::navigateToRecruitmentFilter,
             onSelectInterestClick = navigator::navigateToInterests,
             onChangePasswordClick = navigator::navigateToComparePassword,
