@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import team.retum.bookmark.navigation.NAVIGATION_BOOKMARK
 import team.retum.bookmark.navigation.bookmarks
 import team.retum.common.model.ApplicationData
+import team.retum.company.navigation.NAVIGATION_COMPANIES
 import team.retum.company.navigation.companies
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
@@ -171,6 +172,16 @@ private fun RootScreen(
 ) {
     val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
+    val navigateToCompaniesTab = {
+        navController.navigate(NAVIGATION_COMPANIES) {
+            popUpTo(NAVIGATION_HOME) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
     LaunchedEffect(initialTab) {
         if (initialTab != null) {
             navController.navigate(initialTab) {
@@ -202,7 +213,7 @@ private fun RootScreen(
                     selectedRoute = selectedRoute,
                     onHomeClick = onHomeTabClick,
                     onRecruitmentsClick = onRecruitmentsTabClick,
-                    onCompaniesClick = onCompaniesClick,
+                    onCompaniesClick = navigateToCompaniesTab,
                     onReviewClick = onReviewTabClick,
                     onMyPageClick = onMyPageTabClick,
                 )
@@ -247,9 +258,7 @@ private fun RootScreen(
                             restoreState = true
                         }
                     },
-
                     onRecruitmentDetailClick = onRecruitmentDetailsClick,
-
                     onBackPressed = {
                         navController.popBackStack()
                     },
