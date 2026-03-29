@@ -10,6 +10,7 @@ plugins {
     id(libs.plugins.firebase.crashlytics.get().pluginId)
     id(libs.plugins.triplet.play.get().pluginId)
     id(libs.plugins.firebase.perf.get().pluginId)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -51,6 +52,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+        }
+        create("benchmarkRelease") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+        }
+        create("nonMinifiedRelease") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+            isShrinkResources = false
+            matchingFallbacks += listOf("release")
         }
         debug {
             splits.abi.isEnable = false
@@ -133,6 +146,8 @@ dependencies {
     implementation(libs.firebase.analytics)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.compose.ui)

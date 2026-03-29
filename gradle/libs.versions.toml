@@ -57,6 +57,10 @@ play-services-auth = "21.3.0"
 google-api-client-android = "2.7.2"
 google-api-services-calendar = "v3-rev20250115-2.0.0"
 google-http-client-gson = "1.45.3"
+uiautomator = "2.2.0"
+benchmark-macro-junit4 = "1.4.1"
+baselineprofile = "1.4.1"
+profileinstaller = "1.4.1"
 
 [libraries]
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidx-compose-foundation" }
@@ -130,6 +134,9 @@ play-services-auth = { group = "com.google.android.gms", name = "play-services-a
 google-api-client-android = { group = "com.google.api-client", name = "google-api-client-android", version.ref = "google-api-client-android" }
 google-api-services-calendar = { group = "com.google.apis", name = "google-api-services-calendar", version.ref = "google-api-services-calendar" }
 google-http-client-gson = { group = "com.google.http-client", name = "google-http-client-gson", version.ref = "google-http-client-gson" }
+androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
@@ -143,3 +150,5 @@ google-service = { id = "com.google.gms.google-services", version.ref = "google-
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 triplet-play = { id = "com.github.triplet.play", version.ref = "triplet-play" }
 firebase-perf = { id = "com.google.firebase.firebase-perf" }
+android-test = { id = "com.android.test", version.ref = "android-gradle" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
