@@ -16,6 +16,8 @@ interface RemoteRecruitmentDataSource {
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
+        sortType: String?,
+        region: String?,
     ): FetchRecruitmentsResponse
 
     suspend fun fetchRecruitmentPageCount(
@@ -26,6 +28,8 @@ interface RemoteRecruitmentDataSource {
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
+        sortType: String?,
+        region: String?,
     ): FetchRecruitmentPageCountResponse
 
     suspend fun fetchRecruitmentDetails(recruitmentId: Long): FetchRecruitmentDetailsResponse

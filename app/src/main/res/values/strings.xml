@@ -3,8 +3,8 @@
 
     <string name="home">홈</string>
     <string name="recruitment">모집의뢰서</string>
+    <string name="company">기업체</string>
     <string name="review">후기</string>
-    <string name="bookmark">북마크</string>
     <string name="my_page">마이페이지</string>
 
     <string name="close_app">버튼을 한 번 더 누르시면 종료됩니다</string>

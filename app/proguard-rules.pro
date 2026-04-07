@@ -95,3 +95,31 @@
 
 # keep everything in this package from being renamed only
 -keepnames class _COROUTINE.** { *; }
+
+# Google Calendar API
+-keep class com.google.api.** { *; }
+-keep class com.google.http.** { *; }
+-dontwarn com.google.api.client.**
+-dontwarn com.google.http.client.**
+
+# R8 missing classes - suppress warnings for optional dependencies
+-dontwarn javax.naming.InvalidNameException
+-dontwarn javax.naming.NamingException
+-dontwarn javax.naming.directory.Attribute
+-dontwarn javax.naming.directory.Attributes
+-dontwarn javax.naming.ldap.LdapName
+-dontwarn javax.naming.ldap.Rdn
+-dontwarn javax.servlet.ServletContextEvent
+-dontwarn javax.servlet.ServletContextListener
+-dontwarn org.apache.avalon.framework.logger.Logger
+-dontwarn org.apache.log.Hierarchy
+-dontwarn org.apache.log.Logger
+-dontwarn org.apache.log4j.Level
+-dontwarn org.apache.log4j.Logger
+-dontwarn org.apache.log4j.Priority
+-dontwarn org.ietf.jgss.GSSContext
+-dontwarn org.ietf.jgss.GSSCredential
+-dontwarn org.ietf.jgss.GSSException
+-dontwarn org.ietf.jgss.GSSManager
+-dontwarn org.ietf.jgss.GSSName
+-dontwarn org.ietf.jgss.Oid

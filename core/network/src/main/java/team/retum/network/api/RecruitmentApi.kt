@@ -20,6 +20,8 @@ interface RecruitmentApi {
         @Query("military_support") militarySupport: Boolean?,
         @Query("years") years: List<Int>?,
         @Query("status") recruitStatus: String?,
+        @Query("sort_type") sortType: String?,
+        @Query("region") region: String?,
     ): FetchRecruitmentsResponse
 
     @GET(RequestUrls.Recruitments.count)
@@ -31,6 +33,8 @@ interface RecruitmentApi {
         @Query("military_support") militarySupport: Boolean?,
         @Query("years") years: List<Int>?,
         @Query("status") recruitStatus: String?,
+        @Query("sort_type") sortType: String?,
+        @Query("region") region: String?,
     ): FetchRecruitmentPageCountResponse
 
     @GET(RequestUrls.Recruitments.details)

@@ -163,6 +163,8 @@ private fun TextField(
     content: @Composable () -> Unit,
     fieldColor: Color,
     testTag: String,
+    readOnly: Boolean,
+    enabled: Boolean,
 ) {
     val hintAlpha by animateFloatAsState(
         targetValue = if (value().isEmpty()) {
@@ -196,6 +198,8 @@ private fun TextField(
                 .testTag(testTag),
             textStyle = style,
             singleLine = singleLine,
+            readOnly = readOnly,
+            enabled = enabled,
             visualTransformation = visualTransformation,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
@@ -330,6 +334,8 @@ private fun Description(
  * @param drawableResId 텍스트 필드에 표시될 아이콘
  * @param fieldColor 배경 색상
  * @param testTag UI 테스트 코드에서 TextField 노드를 찾기 위해 사용할 태그
+ * @param readOnly 텍스트 필드의 읽기 전용 여부. true이면 포커스와 텍스트 선택은 가능하지만 입력은 불가
+ * @param enabled 텍스트 필드의 활성화 여부. false이면 포커스 자체가 불가능하며 시각적으로 비활성화 상태로 표시
  * @param content 내부에 추가로 표시될 뷰
  * 다음과 같이 사용할 수 있다.
  * ```
@@ -379,6 +385,8 @@ fun JobisTextField(
     @DrawableRes drawableResId: Int? = null,
     fieldColor: Color = JobisTheme.colors.inverseSurface,
     testTag: String = "",
+    readOnly: Boolean = false,
+    enabled: Boolean = true,
     content: @Composable () -> Unit = { },
 ) {
     Column(
@@ -419,6 +427,8 @@ fun JobisTextField(
             content = content,
             fieldColor = fieldColor,
             testTag = testTag,
+            readOnly = readOnly,
+            enabled = enabled,
         )
         AnimatedVisibility(
             visible = showDescription(),

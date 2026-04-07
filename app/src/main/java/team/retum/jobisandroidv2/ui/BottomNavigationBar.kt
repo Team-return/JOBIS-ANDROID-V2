@@ -16,23 +16,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 
 private val bottomMenus = listOf(
     BottomMenu.Home,
     BottomMenu.Recruitments,
+    BottomMenu.Company,
     BottomMenu.Review,
-    BottomMenu.Bookmark,
     BottomMenu.MyPage,
 )
 
 @Composable
-fun BottomNavigationBar(navController: NavController = rememberNavController()) {
-    val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+fun BottomNavigationBar(
+    selectedRoute: String?,
+    onHomeClick: () -> Unit,
+    onRecruitmentsClick: () -> Unit,
+    onCompaniesClick: () -> Unit,
+    onReviewClick: () -> Unit,
+    onMyPageClick: () -> Unit,
+) {
     Column {
         HorizontalDivider(
             thickness = 0.3.dp,
@@ -43,8 +46,8 @@ fun BottomNavigationBar(navController: NavController = rememberNavController()) 
             contentColor = JobisTheme.colors.background,
             containerColor = JobisTheme.colors.background,
         ) {
-            bottomMenus.forEach {
-                val selected = selectedRoute?.startsWith(it.route) == true
+            bottomMenus.forEach { menu ->
+                val selected = selectedRoute?.startsWith(menu.route) == true
                 val color by animateColorAsState(
                     targetValue = if (selected) {
                         JobisTheme.colors.onBackground
@@ -58,30 +61,32 @@ fun BottomNavigationBar(navController: NavController = rememberNavController()) 
                     selected = selected,
                     onClick = {
                         if (!selected) {
-                            navController.navigate(it.route) {
-                                popUpTo(0) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                            when (menu) {
+                                BottomMenu.Home -> onHomeClick()
+                                BottomMenu.Recruitments -> onRecruitmentsClick()
+                                BottomMenu.Company -> onCompaniesClick()
+                                BottomMenu.Review -> onReviewClick()
+                                BottomMenu.MyPage -> onMyPageClick()
                             }
                         }
                     },
                     icon = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(
-                                painter = painterResource(id = it.icon),
-                                contentDescription = it.route,
+                                painter = painterResource(id = menu.icon),
+                                contentDescription = menu.route,
                                 tint = color,
                             )
                             Text(
-                                text = stringResource(id = it.title),
+                                text = stringResource(id = menu.title),
                                 style = JobisTypography.Caption,
                                 color = color,
                             )
                         }
                     },
-                    colors = NavigationBarItemDefaults.colors(indicatorColor = JobisTheme.colors.background),
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = JobisTheme.colors.background,
+                    ),
                 )
             }
         }

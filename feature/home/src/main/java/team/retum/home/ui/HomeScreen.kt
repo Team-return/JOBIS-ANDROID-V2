@@ -7,7 +7,6 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -28,7 +29,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,12 +36,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,6 +55,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import team.retum.common.model.ApplicationData
 import team.retum.home.R
+import team.retum.home.model.CarouselItem
 import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
@@ -75,11 +78,13 @@ private const val PAGER_AUTO_SCROLL_TIME = 3000L
 internal fun Home(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    onCompanyItemClick: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
     navigateToApplication: (ApplicationData) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
@@ -96,6 +101,7 @@ internal fun Home(
             fetchEmploymentCount(state.employmentYear)
             fetchBanners()
             fetchWinterIntern()
+            fetchRecentCompanies()
         }
 
         homeViewModel.sideEffect.collect {
@@ -122,6 +128,7 @@ internal fun Home(
     HomeScreen(
         scrollState = scrollState,
         onAlarmClick = onAlarmClick,
+        onCalendarClick = onCalendarClick,
         onCompaniesClick = onCompaniesClick,
         onWinterInternClick = onWinterInternClick,
         onEmploymentClick = onEmploymentClick,
@@ -130,6 +137,7 @@ internal fun Home(
         banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
         appliedCompanies = state.appliedCompanies.toPersistentList(),
+        recentCompanies = state.recentCompanies,
         applicationId = applicationId,
         setScroll = { position ->
             homeViewModel.fetchScroll(
@@ -139,6 +147,7 @@ internal fun Home(
             )
         },
         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+        onCompanyItemClick = onCompanyItemClick,
         navigateToApplication = navigateToApplication,
     )
 }
@@ -147,6 +156,7 @@ internal fun Home(
 private fun HomeScreen(
     scrollState: ScrollState,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
@@ -155,9 +165,11 @@ private fun HomeScreen(
     banners: ImmutableList<BannersEntity.BannerEntity>,
     studentInformation: StudentInformationEntity,
     appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
+    recentCompanies: List<CarouselItem>,
     applicationId: Long?,
     setScroll: (Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    onCompanyItemClick: (Long) -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
 ) {
     Column(
@@ -167,6 +179,11 @@ private fun HomeScreen(
         verticalArrangement = Arrangement.Top,
     ) {
         JobisSmallTopAppBar(showLogo = true) {
+            JobisIconButton(
+                drawableResId = JobisIcon.Calendar,
+                contentDescription = "calendar",
+                onClick = onCalendarClick,
+            )
             JobisIconButton(
                 drawableResId = JobisIcon.Bell,
                 contentDescription = "notification",
@@ -182,24 +199,13 @@ private fun HomeScreen(
                 banners = banners,
                 onEmploymentClick = onEmploymentClick,
             )
-            StudentInformation(
-                modifier = Modifier.padding(
-                    horizontal = 24.dp,
-                    vertical = 12.dp,
-                ),
-                profileImageUrl = studentInformation.profileImageUrl,
-                number = studentInformation.studentGcn,
-                name = studentInformation.studentName,
-                department = studentInformation.department.value,
-            )
-            Menus(
+            RecentlyViewedCompanies(
                 modifier = Modifier.padding(
                     vertical = 12.dp,
                     horizontal = 24.dp,
                 ),
-                isWinterIntern = state.isWinterIntern,
-                onCompaniesClick = onCompaniesClick,
-                onWinterInternClick = onWinterInternClick,
+                companies = recentCompanies,
+                onCompanyItemClick = onCompanyItemClick,
             )
             // TODO :: 지원 했을 때 홈 진입 시 ui에 바로 반영
             ApplyStatus(
@@ -350,119 +356,119 @@ private fun EmploymentRate(
 }
 
 @Composable
-private fun StudentInformation(
+private fun RecentlyViewedCompanies(
     modifier: Modifier = Modifier,
-    profileImageUrl: String,
-    number: String,
-    name: String,
-    department: String,
+    companies: List<CarouselItem>,
+    onCompanyItemClick: (Long) -> Unit,
 ) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    if (companies.isNotEmpty()) {
+        Column(modifier = modifier) {
+            JobisText(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = stringResource(R.string.recent_viewed_companies),
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            CompanyCarousel(
+                companies = companies,
+                onCompanyItemClick = onCompanyItemClick,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CompanyCarousel(
+    companies: List<CarouselItem>,
+    onCompanyItemClick: (Long) -> Unit,
+) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
+    ) {
+        items(companies, key = { it.id }) { company ->
+            CompanyItem(item = company, onCompanyItemClick = onCompanyItemClick)
+        }
+    }
+}
+
+@Composable
+private fun CompanyItem(
+    item: CarouselItem,
+    onCompanyItemClick: (Long) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .width(200.dp)
+            .clickable { onCompanyItemClick(item.id) }
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(12.dp),
+                clip = false,
+            )
+            .clip(RoundedCornerShape(12.dp))
+            .background(JobisTheme.colors.background),
     ) {
         AsyncImage(
-            modifier = Modifier
-                .size(56.dp)
-                .clip(CircleShape),
-            model = profileImageUrl,
-            contentDescription = "user profile image",
-            contentScale = ContentScale.Crop,
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            JobisText(
-                text = "$number $name",
-                style = JobisTypography.SubHeadLine,
-            )
-            JobisText(
-                text = department,
-                style = JobisTypography.Description,
-                color = JobisTheme.colors.inverseOnSurface,
-            )
-        }
-    }
-}
-
-@Composable
-private fun Menus(
-    modifier: Modifier = Modifier,
-    isWinterIntern: Boolean,
-    onCompaniesClick: () -> Unit,
-    onWinterInternClick: () -> Unit,
-) {
-    Column(modifier = modifier) {
-        JobisText(
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-                .align(Alignment.Start),
-            text = stringResource(id = R.string.search_information),
-            style = JobisTypography.Description,
-            color = JobisTheme.colors.onSurfaceVariant,
-        )
-        Row(
+            model = item.logoUrl,
+            contentDescription = item.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Menu(
-                modifier = Modifier.weight(1f),
-                text = stringResource(
-                    id = if (isWinterIntern) {
-                        R.string.explore_other_companies
-                    } else {
-                        R.string.how_about_other_companies
-                    },
-                ),
-                onClick = onCompaniesClick,
-                icon = JobisIcon.Building,
-            )
-            if (isWinterIntern) {
-                Menu(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.experiential_field_training),
-                    onClick = onWinterInternClick,
-                    icon = JobisIcon.SnowMan,
-                )
-            }
-        }
-    }
-}
+                .height(100.dp),
+            contentScale = ContentScale.Crop,
+        )
 
-@Composable
-private fun Menu(
-    modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit,
-    icon: Int,
-) {
-    JobisCard(
-        modifier = modifier,
-        onClick = onClick,
-    ) {
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = JobisTheme.colors.surfaceVariant.copy(alpha = 0.5f),
+        )
+
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.padding(
+                start = 10.dp,
+                end = 14.dp,
+                top = 10.dp,
+                bottom = 10.dp,
+            ),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            JobisText(
-                text = "$text ->",
-                style = JobisTypography.HeadLine,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Surface(
+            val badgeColor = if (item.isRecruiting) {
+                JobisTheme.colors.onPrimary
+            } else {
+                JobisTheme.colors.onSurfaceVariant
+            }
+
+            Box(
                 modifier = Modifier
-                    .clip(CircleShape)
-                    .background(JobisTheme.colors.background)
-                    .padding(12.dp)
-                    .align(Alignment.End),
+                    .align(Alignment.Start)
+                    .border(
+                        width = 1.dp,
+                        color = badgeColor,
+                        shape = RoundedCornerShape(999.dp),
+                    )
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 3.dp,
+                    ),
             ) {
-                Image(
-                    modifier = Modifier.background(JobisTheme.colors.background),
-                    painter = painterResource(id = icon),
-                    contentDescription = "menu icon",
+                JobisText(
+                    text = stringResource(
+                        if (item.isRecruiting) {
+                            R.string.company_recruiting_open
+                        } else {
+                            R.string.company_recruiting_closed
+                        },
+                    ),
+                    style = JobisTypography.Caption,
+                    color = badgeColor,
                 )
             }
+            JobisText(
+                text = item.name,
+                style = JobisTypography.Body,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }

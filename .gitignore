@@ -38,3 +38,8 @@ google-cloud-platform.json
 .DS_Store
 
 *.aab
+
+# ai skills and reference file
+/.claude
+.agents
+.opencode

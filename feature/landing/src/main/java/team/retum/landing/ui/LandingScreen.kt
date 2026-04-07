@@ -3,6 +3,7 @@ package team.retum.landing.ui
 import android.Manifest
 import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.ReportDrawn
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -79,6 +80,7 @@ private fun LandingScreen(
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
 ) {
+    ReportDrawn()
     val composition by rememberLottieComposition(
         if (isSystemInDarkTheme()) {
             LottieCompositionSpec.RawRes(R.raw.splash_black)

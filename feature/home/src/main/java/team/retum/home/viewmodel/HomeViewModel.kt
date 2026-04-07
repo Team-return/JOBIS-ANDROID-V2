@@ -10,6 +10,7 @@ import team.retum.common.enums.Department
 import team.retum.common.exception.NotFoundException
 import team.retum.common.model.ApplicationData
 import team.retum.common.utils.ResourceKeys
+import team.retum.home.model.CarouselItem
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
@@ -18,10 +19,12 @@ import team.retum.usecase.usecase.application.FetchAppliedCompaniesUseCase
 import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
 import team.retum.usecase.usecase.application.FetchRejectionReasonUseCase
 import team.retum.usecase.usecase.banner.FetchBannersUseCase
+import team.retum.usecase.usecase.student.FetchRecentCompaniesUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.text.DecimalFormat
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.roundToInt
 
 private const val SCHOOL_ESTABLISHMENT = 2015
@@ -34,6 +37,7 @@ internal class HomeViewModel @Inject constructor(
     private val fetchRejectionReasonUseCase: FetchRejectionReasonUseCase,
     private val fetchBannersUseCase: FetchBannersUseCase,
     private val fetchWinterInternUseCase: FetchWinterInternUseCase,
+    private val fetchRecentCompaniesUseCase: FetchRecentCompaniesUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
 
     internal fun calculateTerm() = setState {
@@ -111,6 +115,30 @@ internal class HomeViewModel @Inject constructor(
         }
     }
 
+    internal fun fetchRecentCompanies() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = fetchRecentCompaniesUseCase()
+
+                setState {
+                    state.value.copy(
+                        recentCompanies = response.companies.map { company ->
+                            CarouselItem(
+                                id = company.companyId,
+                                name = company.companyName,
+                                logoUrl = ResourceKeys.IMAGE_URL + company.companyLogoUrl,
+                                isRecruiting = company.isRecruiting,
+                            )
+                        },
+                    )
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                // 필요하면 프로젝트 로거로만 기록하고 기존 상태 유지
+            }
+        }
+    }
     internal fun fetchScroll(
         applicationId: Long?,
         position: Float,
@@ -131,6 +159,7 @@ internal data class HomeState(
     val term: Int,
     val banners: List<BannersEntity.BannerEntity>,
     val appliedCompanies: List<AppliedCompaniesEntity.ApplicationEntity>,
+    val recentCompanies: List<CarouselItem>,
     val isWinterIntern: Boolean,
     val employmentYear: Int,
 ) {
@@ -150,6 +179,7 @@ internal data class HomeState(
             appliedCompanies = emptyList(),
             isWinterIntern = false,
             employmentYear = LocalDate.now().year,
+            recentCompanies = emptyList(),
         )
     }
 }

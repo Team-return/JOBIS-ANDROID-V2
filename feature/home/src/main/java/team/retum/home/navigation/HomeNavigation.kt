@@ -10,11 +10,13 @@ const val NAVIGATION_HOME = "home"
 fun NavGraphBuilder.home(
     applicationId: Long?,
     onAlarmClick: () -> Unit,
+    onCalendarClick: () -> Unit,
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
     onWinterInternClick: () -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
+    onCompanyItemClick: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
     navigateToApplication: (ApplicationData) -> Unit,
 ) {
@@ -22,11 +24,13 @@ fun NavGraphBuilder.home(
         Home(
             applicationId = applicationId,
             onAlarmClick = onAlarmClick,
+            onCalendarClick = onCalendarClick,
             showRejectionModal = showRejectionModal,
             onCompaniesClick = onCompaniesClick,
             onEmploymentClick = onEmploymentClick,
             onWinterInternClick = onWinterInternClick,
             navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+            onCompanyItemClick = onCompanyItemClick,
             navigatedFromNotifications = navigatedFromNotifications,
             navigateToApplication = navigateToApplication,
         )

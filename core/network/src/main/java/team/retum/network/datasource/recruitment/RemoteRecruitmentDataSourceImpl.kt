@@ -20,6 +20,8 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
+        sortType: String?,
+        region: String?,
     ): FetchRecruitmentsResponse = RequestHandler<FetchRecruitmentsResponse>().request {
         recruitmentApi.fetchRecruitments(
             page = page,
@@ -30,6 +32,8 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
             militarySupport = militarySupport,
             years = years,
             recruitStatus = recruitStatus?.name,
+            sortType = sortType,
+            region = region,
         )
     }
 
@@ -41,6 +45,8 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
         militarySupport: Boolean?,
         years: List<Int>?,
         recruitStatus: RecruitmentStatus?,
+        sortType: String?,
+        region: String?,
     ): FetchRecruitmentPageCountResponse =
         RequestHandler<FetchRecruitmentPageCountResponse>().request {
             recruitmentApi.fetchRecruitmentPageCount(
@@ -51,6 +57,8 @@ class RemoteRecruitmentDataSourceImpl @Inject constructor(
                 militarySupport = militarySupport,
                 years = years,
                 recruitStatus = recruitStatus?.name,
+                sortType = sortType,
+                region = region,
             )
         }
 

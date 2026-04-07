@@ -12,8 +12,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.RecruitSortType
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.local.entity.BookmarkLocalEntity
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.region
 import team.retum.usecase.entity.RecruitmentsEntity
 import team.retum.usecase.usecase.bookmark.ObserveBookmarkStatusUseCase
 import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
@@ -78,6 +80,7 @@ internal class RecruitmentViewModel @Inject constructor(
         RecruitmentFilterViewModel.techCode = null
         RecruitmentFilterViewModel.year = null
         RecruitmentFilterViewModel.status = null
+        RecruitmentFilterViewModel.region = null
         _recruitments.clear()
         setState {
             state.value.copy(
@@ -106,6 +109,17 @@ internal class RecruitmentViewModel @Inject constructor(
         state.value.copy(status = status)
     }
 
+    internal fun setSortType(sortType: RecruitSortType?) {
+        _recruitments.clear()
+        setState {
+            state.value.copy(
+                page = 0L,
+                sortType = sortType,
+            )
+        }
+        fetchTotalRecruitmentCount()
+    }
+
     internal fun fetchRecruitments() {
         addRecruitmentEntities()
         addPage()
@@ -120,6 +134,8 @@ internal class RecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = years,
                     recruitStatus = status,
+                    sortType = sortType,
+                    region = region,
                 ).onSuccess {
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
@@ -171,6 +187,8 @@ internal class RecruitmentViewModel @Inject constructor(
                     militarySupport = null,
                     years = years,
                     recruitStatus = status,
+                    sortType = null,
+                    region = region,
                 ).onSuccess {
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
@@ -248,6 +266,7 @@ internal data class RecruitmentsState(
     val showRecruitmentsEmptyContent: Boolean,
     val years: ImmutableList<Int>?,
     val status: RecruitmentStatus?,
+    val sortType: RecruitSortType?,
 ) {
     companion object {
         fun getDefaultState() = RecruitmentsState(
@@ -260,6 +279,7 @@ internal data class RecruitmentsState(
             showRecruitmentsEmptyContent = false,
             years = null,
             status = null,
+            sortType = null,
         )
     }
 }

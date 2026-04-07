@@ -41,6 +41,7 @@ internal object RequestUrls {
         const val count = "$path/student/count"
         const val review = "$path/review"
         const val details = "$path/{${PATH.companyId}}"
+        const val recent = "$path/student/recent"
     }
 
     data object Students {
@@ -143,5 +144,11 @@ internal object RequestUrls {
 
         const val interests = path
         const val interestsRecruitments = "$path/recruitment"
+    }
+
+    data object Interviews {
+        private const val path = "/interviews"
+
+        const val interviews = path
     }
 }

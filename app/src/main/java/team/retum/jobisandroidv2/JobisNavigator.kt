@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import team.retum.bookmark.navigation.navigateToBookmark
 import team.retum.bug.navigation.navigateToReportBug
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.common.model.ApplicationData
@@ -18,9 +19,13 @@ import team.retum.jobis.change.password.navigation.navigateToComparePassword
 import team.retum.jobis.change.password.navigation.navigateToResetPassword
 import team.retum.jobis.interests.navigation.navigateToInterests
 import team.retum.jobis.interests.navigation.navigateToInterestsComplete
+import team.retum.jobis.interview.schedule.navigation.navigateToAddInterviewSchedule
+import team.retum.jobis.interview.schedule.navigation.navigateToEditInterviewSchedule
+import team.retum.jobis.interview.schedule.navigation.navigateToInterviewSchedule
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices
+import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -38,6 +43,7 @@ import team.retum.post.review.navigation.navigateToPostExpectReview
 import team.retum.post.review.navigation.navigateToPostNextReview
 import team.retum.post.review.navigation.navigateToPostReview
 import team.retum.post.review.navigation.navigateToPostReviewComplete
+import team.retum.review.navigation.NAVIGATION_REVIEW
 import team.retum.review.navigation.navigateToReviewDetails
 import team.retum.review.navigation.navigateToReviewFilter
 import team.retum.review.navigation.navigateToSearchReview
@@ -102,6 +108,28 @@ internal class JobisNavigator(
 
     fun navigateToCompanies() {
         navController.navigateToCompanies()
+    }
+
+    fun navigateToBookmark() {
+        navController.navigateToBookmark()
+    }
+
+    fun navigateToRecruitments() {
+        navController.navigateToRoot(
+            applicationId = 0,
+            initialTab = NAVIGATION_RECRUITMENTS,
+        )
+    }
+
+    fun navigateToHomeTab() {
+        navController.navigateToRoot(applicationId = 0)
+    }
+
+    fun navigateToReviewTab() {
+        navController.navigateToRoot(
+            applicationId = 0,
+            initialTab = NAVIGATION_REVIEW,
+        )
     }
 
     fun navigateToRecruitmentFilter() {
@@ -233,6 +261,18 @@ internal class JobisNavigator(
 
     fun navigatedFromNotifications(): Boolean {
         return navController.previousBackStackEntry?.destination?.route == NAVIGATION_NOTIFICATIONS
+    }
+
+    fun navigateToInterviewSchedule() {
+        navController.navigateToInterviewSchedule()
+    }
+
+    fun navigateToAddInterviewSchedule() {
+        navController.navigateToAddInterviewSchedule()
+    }
+
+    fun navigateToEditInterviewSchedule(interviewId: Long) {
+        navController.navigateToEditInterviewSchedule(interviewId)
     }
 
     private fun popBackStack() {
