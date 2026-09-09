@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.local.entity.BookmarkLocalEntity
@@ -19,6 +21,7 @@ import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentsSideEffect
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
+import team.retum.jobisdesignsystemv2.empty.EmptyContent
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
@@ -26,6 +29,7 @@ import team.retum.usecase.entity.RecruitmentsEntity
 
 @Composable
 internal fun WinterIntern(
+    isWinterInternAvailable: Boolean,
     onBackPressed: () -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -33,8 +37,11 @@ internal fun WinterIntern(
     recruitmentViewModel: RecruitmentViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val state by recruitmentViewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(isWinterInternAvailable) {
+        if (!isWinterInternAvailable) return@LaunchedEffect
+
         with(recruitmentViewModel) {
             setJobCode(RecruitmentFilterViewModel.jobCode)
             setTechCode(RecruitmentFilterViewModel.techCode)
@@ -42,7 +49,9 @@ internal fun WinterIntern(
             clearRecruitment()
             fetchTotalRecruitmentCount()
         }
+    }
 
+    LaunchedEffect(Unit) {
         recruitmentViewModel.sideEffect.collect {
             when (it) {
                 is RecruitmentsSideEffect.FetchRecruitmentsError -> {
@@ -58,6 +67,7 @@ internal fun WinterIntern(
 
     WinterInternScreen(
         onBackPressed = onBackPressed,
+        showEmptyContent = !isWinterInternAvailable || state.showRecruitmentsEmptyContent,
         recruitments = recruitmentViewModel.recruitments.toPersistentList(),
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
@@ -71,6 +81,7 @@ internal fun WinterIntern(
 @Composable
 private fun WinterInternScreen(
     onBackPressed: () -> Unit,
+    showEmptyContent: Boolean,
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -100,12 +111,19 @@ private fun WinterInternScreen(
                 onClick = { onSearchRecruitmentClick(true) },
             )
         }
-        RecruitmentItems(
-            recruitments = recruitments,
-            onRecruitmentClick = onRecruitmentClick,
-            onBookmarkClick = onBookmarkClick,
-            whetherFetchNextPage = whetherFetchNextPage,
-            fetchNextPage = fetchNextPage,
-        )
+        if (showEmptyContent) {
+            EmptyContent(
+                title = stringResource(id = R.string.winter_intern_empty_title),
+                description = stringResource(id = R.string.winter_intern_empty_description),
+            )
+        } else {
+            RecruitmentItems(
+                recruitments = recruitments,
+                onRecruitmentClick = onRecruitmentClick,
+                onBookmarkClick = onBookmarkClick,
+                whetherFetchNextPage = whetherFetchNextPage,
+                fetchNextPage = fetchNextPage,
+            )
+        }
     }
 }
