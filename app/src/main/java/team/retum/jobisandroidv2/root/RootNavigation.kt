@@ -15,7 +15,7 @@ fun NavGraphBuilder.root(
     onAlarmClick: () -> Unit,
     onCalendarClick: () -> Unit,
     onEmploymentClick: () -> Unit,
-    onWinterInternClick: () -> Unit,
+    onWinterInternClick: (Boolean) -> Unit,
     onRecruitmentDetailsClick: (Long) -> Unit,
     onCompaniesClick: () -> Unit,
     onCompanyItemClick: (Long) -> Unit,
