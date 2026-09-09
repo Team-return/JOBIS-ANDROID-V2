@@ -82,7 +82,7 @@ internal fun Home(
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
-    onWinterInternClick: () -> Unit,
+    onWinterInternClick: (Boolean) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     onCompanyItemClick: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
@@ -159,7 +159,7 @@ private fun HomeScreen(
     onCalendarClick: () -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
-    onWinterInternClick: () -> Unit,
+    onWinterInternClick: (Boolean) -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
     state: HomeState,
     banners: ImmutableList<BannersEntity.BannerEntity>,
@@ -198,6 +198,14 @@ private fun HomeScreen(
                 state = state,
                 banners = banners,
                 onEmploymentClick = onEmploymentClick,
+            )
+            WinterIntern(
+                modifier = Modifier.padding(
+                    vertical = 12.dp,
+                    horizontal = 24.dp,
+                ),
+                isWinterInternAvailable = state.isWinterIntern,
+                onWinterInternClick = onWinterInternClick,
             )
             RecentlyViewedCompanies(
                 modifier = Modifier.padding(
@@ -265,6 +273,7 @@ private fun Banner(
                     start = 6.dp,
                     end = 6.dp,
                 ),
+            background = JobisTheme.colors.inverseSurface,
         ) {
             if (page == 0) {
                 EmploymentRate(
@@ -280,7 +289,7 @@ private fun Banner(
             }
         }
     }
-    if (banners.isNotEmpty()) {
+    if (pagerState.pageCount > 1) {
         Row(
             modifier = Modifier
                 .wrapContentHeight()
@@ -302,6 +311,67 @@ private fun Banner(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun WinterIntern(
+    modifier: Modifier = Modifier,
+    isWinterInternAvailable: Boolean,
+    onWinterInternClick: (Boolean) -> Unit,
+) {
+    Column(modifier = modifier) {
+        JobisText(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = stringResource(R.string.experiential_field_training),
+            style = JobisTypography.Description,
+            color = JobisTheme.colors.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        JobisCard(
+            modifier = Modifier.border(
+                width = 1.dp,
+                color = JobisTheme.colors.surfaceVariant,
+                shape = RoundedCornerShape(12.dp),
+            ),
+            background = JobisTheme.colors.inverseSurface,
+            onClick = { onWinterInternClick(isWinterInternAvailable) },
+        ) {
+            WinterInternBanner()
+        }
+    }
+}
+
+@Composable
+private fun WinterInternBanner() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .padding(start = 24.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            JobisText(
+                text = stringResource(R.string.winter_intern_banner_title),
+                style = JobisTypography.SubHeadLine,
+                color = JobisTheme.colors.onSurface,
+            )
+            JobisText(
+                text = stringResource(R.string.winter_intern_banner_action),
+                style = JobisTypography.Description,
+                color = JobisTheme.colors.onSurfaceVariant,
+            )
+        }
+        Image(
+            modifier = Modifier.size(144.dp),
+            painter = painterResource(id = JobisIcon.WinterIntern),
+            contentDescription = "winter intern",
+            contentScale = ContentScale.Fit,
+        )
     }
 }
 

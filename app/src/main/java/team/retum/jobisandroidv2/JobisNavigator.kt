@@ -207,8 +207,8 @@ internal class JobisNavigator(
         navController.navigateToEmploymentDetail(classId = classId)
     }
 
-    fun navigateToWinterIntern() {
-        navController.navigateToWinterIntern()
+    fun navigateToWinterIntern(isWinterInternAvailable: Boolean) {
+        navController.navigateToWinterIntern(isWinterInternAvailable = isWinterInternAvailable)
     }
 
     fun navigateToRecruitmentDetails(
