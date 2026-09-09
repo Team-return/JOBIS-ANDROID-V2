@@ -14,7 +14,7 @@ fun NavGraphBuilder.home(
     showRejectionModal: (ApplicationData) -> Unit,
     onCompaniesClick: () -> Unit,
     onEmploymentClick: () -> Unit,
-    onWinterInternClick: () -> Unit,
+    onWinterInternClick: (Boolean) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     onCompanyItemClick: (Long) -> Unit,
     navigatedFromNotifications: Boolean,
