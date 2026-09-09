@@ -329,6 +329,11 @@ private fun WinterIntern(
         )
         Spacer(modifier = Modifier.height(8.dp))
         JobisCard(
+            modifier = Modifier.border(
+                width = 1.dp,
+                color = JobisTheme.colors.surfaceVariant,
+                shape = RoundedCornerShape(12.dp),
+            ),
             background = JobisTheme.colors.inverseSurface,
             onClick = { onWinterInternClick(isWinterInternAvailable) },
         ) {
