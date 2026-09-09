@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
@@ -198,6 +199,7 @@ private fun HomeScreen(
                 state = state,
                 banners = banners,
                 onEmploymentClick = onEmploymentClick,
+                onWinterInternClick = onWinterInternClick,
             )
             RecentlyViewedCompanies(
                 modifier = Modifier.padding(
@@ -229,8 +231,9 @@ private fun Banner(
     state: HomeState,
     banners: ImmutableList<BannersEntity.BannerEntity>,
     onEmploymentClick: () -> Unit,
+    onWinterInternClick: () -> Unit,
 ) {
-    val pagerState = rememberPagerState { banners.size + 1 }
+    val pagerState = rememberPagerState { banners.size + 1 + if (state.isWinterIntern) 1 else 0 }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState.settledPage) {
@@ -257,6 +260,7 @@ private fun Banner(
         contentPadding = PaddingValues(horizontal = 18.dp),
         beyondViewportPageCount = pagerState.pageCount + 1,
     ) { page ->
+        val isWinterInternBanner = state.isWinterIntern && page == 1
         JobisCard(
             modifier = Modifier
                 .padding(
@@ -265,6 +269,12 @@ private fun Banner(
                     start = 6.dp,
                     end = 6.dp,
                 ),
+            background = if (isWinterInternBanner) {
+                JobisTheme.colors.primaryContainer
+            } else {
+                JobisTheme.colors.inverseSurface
+            },
+            onClick = if (isWinterInternBanner) onWinterInternClick else null,
         ) {
             if (page == 0) {
                 EmploymentRate(
@@ -272,15 +282,17 @@ private fun Banner(
                     rate = state.rate,
                     onEmploymentClick = onEmploymentClick,
                 )
+            } else if (isWinterInternBanner) {
+                WinterInternBanner()
             } else {
                 AsyncImage(
-                    model = banners.getOrNull(page - 1)?.bannerUrl,
+                    model = banners.getOrNull(page - 1 - if (state.isWinterIntern) 1 else 0)?.bannerUrl,
                     contentDescription = "banner",
                 )
             }
         }
     }
-    if (banners.isNotEmpty()) {
+    if (banners.isNotEmpty() || state.isWinterIntern) {
         Row(
             modifier = Modifier
                 .wrapContentHeight()
@@ -302,6 +314,44 @@ private fun Banner(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun WinterInternBanner() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(184.dp)
+            .padding(start = 24.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            JobisText(
+                text = stringResource(R.string.winter_intern_banner_title),
+                style = JobisTypography.SubHeadLine,
+                color = Color.White,
+            )
+            JobisText(
+                text = stringResource(R.string.winter_intern_banner_description),
+                style = JobisTypography.HeadLine,
+                color = Color.White,
+            )
+            JobisText(
+                text = stringResource(R.string.winter_intern_banner_action),
+                style = JobisTypography.Description,
+                color = Color.White,
+            )
+        }
+        Image(
+            modifier = Modifier.size(148.dp),
+            painter = painterResource(id = JobisIcon.WinterIntern),
+            contentDescription = "winter intern",
+            contentScale = ContentScale.Fit,
+        )
     }
 }
 
