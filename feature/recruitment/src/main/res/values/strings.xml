@@ -13,6 +13,8 @@
 
     <string name="recruitment_no_content">검색어와 관련된 모집의뢰서를 못 찾았어요</string>
     <string name="retry">제대로 입력했는지 다시 한 번 확인해주세요</string>
+    <string name="winter_intern_empty_title">현재 현장실습 공고 시즌이 아니에요</string>
+    <string name="winter_intern_empty_description">시즌이 올 때까지 기다려주세요</string>
     <string name="recruitment_search_hint">검색어를 입력해주세요</string>
     
     <string name="show_company_detail_info">기업 상세 정보 보기</string>
