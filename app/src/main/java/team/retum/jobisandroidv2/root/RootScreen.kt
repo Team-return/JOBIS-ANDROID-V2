@@ -1,6 +1,8 @@
 package team.retum.jobisandroidv2.root
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,6 +38,7 @@ import team.retum.company.navigation.companies
 import team.retum.home.R
 import team.retum.home.navigation.NAVIGATION_HOME
 import team.retum.home.navigation.home
+import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.navigation.myPage
 import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobis.recruitment.navigation.recruitments
@@ -45,6 +48,7 @@ import team.retum.jobisdesignsystemv2.button.JobisButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.review.navigation.NAVIGATION_REVIEW
 import team.retum.review.navigation.review
 
 @Composable
@@ -71,10 +75,6 @@ internal fun Root(
     onCompanyContentClick: (Long) -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
-    onHomeTabClick: () -> Unit,
-    onRecruitmentsTabClick: () -> Unit,
-    onReviewTabClick: () -> Unit,
-    onMyPageTabClick: () -> Unit,
     navigateToLanding: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -117,10 +117,6 @@ internal fun Root(
         onReviewFilterClick = onReviewFilterClick,
         onCompanyContentClick = onCompanyContentClick,
         onSearchCompaniesClick = onSearchCompaniesClick,
-        onHomeTabClick = onHomeTabClick,
-        onRecruitmentsTabClick = onRecruitmentsTabClick,
-        onReviewTabClick = onReviewTabClick,
-        onMyPageTabClick = onMyPageTabClick,
         onSearchReviewClick = onSearchReviewClick,
         onReviewDetailClick = onReviewDetailClick,
         navigateToApplicationByRejectionBottomSheet = {
@@ -165,10 +161,6 @@ private fun RootScreen(
     onReviewFilterClick: () -> Unit,
     onSearchReviewClick: () -> Unit,
     onReviewDetailClick: (Long) -> Unit,
-    onHomeTabClick: () -> Unit,
-    onRecruitmentsTabClick: () -> Unit,
-    onReviewTabClick: () -> Unit,
-    onMyPageTabClick: () -> Unit,
     navigateToApplicationByRejectionBottomSheet: () -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -176,8 +168,8 @@ private fun RootScreen(
 ) {
     val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    val navigateToCompaniesTab = {
-        navController.navigate(NAVIGATION_COMPANIES) {
+    val navigateToTab: (String) -> Unit = { route ->
+        navController.navigate(route) {
             popUpTo(NAVIGATION_HOME) {
                 saveState = true
             }
@@ -186,15 +178,11 @@ private fun RootScreen(
         }
     }
 
+    val navigateToCompaniesTab = { navigateToTab(NAVIGATION_COMPANIES) }
+
     LaunchedEffect(initialTab) {
         if (initialTab != null) {
-            navController.navigate(initialTab) {
-                popUpTo(NAVIGATION_HOME) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
+            navigateToTab(initialTab)
         }
     }
 
@@ -216,17 +204,21 @@ private fun RootScreen(
             bottomBar = {
                 BottomNavigationBar(
                     selectedRoute = selectedRoute,
-                    onHomeClick = onHomeTabClick,
-                    onRecruitmentsClick = onRecruitmentsTabClick,
+                    onHomeClick = { navigateToTab(NAVIGATION_HOME) },
+                    onRecruitmentsClick = { navigateToTab(NAVIGATION_RECRUITMENTS) },
                     onCompaniesClick = navigateToCompaniesTab,
-                    onReviewClick = onReviewTabClick,
-                    onMyPageClick = onMyPageTabClick,
+                    onReviewClick = { navigateToTab(NAVIGATION_REVIEW) },
+                    onMyPageClick = { navigateToTab(NAVIGATION_MY_PAGE) },
                 )
             },
         ) {
             NavHost(
                 navController = navController,
                 startDestination = NAVIGATION_HOME,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None },
+                popEnterTransition = { EnterTransition.None },
+                popExitTransition = { ExitTransition.None },
                 modifier = Modifier
                     .background(JobisTheme.colors.background)
                     .padding(bottom = it.calculateBottomPadding()),
