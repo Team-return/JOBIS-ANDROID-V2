@@ -101,13 +101,6 @@ internal class InterestsViewmodel @Inject constructor(
         }
     }
 
-    internal fun setButtonState(buttonState: Boolean) {
-        setState {
-            state.value.copy(
-                buttonEnable = buttonState,
-            )
-        }
-    }
 }
 
 @Immutable
@@ -118,7 +111,6 @@ internal data class InterestsState(
     val interestsRecruitments: InterestsRecruitmentsEntity?,
     val selectedMajorCodes: List<Long>,
     val selectedMajorCount: Int,
-    val buttonEnable: Boolean,
 ) {
     companion object {
         fun getInitialState() = InterestsState(
@@ -128,7 +120,6 @@ internal data class InterestsState(
             interestsRecruitments = null,
             selectedMajorCodes = emptyList(),
             selectedMajorCount = 0,
-            buttonEnable = false,
         )
     }
 }
