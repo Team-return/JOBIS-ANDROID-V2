@@ -100,7 +100,6 @@ internal class InterestsViewmodel @Inject constructor(
             }
         }
     }
-
 }
 
 @Immutable
