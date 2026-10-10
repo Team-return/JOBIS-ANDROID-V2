@@ -140,7 +140,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
                     replaceRecruitments(it.recruitments)
                 }.onFailure {
-                    postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
+                    postFetchRecruitmentsErrorIfEmpty()
                 }
             }
         }
@@ -172,7 +172,7 @@ internal class RecruitmentViewModel @Inject constructor(
             }
             _recruitments.removeAll(_recruitments.filter { item -> item.id == 0L })
         }.onFailure {
-            postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
+            postFetchRecruitmentsErrorIfEmpty()
         }
     }
 
@@ -193,7 +193,7 @@ internal class RecruitmentViewModel @Inject constructor(
                     setState { copy(totalPage = it.totalPageCount) }
                     fetchRecruitments()
                 }.onFailure {
-                    postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
+                    postFetchRecruitmentsErrorIfEmpty()
                 }
             }
         }
@@ -223,9 +223,13 @@ internal class RecruitmentViewModel @Inject constructor(
 
     internal fun bookmarkRecruitment(recruitmentId: BookmarkLocalEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            toggleBookmarkUseCase(recruitmentId).onFailure {
-                postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
-            }
+            toggleBookmarkUseCase(recruitmentId)
+        }
+    }
+
+    private fun postFetchRecruitmentsErrorIfEmpty() {
+        if (_recruitments.none { it.id != 0L }) {
+            postSideEffect(RecruitmentsSideEffect.FetchRecruitmentsError)
         }
     }
 
