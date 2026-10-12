@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.CompanySortType
 import team.retum.usecase.entity.CompaniesEntity
 import team.retum.usecase.usecase.company.FetchCompaniesUseCase
 import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
@@ -56,6 +57,17 @@ internal class CompaniesViewModel @Inject constructor(
         }
     }
 
+    internal fun setSortType(sortType: CompanySortType?) {
+        _companies.clear()
+        setState {
+            state.value.copy(
+                page = 0,
+                sortType = sortType,
+            )
+        }
+        fetchTotalCompanyPageCount()
+    }
+
     internal fun fetchCompanies() {
         addCompanyEntities()
         addPage()
@@ -64,6 +76,7 @@ internal class CompaniesViewModel @Inject constructor(
                 fetchCompaniesUseCase(
                     page = page,
                     name = name,
+                    sortType = sortType,
                 ).onSuccess {
                     setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
                     replaceCompany(it.companies)
@@ -115,6 +128,7 @@ internal data class CompaniesState(
     val page: Int,
     val name: String?,
     val showCompaniesEmptyContent: Boolean,
+    val sortType: CompanySortType?,
 ) {
     companion object {
         fun getDefaultState() = CompaniesState(
@@ -122,6 +136,7 @@ internal data class CompaniesState(
             page = 0,
             name = null,
             showCompaniesEmptyContent = false,
+            sortType = null,
         )
     }
 }
