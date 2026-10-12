@@ -180,11 +180,6 @@ private fun HomeScreen(
     ) {
         JobisSmallTopAppBar(showLogo = true) {
             JobisIconButton(
-                drawableResId = JobisIcon.Calendar,
-                contentDescription = "calendar",
-                onClick = onCalendarClick,
-            )
-            JobisIconButton(
                 drawableResId = JobisIcon.Bell,
                 contentDescription = "notification",
                 onClick = onAlarmClick,
