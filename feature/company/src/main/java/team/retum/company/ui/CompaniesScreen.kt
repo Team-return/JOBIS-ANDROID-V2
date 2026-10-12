@@ -128,10 +128,10 @@ private fun CompaniesScreen(
         linkedMapOf(
             null to labelDefault,
             CompanySortType.TAKE to labelTake,
-            CompanySortType.WORKERS_COUNT_ASC to labelWorkersAsc,
             CompanySortType.WORKERS_COUNT_DESC to labelWorkersDesc,
-            CompanySortType.FOUNDED_AT_ASC to labelFoundedAtAsc,
+            CompanySortType.WORKERS_COUNT_ASC to labelWorkersAsc,
             CompanySortType.FOUNDED_AT_DESC to labelFoundedAtDesc,
+            CompanySortType.FOUNDED_AT_ASC to labelFoundedAtAsc,
         )
     }
 
