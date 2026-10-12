@@ -7,7 +7,7 @@ import team.retum.network.model.response.company.FetchCompanyDetailsResponse
 import team.retum.network.model.response.company.FetchReviewableCompaniesResponse
 
 interface CompanyDataSource {
-    suspend fun fetchCompanies(page: Int, name: String?): FetchCompaniesResponse
+    suspend fun fetchCompanies(page: Int, name: String?, sortType: String?): FetchCompaniesResponse
     suspend fun fetchPageCount(name: String?): FetchCompanyPageCountResponse
     suspend fun fetchReviewableCompanies(): FetchReviewableCompaniesResponse
     suspend fun fetchCompanyDetails(companyId: Long): FetchCompanyDetailsResponse

@@ -4,13 +4,16 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
+import team.retum.common.enums.CompanySortType
 import team.retum.usecase.entity.CompaniesEntity
 import team.retum.usecase.usecase.company.FetchCompaniesUseCase
 import team.retum.usecase.usecase.company.FetchCompanyCountUseCase
@@ -29,6 +32,11 @@ internal class CompaniesViewModel @Inject constructor(
     private val _companies: SnapshotStateList<CompaniesEntity.CompanyEntity> = mutableStateListOf()
     internal val companies: List<CompaniesEntity.CompanyEntity> = _companies
 
+    @Volatile
+    private var queryGeneration = 0L
+    private var fetchCompaniesJob: Job? = null
+    private var fetchCompanyCountJob: Job? = null
+
     init {
         debounceName()
     }
@@ -46,6 +54,7 @@ internal class CompaniesViewModel @Inject constructor(
 
     internal fun setName(name: String) {
         val initialState = CompaniesState.getDefaultState()
+        invalidateCompanyQueries()
         _companies.clear()
         setState {
             state.value.copy(
@@ -56,20 +65,41 @@ internal class CompaniesViewModel @Inject constructor(
         }
     }
 
+    internal fun setSortType(sortType: CompanySortType?) {
+        invalidateCompanyQueries()
+        _companies.clear()
+        setState {
+            state.value.copy(
+                page = 0,
+                sortType = sortType,
+            )
+        }
+        fetchTotalCompanyPageCount()
+    }
+
     internal fun fetchCompanies() {
+        if (fetchCompaniesJob?.isActive == true) return
+
+        val requestGeneration = queryGeneration
+        val nextPage = state.value.page + 1
+        val name = state.value.name
+        val sortType = state.value.sortType
         addCompanyEntities()
-        addPage()
-        viewModelScope.launch(Dispatchers.IO) {
-            with(state.value) {
-                fetchCompaniesUseCase(
-                    page = page,
-                    name = name,
-                ).onSuccess {
-                    setState { copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
-                    replaceCompany(it.companies)
-                }.onFailure {
-                    postSideEffect(CompaniesSideEffect.FetchCompaniesError)
-                }
+        setState { state.value.copy(page = nextPage) }
+        fetchCompaniesJob = viewModelScope.launch(Dispatchers.IO) {
+            fetchCompaniesUseCase(
+                page = nextPage,
+                name = name,
+                sortType = sortType,
+            ).onSuccess {
+                if (requestGeneration != queryGeneration) return@onSuccess
+
+                setState { state.value.copy(showCompaniesEmptyContent = it.companies.isEmpty()) }
+                replaceCompany(it.companies)
+            }.onFailure { exception ->
+                if (requestGeneration != queryGeneration || exception is CancellationException) return@onFailure
+
+                postSideEffect(CompaniesSideEffect.FetchCompaniesError)
             }
         }
     }
@@ -96,17 +126,24 @@ internal class CompaniesViewModel @Inject constructor(
         return lastVisibleItemIndex == companies.lastIndex && page < totalPage
     }
 
-    private fun addPage() = with(state.value) {
-        setState { copy(page = page + 1) }
-    }
-
     internal fun fetchTotalCompanyPageCount() {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchCompanyCountUseCase(name = state.value.name).onSuccess {
+        val requestGeneration = queryGeneration
+        val name = state.value.name
+        fetchCompanyCountJob?.cancel()
+        fetchCompanyCountJob = viewModelScope.launch(Dispatchers.IO) {
+            fetchCompanyCountUseCase(name = name).onSuccess {
+                if (requestGeneration != queryGeneration) return@onSuccess
+
                 setState { state.value.copy(totalPage = it.totalPageCount.toInt()) }
                 fetchCompanies()
             }
         }
+    }
+
+    private fun invalidateCompanyQueries() {
+        queryGeneration += 1
+        fetchCompaniesJob?.cancel()
+        fetchCompanyCountJob?.cancel()
     }
 }
 
@@ -115,6 +152,7 @@ internal data class CompaniesState(
     val page: Int,
     val name: String?,
     val showCompaniesEmptyContent: Boolean,
+    val sortType: CompanySortType?,
 ) {
     companion object {
         fun getDefaultState() = CompaniesState(
@@ -122,6 +160,7 @@ internal data class CompaniesState(
             page = 0,
             name = null,
             showCompaniesEmptyContent = false,
+            sortType = null,
         )
     }
 }

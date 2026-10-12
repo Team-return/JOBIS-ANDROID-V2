@@ -7,6 +7,13 @@
     <string name="double_check">제대로 입력했는지 다시 한번 확인해주세요</string>
     <string name="search_hint">검색어를 입력해주세요</string>
     <string name="toast_fetch_companies_error">기업 목록을 불러오는 중 문제가 발생했어요</string>
+    <string name="sort_default">기본순</string>
+    <string name="sort_take">매출</string>
+    <string name="sort_workers_asc">직원 ↓</string>
+    <string name="sort_workers_desc">직원 ↑</string>
+    <string name="sort_founded_at_asc">설립일 ↓</string>
+    <string name="sort_founded_at_desc">설립일 ↑</string>
+    <string name="sort_expand">정렬 메뉴 열기</string>
 
     <!--Company Details Screen-->
     <string name="company_details">기업 상세</string>
