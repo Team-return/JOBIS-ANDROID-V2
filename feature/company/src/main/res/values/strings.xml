@@ -33,4 +33,5 @@
     <string name="show_recruitment">모집의뢰서 보기</string>
 
     <string name="toast_error_fetch_company_details">기업 정보 조회 중 오류가 발생했어요</string>
+    <string name="toast_recruitment_not_found">현재 모집의뢰서가 없습니다</string>
 </resources>
