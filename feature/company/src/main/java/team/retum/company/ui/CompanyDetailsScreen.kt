@@ -173,7 +173,7 @@ private fun CompanyDetailsScreen(
                     text = stringResource(id = R.string.show_recruitment),
                     onClick = onMoveToRecruitmentButtonClick,
                     color = if (state.buttonEnabled) ButtonColor.Primary else ButtonColor.Disabled,
-                    enabled = !isMovedRecruitmentDetails,
+                    enabled = !isMovedRecruitmentDetails && !state.isMovingToRecruitmentDetails,
                 )
             }
         }

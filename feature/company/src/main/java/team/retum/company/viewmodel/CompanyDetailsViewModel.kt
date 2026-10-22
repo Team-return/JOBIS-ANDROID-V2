@@ -73,7 +73,7 @@ internal class CompanyDetailsViewModel @Inject constructor(
 
         setState {
             postSideEffect(CompanyDetailsSideEffect.MoveToRecruitmentDetails(recruitmentId = recruitmentId))
-            state.value.copy(buttonEnabled = false)
+            state.value.copy(isMovingToRecruitmentDetails = true)
         }
     }
 }
@@ -86,6 +86,7 @@ internal data class CompanyDetailsState(
     val showMoreReviews: Boolean,
     val showMoveToRecruitmentButton: Boolean,
     val buttonEnabled: Boolean,
+    val isMovingToRecruitmentDetails: Boolean,
 ) {
     companion object {
         fun getInitialState() = CompanyDetailsState(
@@ -113,6 +114,7 @@ internal data class CompanyDetailsState(
             showMoreReviews = false,
             showMoveToRecruitmentButton = false,
             buttonEnabled = true,
+            isMovingToRecruitmentDetails = false,
         )
     }
 }
