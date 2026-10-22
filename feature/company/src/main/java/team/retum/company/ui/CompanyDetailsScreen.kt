@@ -47,6 +47,8 @@ import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.FetchReviewsEntity
 
+private const val RECRUITMENT_TOAST_BOTTOM_OFFSET = 96
+
 @Composable
 internal fun CompanyDetails(
     companyId: Long,
@@ -74,6 +76,15 @@ internal fun CompanyDetails(
                         context = context,
                         message = context.getString(R.string.toast_error_fetch_company_details),
                         drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is CompanyDetailsSideEffect.RecruitmentNotFound -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_recruitment_not_found),
+                        drawable = JobisIcon.Error,
+                        bottomOffsetDp = RECRUITMENT_TOAST_BOTTOM_OFFSET,
                     ).show()
                 }
 
@@ -161,8 +172,8 @@ private fun CompanyDetailsScreen(
                 JobisButton(
                     text = stringResource(id = R.string.show_recruitment),
                     onClick = onMoveToRecruitmentButtonClick,
-                    color = ButtonColor.Primary,
-                    enabled = state.buttonEnabled && !isMovedRecruitmentDetails,
+                    color = if (state.buttonEnabled) ButtonColor.Primary else ButtonColor.Disabled,
+                    enabled = !isMovedRecruitmentDetails,
                 )
             }
         }
