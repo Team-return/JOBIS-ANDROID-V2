@@ -63,12 +63,18 @@ internal class CompanyDetailsViewModel @Inject constructor(
         }
     }
 
-    internal fun onMoveToRecruitmentButtonClick() = setState {
+    internal fun onMoveToRecruitmentButtonClick() {
         val recruitmentId = state.value.companyDetailsEntity.recruitmentId
-        recruitmentId?.run {
-            postSideEffect(CompanyDetailsSideEffect.MoveToRecruitmentDetails(recruitmentId = recruitmentId))
+
+        if (recruitmentId == null) {
+            postSideEffect(CompanyDetailsSideEffect.RecruitmentNotFound)
+            return
         }
-        state.value.copy(buttonEnabled = false)
+
+        setState {
+            postSideEffect(CompanyDetailsSideEffect.MoveToRecruitmentDetails(recruitmentId = recruitmentId))
+            state.value.copy(isMovingToRecruitmentDetails = true)
+        }
     }
 }
 
@@ -80,6 +86,7 @@ internal data class CompanyDetailsState(
     val showMoreReviews: Boolean,
     val showMoveToRecruitmentButton: Boolean,
     val buttonEnabled: Boolean,
+    val isMovingToRecruitmentDetails: Boolean,
 ) {
     companion object {
         fun getInitialState() = CompanyDetailsState(
@@ -107,11 +114,13 @@ internal data class CompanyDetailsState(
             showMoreReviews = false,
             showMoveToRecruitmentButton = false,
             buttonEnabled = true,
+            isMovingToRecruitmentDetails = false,
         )
     }
 }
 
 internal sealed interface CompanyDetailsSideEffect {
     data object FetchCompanyDetailsError : CompanyDetailsSideEffect
+    data object RecruitmentNotFound : CompanyDetailsSideEffect
     data class MoveToRecruitmentDetails(val recruitmentId: Long) : CompanyDetailsSideEffect
 }

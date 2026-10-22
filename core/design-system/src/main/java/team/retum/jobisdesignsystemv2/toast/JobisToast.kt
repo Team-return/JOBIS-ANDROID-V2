@@ -1,6 +1,7 @@
 package team.retum.jobisdesignsystemv2.toast
 
 import android.content.Context
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -34,6 +35,7 @@ object JobisToast {
         message: String,
         duration: Int = Toast.LENGTH_SHORT,
         @DrawableRes drawable: Int = JobisIcon.CheckCircle,
+        bottomOffsetDp: Int? = null,
     ): Toast {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(
@@ -47,6 +49,13 @@ object JobisToast {
         return Toast(context).apply {
             this.duration = duration
             this.view = view
+            bottomOffsetDp?.let {
+                setGravity(
+                    Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL,
+                    0,
+                    (it * context.resources.displayMetrics.density).toInt(),
+                )
+            }
         }
     }
 }
