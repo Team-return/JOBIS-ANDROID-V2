@@ -41,7 +41,13 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     private var _checkedSkills: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
     val checkedSkills get() = _checkedSkills
 
-    private var hasRestoredSelectedSkills = false
+    private val selectedTechCodes = techCode
+        ?.split(",")
+        ?.mapNotNull(String::toLongOrNull)
+        ?.toSet()
+        .orEmpty()
+    private val restoredTechCodes = mutableSetOf<Long>()
+    private val manuallyUncheckedTechCodes = mutableSetOf<Long>()
 
     internal fun fetchCodes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -60,15 +66,13 @@ internal class RecruitmentFilterViewModel @Inject constructor(
                 } else {
                     _techs.clear()
                     _techs.addAll(it.codes)
-                    if (!hasRestoredSelectedSkills) {
-                        val selectedTechCodes = techCode
-                            ?.split(",")
-                            ?.mapNotNull(String::toLongOrNull)
-                            ?.toSet()
-                            .orEmpty()
-                        _checkedSkills.addAll(it.codes.filter { code -> code.code in selectedTechCodes })
-                        hasRestoredSelectedSkills = true
+                    val skillsToRestore = it.codes.filter { code ->
+                        code.code in selectedTechCodes &&
+                            code.code !in restoredTechCodes &&
+                            code.code !in manuallyUncheckedTechCodes
                     }
+                    _checkedSkills.addAll(skillsToRestore)
+                    restoredTechCodes.addAll(skillsToRestore.map { it.code })
                 }
             }
         }
@@ -79,8 +83,10 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         check: Boolean,
     ) {
         if (check) {
+            manuallyUncheckedTechCodes.remove(skill.code)
             _checkedSkills.add(skill)
         } else {
+            manuallyUncheckedTechCodes.add(skill.code)
             _checkedSkills.remove(skill)
         }
     }
