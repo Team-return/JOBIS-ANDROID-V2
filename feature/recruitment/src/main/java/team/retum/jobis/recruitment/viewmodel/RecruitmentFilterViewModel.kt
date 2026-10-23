@@ -41,6 +41,8 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     private var _checkedSkills: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
     val checkedSkills get() = _checkedSkills
 
+    private var hasRestoredSelectedSkills = false
+
     internal fun fetchCodes() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase(
@@ -49,11 +51,24 @@ internal class RecruitmentFilterViewModel @Inject constructor(
                 parentCode = state.value.parentCode,
             ).onSuccess {
                 if (state.value.type == CodeType.JOB) {
-                    setType()
+                    _majors.clear()
                     _majors.addAll(it.codes)
+                    it.codes.find { code -> code.code == jobCode }?.let { selectedMajor ->
+                        setSelectedMajor(selectedMajor.keyword, selectedMajor.code)
+                    }
+                    setType()
                 } else {
                     _techs.clear()
                     _techs.addAll(it.codes)
+                    if (!hasRestoredSelectedSkills) {
+                        val selectedTechCodes = techCode
+                            ?.split(",")
+                            ?.mapNotNull(String::toLongOrNull)
+                            ?.toSet()
+                            .orEmpty()
+                        _checkedSkills.addAll(it.codes.filter { code -> code.code in selectedTechCodes })
+                        hasRestoredSelectedSkills = true
+                    }
                 }
             }
         }
@@ -128,10 +143,10 @@ internal data class RecruitmentFilterState(
                 keyword = null,
                 selectedMajor = "",
                 parentCode = null,
-                selectedYear = persistentListOf(),
+                selectedYear = RecruitmentFilterViewModel.year ?: persistentListOf(),
                 years = yearList.toImmutableList(),
-                selectedStatus = null,
-                selectedRegion = null,
+                selectedStatus = RecruitmentFilterViewModel.status,
+                selectedRegion = RecruitmentFilterViewModel.region,
             )
         }
     }
