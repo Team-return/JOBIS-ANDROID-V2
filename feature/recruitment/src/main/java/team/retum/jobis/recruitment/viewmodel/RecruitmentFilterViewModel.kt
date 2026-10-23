@@ -41,6 +41,14 @@ internal class RecruitmentFilterViewModel @Inject constructor(
     private var _checkedSkills: SnapshotStateList<CodesEntity.CodeEntity> = mutableStateListOf()
     val checkedSkills get() = _checkedSkills
 
+    private val selectedTechCodes = techCode
+        ?.split(",")
+        ?.mapNotNull(String::toLongOrNull)
+        ?.toSet()
+        .orEmpty()
+    private val restoredTechCodes = mutableSetOf<Long>()
+    private val manuallyUncheckedTechCodes = mutableSetOf<Long>()
+
     internal fun fetchCodes() {
         viewModelScope.launch(Dispatchers.IO) {
             fetchCodeUseCase(
@@ -49,11 +57,22 @@ internal class RecruitmentFilterViewModel @Inject constructor(
                 parentCode = state.value.parentCode,
             ).onSuccess {
                 if (state.value.type == CodeType.JOB) {
-                    setType()
+                    _majors.clear()
                     _majors.addAll(it.codes)
+                    it.codes.find { code -> code.code == jobCode }?.let { selectedMajor ->
+                        setSelectedMajor(selectedMajor.keyword, selectedMajor.code)
+                    }
+                    setType()
                 } else {
                     _techs.clear()
                     _techs.addAll(it.codes)
+                    val skillsToRestore = it.codes.filter { code ->
+                        code.code in selectedTechCodes &&
+                            code.code !in restoredTechCodes &&
+                            code.code !in manuallyUncheckedTechCodes
+                    }
+                    _checkedSkills.addAll(skillsToRestore)
+                    restoredTechCodes.addAll(skillsToRestore.map { it.code })
                 }
             }
         }
@@ -64,8 +83,10 @@ internal class RecruitmentFilterViewModel @Inject constructor(
         check: Boolean,
     ) {
         if (check) {
+            manuallyUncheckedTechCodes.remove(skill.code)
             _checkedSkills.add(skill)
         } else {
+            manuallyUncheckedTechCodes.add(skill.code)
             _checkedSkills.remove(skill)
         }
     }
@@ -128,10 +149,10 @@ internal data class RecruitmentFilterState(
                 keyword = null,
                 selectedMajor = "",
                 parentCode = null,
-                selectedYear = persistentListOf(),
+                selectedYear = RecruitmentFilterViewModel.year ?: persistentListOf(),
                 years = yearList.toImmutableList(),
-                selectedStatus = null,
-                selectedRegion = null,
+                selectedStatus = RecruitmentFilterViewModel.status,
+                selectedRegion = RecruitmentFilterViewModel.region,
             )
         }
     }

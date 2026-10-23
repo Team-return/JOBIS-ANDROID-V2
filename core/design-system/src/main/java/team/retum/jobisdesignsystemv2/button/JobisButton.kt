@@ -164,6 +164,11 @@ private fun getThemeColor(color: ButtonColor) = when (color) {
         darkColor = ButtonColors.Dark.default(),
     )
 
+    ButtonColor.Disabled -> checkDarkTheme(
+        lightColor = ButtonColors.Light.disabled(),
+        darkColor = ButtonColors.Dark.disabled(),
+    )
+
     ButtonColor.Error -> checkDarkTheme(
         lightColor = ButtonColors.Light.error(),
         darkColor = ButtonColors.Dark.error(),

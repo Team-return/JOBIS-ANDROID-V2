@@ -12,9 +12,9 @@ import javax.inject.Inject
 class CompanyDataSourceImpl @Inject constructor(
     private val companyApi: CompanyApi,
 ) : CompanyDataSource {
-    override suspend fun fetchCompanies(page: Int, name: String?): FetchCompaniesResponse =
+    override suspend fun fetchCompanies(page: Int, name: String?, sortType: String?): FetchCompaniesResponse =
         RequestHandler<FetchCompaniesResponse>().request {
-            companyApi.fetchCompanies(page = page, name = name)
+            companyApi.fetchCompanies(page = page, name = name, sortType = sortType)
         }
 
     override suspend fun fetchPageCount(name: String?): FetchCompanyPageCountResponse =

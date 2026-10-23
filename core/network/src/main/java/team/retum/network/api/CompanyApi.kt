@@ -15,6 +15,7 @@ interface CompanyApi {
     suspend fun fetchCompanies(
         @Query("page") page: Int,
         @Query("name") name: String?,
+        @Query("sort_type") sortType: String?,
     ): FetchCompaniesResponse
 
     @GET(RequestUrls.Companies.count)

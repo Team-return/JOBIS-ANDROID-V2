@@ -25,7 +25,6 @@ import team.retum.jobis.interview.schedule.navigation.navigateToInterviewSchedul
 import team.retum.jobis.navigation.NAVIGATION_MY_PAGE
 import team.retum.jobis.notice.navigation.navigateToNoticeDetails
 import team.retum.jobis.notice.navigation.navigateToNotices
-import team.retum.jobis.recruitment.navigation.NAVIGATION_RECRUITMENTS
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentDetails
 import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
@@ -43,7 +42,6 @@ import team.retum.post.review.navigation.navigateToPostExpectReview
 import team.retum.post.review.navigation.navigateToPostNextReview
 import team.retum.post.review.navigation.navigateToPostReview
 import team.retum.post.review.navigation.navigateToPostReviewComplete
-import team.retum.review.navigation.NAVIGATION_REVIEW
 import team.retum.review.navigation.navigateToReviewDetails
 import team.retum.review.navigation.navigateToReviewFilter
 import team.retum.review.navigation.navigateToSearchReview
@@ -114,24 +112,6 @@ internal class JobisNavigator(
         navController.navigateToBookmark()
     }
 
-    fun navigateToRecruitments() {
-        navController.navigateToRoot(
-            applicationId = 0,
-            initialTab = NAVIGATION_RECRUITMENTS,
-        )
-    }
-
-    fun navigateToHomeTab() {
-        navController.navigateToRoot(applicationId = 0)
-    }
-
-    fun navigateToReviewTab() {
-        navController.navigateToRoot(
-            applicationId = 0,
-            initialTab = NAVIGATION_REVIEW,
-        )
-    }
-
     fun navigateToRecruitmentFilter() {
         navController.navigateToRecruitmentFilter()
     }
@@ -164,13 +144,6 @@ internal class JobisNavigator(
         navController.navigateToNotices()
     }
 
-    fun navigateToMyPage() {
-        navController.navigateToRoot(
-            applicationId = 0,
-            initialTab = NAVIGATION_MY_PAGE,
-        )
-    }
-
     fun navigateToLanding(popUpRoute: String) {
         navController.navigateToLanding(popUpRoute = popUpRoute)
     }
@@ -193,6 +166,13 @@ internal class JobisNavigator(
 
     fun navigateToRoot(applicationId: Long = 0) {
         navController.navigateToRoot(applicationId = applicationId)
+    }
+
+    fun navigateToMyPage() {
+        navController.navigateToRoot(
+            applicationId = 0,
+            initialTab = NAVIGATION_MY_PAGE,
+        )
     }
 
     fun navigateToEmployment() {

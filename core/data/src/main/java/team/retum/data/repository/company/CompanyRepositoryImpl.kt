@@ -11,8 +11,8 @@ import javax.inject.Inject
 class CompanyRepositoryImpl @Inject constructor(
     private val companyDataSource: CompanyDataSource,
 ) : CompanyRepository {
-    override suspend fun fetchCompanies(page: Int, name: String?): FetchCompaniesResponse =
-        companyDataSource.fetchCompanies(page = page, name = name)
+    override suspend fun fetchCompanies(page: Int, name: String?, sortType: String?): FetchCompaniesResponse =
+        companyDataSource.fetchCompanies(page = page, name = name, sortType = sortType)
 
     override suspend fun fetchPageCount(name: String?): FetchCompanyPageCountResponse =
         companyDataSource.fetchPageCount(name = name)
