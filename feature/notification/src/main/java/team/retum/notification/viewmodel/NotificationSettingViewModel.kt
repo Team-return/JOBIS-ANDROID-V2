@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.NotificationTopic
 import team.retum.usecase.usecase.notification.FetchNotificationSettingsStatusesUseCase
@@ -21,6 +23,7 @@ internal class NotificationSettingViewModel @Inject constructor(
 ) : BaseViewModel<NotificationSettingState, NotificationSettingSideEffect>(NotificationSettingState.getDefaultState()) {
 
     private lateinit var deviceToken: String
+    private val notificationSettingMutex = Mutex()
 
     init {
         getDeviceToken()
@@ -37,38 +40,44 @@ internal class NotificationSettingViewModel @Inject constructor(
 
     private fun fetchNotificationSettingsStatuses() {
         viewModelScope.launch(Dispatchers.IO) {
-            refreshNotificationSettingsStatuses()
+            notificationSettingMutex.withLock {
+                refreshNotificationSettingsStatuses()
+            }
         }
     }
 
     internal fun setAllNotification(isSubscribed: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            settingAllNotificationUseCase()
-                .onSuccess {
-                    val isAllSubscribed = refreshNotificationSettingsStatuses()
-                    if (isSubscribed && isAllSubscribed == false) {
-                        settingAllNotificationUseCase()
-                            .onSuccess { refreshNotificationSettingsStatuses() }
-                            .onFailure {
-                                postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
-                            }
+            notificationSettingMutex.withLock {
+                settingAllNotificationUseCase()
+                    .onSuccess {
+                        val isAllSubscribed = refreshNotificationSettingsStatuses()
+                        if (isSubscribed && isAllSubscribed == false) {
+                            settingAllNotificationUseCase()
+                                .onSuccess { refreshNotificationSettingsStatuses() }
+                                .onFailure {
+                                    postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
+                                }
+                        }
                     }
-                }
-                .onFailure {
-                    postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
-                }
+                    .onFailure {
+                        postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
+                    }
+            }
         }
     }
 
     internal fun setNotificationTopic(topic: NotificationTopic) {
         viewModelScope.launch(Dispatchers.IO) {
-            settingNotificationUseCase(
-                topic = topic,
-            )
-                .onSuccess { refreshNotificationSettingsStatuses() }
-                .onFailure {
-                    postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
-                }
+            notificationSettingMutex.withLock {
+                settingNotificationUseCase(
+                    topic = topic,
+                )
+                    .onSuccess { refreshNotificationSettingsStatuses() }
+                    .onFailure {
+                        postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
+                    }
+            }
         }
     }
 
