@@ -40,7 +40,7 @@ internal fun WinterIntern(
     val state by recruitmentViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(isWinterInternAvailable) {
-        if (!isWinterInternAvailable) return@LaunchedEffect
+        if (!isWinterInternAvailable || recruitmentViewModel.recruitments.isNotEmpty()) return@LaunchedEffect
 
         with(recruitmentViewModel) {
             setJobCode(RecruitmentFilterViewModel.jobCode)
@@ -67,7 +67,8 @@ internal fun WinterIntern(
 
     WinterInternScreen(
         onBackPressed = onBackPressed,
-        showEmptyContent = !isWinterInternAvailable || state.showRecruitmentsEmptyContent,
+        showEmptyContent = state.showRecruitmentsEmptyContent ||
+            (!isWinterInternAvailable && recruitmentViewModel.recruitments.isEmpty()),
         recruitments = recruitmentViewModel.recruitments.toPersistentList(),
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
