@@ -5,4 +5,5 @@ enum class NotificationTopic {
     RECRUITMENT,
     NOTICE,
     WINTER_INTERN,
+    INTERVIEW,
 }
