@@ -1,6 +1,11 @@
 package team.retum.network.util
 
+import android.content.Context
+import android.content.Intent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -12,69 +17,91 @@ import team.retum.common.utils.ResourceKeys
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
 import team.retum.network.api.AuthApi
+import team.retum.network.di.RequestUrls
+import team.retum.network.model.response.TokenResponse
 import javax.inject.Inject
 
-/**
- * accessToken의 재발급 과정 시 사용되는 클래스
- *
- * @property localUserDataSource 로컬 스토리지에서 사용자 토큰을 가져오기 위해 사용
- */
 class TokenAuthenticator @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val localUserDataSource: LocalUserDataSource,
 ) : Authenticator {
 
-    private val accessToken by lazy {
-        localUserDataSource.getAccessToken()
-    }
+    private val refreshMutex = Mutex()
 
-    private val refreshToken by lazy {
-        localUserDataSource.getRefreshToken()
-    }
-
-    private var hasException: Boolean = false
-
-    /**
-     * 요청 중 401 예외가 발생했을 때 스스로 동작
-     *
-     * @param route
-     * @param response
-     * @return 헤더에 재발급한 토큰을 추가한 새로운 request
-     *
-     * 토큰 재발급 api 요청 후 예외가 발생한다면 null request를 생성하여 반환
-     */
-    override fun authenticate(route: Route?, response: Response): Request? {
-        val retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create()).build()
-        val authApi = retrofit.create(AuthApi::class.java)
-
+    override fun authenticate(route: Route?, response: Response): Request? =
         runBlocking {
-            runCatching {
-                authApi.reissueToken(
-                    refreshToken = refreshToken,
-                    platformType = PlatformType.ANDROID,
-                )
-            }.onSuccess {
-                with(localUserDataSource) {
-                    saveAccessToken(it.accessToken)
-                    saveRefreshToken(it.refreshToken)
-                    saveAccessExpiresAt(it.accessExpiresAt)
-                    saveRefreshExpiresAt(it.refreshExpiresAt)
+            refreshMutex.withLock {
+                if (
+                    responseCount(response) >= MAX_RETRY_COUNT ||
+                    response.request.url.encodedPath == RequestUrls.Auth.reissue
+                ) {
+                    signOut()
+                    return@withLock null
                 }
-            }.onFailure {
-                hasException = true
+
+                val requestAccessToken = response.request.header(AUTHORIZATION)
+                if (requestAccessToken == null) return@withLock null
+
+                val accessToken = localUserDataSource.getAccessToken()
+                if (accessToken.isBlank()) return@withLock null
+
+                if (requestAccessToken != "${ResourceKeys.BEARER} $accessToken") {
+                    return@withLock response.request.newBuilder()
+                        .header(AUTHORIZATION, "${ResourceKeys.BEARER} $accessToken")
+                        .build()
+                }
+
+                val tokenResponse = reissueToken() ?: run {
+                    signOut()
+                    return@withLock null
+                }
+
+                localUserDataSource.run {
+                    saveAccessToken(tokenResponse.accessToken)
+                    saveRefreshToken(tokenResponse.refreshToken)
+                    saveAccessExpiresAt(tokenResponse.accessExpiresAt)
+                    saveRefreshExpiresAt(tokenResponse.refreshExpiresAt)
+                }
+
+                response.request.newBuilder()
+                    .header(AUTHORIZATION, "${ResourceKeys.BEARER} ${tokenResponse.accessToken}")
+                    .build()
             }
         }
 
-        return buildRequest(response = response)
+    private suspend fun reissueToken(): TokenResponse? = runCatching {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+            .create(AuthApi::class.java)
+            .reissueToken(
+                refreshToken = localUserDataSource.getRefreshToken(),
+                platformType = PlatformType.ANDROID,
+            )
+    }.getOrNull()
+
+    private fun signOut() {
+        localUserDataSource.clearUserInformation()
+        context.packageManager.getLaunchIntentForPackage(context.packageName)
+            ?.apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            ?.let(context::startActivity)
     }
 
-    private fun buildRequest(response: Response): Request? {
-        return if (hasException) {
-            null
-        } else {
-            response.request.newBuilder()
-                .addHeader("Authorization", "${ResourceKeys.BEARER} $accessToken")
-                .build()
+    private fun responseCount(response: Response): Int {
+        var result = 1
+        var priorResponse = response.priorResponse
+        while (priorResponse != null) {
+            result++
+            priorResponse = priorResponse.priorResponse
         }
+        return result
+    }
+
+    private companion object {
+        const val AUTHORIZATION = "Authorization"
+        const val MAX_RETRY_COUNT = 2
     }
 }
