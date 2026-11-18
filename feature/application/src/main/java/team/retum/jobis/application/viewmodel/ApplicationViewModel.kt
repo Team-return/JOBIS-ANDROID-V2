@@ -116,8 +116,11 @@ internal class ApplicationViewModel @Inject constructor(
         setButtonEnabled()
     }
 
-    private fun setButtonEnabled() = setState {
-        state.value.copy(buttonEnabled = files.isNotEmpty())
+    private fun setButtonEnabled(isSubmitting: Boolean = state.value.isSubmitting) = setState {
+        state.value.copy(
+            buttonEnabled = files.isNotEmpty() && !isSubmitting,
+            isSubmitting = isSubmitting,
+        )
     }
 
     internal fun addUrl() {
@@ -155,6 +158,9 @@ internal class ApplicationViewModel @Inject constructor(
 
     private fun Result<Unit>.onApplyCompanyFailure(isReApply: Boolean) {
         onFailure {
+            if (it !is KotlinNullPointerException) {
+                setButtonEnabled(isSubmitting = false)
+            }
             when (it) {
                 is KotlinNullPointerException -> {
                     postSideEffect(
@@ -181,7 +187,8 @@ internal class ApplicationViewModel @Inject constructor(
     }
 
     internal fun createPresignedUrl() {
-        setState { state.value.copy(buttonEnabled = false) }
+        if (state.value.isSubmitting) return
+        setButtonEnabled(isSubmitting = true)
         viewModelScope.launch(Dispatchers.IO) {
             createPresignedUseCase(files = files.toFileNames()).onSuccess {
                 if (uploadFiles(urls = it.urls)) {
@@ -192,11 +199,11 @@ internal class ApplicationViewModel @Inject constructor(
                         applyCompany(attachments = attachments)
                     }
                 } else {
-                    setButtonEnabled()
+                    setButtonEnabled(isSubmitting = false)
                     postSideEffect(ApplicationSideEffect.AttachmentUploadFailure)
                 }
             }.onFailure {
-                setButtonEnabled()
+                setButtonEnabled(isSubmitting = false)
                 when (it) {
                     is BadRequestException -> {
                         postSideEffect(ApplicationSideEffect.InvalidFileExtension)
@@ -227,6 +234,7 @@ internal class ApplicationViewModel @Inject constructor(
 internal data class ApplicationState(
     val recruitmentId: Long,
     val buttonEnabled: Boolean,
+    val isSubmitting: Boolean,
     val isReApply: Boolean,
     val applicationId: Long,
 ) {
@@ -234,6 +242,7 @@ internal data class ApplicationState(
         fun getInitialState() = ApplicationState(
             recruitmentId = 0,
             buttonEnabled = false,
+            isSubmitting = false,
             isReApply = false,
             applicationId = 0L,
         )
