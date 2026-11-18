@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -281,7 +282,7 @@ private fun Banner(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(150.dp)
+                        .heightIn(min = 150.dp)
                         .padding(24.dp),
                     verticalArrangement = Arrangement.Center,
                 ) {
@@ -294,7 +295,7 @@ private fun Banner(
                     JobisText(
                         text = banner?.content.orEmpty(),
                         style = JobisTypography.Description,
-                        color = JobisTheme.colors.onSurfaceVariant,
+                        color = JobisTheme.colors.onSurface,
                     )
                 }
             }
