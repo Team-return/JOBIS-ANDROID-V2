@@ -1,10 +1,12 @@
 package team.retum.network.di
 
+import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Authenticator
 import okhttp3.Interceptor
@@ -81,8 +83,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenAuthenticator(localUserDataSource: LocalUserDataSource): Authenticator {
-        return TokenAuthenticator(localUserDataSource = localUserDataSource)
+    fun provideTokenAuthenticator(
+        @ApplicationContext context: Context,
+        localUserDataSource: LocalUserDataSource,
+    ): Authenticator {
+        return TokenAuthenticator(
+            context = context,
+            localUserDataSource = localUserDataSource,
+        )
     }
 
     @Provides
