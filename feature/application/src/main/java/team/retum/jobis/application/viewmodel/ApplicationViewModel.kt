@@ -14,8 +14,8 @@ import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.AttachmentType
 import team.retum.common.exception.BadRequestException
 import team.retum.common.exception.ConflictException
+import team.retum.common.exception.ForbiddenException
 import team.retum.common.exception.NotFoundException
-import team.retum.common.exception.UnAuthorizedException
 import team.retum.common.utils.FileUtil
 import team.retum.usecase.entity.file.PresignedUrlEntity
 import team.retum.usecase.usecase.application.ApplyCompanyUseCase
@@ -118,7 +118,7 @@ internal class ApplicationViewModel @Inject constructor(
 
     private fun setButtonEnabled(isSubmitting: Boolean = state.value.isSubmitting) = setState {
         state.value.copy(
-            buttonEnabled = files.isNotEmpty() && !isSubmitting,
+            buttonEnabled = (files.isNotEmpty() || urls.any(String::isNotBlank)) && !isSubmitting,
             isSubmitting = isSubmitting,
         )
     }
@@ -129,6 +129,7 @@ internal class ApplicationViewModel @Inject constructor(
 
     internal fun removeUrl(index: Int) {
         urls.removeAt(index)
+        setButtonEnabled()
     }
 
     internal fun onUrlChange(
@@ -136,6 +137,7 @@ internal class ApplicationViewModel @Inject constructor(
         url: String,
     ) {
         urls[index] = url
+        setButtonEnabled()
     }
 
     private suspend fun applyCompany(attachments: List<Pair<String, AttachmentType>>) {
@@ -171,7 +173,7 @@ internal class ApplicationViewModel @Inject constructor(
                     )
                 }
 
-                is UnAuthorizedException -> {
+                is ForbiddenException -> {
                     postSideEffect(ApplicationSideEffect.UnexpectedGrade)
                 }
 
@@ -182,6 +184,10 @@ internal class ApplicationViewModel @Inject constructor(
                 is ConflictException -> {
                     postSideEffect(ApplicationSideEffect.ConflictApply)
                 }
+
+                else -> {
+                    postSideEffect(ApplicationSideEffect.ApplyFailure(isReApply = isReApply))
+                }
             }
         }
     }
@@ -190,27 +196,41 @@ internal class ApplicationViewModel @Inject constructor(
         if (state.value.isSubmitting) return
         setButtonEnabled(isSubmitting = true)
         val submissionFiles = files.toList()
+        val submissionUrls = urls.filter(String::isNotBlank)
         viewModelScope.launch(Dispatchers.IO) {
-            createPresignedUseCase(files = submissionFiles.toFileNames()).onSuccess {
-                if (uploadFiles(urls = it.urls, files = submissionFiles)) {
-                    val attachments = it.urls.toFileTypeAttachments() + urls.toUrlTypeAttachments()
-                    if (state.value.isReApply) {
-                        reApplyCompany(attachments = attachments)
+            if (submissionFiles.isEmpty()) {
+                submitApplication(attachments = submissionUrls.toUrlTypeAttachments())
+            } else {
+                createPresignedUseCase(files = submissionFiles.toFileNames()).onSuccess {
+                    if (uploadFiles(urls = it.urls, files = submissionFiles)) {
+                        submitApplication(
+                            attachments = it.urls.toFileTypeAttachments() + submissionUrls.toUrlTypeAttachments(),
+                        )
                     } else {
-                        applyCompany(attachments = attachments)
+                        setButtonEnabled(isSubmitting = false)
+                        postSideEffect(ApplicationSideEffect.AttachmentUploadFailure)
                     }
-                } else {
+                }.onFailure {
                     setButtonEnabled(isSubmitting = false)
-                    postSideEffect(ApplicationSideEffect.AttachmentUploadFailure)
-                }
-            }.onFailure {
-                setButtonEnabled(isSubmitting = false)
-                when (it) {
-                    is BadRequestException -> {
-                        postSideEffect(ApplicationSideEffect.InvalidFileExtension)
+                    when (it) {
+                        is BadRequestException -> {
+                            postSideEffect(ApplicationSideEffect.InvalidFileExtension)
+                        }
+
+                        else -> {
+                            postSideEffect(ApplicationSideEffect.ApplyFailure(isReApply = state.value.isReApply))
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private suspend fun submitApplication(attachments: List<Pair<String, AttachmentType>>) {
+        if (state.value.isReApply) {
+            reApplyCompany(attachments = attachments)
+        } else {
+            applyCompany(attachments = attachments)
         }
     }
 
@@ -262,4 +282,5 @@ internal sealed interface ApplicationSideEffect {
     data object ConflictApply : ApplicationSideEffect
     data object NotFoundRecruitment : ApplicationSideEffect
     data object UnexpectedGrade : ApplicationSideEffect
+    data class ApplyFailure(val isReApply: Boolean) : ApplicationSideEffect
 }
