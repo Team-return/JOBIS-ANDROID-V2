@@ -23,6 +23,7 @@ data class FetchRecruitmentDetailsResponse(
     @Json(name = "end_date") val endDate: String?,
     @Json(name = "etc") val etc: String?,
     @Json(name = "is_applicable") val isApplicable: Boolean,
+    @Json(name = "unapplicable_reason") val unapplicableReason: String?,
     @Json(name = "bookmarked") val bookmarked: Boolean,
     @Json(name = "winter_intern") val winterIntern: Boolean,
     @Json(name = "integration_plan") val integrationPlan: Boolean?,

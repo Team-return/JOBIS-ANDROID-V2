@@ -155,6 +155,7 @@ private fun RecruitmentDetailsScreen(
             onBookmarkClick = onBookmarkClick,
             isBookmark = recruitmentDetail.bookmarked,
             isApplicable = recruitmentDetail.isApplicable,
+            unapplicableReason = recruitmentDetail.unapplicableReason,
         )
     }
 }
@@ -413,6 +414,7 @@ private fun BottomBar(
     onBookmarkClick: () -> Unit,
     isBookmark: Boolean,
     isApplicable: Boolean,
+    unapplicableReason: String?,
 ) {
     Row(
         modifier = Modifier
@@ -439,13 +441,12 @@ private fun BottomBar(
             onClick = onApplyClick,
         ) {
             JobisText(
-                text = stringResource(
-                    id = if (isApplicable) {
-                        R.string.apply
-                    } else {
-                        R.string.can_do_not_apply
-                    },
-                ),
+                text = if (isApplicable) {
+                    stringResource(R.string.apply)
+                } else {
+                    unapplicableReason?.takeIf(String::isNotBlank)
+                        ?: stringResource(R.string.can_do_not_apply)
+                },
                 style = JobisTypography.SubHeadLine,
                 color = Color.White,
             )

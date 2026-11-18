@@ -73,6 +73,7 @@ internal data class RecruitmentDetailsState(
                 endDate = "",
                 etc = null,
                 isApplicable = false,
+                unapplicableReason = null,
                 bookmarked = false,
                 winterIntern = false,
                 integrationPlan = false,
