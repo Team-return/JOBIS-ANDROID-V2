@@ -177,6 +177,16 @@ private suspend fun ApplicationViewModel.handleApplicationSideEffect(
                     drawable = JobisIcon.Error,
                 ).show()
             }
+
+            is ApplicationSideEffect.ApplyFailure -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(
+                        if (it.isReApply) R.string.toast_re_apply_failure else R.string.toast_apply_failure,
+                    ),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
         }
     }
 }
