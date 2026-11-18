@@ -277,10 +277,26 @@ private fun Banner(
                     onEmploymentClick = onEmploymentClick,
                 )
             } else {
-                AsyncImage(
-                    model = banners.getOrNull(page - 1)?.bannerUrl,
-                    contentDescription = "banner",
-                )
+                val banner = banners.getOrNull(page - 1)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                        .padding(24.dp),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    JobisText(
+                        text = banner?.title.orEmpty(),
+                        style = JobisTypography.SubHeadLine,
+                        color = JobisTheme.colors.onSurface,
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    JobisText(
+                        text = banner?.content.orEmpty(),
+                        style = JobisTypography.Description,
+                        color = JobisTheme.colors.onSurfaceVariant,
+                    )
+                }
             }
         }
     }
