@@ -34,6 +34,7 @@ import team.retum.network.api.ServerStatusCheckApi
 import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
 import team.retum.network.api.WinterInternApi
+import team.retum.network.adapter.HiringProgressAdapter
 import team.retum.network.util.TokenAuthenticator
 import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
@@ -63,6 +64,7 @@ object NetworkModule {
     fun provideMoshiConverterFactory(): MoshiConverterFactory {
         return MoshiConverterFactory.create(
             Moshi.Builder()
+                .add(HiringProgressAdapter())
                 .addLast(KotlinJsonAdapterFactory())
                 .build(),
         )
