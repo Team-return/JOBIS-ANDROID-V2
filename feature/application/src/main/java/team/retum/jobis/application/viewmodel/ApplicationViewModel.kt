@@ -189,9 +189,10 @@ internal class ApplicationViewModel @Inject constructor(
     internal fun createPresignedUrl() {
         if (state.value.isSubmitting) return
         setButtonEnabled(isSubmitting = true)
+        val submissionFiles = files.toList()
         viewModelScope.launch(Dispatchers.IO) {
-            createPresignedUseCase(files = files.toFileNames()).onSuccess {
-                if (uploadFiles(urls = it.urls)) {
+            createPresignedUseCase(files = submissionFiles.toFileNames()).onSuccess {
+                if (uploadFiles(urls = it.urls, files = submissionFiles)) {
                     val attachments = it.urls.toFileTypeAttachments() + urls.toUrlTypeAttachments()
                     if (state.value.isReApply) {
                         reApplyCompany(attachments = attachments)
@@ -213,7 +214,10 @@ internal class ApplicationViewModel @Inject constructor(
         }
     }
 
-    private suspend fun uploadFiles(urls: List<PresignedUrlEntity.UrlEntity>): Boolean =
+    private suspend fun uploadFiles(
+        urls: List<PresignedUrlEntity.UrlEntity>,
+        files: List<File>,
+    ): Boolean =
         urls.size == files.size &&
             urls.zip(files).all { (url, file) ->
                 uploadFileUseCase(
