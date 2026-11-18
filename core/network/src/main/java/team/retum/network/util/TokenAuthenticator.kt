@@ -31,19 +31,20 @@ class TokenAuthenticator @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? =
         runBlocking {
             refreshMutex.withLock {
-                if (
-                    hasRetriedAuthentication(response) ||
-                    response.request.url.encodedPath == RequestUrls.Auth.reissue
-                ) {
-                    signOut()
-                    return@withLock null
-                }
+                if (response.request.url.encodedPath == RequestUrls.Auth.reissue) return@withLock null
 
                 val requestAccessToken = response.request.header(AUTHORIZATION)
                 if (requestAccessToken == null) return@withLock null
 
                 val accessToken = localUserDataSource.getAccessToken()
                 if (accessToken.isBlank()) return@withLock null
+
+                if (hasRetriedAuthentication(response)) {
+                    if (requestAccessToken == "${ResourceKeys.BEARER} $accessToken") {
+                        signOut()
+                    }
+                    return@withLock null
+                }
 
                 if (requestAccessToken != "${ResourceKeys.BEARER} $accessToken") {
                     return@withLock response.request.newBuilder()
