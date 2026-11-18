@@ -10,7 +10,8 @@ data class BannersEntity(
     @Immutable
     data class BannerEntity(
         val bannerId: Long,
-        val bannerUrl: String,
+        val title: String,
+        val content: String,
         val bannerType: BannerType,
         val detailId: Long,
     )
@@ -22,7 +23,8 @@ internal fun FetchBannersResponse.toEntity() = BannersEntity(
 
 private fun FetchBannersResponse.BannerResponse.toEntity() = BannersEntity.BannerEntity(
     bannerId = this.bannerId,
-    bannerUrl = this.bannerUrl,
+    title = this.title.orEmpty(),
+    content = this.content.orEmpty(),
     bannerType = this.bannerType,
     detailId = this.detailId,
 )
