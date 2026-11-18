@@ -53,7 +53,7 @@ private fun FetchRecruitmentsResponse.RecruitmentResponse.toEntity() =
             false -> MilitarySupport.FALSE
             else -> null
         },
-        hiringJobs = this.hiringJobs,
+        hiringJobs = this.hiringJobs.orEmpty(),
         bookmarked = this.bookmarked,
         status = this.status,
         year = this.year,

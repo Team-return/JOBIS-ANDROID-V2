@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -277,10 +278,26 @@ private fun Banner(
                     onEmploymentClick = onEmploymentClick,
                 )
             } else {
-                AsyncImage(
-                    model = banners.getOrNull(page - 1)?.bannerUrl,
-                    contentDescription = "banner",
-                )
+                val banner = banners.getOrNull(page - 1)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 150.dp)
+                        .padding(24.dp),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    JobisText(
+                        text = banner?.title.orEmpty(),
+                        style = JobisTypography.SubHeadLine,
+                        color = JobisTheme.colors.onSurface,
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    JobisText(
+                        text = banner?.content.orEmpty(),
+                        style = JobisTypography.Description,
+                        color = JobisTheme.colors.onSurface,
+                    )
+                }
             }
         }
     }
