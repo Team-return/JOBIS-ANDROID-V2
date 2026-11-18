@@ -32,7 +32,7 @@ class TokenAuthenticator @Inject constructor(
         runBlocking {
             refreshMutex.withLock {
                 if (
-                    responseCount(response) >= MAX_RETRY_COUNT ||
+                    hasRetriedAuthentication(response) ||
                     response.request.url.encodedPath == RequestUrls.Auth.reissue
                 ) {
                     signOut()
@@ -90,18 +90,17 @@ class TokenAuthenticator @Inject constructor(
             ?.let(context::startActivity)
     }
 
-    private fun responseCount(response: Response): Int {
-        var result = 1
+    private fun hasRetriedAuthentication(response: Response): Boolean {
         var priorResponse = response.priorResponse
         while (priorResponse != null) {
-            result++
+            if (priorResponse.code == HTTP_UNAUTHORIZED) return true
             priorResponse = priorResponse.priorResponse
         }
-        return result
+        return false
     }
 
     private companion object {
         const val AUTHORIZATION = "Authorization"
-        const val MAX_RETRY_COUNT = 2
+        const val HTTP_UNAUTHORIZED = 401
     }
 }
