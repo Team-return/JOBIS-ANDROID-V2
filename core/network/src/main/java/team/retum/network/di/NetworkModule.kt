@@ -16,6 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
+import team.retum.network.adapter.HiringProgressAdapter
 import team.retum.network.api.ApplicationApi
 import team.retum.network.api.AuthApi
 import team.retum.network.api.BannerApi
@@ -34,7 +35,6 @@ import team.retum.network.api.ServerStatusCheckApi
 import team.retum.network.api.StudentApi
 import team.retum.network.api.UserApi
 import team.retum.network.api.WinterInternApi
-import team.retum.network.adapter.HiringProgressAdapter
 import team.retum.network.util.TokenAuthenticator
 import team.retum.network.util.TokenInterceptor
 import javax.inject.Singleton
