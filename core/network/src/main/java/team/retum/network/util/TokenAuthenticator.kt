@@ -10,6 +10,7 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import team.retum.common.enums.PlatformType
@@ -52,9 +53,13 @@ class TokenAuthenticator @Inject constructor(
                         .build()
                 }
 
-                val tokenResponse = reissueToken() ?: run {
-                    signOut()
-                    return@withLock null
+                val tokenResponse = when (val result = reissueToken()) {
+                    is ReissueResult.Success -> result.tokenResponse
+                    ReissueResult.InvalidRefreshToken -> {
+                        signOut()
+                        return@withLock null
+                    }
+                    ReissueResult.Failure -> return@withLock null
                 }
 
                 localUserDataSource.run {
@@ -70,17 +75,28 @@ class TokenAuthenticator @Inject constructor(
             }
         }
 
-    private suspend fun reissueToken(): TokenResponse? = runCatching {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-            .create(AuthApi::class.java)
-            .reissueToken(
-                refreshToken = localUserDataSource.getRefreshToken(),
-                platformType = PlatformType.ANDROID,
+    private suspend fun reissueToken(): ReissueResult =
+        try {
+            ReissueResult.Success(
+                Retrofit.Builder()
+                    .baseUrl(BuildConfig.BASE_URL)
+                    .addConverterFactory(MoshiConverterFactory.create())
+                    .build()
+                    .create(AuthApi::class.java)
+                    .reissueToken(
+                        refreshToken = localUserDataSource.getRefreshToken(),
+                        platformType = PlatformType.ANDROID,
+                    ),
             )
-    }.getOrNull()
+        } catch (e: HttpException) {
+            if (e.code() == HTTP_UNAUTHORIZED) {
+                ReissueResult.InvalidRefreshToken
+            } else {
+                ReissueResult.Failure
+            }
+        } catch (e: Throwable) {
+            ReissueResult.Failure
+        }
 
     private fun signOut() {
         localUserDataSource.clearUserInformation()
@@ -103,5 +119,13 @@ class TokenAuthenticator @Inject constructor(
     private companion object {
         const val AUTHORIZATION = "Authorization"
         const val HTTP_UNAUTHORIZED = 401
+    }
+
+    private sealed interface ReissueResult {
+        data class Success(val tokenResponse: TokenResponse) : ReissueResult
+
+        data object InvalidRefreshToken : ReissueResult
+
+        data object Failure : ReissueResult
     }
 }
