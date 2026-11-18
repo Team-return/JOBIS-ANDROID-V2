@@ -42,5 +42,5 @@ private fun FetchAppliedCompaniesResponse.ApplicationResponse.toEntity() =
 private fun FetchAppliedCompaniesResponse.ApplicationResponse.AttachmentResponse.toEntity() =
     AppliedCompaniesEntity.ApplicationEntity.AttachmentEntity(
         url = this.url,
-        type = this.attachmentType,
+        type = AttachmentType.entries.find { it.name == this.attachmentType } ?: AttachmentType.NONE,
     )
