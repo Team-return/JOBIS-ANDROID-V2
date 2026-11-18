@@ -39,8 +39,6 @@ internal class ApplicationViewModel @Inject constructor(
 
     private val urls: SnapshotStateList<String> = mutableStateListOf()
 
-    private val attachments: MutableList<Pair<String, AttachmentType>> = mutableListOf()
-
     internal fun getFiles() = files
 
     internal fun getUrls() = urls
@@ -118,8 +116,11 @@ internal class ApplicationViewModel @Inject constructor(
         setButtonEnabled()
     }
 
-    private fun setButtonEnabled() = setState {
-        state.value.copy(buttonEnabled = files.isNotEmpty())
+    private fun setButtonEnabled(isSubmitting: Boolean = state.value.isSubmitting) = setState {
+        state.value.copy(
+            buttonEnabled = files.isNotEmpty() && !isSubmitting,
+            isSubmitting = isSubmitting,
+        )
     }
 
     internal fun addUrl() {
@@ -137,7 +138,7 @@ internal class ApplicationViewModel @Inject constructor(
         urls[index] = url
     }
 
-    private suspend fun applyCompany() {
+    private suspend fun applyCompany(attachments: List<Pair<String, AttachmentType>>) {
         applyCompanyUseCase(
             recruitmentId = state.value.recruitmentId,
             attachments = attachments,
@@ -146,7 +147,7 @@ internal class ApplicationViewModel @Inject constructor(
         }.onApplyCompanyFailure(isReApply = false)
     }
 
-    private suspend fun reApplyCompany() {
+    private suspend fun reApplyCompany(attachments: List<Pair<String, AttachmentType>>) {
         reApplyCompanyUseCase(
             applicationId = state.value.applicationId,
             attachments = attachments,
@@ -157,6 +158,9 @@ internal class ApplicationViewModel @Inject constructor(
 
     private fun Result<Unit>.onApplyCompanyFailure(isReApply: Boolean) {
         onFailure {
+            if (it !is KotlinNullPointerException) {
+                setButtonEnabled(isSubmitting = false)
+            }
             when (it) {
                 is KotlinNullPointerException -> {
                     postSideEffect(
@@ -183,18 +187,24 @@ internal class ApplicationViewModel @Inject constructor(
     }
 
     internal fun createPresignedUrl() {
-        setState { state.value.copy(buttonEnabled = false) }
+        if (state.value.isSubmitting) return
+        setButtonEnabled(isSubmitting = true)
+        val submissionFiles = files.toList()
         viewModelScope.launch(Dispatchers.IO) {
-            createPresignedUseCase(files = files.toFileNames()).onSuccess {
-                addPresignedUrlOrUrlToAttachments(urls = it.urls.toFileTypeAttachments())
-                addPresignedUrlOrUrlToAttachments(urls = urls.toUrlTypeAttachments())
-                if (state.value.isReApply) {
-                    reApplyCompany()
+            createPresignedUseCase(files = submissionFiles.toFileNames()).onSuccess {
+                if (uploadFiles(urls = it.urls, files = submissionFiles)) {
+                    val attachments = it.urls.toFileTypeAttachments() + urls.toUrlTypeAttachments()
+                    if (state.value.isReApply) {
+                        reApplyCompany(attachments = attachments)
+                    } else {
+                        applyCompany(attachments = attachments)
+                    }
                 } else {
-                    applyCompany()
+                    setButtonEnabled(isSubmitting = false)
+                    postSideEffect(ApplicationSideEffect.AttachmentUploadFailure)
                 }
-                uploadFile(presignedUrls = it.urls.toPresignedUrls())
             }.onFailure {
+                setButtonEnabled(isSubmitting = false)
                 when (it) {
                     is BadRequestException -> {
                         postSideEffect(ApplicationSideEffect.InvalidFileExtension)
@@ -204,34 +214,31 @@ internal class ApplicationViewModel @Inject constructor(
         }
     }
 
-    private suspend fun uploadFile(presignedUrls: List<String>) {
-        presignedUrls.forEachIndexed { index, presignedUrl ->
-            uploadFileUseCase(
-                presignedUrl = presignedUrl,
-                file = files[index],
-            )
-        }
-    }
+    private suspend fun uploadFiles(
+        urls: List<PresignedUrlEntity.UrlEntity>,
+        files: List<File>,
+    ): Boolean =
+        urls.size == files.size &&
+            urls.zip(files).all { (url, file) ->
+                uploadFileUseCase(
+                    presignedUrl = url.preSignedUrl,
+                    file = file,
+                ).isSuccess
+            }
 
     private fun List<File>.toFileNames() = map { it.name }
 
     private fun List<PresignedUrlEntity.UrlEntity>.toFileTypeAttachments() =
         map { it.filePath to AttachmentType.FILE }
 
-    private fun List<PresignedUrlEntity.UrlEntity>.toPresignedUrls() =
-        map { it.preSignedUrl }
-
     private fun List<String>.toUrlTypeAttachments() =
         map { it to AttachmentType.URL }
-
-    private fun addPresignedUrlOrUrlToAttachments(urls: List<Pair<String, AttachmentType>>) {
-        attachments.addAll(urls)
-    }
 }
 
 internal data class ApplicationState(
     val recruitmentId: Long,
     val buttonEnabled: Boolean,
+    val isSubmitting: Boolean,
     val isReApply: Boolean,
     val applicationId: Long,
 ) {
@@ -239,6 +246,7 @@ internal data class ApplicationState(
         fun getInitialState() = ApplicationState(
             recruitmentId = 0,
             buttonEnabled = false,
+            isSubmitting = false,
             isReApply = false,
             applicationId = 0L,
         )
@@ -248,6 +256,7 @@ internal data class ApplicationState(
 internal sealed interface ApplicationSideEffect {
     data object ExceedFileCount : ApplicationSideEffect
     data object InvalidFileExtension : ApplicationSideEffect
+    data object AttachmentUploadFailure : ApplicationSideEffect
     data object SuccessApply : ApplicationSideEffect
     data object SuccessReApply : ApplicationSideEffect
     data object ConflictApply : ApplicationSideEffect

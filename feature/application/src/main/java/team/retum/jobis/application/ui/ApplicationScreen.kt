@@ -138,6 +138,14 @@ private suspend fun ApplicationViewModel.handleApplicationSideEffect(
                 ).show()
             }
 
+            is ApplicationSideEffect.AttachmentUploadFailure -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_attachment_upload_failure),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+
             is ApplicationSideEffect.SuccessApply -> {
                 JobisToast.create(
                     context = context,

@@ -9,6 +9,7 @@
 
     <string name="toast_max_count">최대 3개까지만 등록할 수 있어요</string>
     <string name="toast_invalid_file_extension">올바르지 않은 파일 확장자에요</string>
+    <string name="toast_attachment_upload_failure">첨부 파일 업로드에 실패했어요. 다시 시도해주세요</string>
     <string name="toast_success_apply">성공적으로 지원이 완료되었어요!</string>
     <string name="toast_success_re_apply">성공적으로 재지원 되었어요!</string>
     <string name="toast_conflict_apply">이미 지원한 기업이에요</string>
