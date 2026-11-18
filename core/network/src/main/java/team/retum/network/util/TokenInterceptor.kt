@@ -1,6 +1,5 @@
 package team.retum.network.util
 
-import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import team.retum.common.utils.ResourceKeys
@@ -28,43 +27,19 @@ class TokenInterceptor @Inject constructor(
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        var request = chain.request()
+        val request = chain.request()
         val path = request.url.encodedPath
 
-        var response = chain.proceed(
+        return chain.proceed(
             if (ignorePaths.contains(path) || checkS3Request(url = request.url.toString())) {
                 request
             } else {
                 val accessToken = localUserDataSource.getAccessToken()
                 request.newBuilder()
-                    .addHeader("Authorization", "${ResourceKeys.BEARER} $accessToken")
+                    .header("Authorization", "${ResourceKeys.BEARER} $accessToken")
                     .build()
             },
         )
-
-        if (response.code == 401 && !ignorePaths.contains(path)) {
-            response.close()
-
-            val refreshToken = localUserDataSource.getRefreshToken()
-
-            runBlocking {
-                val newToken = RefreshTokenService.refreshToken(refreshToken)
-                localUserDataSource.run {
-                    saveAccessToken(newToken.accessToken)
-                    saveAccessExpiresAt(newToken.accessExpiresAt)
-                    saveRefreshToken(newToken.refreshToken)
-                    saveRefreshExpiresAt(newToken.refreshExpiresAt)
-                }
-
-                request = request.newBuilder()
-                    .removeHeader("Authorization")
-                    .addHeader("Authorization", "${ResourceKeys.BEARER} ${newToken.accessToken}")
-                    .build()
-
-                response = chain.proceed(request)
-            }
-        }
-        return response
     }
 
     private fun checkS3Request(url: String): Boolean {
