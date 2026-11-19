@@ -98,6 +98,7 @@ internal fun Home(
 
     if (state.cancelApplicationId != null) {
         JobisDialog(
+            modifier = Modifier.fillMaxWidth(),
             onDismissRequest = homeViewModel::dismissCancelApplication,
             title = stringResource(R.string.cancel_application_title),
             description = stringResource(R.string.cancel_application_description),
@@ -111,6 +112,7 @@ internal fun Home(
 
     if (state.isCancelApplicationFailureDialogVisible) {
         JobisDialog(
+            modifier = Modifier.fillMaxWidth(),
             onDismissRequest = homeViewModel::dismissCancelApplicationFailureDialog,
             title = stringResource(R.string.cancel_application_failure_title),
             description = stringResource(R.string.cancel_application_failure_description),
