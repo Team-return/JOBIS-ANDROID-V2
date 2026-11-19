@@ -46,7 +46,7 @@ internal fun ApplyCompanyItem(
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigateToApplication: () -> Unit,
 ) {
-    val applicationStatus = remember { appliedCompany.applicationStatus }
+    val applicationStatus = appliedCompany.applicationStatus
     val color = when (applicationStatus) {
         ApplyStatus.FAILED, ApplyStatus.REJECTED, ApplyStatus.DOC_FAILED -> JobisTheme.colors.error
         ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
