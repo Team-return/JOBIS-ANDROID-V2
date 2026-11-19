@@ -20,6 +20,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 
 @Composable
 fun JobisDialog(
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     title: String,
     description: String,
@@ -32,7 +33,7 @@ fun JobisDialog(
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(JobisTheme.colors.background)
                 .padding(vertical = 8.dp),
