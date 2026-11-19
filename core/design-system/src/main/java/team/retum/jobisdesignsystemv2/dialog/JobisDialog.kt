@@ -30,6 +30,7 @@ fun JobisDialog(
     mainButtonText: String,
     subButtonColor: ButtonColor = ButtonColor.Default,
     mainButtonColor: ButtonColor = ButtonColor.Error,
+    showButtonArrow: Boolean = true,
     onSubButtonClick: () -> Unit = { },
     onMainButtonClick: () -> Unit,
 ) {
@@ -72,6 +73,7 @@ fun JobisDialog(
                         modifier = Modifier.weight(1f),
                         text = subButtonText,
                         color = subButtonColor,
+                        showArrow = showButtonArrow,
                         onClick = onSubButtonClick,
                     )
                 }
@@ -79,6 +81,7 @@ fun JobisDialog(
                     modifier = Modifier.weight(1f),
                     text = mainButtonText,
                     color = mainButtonColor,
+                    showArrow = showButtonArrow,
                     onClick = onMainButtonClick,
                 )
             }
