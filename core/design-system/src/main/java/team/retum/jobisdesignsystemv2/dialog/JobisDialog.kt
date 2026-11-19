@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisDialogButton
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
@@ -21,6 +22,7 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 @Composable
 fun JobisDialog(
     modifier: Modifier = Modifier,
+    properties: DialogProperties = DialogProperties(),
     onDismissRequest: () -> Unit,
     title: String,
     description: String,
@@ -31,7 +33,10 @@ fun JobisDialog(
     onSubButtonClick: () -> Unit = { },
     onMainButtonClick: () -> Unit,
 ) {
-    Dialog(onDismissRequest = onDismissRequest) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = properties,
+    ) {
         Column(
             modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
