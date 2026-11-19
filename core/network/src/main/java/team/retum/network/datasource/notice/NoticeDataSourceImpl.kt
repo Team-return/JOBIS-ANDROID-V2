@@ -2,6 +2,7 @@ package team.retum.network.datasource.notice
 
 import team.retum.network.api.NoticeApi
 import team.retum.network.model.response.notice.FetchNoticeDetailsResponse
+import team.retum.network.model.response.notice.FetchNoticesCountResponse
 import team.retum.network.model.response.notice.FetchNoticesResponse
 import team.retum.network.util.RequestHandler
 import javax.inject.Inject
@@ -9,9 +10,14 @@ import javax.inject.Inject
 class NoticeDataSourceImpl @Inject constructor(
     private val noticeApi: NoticeApi,
 ) : NoticeDataSource {
-    override suspend fun fetchNotices(): FetchNoticesResponse =
+    override suspend fun fetchNotices(page: Long): FetchNoticesResponse =
         RequestHandler<FetchNoticesResponse>().request {
-            noticeApi.fetchNotices()
+            noticeApi.fetchNotices(page = page)
+        }
+
+    override suspend fun fetchNoticesCount(): FetchNoticesCountResponse =
+        RequestHandler<FetchNoticesCountResponse>().request {
+            noticeApi.fetchNoticesCount()
         }
 
     override suspend fun fetchNoticeDetails(noticeId: Long): FetchNoticeDetailsResponse =
