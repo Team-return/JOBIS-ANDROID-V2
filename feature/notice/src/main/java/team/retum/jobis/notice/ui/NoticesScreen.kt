@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,7 +46,7 @@ internal fun Notices(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        noticesViewModel.fetchNotices()
+        noticesViewModel.fetchTotalNoticeCount()
         noticesViewModel.sideEffect.collect {
             when (it) {
                 is NoticesSideEffect.BadRequest -> {
@@ -64,6 +64,8 @@ internal fun Notices(
         onBackPressed = onBackPressed,
         navigateToDetail = navigateToDetail,
         notices = state.value.notices.toPersistentList(),
+        whetherFetchNextPage = noticesViewModel::whetherFetchNextPage,
+        fetchNextPage = noticesViewModel::fetchNotices,
     )
 }
 
@@ -72,6 +74,8 @@ private fun NoticesScreen(
     onBackPressed: () -> Unit,
     navigateToDetail: (Long) -> Unit,
     notices: ImmutableList<NoticesEntity.NoticeEntity>,
+    whetherFetchNextPage: (Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -86,12 +90,13 @@ private fun NoticesScreen(
             modifier = Modifier
                 .padding(horizontal = 24.dp),
         ) {
-            items(notices) {
+            itemsIndexed(notices) { index, notice ->
                 NoticesItem(
-                    noticeTitle = it.title,
-                    noticeDate = it.createdAt,
-                    onClick = { navigateToDetail(it.id) },
+                    noticeTitle = notice.title,
+                    noticeDate = notice.createdAt,
+                    onClick = { navigateToDetail(notice.id) },
                 )
+                if (whetherFetchNextPage(index)) fetchNextPage()
             }
         }
         if (notices.isEmpty()) {
