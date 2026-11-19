@@ -34,11 +34,13 @@ import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 
 @Composable
 internal fun ApplyCompanyItem(
     onShowRejectionReasonClick: () -> Unit,
+    onCancelApplicationClick: () -> Unit,
     appliedCompany: AppliedCompaniesEntity.ApplicationEntity,
     isFocus: Boolean,
     navigateToRecruitmentDetails: (Long) -> Unit,
@@ -125,10 +127,19 @@ internal fun ApplyCompanyItem(
                             ApplyStatus.REJECTED -> R.string.reason_rejection
                             else -> R.string.re_apply
                         },
-                    ).plus(" ->"),
+                    ).plus(" →"),
                     style = JobisTypography.SubBody,
                     color = color,
                     textDecoration = TextDecoration.Underline,
+                )
+            }
+            if (applicationStatus == ApplyStatus.REQUESTED) {
+                JobisText(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable(onClick = onCancelApplicationClick),
+                    text = stringResource(R.string.cancel_application),
+                    style = JobisTypography.SubBody,
                 )
             }
         }
