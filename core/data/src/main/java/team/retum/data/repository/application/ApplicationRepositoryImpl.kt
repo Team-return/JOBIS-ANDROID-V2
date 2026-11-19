@@ -43,6 +43,10 @@ class ApplicationRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun cancelApplication(applicationId: Long) {
+        remoteApplicationDataSource.cancelApplication(applicationId = applicationId)
+    }
+
     override suspend fun fetchEmploymentStatus(year: Int): FetchEmploymentStatusResponse {
         return remoteApplicationDataSource.fetchEmploymentStatus(year = year)
     }
