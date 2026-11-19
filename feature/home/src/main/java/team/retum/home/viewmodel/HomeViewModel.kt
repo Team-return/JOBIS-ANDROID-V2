@@ -24,6 +24,7 @@ import team.retum.usecase.usecase.student.FetchRecentCompaniesUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.text.DecimalFormat
 import java.time.LocalDate
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.roundToInt
@@ -41,6 +42,8 @@ internal class HomeViewModel @Inject constructor(
     private val fetchWinterInternUseCase: FetchWinterInternUseCase,
     private val fetchRecentCompaniesUseCase: FetchRecentCompaniesUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
+
+    private val appliedCompaniesRequestVersion = AtomicLong()
 
     internal fun calculateTerm() = setState {
         val term = LocalDate.now().year - SCHOOL_ESTABLISHMENT - 1
@@ -73,9 +76,12 @@ internal class HomeViewModel @Inject constructor(
     }
 
     internal fun fetchAppliedCompanies() {
+        val requestVersion = appliedCompaniesRequestVersion.incrementAndGet()
         viewModelScope.launch(Dispatchers.IO) {
             fetchAppliedCompaniesUseCase().onSuccess { appliedCompaniesEntity ->
-                setState { state.value.copy(appliedCompanies = appliedCompaniesEntity.applications) }
+                if (requestVersion == appliedCompaniesRequestVersion.get()) {
+                    setState { state.value.copy(appliedCompanies = appliedCompaniesEntity.applications) }
+                }
             }
         }
     }
@@ -147,11 +153,16 @@ internal class HomeViewModel @Inject constructor(
         setState { state.value.copy(isCanceling = true) }
         viewModelScope.launch(Dispatchers.IO) {
             cancelApplicationUseCase(applicationId = applicationId).onSuccess {
+                val requestVersion = appliedCompaniesRequestVersion.incrementAndGet()
                 val appliedCompanies = fetchAppliedCompaniesUseCase().getOrNull()?.applications
                 setState {
                     state.value.copy(
-                        appliedCompanies = appliedCompanies ?: state.value.appliedCompanies.filterNot {
-                            it.applicationId == applicationId
+                        appliedCompanies = if (requestVersion == appliedCompaniesRequestVersion.get()) {
+                            appliedCompanies ?: state.value.appliedCompanies.filterNot {
+                                it.applicationId == applicationId
+                            }
+                        } else {
+                            state.value.appliedCompanies
                         },
                         cancelApplicationId = null,
                         isCanceling = false,
