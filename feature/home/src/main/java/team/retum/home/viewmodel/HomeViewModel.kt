@@ -102,13 +102,17 @@ internal class HomeViewModel @Inject constructor(
             fetchRejectionReasonUseCase(applicationId = applicationData.applicationId).onSuccess {
                 postSideEffect(
                     HomeSideEffect.ShowRejectionModal(
-                        applicationData = applicationData.copy(rejectionReason = it.rejectionReason),
+                        applicationData = applicationData.copy(rejectionReason = it.rejectionReason.orEmpty()),
                     ),
                 )
             }.onFailure {
                 when (it) {
                     is NotFoundException -> {
                         postSideEffect(HomeSideEffect.NotFoundApplication)
+                    }
+
+                    else -> {
+                        postSideEffect(HomeSideEffect.FetchRejectionReasonFailure)
                     }
                 }
             }
@@ -188,5 +192,6 @@ internal sealed interface HomeSideEffect {
     data class ShowRejectionModal(val applicationData: ApplicationData) : HomeSideEffect
 
     data object NotFoundApplication : HomeSideEffect
+    data object FetchRejectionReasonFailure : HomeSideEffect
     data class ScrollToApplication(val sectionOneCoordinates: Int) : HomeSideEffect
 }
