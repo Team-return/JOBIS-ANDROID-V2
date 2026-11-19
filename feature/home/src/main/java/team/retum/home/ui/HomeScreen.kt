@@ -119,6 +119,14 @@ internal fun Home(
                     ).show()
                 }
 
+                is HomeSideEffect.FetchRejectionReasonFailure -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_fetch_rejection_reason_failure),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
                 is HomeSideEffect.ScrollToApplication -> {
                     scrollState.animateScrollTo(it.sectionOneCoordinates)
                 }

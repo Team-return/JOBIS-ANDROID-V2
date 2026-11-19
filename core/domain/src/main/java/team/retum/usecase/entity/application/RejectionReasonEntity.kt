@@ -3,7 +3,7 @@ package team.retum.usecase.entity.application
 import team.retum.network.model.response.application.FetchRejectionReasonResponse
 
 data class RejectionReasonEntity(
-    val rejectionReason: String,
+    val rejectionReason: String?,
 )
 
 internal fun FetchRejectionReasonResponse.toEntity() = RejectionReasonEntity(

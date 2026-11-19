@@ -308,7 +308,7 @@ private fun RejectionBottomSheet(
             color = JobisTheme.colors.onSurfaceVariant,
         )
         JobisText(
-            text = reason,
+            text = reason.ifBlank { stringResource(id = R.string.empty_rejection_reason) },
             style = JobisTypography.Body,
         )
     }

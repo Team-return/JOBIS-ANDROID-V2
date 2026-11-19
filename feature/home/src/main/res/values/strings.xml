@@ -24,6 +24,8 @@
 
     <string name="reason_rejection">반려 사유</string>
     <string name="re_apply">재지원 하기</string>
+    <string name="empty_rejection_reason">사유가 등록되지 않았어요</string>
 
     <string name="toast_not_found_application">존재하지 않는 지원 내역이에요</string>
+    <string name="toast_fetch_rejection_reason_failure">반려 사유를 불러오지 못했어요</string>
 </resources>
