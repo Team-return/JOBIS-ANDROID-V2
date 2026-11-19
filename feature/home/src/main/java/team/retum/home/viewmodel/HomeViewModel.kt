@@ -162,7 +162,9 @@ internal class HomeViewModel @Inject constructor(
                                 it.applicationId == applicationId
                             }
                         } else {
-                            state.value.appliedCompanies
+                            state.value.appliedCompanies.filterNot {
+                                it.applicationId == applicationId
+                            }
                         },
                         cancelApplicationId = null,
                         isCanceling = false,
