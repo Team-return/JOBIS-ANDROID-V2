@@ -23,5 +23,7 @@ interface ApplicationRepository {
         applyCompanyRequest: ApplyCompanyRequest,
     )
 
+    suspend fun cancelApplication(applicationId: Long)
+
     suspend fun fetchEmploymentStatus(year: Int): FetchEmploymentStatusResponse
 }

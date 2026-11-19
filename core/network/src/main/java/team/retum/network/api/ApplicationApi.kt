@@ -1,6 +1,7 @@
 package team.retum.network.api
 
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -36,6 +37,11 @@ interface ApplicationApi {
     suspend fun reApplyCompany(
         @Path(RequestUrls.PATH.applicationId) applicationId: Long,
         @Body applyCompanyRequest: ApplyCompanyRequest,
+    )
+
+    @DELETE(RequestUrls.Applications.cancel)
+    suspend fun cancelApplication(
+        @Path(RequestUrls.PATH.applicationId) applicationId: Long,
     )
 
     @GET(RequestUrls.Applications.employment)

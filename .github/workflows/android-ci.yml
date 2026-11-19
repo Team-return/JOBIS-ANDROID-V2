@@ -42,7 +42,17 @@ jobs:
       - name: Execute Gradle task
         run: |
           if [ "${{ matrix.task }}" == "lint" ]; then
-            ./gradlew ktlintCheck
+            gradle_task="ktlintCheck"
           elif [ "${{ matrix.task }}" == "build" ]; then
-            ./gradlew assembleDebug --parallel
+            gradle_task="assembleDebug --parallel"
           fi
+
+          for attempt in 1 2 3; do
+            ./gradlew $gradle_task && exit 0
+
+            if [ "$attempt" -lt 3 ]; then
+              sleep $((attempt * 15))
+            fi
+          done
+
+          exit 1
