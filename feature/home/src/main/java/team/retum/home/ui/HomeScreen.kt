@@ -109,6 +109,7 @@ internal fun Home(
             subButtonText = stringResource(R.string.cancel),
             mainButtonText = stringResource(R.string.confirm),
             subButtonColor = ButtonColor.Default,
+            showButtonArrow = false,
             onSubButtonClick = homeViewModel::dismissCancelApplication,
             onMainButtonClick = homeViewModel::cancelApplication,
         )
@@ -125,6 +126,7 @@ internal fun Home(
             description = stringResource(R.string.cancel_application_failure_description),
             mainButtonText = stringResource(R.string.confirm),
             mainButtonColor = ButtonColor.Primary,
+            showButtonArrow = false,
             onMainButtonClick = homeViewModel::dismissCancelApplicationFailureDialog,
         )
     }
