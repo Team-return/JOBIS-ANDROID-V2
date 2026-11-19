@@ -61,8 +61,10 @@ import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.dialog.JobisDialog
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -93,6 +95,29 @@ internal fun Home(
     val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
+
+    if (state.cancelApplicationId != null) {
+        JobisDialog(
+            onDismissRequest = homeViewModel::dismissCancelApplication,
+            title = stringResource(R.string.cancel_application_title),
+            description = stringResource(R.string.cancel_application_description),
+            subButtonText = stringResource(R.string.cancel),
+            mainButtonText = stringResource(R.string.confirm),
+            subButtonColor = ButtonColor.Default,
+            onSubButtonClick = homeViewModel::dismissCancelApplication,
+            onMainButtonClick = homeViewModel::cancelApplication,
+        )
+    }
+
+    if (state.isCancelApplicationFailureDialogVisible) {
+        JobisDialog(
+            onDismissRequest = homeViewModel::dismissCancelApplicationFailureDialog,
+            title = stringResource(R.string.cancel_application_failure_title),
+            description = stringResource(R.string.cancel_application_failure_description),
+            mainButtonText = stringResource(R.string.confirm),
+            onMainButtonClick = homeViewModel::dismissCancelApplicationFailureDialog,
+        )
+    }
 
     LaunchedEffect(Unit) {
         with(homeViewModel) {
@@ -142,6 +167,7 @@ internal fun Home(
         onWinterInternClick = onWinterInternClick,
         onEmploymentClick = onEmploymentClick,
         onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
+        onCancelApplicationClick = homeViewModel::onCancelApplicationClick,
         state = state,
         banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
@@ -170,6 +196,7 @@ private fun HomeScreen(
     onEmploymentClick: () -> Unit,
     onWinterInternClick: (Boolean) -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
+    onCancelApplicationClick: (Long) -> Unit,
     state: HomeState,
     banners: ImmutableList<BannersEntity.BannerEntity>,
     studentInformation: StudentInformationEntity,
@@ -228,6 +255,7 @@ private fun HomeScreen(
                 applicationId = applicationId,
                 appliedCompanies = appliedCompanies,
                 onShowRejectionReasonClick = onRejectionReasonClick,
+                onCancelApplicationClick = onCancelApplicationClick,
                 setScroll = setScroll,
                 navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                 navigateToApplication = navigateToApplication,
@@ -569,6 +597,7 @@ private fun ApplyStatus(
     applicationId: Long?,
     appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
     onShowRejectionReasonClick: (ApplicationData) -> Unit,
+    onCancelApplicationClick: (Long) -> Unit,
     setScroll: (position: Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
@@ -614,6 +643,7 @@ private fun ApplyStatus(
                     )
                     ApplyCompanyItem(
                         onShowRejectionReasonClick = { onShowRejectionReasonClick(applicationData) },
+                        onCancelApplicationClick = { onCancelApplicationClick(it.applicationId) },
                         appliedCompany = it,
                         isFocus = applicationId == it.applicationId,
                         navigateToRecruitmentDetails = navigateToRecruitmentDetails,
