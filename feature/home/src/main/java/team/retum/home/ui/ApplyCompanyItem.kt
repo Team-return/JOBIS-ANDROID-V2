@@ -140,6 +140,7 @@ internal fun ApplyCompanyItem(
                         .clickable(onClick = onCancelApplicationClick),
                     text = stringResource(R.string.cancel_application),
                     style = JobisTypography.SubBody,
+                    textDecoration = TextDecoration.Underline,
                 )
             }
         }
