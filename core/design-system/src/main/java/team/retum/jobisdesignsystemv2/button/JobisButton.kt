@@ -195,6 +195,7 @@ private fun LargeButton(
     enabled: Boolean,
     buttonType: ButtonType,
     keyboardInteractionEnabled: Boolean,
+    showArrow: Boolean = true,
     onClick: () -> Unit,
 ) {
     var pressed by remember { mutableStateOf(false) }
@@ -225,12 +226,14 @@ private fun LargeButton(
                 style = JobisTypography.SubHeadLine,
                 color = contentColor,
             )
-            Spacer(modifier = Modifier.width(4.dp))
-            Icon(
-                painter = painterResource(id = JobisIcon.LongArrow),
-                tint = contentColor,
-                contentDescription = stringResource(id = R.string.content_description_long_arrow),
-            )
+            if (showArrow) {
+                Spacer(modifier = Modifier.width(4.dp))
+                Icon(
+                    painter = painterResource(id = JobisIcon.LongArrow),
+                    tint = contentColor,
+                    contentDescription = stringResource(id = R.string.content_description_long_arrow),
+                )
+            }
         }
     }
 }
@@ -391,6 +394,7 @@ fun JobisDialogButton(
     color: ButtonColor = ButtonColor.Default,
     enabled: Boolean = true,
     keyboardInteractionEnabled: Boolean = true,
+    showArrow: Boolean = true,
     onClick: () -> Unit,
 ) {
     LargeButton(
@@ -400,6 +404,7 @@ fun JobisDialogButton(
         enabled = enabled,
         buttonType = ButtonType.DIALOG,
         keyboardInteractionEnabled = keyboardInteractionEnabled,
+        showArrow = showArrow,
         onClick = onClick,
     )
 }
