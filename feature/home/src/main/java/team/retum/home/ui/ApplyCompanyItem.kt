@@ -81,11 +81,14 @@ internal fun ApplyCompanyItem(
     }
 
     JobisCard(
-        onClick = {
-            when (applicationStatus) {
-                ApplyStatus.REJECTED -> onShowRejectionReasonClick()
-                ApplyStatus.REQUESTED -> navigateToApplication()
-                else -> navigateToRecruitmentDetails(appliedCompany.recruitmentId)
+        onClick = if (applicationStatus == ApplyStatus.REQUESTED) {
+            null
+        } else {
+            {
+                when (applicationStatus) {
+                    ApplyStatus.REJECTED -> onShowRejectionReasonClick()
+                    else -> navigateToRecruitmentDetails(appliedCompany.recruitmentId)
+                }
             }
         },
     ) {
@@ -121,7 +124,15 @@ internal fun ApplyCompanyItem(
             )
             if (applicationStatus == ApplyStatus.REJECTED || applicationStatus == ApplyStatus.REQUESTED) {
                 JobisText(
-                    modifier = Modifier.padding(start = 8.dp),
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .then(
+                            if (applicationStatus == ApplyStatus.REQUESTED) {
+                                Modifier.clickable(onClick = navigateToApplication)
+                            } else {
+                                Modifier
+                            },
+                        ),
                     text = stringResource(
                         id = when (applicationStatus) {
                             ApplyStatus.REJECTED -> R.string.reason_rejection
