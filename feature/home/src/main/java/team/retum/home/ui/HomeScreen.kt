@@ -47,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -98,7 +99,10 @@ internal fun Home(
 
     if (state.cancelApplicationId != null) {
         JobisDialog(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            properties = DialogProperties(usePlatformDefaultWidth = false),
             onDismissRequest = homeViewModel::dismissCancelApplication,
             title = stringResource(R.string.cancel_application_title),
             description = stringResource(R.string.cancel_application_description),
@@ -112,11 +116,15 @@ internal fun Home(
 
     if (state.isCancelApplicationFailureDialogVisible) {
         JobisDialog(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            properties = DialogProperties(usePlatformDefaultWidth = false),
             onDismissRequest = homeViewModel::dismissCancelApplicationFailureDialog,
             title = stringResource(R.string.cancel_application_failure_title),
             description = stringResource(R.string.cancel_application_failure_description),
             mainButtonText = stringResource(R.string.confirm),
+            mainButtonColor = ButtonColor.Primary,
             onMainButtonClick = homeViewModel::dismissCancelApplicationFailureDialog,
         )
     }
