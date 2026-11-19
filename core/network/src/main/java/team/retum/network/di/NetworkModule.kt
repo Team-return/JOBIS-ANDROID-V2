@@ -16,6 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
+import team.retum.network.adapter.HiringProgressAdapter
 import team.retum.network.api.ApplicationApi
 import team.retum.network.api.AuthApi
 import team.retum.network.api.BannerApi
@@ -63,6 +64,7 @@ object NetworkModule {
     fun provideMoshiConverterFactory(): MoshiConverterFactory {
         return MoshiConverterFactory.create(
             Moshi.Builder()
+                .add(HiringProgressAdapter())
                 .addLast(KotlinJsonAdapterFactory())
                 .build(),
         )
