@@ -20,14 +20,19 @@ internal class NoticesViewModel @Inject constructor(
     private val fetchNoticesCountUseCase: FetchNoticesCountUseCase,
 ) : BaseViewModel<NoticesState, NoticesSideEffect>(NoticesState.getDefaultState()) {
     private val fetchLock = Any()
+    private var failedPage: Long? = null
 
     internal fun fetchNotices() {
         val page = synchronized(fetchLock) {
             val currentState = state.value
-            if (currentState.isLoading || currentState.totalPage?.let { currentState.page >= it } == true) {
+            val nextPage = currentState.page + 1
+            if (
+                currentState.isLoading ||
+                currentState.totalPage?.let { currentState.page >= it } == true ||
+                failedPage == nextPage
+            ) {
                 null
             } else {
-                val nextPage = currentState.page + 1
                 setState { state.value.copy(isLoading = true) }
                 nextPage
             }
@@ -44,7 +49,13 @@ internal class NoticesViewModel @Inject constructor(
                             isLoading = false,
                         )
                     }
+                    synchronized(fetchLock) {
+                        failedPage = null
+                    }
                 }.onFailure {
+                    synchronized(fetchLock) {
+                        failedPage = page
+                    }
                     setState { state.value.copy(isLoading = false) }
                     when (it) {
                         is BadRequestException -> {
@@ -56,6 +67,9 @@ internal class NoticesViewModel @Inject constructor(
     }
 
     internal fun fetchTotalNoticeCount() {
+        synchronized(fetchLock) {
+            failedPage = null
+        }
         viewModelScope.launch(Dispatchers.IO) {
             fetchNoticesCountUseCase()
                 .onSuccess {
@@ -78,10 +92,19 @@ internal class NoticesViewModel @Inject constructor(
         }
     }
 
-    internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {
-        return !isLoading &&
-            lastVisibleItemIndex == notices.lastIndex &&
-            (totalPage == null || page < totalPage)
+    internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = synchronized(fetchLock) {
+        val currentState = state.value
+        val nextPage = currentState.page + 1
+        val isLastItemVisible = lastVisibleItemIndex == currentState.notices.lastIndex
+
+        if (!isLastItemVisible && failedPage == nextPage) {
+            failedPage = null
+        }
+
+        !currentState.isLoading &&
+            isLastItemVisible &&
+            failedPage != nextPage &&
+            (currentState.totalPage == null || currentState.page < currentState.totalPage)
     }
 }
 
