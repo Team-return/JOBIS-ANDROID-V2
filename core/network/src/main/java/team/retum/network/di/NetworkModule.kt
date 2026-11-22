@@ -1,10 +1,12 @@
 package team.retum.network.di
 
+import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Authenticator
 import okhttp3.Interceptor
@@ -14,6 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import team.retum.jobis.local.datasource.user.LocalUserDataSource
 import team.retum.network.BuildConfig
+import team.retum.network.adapter.HiringProgressAdapter
 import team.retum.network.api.ApplicationApi
 import team.retum.network.api.AuthApi
 import team.retum.network.api.BannerApi
@@ -61,6 +64,7 @@ object NetworkModule {
     fun provideMoshiConverterFactory(): MoshiConverterFactory {
         return MoshiConverterFactory.create(
             Moshi.Builder()
+                .add(HiringProgressAdapter())
                 .addLast(KotlinJsonAdapterFactory())
                 .build(),
         )
@@ -81,8 +85,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenAuthenticator(localUserDataSource: LocalUserDataSource): Authenticator {
-        return TokenAuthenticator(localUserDataSource = localUserDataSource)
+    fun provideTokenAuthenticator(
+        @ApplicationContext context: Context,
+        localUserDataSource: LocalUserDataSource,
+    ): Authenticator {
+        return TokenAuthenticator(
+            context = context,
+            localUserDataSource = localUserDataSource,
+        )
     }
 
     @Provides

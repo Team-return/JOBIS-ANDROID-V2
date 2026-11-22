@@ -38,15 +38,24 @@ internal fun WinterIntern(
 ) {
     val context = LocalContext.current
     val state by recruitmentViewModel.state.collectAsStateWithLifecycle()
+    val selectedJobCode = RecruitmentFilterViewModel.jobCode
+    val selectedTechCode = RecruitmentFilterViewModel.techCode?.takeIf { it.isNotBlank() }
+    val hasRecruitments = recruitmentViewModel.recruitments.any { it.id != 0L }
 
-    LaunchedEffect(isWinterInternAvailable) {
-        if (!isWinterInternAvailable) return@LaunchedEffect
+    LaunchedEffect(isWinterInternAvailable, selectedJobCode, selectedTechCode) {
+        val filtersChanged =
+            state.jobCode != selectedJobCode || state.techCode != selectedTechCode
+
+        if (filtersChanged) {
+            recruitmentViewModel.resetRecruitments()
+        } else if (!isWinterInternAvailable || hasRecruitments) {
+            return@LaunchedEffect
+        }
 
         with(recruitmentViewModel) {
-            setJobCode(RecruitmentFilterViewModel.jobCode)
-            setTechCode(RecruitmentFilterViewModel.techCode)
+            setJobCode(selectedJobCode)
+            setTechCode(selectedTechCode)
             setWinterIntern(isWinterIntern = true)
-            clearRecruitment()
             fetchTotalRecruitmentCount()
         }
     }
@@ -67,7 +76,8 @@ internal fun WinterIntern(
 
     WinterInternScreen(
         onBackPressed = onBackPressed,
-        showEmptyContent = !isWinterInternAvailable || state.showRecruitmentsEmptyContent,
+        showEmptyContent = state.showRecruitmentsEmptyContent ||
+            (!isWinterInternAvailable && !hasRecruitments),
         recruitments = recruitmentViewModel.recruitments.toPersistentList(),
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,

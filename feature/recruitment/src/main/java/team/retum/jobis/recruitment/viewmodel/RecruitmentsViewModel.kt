@@ -75,6 +75,17 @@ internal class RecruitmentViewModel @Inject constructor(
         }
     }
 
+    internal fun resetRecruitments() {
+        _recruitments.clear()
+        setState {
+            state.value.copy(
+                page = 0L,
+                totalPage = 1L,
+                showRecruitmentsEmptyContent = false,
+            )
+        }
+    }
+
     private fun clear() {
         RecruitmentFilterViewModel.jobCode = null
         RecruitmentFilterViewModel.techCode = null

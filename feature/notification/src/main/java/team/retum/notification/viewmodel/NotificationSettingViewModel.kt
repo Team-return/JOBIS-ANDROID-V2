@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.NotificationTopic
 import team.retum.usecase.usecase.notification.FetchNotificationSettingsStatusesUseCase
@@ -21,6 +23,7 @@ internal class NotificationSettingViewModel @Inject constructor(
 ) : BaseViewModel<NotificationSettingState, NotificationSettingSideEffect>(NotificationSettingState.getDefaultState()) {
 
     private lateinit var deviceToken: String
+    private val notificationSettingMutex = Mutex()
 
     init {
         getDeviceToken()
@@ -37,56 +40,62 @@ internal class NotificationSettingViewModel @Inject constructor(
 
     private fun fetchNotificationSettingsStatuses() {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchNotificationSettingsStatusesUseCase()
-                .onSuccess { topics ->
-                    topics.topics.forEach {
-                        changeSubscribeState(
-                            topic = it.topic,
-                            isSubscribed = it.subscribed,
-                        )
-                    }
-                }
-                .onFailure {
-                    postSideEffect(NotificationSettingSideEffect.CanNotCurrentNotificationStatus)
-                }
+            notificationSettingMutex.withLock {
+                refreshNotificationSettingsStatuses()
+            }
         }
     }
 
     internal fun setAllNotification(isSubscribed: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            settingAllNotificationUseCase()
-                .onFailure {
-                    postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
-                }
-        }
-        setState {
-            state.value.copy(
-                isAllSubscribe = isSubscribed,
-                isNoticeSubscribe = isSubscribed,
-                isRecruitmentSubscribe = isSubscribed,
-                isApplicationSubscribe = isSubscribed,
-                isWinterInternSubscribe = isSubscribed,
-            )
-        }
-    }
-
-    internal fun setNotificationTopic(
-        topic: NotificationTopic,
-        isSubscribed: Boolean,
-    ) {
-        changeSubscribeState(
-            topic = topic,
-            isSubscribed = isSubscribed,
-        )
-
-        viewModelScope.launch(Dispatchers.IO) {
-            settingNotificationUseCase(
-                topic = topic,
-            ).onFailure {
-                postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
+            notificationSettingMutex.withLock {
+                settingAllNotificationUseCase()
+                    .onSuccess {
+                        val isAllSubscribed = refreshNotificationSettingsStatuses()
+                        if (isSubscribed && isAllSubscribed == false) {
+                            settingAllNotificationUseCase()
+                                .onSuccess { refreshNotificationSettingsStatuses() }
+                                .onFailure {
+                                    postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
+                                }
+                        }
+                    }
+                    .onFailure {
+                        postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
+                    }
             }
         }
     }
+
+    internal fun setNotificationTopic(topic: NotificationTopic) {
+        viewModelScope.launch(Dispatchers.IO) {
+            notificationSettingMutex.withLock {
+                settingNotificationUseCase(
+                    topic = topic,
+                )
+                    .onSuccess { refreshNotificationSettingsStatuses() }
+                    .onFailure {
+                        postSideEffect(NotificationSettingSideEffect.ChangeNotificationFailure)
+                    }
+            }
+        }
+    }
+
+    private suspend fun refreshNotificationSettingsStatuses(): Boolean? =
+        fetchNotificationSettingsStatusesUseCase()
+            .onSuccess { topics ->
+                topics.topics.forEach {
+                    changeSubscribeState(
+                        topic = it.topic,
+                        isSubscribed = it.subscribed,
+                    )
+                }
+            }
+            .onFailure {
+                postSideEffect(NotificationSettingSideEffect.CanNotCurrentNotificationStatus)
+            }
+            .getOrNull()
+            ?.let { state.value.isAllSubscribe }
 
     private fun changeSubscribeState(
         topic: NotificationTopic,
@@ -98,13 +107,18 @@ internal class NotificationSettingViewModel @Inject constructor(
                 NotificationTopic.APPLICATION -> copy(isApplicationSubscribe = isSubscribed)
                 NotificationTopic.RECRUITMENT -> copy(isRecruitmentSubscribe = isSubscribed)
                 NotificationTopic.WINTER_INTERN -> copy(isWinterInternSubscribe = isSubscribed)
+                NotificationTopic.INTERVIEW -> copy(isInterviewSubscribe = isSubscribed)
             }
-            setState { subscribeState }
-        }
-        with(state.value) {
-            val isAllSubscribe =
-                isNoticeSubscribe && isApplicationSubscribe && isRecruitmentSubscribe && isWinterInternSubscribe
-            setState { copy(isAllSubscribe = isAllSubscribe) }
+            setState {
+                subscribeState.copy(
+                    isAllSubscribe =
+                    subscribeState.isNoticeSubscribe &&
+                        subscribeState.isApplicationSubscribe &&
+                        subscribeState.isRecruitmentSubscribe &&
+                        subscribeState.isWinterInternSubscribe &&
+                        subscribeState.isInterviewSubscribe,
+                )
+            }
         }
     }
 }
@@ -116,6 +130,7 @@ internal data class NotificationSettingState(
     val isApplicationSubscribe: Boolean,
     val isRecruitmentSubscribe: Boolean,
     val isWinterInternSubscribe: Boolean,
+    val isInterviewSubscribe: Boolean,
 ) {
     companion object {
         fun getDefaultState() = NotificationSettingState(
@@ -125,6 +140,7 @@ internal data class NotificationSettingState(
             isApplicationSubscribe = true,
             isRecruitmentSubscribe = true,
             isWinterInternSubscribe = true,
+            isInterviewSubscribe = true,
         )
     }
 }

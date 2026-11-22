@@ -7,7 +7,7 @@ import javax.inject.Inject
 class FetchNoticesUseCase @Inject constructor(
     private val noticeRepository: NoticeRepository,
 ) {
-    suspend operator fun invoke() = runCatching {
-        noticeRepository.fetchNotices().toNoticesEntity()
+    suspend operator fun invoke(page: Long) = runCatching {
+        noticeRepository.fetchNotices(page = page).toNoticesEntity()
     }
 }

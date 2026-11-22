@@ -69,7 +69,7 @@ internal fun NotificationSetting(
         state = state,
         scrollState = scrollState,
         onAllNotificationChange = notificationSettingViewModel::setAllNotification,
-        onTopicChange = notificationSettingViewModel::setNotificationTopic,
+        onTopicChange = { topic, _ -> notificationSettingViewModel.setNotificationTopic(topic) },
     )
 }
 
@@ -137,6 +137,12 @@ private fun NotificationSettingScreen(
             title = stringResource(id = R.string.winter_intern_notification),
             topic = NotificationTopic.WINTER_INTERN,
             isSubscribe = state.isWinterInternSubscribe,
+            onCheckChange = onTopicChange,
+        )
+        NotificationDetailLayout(
+            title = stringResource(id = R.string.interview_notification),
+            topic = NotificationTopic.INTERVIEW,
+            isSubscribe = state.isInterviewSubscribe,
             onCheckChange = onTopicChange,
         )
     }

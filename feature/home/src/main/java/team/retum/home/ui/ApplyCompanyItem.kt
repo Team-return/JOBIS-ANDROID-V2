@@ -34,17 +34,19 @@ import team.retum.jobisdesignsystemv2.card.JobisCard
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
 import team.retum.jobisdesignsystemv2.text.JobisText
+import team.retum.jobisdesignsystemv2.utils.clickable
 import team.retum.usecase.entity.application.AppliedCompaniesEntity
 
 @Composable
 internal fun ApplyCompanyItem(
     onShowRejectionReasonClick: () -> Unit,
+    onCancelApplicationClick: () -> Unit,
     appliedCompany: AppliedCompaniesEntity.ApplicationEntity,
     isFocus: Boolean,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigateToApplication: () -> Unit,
 ) {
-    val applicationStatus = remember { appliedCompany.applicationStatus }
+    val applicationStatus = appliedCompany.applicationStatus
     val color = when (applicationStatus) {
         ApplyStatus.FAILED, ApplyStatus.REJECTED, ApplyStatus.DOC_FAILED -> JobisTheme.colors.error
         ApplyStatus.REQUESTED, ApplyStatus.APPROVED -> JobisTheme.colors.tertiary
@@ -79,11 +81,14 @@ internal fun ApplyCompanyItem(
     }
 
     JobisCard(
-        onClick = {
-            when (applicationStatus) {
-                ApplyStatus.REJECTED -> onShowRejectionReasonClick()
-                ApplyStatus.REQUESTED -> navigateToApplication()
-                else -> navigateToRecruitmentDetails(appliedCompany.recruitmentId)
+        onClick = if (applicationStatus == ApplyStatus.REQUESTED) {
+            null
+        } else {
+            {
+                when (applicationStatus) {
+                    ApplyStatus.REJECTED -> onShowRejectionReasonClick()
+                    else -> navigateToRecruitmentDetails(appliedCompany.recruitmentId)
+                }
             }
         },
     ) {
@@ -119,15 +124,33 @@ internal fun ApplyCompanyItem(
             )
             if (applicationStatus == ApplyStatus.REJECTED || applicationStatus == ApplyStatus.REQUESTED) {
                 JobisText(
-                    modifier = Modifier.padding(start = 8.dp),
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .then(
+                            if (applicationStatus == ApplyStatus.REQUESTED) {
+                                Modifier.clickable(onClick = navigateToApplication)
+                            } else {
+                                Modifier
+                            },
+                        ),
                     text = stringResource(
                         id = when (applicationStatus) {
                             ApplyStatus.REJECTED -> R.string.reason_rejection
                             else -> R.string.re_apply
                         },
-                    ).plus(" ->"),
+                    ).plus(" →"),
                     style = JobisTypography.SubBody,
                     color = color,
+                    textDecoration = TextDecoration.Underline,
+                )
+            }
+            if (applicationStatus == ApplyStatus.REQUESTED) {
+                JobisText(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable(onClick = onCancelApplicationClick),
+                    text = stringResource(R.string.cancel_application),
+                    style = JobisTypography.SubBody,
                     textDecoration = TextDecoration.Underline,
                 )
             }

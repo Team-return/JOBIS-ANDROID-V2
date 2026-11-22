@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,6 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import team.retum.jobis.notice.viewmodel.NoticesSideEffect
 import team.retum.jobis.notice.viewmodel.NoticesViewModel
 import team.retum.jobis.notification.R
@@ -46,7 +50,7 @@ internal fun Notices(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        noticesViewModel.fetchNotices()
+        noticesViewModel.fetchTotalNoticeCount()
         noticesViewModel.sideEffect.collect {
             when (it) {
                 is NoticesSideEffect.BadRequest -> {
@@ -64,6 +68,8 @@ internal fun Notices(
         onBackPressed = onBackPressed,
         navigateToDetail = navigateToDetail,
         notices = state.value.notices.toPersistentList(),
+        whetherFetchNextPage = noticesViewModel::whetherFetchNextPage,
+        fetchNextPage = noticesViewModel::fetchNotices,
     )
 }
 
@@ -72,7 +78,20 @@ private fun NoticesScreen(
     onBackPressed: () -> Unit,
     navigateToDetail: (Long) -> Unit,
     notices: ImmutableList<NoticesEntity.NoticeEntity>,
+    whetherFetchNextPage: (Int) -> Boolean,
+    fetchNextPage: () -> Unit,
 ) {
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .filterNotNull()
+            .distinctUntilChanged()
+            .collect { lastVisibleItemIndex ->
+                if (whetherFetchNextPage(lastVisibleItemIndex)) fetchNextPage()
+            }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,14 +102,15 @@ private fun NoticesScreen(
             onBackPressed = onBackPressed,
         )
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .padding(horizontal = 24.dp),
         ) {
-            items(notices) {
+            items(notices) { notice ->
                 NoticesItem(
-                    noticeTitle = it.title,
-                    noticeDate = it.createdAt,
-                    onClick = { navigateToDetail(it.id) },
+                    noticeTitle = notice.title,
+                    noticeDate = notice.createdAt,
+                    onClick = { navigateToDetail(notice.id) },
                 )
             }
         }

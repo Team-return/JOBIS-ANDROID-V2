@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -46,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -60,8 +62,10 @@ import team.retum.home.viewmodel.HomeSideEffect
 import team.retum.home.viewmodel.HomeState
 import team.retum.home.viewmodel.HomeViewModel
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
+import team.retum.jobisdesignsystemv2.button.ButtonColor
 import team.retum.jobisdesignsystemv2.button.JobisIconButton
 import team.retum.jobisdesignsystemv2.card.JobisCard
+import team.retum.jobisdesignsystemv2.dialog.JobisDialog
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.foundation.JobisTypography
@@ -93,6 +97,40 @@ internal fun Home(
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
 
+    if (state.cancelApplicationId != null) {
+        JobisDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            properties = DialogProperties(usePlatformDefaultWidth = false),
+            onDismissRequest = homeViewModel::dismissCancelApplication,
+            title = stringResource(R.string.cancel_application_title),
+            description = stringResource(R.string.cancel_application_description),
+            subButtonText = stringResource(R.string.cancel),
+            mainButtonText = stringResource(R.string.confirm),
+            subButtonColor = ButtonColor.Default,
+            showButtonArrow = false,
+            onSubButtonClick = homeViewModel::dismissCancelApplication,
+            onMainButtonClick = homeViewModel::cancelApplication,
+        )
+    }
+
+    if (state.isCancelApplicationFailureDialogVisible) {
+        JobisDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            properties = DialogProperties(usePlatformDefaultWidth = false),
+            onDismissRequest = homeViewModel::dismissCancelApplicationFailureDialog,
+            title = stringResource(R.string.cancel_application_failure_title),
+            description = stringResource(R.string.cancel_application_failure_description),
+            mainButtonText = stringResource(R.string.confirm),
+            mainButtonColor = ButtonColor.Primary,
+            showButtonArrow = false,
+            onMainButtonClick = homeViewModel::dismissCancelApplicationFailureDialog,
+        )
+    }
+
     LaunchedEffect(Unit) {
         with(homeViewModel) {
             calculateTerm()
@@ -118,6 +156,14 @@ internal fun Home(
                     ).show()
                 }
 
+                is HomeSideEffect.FetchRejectionReasonFailure -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_fetch_rejection_reason_failure),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
                 is HomeSideEffect.ScrollToApplication -> {
                     scrollState.animateScrollTo(it.sectionOneCoordinates)
                 }
@@ -133,6 +179,7 @@ internal fun Home(
         onWinterInternClick = onWinterInternClick,
         onEmploymentClick = onEmploymentClick,
         onRejectionReasonClick = homeViewModel::onRejectionReasonClick,
+        onCancelApplicationClick = homeViewModel::onCancelApplicationClick,
         state = state,
         banners = state.banners.toPersistentList(),
         studentInformation = state.studentInformation,
@@ -161,6 +208,7 @@ private fun HomeScreen(
     onEmploymentClick: () -> Unit,
     onWinterInternClick: (Boolean) -> Unit,
     onRejectionReasonClick: (ApplicationData) -> Unit,
+    onCancelApplicationClick: (Long) -> Unit,
     state: HomeState,
     banners: ImmutableList<BannersEntity.BannerEntity>,
     studentInformation: StudentInformationEntity,
@@ -219,6 +267,7 @@ private fun HomeScreen(
                 applicationId = applicationId,
                 appliedCompanies = appliedCompanies,
                 onShowRejectionReasonClick = onRejectionReasonClick,
+                onCancelApplicationClick = onCancelApplicationClick,
                 setScroll = setScroll,
                 navigateToRecruitmentDetails = navigateToRecruitmentDetails,
                 navigateToApplication = navigateToApplication,
@@ -277,10 +326,26 @@ private fun Banner(
                     onEmploymentClick = onEmploymentClick,
                 )
             } else {
-                AsyncImage(
-                    model = banners.getOrNull(page - 1)?.bannerUrl,
-                    contentDescription = "banner",
-                )
+                val banner = banners.getOrNull(page - 1)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 150.dp)
+                        .padding(24.dp),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    JobisText(
+                        text = banner?.title.orEmpty(),
+                        style = JobisTypography.SubHeadLine,
+                        color = JobisTheme.colors.onSurface,
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    JobisText(
+                        text = banner?.content.orEmpty(),
+                        style = JobisTypography.Description,
+                        color = JobisTheme.colors.onSurface,
+                    )
+                }
             }
         }
     }
@@ -544,6 +609,7 @@ private fun ApplyStatus(
     applicationId: Long?,
     appliedCompanies: ImmutableList<AppliedCompaniesEntity.ApplicationEntity>,
     onShowRejectionReasonClick: (ApplicationData) -> Unit,
+    onCancelApplicationClick: (Long) -> Unit,
     setScroll: (position: Float) -> Unit,
     navigateToRecruitmentDetails: (Long) -> Unit,
     navigateToApplication: (ApplicationData) -> Unit,
@@ -589,6 +655,7 @@ private fun ApplyStatus(
                     )
                     ApplyCompanyItem(
                         onShowRejectionReasonClick = { onShowRejectionReasonClick(applicationData) },
+                        onCancelApplicationClick = { onCancelApplicationClick(it.applicationId) },
                         appliedCompany = it,
                         isFocus = applicationId == it.applicationId,
                         navigateToRecruitmentDetails = navigateToRecruitmentDetails,

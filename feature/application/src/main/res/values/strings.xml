@@ -9,9 +9,12 @@
 
     <string name="toast_max_count">최대 3개까지만 등록할 수 있어요</string>
     <string name="toast_invalid_file_extension">올바르지 않은 파일 확장자에요</string>
+    <string name="toast_attachment_upload_failure">첨부 파일 업로드에 실패했어요. 다시 시도해주세요</string>
     <string name="toast_success_apply">성공적으로 지원이 완료되었어요!</string>
     <string name="toast_success_re_apply">성공적으로 재지원 되었어요!</string>
-    <string name="toast_conflict_apply">이미 지원한 기업이에요</string>
+    <string name="toast_conflict_apply">이미 지원했거나 진행 중인 지원이 있어요</string>
     <string name="toast_not_found_recruitment">존재하지 않는 모집의뢰서에요</string>
-    <string name="toast_unexpected_grade">3학년만 지원할 수 있어요</string>
+    <string name="toast_unexpected_grade">지원 가능한 학년이 아니에요</string>
+    <string name="toast_apply_failure">지원에 실패했어요. 다시 시도해주세요</string>
+    <string name="toast_re_apply_failure">재지원에 실패했어요. 다시 시도해주세요</string>
 </resources>

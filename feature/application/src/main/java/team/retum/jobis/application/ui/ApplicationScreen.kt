@@ -138,6 +138,14 @@ private suspend fun ApplicationViewModel.handleApplicationSideEffect(
                 ).show()
             }
 
+            is ApplicationSideEffect.AttachmentUploadFailure -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(R.string.toast_attachment_upload_failure),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+
             is ApplicationSideEffect.SuccessApply -> {
                 JobisToast.create(
                     context = context,
@@ -166,6 +174,16 @@ private suspend fun ApplicationViewModel.handleApplicationSideEffect(
                 JobisToast.create(
                     context = context,
                     message = context.getString(R.string.toast_unexpected_grade),
+                    drawable = JobisIcon.Error,
+                ).show()
+            }
+
+            is ApplicationSideEffect.ApplyFailure -> {
+                JobisToast.create(
+                    context = context,
+                    message = context.getString(
+                        if (it.isReApply) R.string.toast_re_apply_failure else R.string.toast_apply_failure,
+                    ),
                     drawable = JobisIcon.Error,
                 ).show()
             }

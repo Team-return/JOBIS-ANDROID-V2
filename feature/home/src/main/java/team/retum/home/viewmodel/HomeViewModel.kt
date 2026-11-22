@@ -15,6 +15,7 @@ import team.retum.usecase.entity.application.AppliedCompaniesEntity
 import team.retum.usecase.entity.banner.BannersEntity
 import team.retum.usecase.entity.student.StudentInformationEntity
 import team.retum.usecase.intern.FetchWinterInternUseCase
+import team.retum.usecase.usecase.application.CancelApplicationUseCase
 import team.retum.usecase.usecase.application.FetchAppliedCompaniesUseCase
 import team.retum.usecase.usecase.application.FetchEmploymentCountUseCase
 import team.retum.usecase.usecase.application.FetchRejectionReasonUseCase
@@ -23,6 +24,7 @@ import team.retum.usecase.usecase.student.FetchRecentCompaniesUseCase
 import team.retum.usecase.usecase.student.FetchStudentInformationUseCase
 import java.text.DecimalFormat
 import java.time.LocalDate
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.roundToInt
@@ -35,10 +37,13 @@ internal class HomeViewModel @Inject constructor(
     private val fetchAppliedCompaniesUseCase: FetchAppliedCompaniesUseCase,
     private val fetchEmploymentCountUseCase: FetchEmploymentCountUseCase,
     private val fetchRejectionReasonUseCase: FetchRejectionReasonUseCase,
+    private val cancelApplicationUseCase: CancelApplicationUseCase,
     private val fetchBannersUseCase: FetchBannersUseCase,
     private val fetchWinterInternUseCase: FetchWinterInternUseCase,
     private val fetchRecentCompaniesUseCase: FetchRecentCompaniesUseCase,
 ) : BaseViewModel<HomeState, HomeSideEffect>(HomeState.getDefaultState()) {
+
+    private val appliedCompaniesRequestVersion = AtomicLong()
 
     internal fun calculateTerm() = setState {
         val term = LocalDate.now().year - SCHOOL_ESTABLISHMENT - 1
@@ -71,9 +76,12 @@ internal class HomeViewModel @Inject constructor(
     }
 
     internal fun fetchAppliedCompanies() {
+        val requestVersion = appliedCompaniesRequestVersion.incrementAndGet()
         viewModelScope.launch(Dispatchers.IO) {
             fetchAppliedCompaniesUseCase().onSuccess { appliedCompaniesEntity ->
-                setState { state.value.copy(appliedCompanies = appliedCompaniesEntity.applications) }
+                if (requestVersion == appliedCompaniesRequestVersion.get()) {
+                    setState { state.value.copy(appliedCompanies = appliedCompaniesEntity.applications) }
+                }
             }
         }
     }
@@ -102,7 +110,7 @@ internal class HomeViewModel @Inject constructor(
             fetchRejectionReasonUseCase(applicationId = applicationData.applicationId).onSuccess {
                 postSideEffect(
                     HomeSideEffect.ShowRejectionModal(
-                        applicationData = applicationData.copy(rejectionReason = it.rejectionReason),
+                        applicationData = applicationData.copy(rejectionReason = it.rejectionReason.orEmpty()),
                     ),
                 )
             }.onFailure {
@@ -110,6 +118,65 @@ internal class HomeViewModel @Inject constructor(
                     is NotFoundException -> {
                         postSideEffect(HomeSideEffect.NotFoundApplication)
                     }
+
+                    else -> {
+                        postSideEffect(HomeSideEffect.FetchRejectionReasonFailure)
+                    }
+                }
+            }
+        }
+    }
+
+    internal fun onCancelApplicationClick(applicationId: Long) = setState {
+        if (state.value.isCanceling || state.value.isCancelApplicationFailureDialogVisible) {
+            state.value
+        } else {
+            state.value.copy(cancelApplicationId = applicationId)
+        }
+    }
+
+    internal fun dismissCancelApplication() = setState {
+        if (state.value.isCanceling) {
+            state.value
+        } else {
+            state.value.copy(cancelApplicationId = null)
+        }
+    }
+
+    internal fun dismissCancelApplicationFailureDialog() = setState {
+        state.value.copy(isCancelApplicationFailureDialogVisible = false)
+    }
+
+    internal fun cancelApplication() {
+        val applicationId = state.value.cancelApplicationId ?: return
+        if (state.value.isCanceling) return
+        setState { state.value.copy(isCanceling = true) }
+        viewModelScope.launch(Dispatchers.IO) {
+            cancelApplicationUseCase(applicationId = applicationId).onSuccess {
+                val requestVersion = appliedCompaniesRequestVersion.incrementAndGet()
+                val appliedCompanies = fetchAppliedCompaniesUseCase().getOrNull()?.applications
+                setState {
+                    state.value.copy(
+                        appliedCompanies = if (requestVersion == appliedCompaniesRequestVersion.get()) {
+                            appliedCompanies ?: state.value.appliedCompanies.filterNot {
+                                it.applicationId == applicationId
+                            }
+                        } else {
+                            state.value.appliedCompanies.filterNot {
+                                it.applicationId == applicationId
+                            }
+                        },
+                        cancelApplicationId = null,
+                        isCanceling = false,
+                    )
+                }
+            }.onFailure {
+                setState {
+                    state.value.copy(
+                        cancelApplicationId = null,
+                        isCanceling = false,
+                        isCancelApplicationFailureDialogVisible = true,
+                    )
                 }
             }
         }
@@ -162,6 +229,9 @@ internal data class HomeState(
     val recentCompanies: List<CarouselItem>,
     val isWinterIntern: Boolean,
     val employmentYear: Int,
+    val cancelApplicationId: Long?,
+    val isCanceling: Boolean,
+    val isCancelApplicationFailureDialogVisible: Boolean,
 ) {
     companion object {
         fun getDefaultState() = HomeState(
@@ -180,6 +250,9 @@ internal data class HomeState(
             isWinterIntern = false,
             employmentYear = LocalDate.now().year,
             recentCompanies = emptyList(),
+            cancelApplicationId = null,
+            isCanceling = false,
+            isCancelApplicationFailureDialogVisible = false,
         )
     }
 }
@@ -188,5 +261,6 @@ internal sealed interface HomeSideEffect {
     data class ShowRejectionModal(val applicationData: ApplicationData) : HomeSideEffect
 
     data object NotFoundApplication : HomeSideEffect
+    data object FetchRejectionReasonFailure : HomeSideEffect
     data class ScrollToApplication(val sectionOneCoordinates: Int) : HomeSideEffect
 }

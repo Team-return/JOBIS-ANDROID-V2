@@ -3,7 +3,6 @@ package team.retum.network.model.response.application
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import team.retum.common.enums.ApplyStatus
-import team.retum.common.enums.AttachmentType
 
 @JsonClass(generateAdapter = true)
 data class FetchAppliedCompaniesResponse(
@@ -21,7 +20,7 @@ data class FetchAppliedCompaniesResponse(
         @JsonClass(generateAdapter = true)
         data class AttachmentResponse(
             @Json(name = "url") val url: String,
-            @Json(name = "type") val attachmentType: AttachmentType,
+            @Json(name = "type") val attachmentType: String,
         )
     }
 }

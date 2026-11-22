@@ -54,6 +54,12 @@ class RemoteApplicationDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun cancelApplication(applicationId: Long) {
+        RequestHandler<Unit>().request {
+            applicationApi.cancelApplication(applicationId = applicationId)
+        }
+    }
+
     override suspend fun fetchEmploymentStatus(year: Int): FetchEmploymentStatusResponse {
         return RequestHandler<FetchEmploymentStatusResponse>().request {
             applicationApi.fetchEmploymentStatus(year = year)
