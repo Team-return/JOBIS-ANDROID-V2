@@ -13,12 +13,16 @@ import team.retum.common.utils.notificationPermissionGranted
 import team.retum.jobisdesignsystemv2.foundation.JobisIcon
 
 private object Notifications {
-    const val NOTIFICATION_ID = 0
     const val NOTIFICATION_CHANNEL_ID = "jobis"
     const val CHANNEL_NAME = "jobis"
     const val CHANNEL_DESCRIPTION = "jobis notification channel"
 }
 
+object NotificationData {
+    const val TOPIC = "topic"
+    const val DETAIL_ID = "detail_id"
+    const val IS_PUSH_NOTIFICATION = "is_push_notification"
+}
 class NotificationManager(
     private val context: Context,
     private val intentClass: Class<*>,
@@ -31,44 +35,43 @@ class NotificationManager(
     private val notificationManagerCompat: NotificationManagerCompat by lazy {
         NotificationManagerCompat.from(context)
     }
-    private val intent = Intent(context, intentClass)
-    private val contentPendingIntent = PendingIntent.getActivity(
-        context,
-        Notifications.NOTIFICATION_ID,
-        intent,
-        PendingIntent.FLAG_IMMUTABLE,
-    )
-
-    private val notificationBuilder: NotificationCompat.Builder by lazy {
-        NotificationCompat.Builder(context, Notifications.NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(JobisIcon.Notification)
-            .setColor(ContextCompat.getColor(context, R.color.primary))
-            .setAutoCancel(true)
-            .setPriority(NotificationManager.IMPORTANCE_HIGH)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setContentIntent(contentPendingIntent)
-    }
-
-    fun setNotificationContent(
-        title: String?,
-        body: String?,
-    ) {
-        notificationBuilder.run {
-            title?.run { setContentTitle(this) }
-            body?.run { setContentText(this) }
-        }
-    }
 
     @SuppressLint("MissingPermission")
-    fun sendNotification() {
+    fun sendNotification(
+        title: String?,
+        body: String?,
+        data: Map<String, String>,
+        notificationId: Int,
+    ) {
         if (notificationPermissionGranted(context = context)) {
+            val intent = Intent(context, intentClass).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                data.forEach { (key, value) -> putExtra(key, value) }
+                putExtra(NotificationData.IS_PUSH_NOTIFICATION, true)
+            }
+            val contentPendingIntent = PendingIntent.getActivity(
+                context,
+                notificationId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
+            val notificationBuilder =
+                NotificationCompat.Builder(context, Notifications.NOTIFICATION_CHANNEL_ID)
+                    .setSmallIcon(JobisIcon.Notification)
+                    .setColor(ContextCompat.getColor(context, R.color.primary))
+                    .setAutoCancel(true)
+                    .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setContentIntent(contentPendingIntent)
+                    .apply {
+                        title?.let(::setContentTitle)
+                        body?.let(::setContentText)
+                    }
             notificationManagerCompat.notify(
-                Notifications.NOTIFICATION_ID,
+                notificationId,
                 notificationBuilder.build(),
             )
-        } else {
-            // TODO show toast message
         }
     }
 
