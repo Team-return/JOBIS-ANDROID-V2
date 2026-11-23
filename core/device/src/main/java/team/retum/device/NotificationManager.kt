@@ -21,6 +21,7 @@ private object Notifications {
 object NotificationData {
     const val TOPIC = "topic"
     const val DETAIL_ID = "detail_id"
+    const val IS_PUSH_NOTIFICATION = "is_push_notification"
 }
 class NotificationManager(
     private val context: Context,
@@ -46,6 +47,7 @@ class NotificationManager(
             val intent = Intent(context, intentClass).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                 data.forEach { (key, value) -> putExtra(key, value) }
+                putExtra(NotificationData.IS_PUSH_NOTIFICATION, true)
             }
             val contentPendingIntent = PendingIntent.getActivity(
                 context,
