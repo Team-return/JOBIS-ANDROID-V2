@@ -29,6 +29,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     private var delay = 0L
     private var pushNotificationData by mutableStateOf<PushNotificationData?>(null)
+    private var isPushNotificationHandled = false
 
     @Inject
     lateinit var deviceTokenManager: DeviceTokenManager
@@ -45,7 +46,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         checkAppUpdate()
-        handlePushNotification(intent)
+        if (savedInstanceState == null) {
+            handlePushNotification(intent)
+        } else {
+            restorePushNotification(savedInstanceState)
+        }
         setContent {
             BackHandler {
                 setBackHandler()
@@ -54,7 +59,10 @@ class MainActivity : ComponentActivity() {
             JobisDesignSystemV2Theme {
                 JobisApp(
                     pushNotificationData = pushNotificationData,
-                    onPushNotificationHandled = { pushNotificationData = null },
+                    onPushNotificationHandled = {
+                        pushNotificationData = null
+                        isPushNotificationHandled = true
+                    },
                 )
             }
         }
@@ -70,8 +78,27 @@ class MainActivity : ComponentActivity() {
         handlePushNotification(intent)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(PUSH_NOTIFICATION_HANDLED, isPushNotificationHandled)
+        pushNotificationData?.let {
+            outState.putBoolean(HAS_PENDING_PUSH_NOTIFICATION, true)
+            it.saveState(outState)
+        }
+    }
+
     private fun handlePushNotification(intent: Intent?) {
-        PushNotificationData.fromIntent(intent)?.let { pushNotificationData = it }
+        PushNotificationData.fromIntent(intent)?.let {
+            pushNotificationData = it
+            isPushNotificationHandled = false
+        }
+    }
+
+    private fun restorePushNotification(savedInstanceState: Bundle) {
+        isPushNotificationHandled = savedInstanceState.getBoolean(PUSH_NOTIFICATION_HANDLED)
+        if (!isPushNotificationHandled && savedInstanceState.getBoolean(HAS_PENDING_PUSH_NOTIFICATION)) {
+            pushNotificationData = PushNotificationData.fromSavedState(savedInstanceState)
+        }
     }
 
     private fun setBackHandler() {
@@ -106,5 +133,10 @@ class MainActivity : ComponentActivity() {
                 updateOptions,
             )
         }
+    }
+
+    private companion object {
+        const val HAS_PENDING_PUSH_NOTIFICATION = "has_pending_push_notification"
+        const val PUSH_NOTIFICATION_HANDLED = "push_notification_handled"
     }
 }
