@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import team.retum.bookmark.navigation.navigateToBookmark
 import team.retum.bug.navigation.navigateToReportBug
+import team.retum.common.enums.AlarmType
 import team.retum.common.enums.ResetPasswordNavigationArgumentType
 import team.retum.common.model.ApplicationData
 import team.retum.company.navigation.navigateToCompanies
@@ -30,6 +31,7 @@ import team.retum.jobis.recruitment.navigation.navigateToRecruitmentFilter
 import team.retum.jobis.recruitment.navigation.navigateToSearchRecruitment
 import team.retum.jobis.recruitment.navigation.navigateToWinterIntern
 import team.retum.jobis.verify.email.navigation.navigateToVerifyEmail
+import team.retum.jobisandroidv2.notification.PushNotificationData
 import team.retum.jobisandroidv2.root.APPLICATION_ID
 import team.retum.jobisandroidv2.root.NAVIGATION_ROOT
 import team.retum.jobisandroidv2.root.navigateToRoot
@@ -102,6 +104,29 @@ internal class JobisNavigator(
 
     fun navigateToNotification() {
         navController.navigateToNotification()
+    }
+
+    fun navigateToPushNotification(pushNotificationData: PushNotificationData) {
+        when (pushNotificationData.topic) {
+            AlarmType.APPLICATION -> navigateToRoot(applicationId = pushNotificationData.detailId ?: 0)
+            AlarmType.RECRUITMENT -> {
+                pushNotificationData.detailId
+                    ?.takeIf { it > 0 }
+                    ?.let(::navigateToRecruitmentDetails)
+                    ?: navigateToRoot()
+            }
+
+            AlarmType.NOTICE -> {
+                pushNotificationData.detailId
+                    ?.takeIf { it > 0 }
+                    ?.let(::navigateToNoticeDetails)
+                    ?: navigateToRoot()
+            }
+
+            AlarmType.WINTER_INTERN -> navigateToWinterIntern(isWinterInternAvailable = true)
+            AlarmType.INTERVIEW -> navigateToInterviewSchedule()
+            null -> navigateToRoot()
+        }
     }
 
     fun navigateToCompanies() {
