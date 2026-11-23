@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import team.retum.device.DeviceTokenManager
 import team.retum.device.NotificationManager
 import team.retum.jobisandroidv2.MainActivity
+import java.util.UUID
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,12 +34,11 @@ class JobisMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        message.notification?.run {
-            notificationManager.setNotificationContent(
-                title = title,
-                body = body,
-            )
-        }
-        notificationManager.sendNotification()
+        notificationManager.sendNotification(
+            title = message.notification?.title ?: message.data["title"],
+            body = message.notification?.body ?: message.data["body"],
+            data = message.data,
+            notificationId = message.messageId?.hashCode() ?: UUID.randomUUID().hashCode(),
+        )
     }
 }
