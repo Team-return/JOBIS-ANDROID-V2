@@ -2,7 +2,6 @@ package team.retum.network.model.response.notification
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import team.retum.common.enums.AlarmType
 
 @JsonClass(generateAdapter = true)
 data class FetchNotificationsResponse(
@@ -13,7 +12,7 @@ data class FetchNotificationsResponse(
         @Json(name = "notification_id") val notificationId: Long,
         @Json(name = "title") val title: String,
         @Json(name = "content") val content: String,
-        @Json(name = "topic") val topic: AlarmType,
+        @Json(name = "topic") val topic: String,
         @Json(name = "detail_id") val detailId: Long,
         @Json(name = "created_at") val createdAt: String,
         @Json(name = "new") val new: Boolean,
