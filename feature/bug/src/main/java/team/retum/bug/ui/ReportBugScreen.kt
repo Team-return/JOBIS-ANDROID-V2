@@ -115,6 +115,22 @@ internal fun ReportBug(
                     ).show()
                     onBackPressed()
                 }
+
+                is ReportBugSideEffect.UploadFailure -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_report_bug_upload_failure),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
+
+                is ReportBugSideEffect.SubmitFailure -> {
+                    JobisToast.create(
+                        context = context,
+                        message = context.getString(R.string.toast_report_bug_failure),
+                        drawable = JobisIcon.Error,
+                    ).show()
+                }
             }
         }
     }

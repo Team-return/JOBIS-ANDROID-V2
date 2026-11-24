@@ -13,4 +13,6 @@
     <string name="screenshot_over_flow">이미지는 5장까지만 첨부할 수 있어요</string>
     <string name="select_field">분야 선택</string>
     <string name="toast_report_bug_success">버그가 성공적으로 제보되었어요</string>
+    <string name="toast_report_bug_upload_failure">첨부 파일 업로드에 실패했어요. 다시 시도해주세요</string>
+    <string name="toast_report_bug_failure">버그 제보에 실패했어요. 다시 시도해주세요</string>
 </resources>

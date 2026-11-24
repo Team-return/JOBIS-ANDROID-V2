@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.DevelopmentArea
 import team.retum.common.utils.FileUtil
+import team.retum.usecase.entity.file.PresignedUrlEntity
 import team.retum.usecase.usecase.bug.ReportBugUseCase
 import team.retum.usecase.usecase.file.CreatePresignedUrlUseCase
 import team.retum.usecase.usecase.file.UploadFileUseCase
@@ -27,10 +28,9 @@ internal class ReportBugViewModel @Inject constructor(
 ) : BaseViewModel<ReportBugState, ReportBugSideEffect>(ReportBugState.getInitialState()) {
 
     private val screenshots: SnapshotStateList<Uri> = mutableStateListOf()
-    private val files: MutableList<File> = mutableListOf()
-    private val attachmentUrls: MutableList<String> = mutableListOf()
 
     internal fun addUris(uris: List<Uri>) {
+        if (state.value.isSubmitting) return
         if (screenshots.size + uris.size > MAX_SCREENSHOT_COUNT) {
             postSideEffect(ReportBugSideEffect.MaxScreenshotCount)
         } else {
@@ -41,84 +41,114 @@ internal class ReportBugViewModel @Inject constructor(
     internal fun getUris(): List<Uri> = screenshots
 
     internal fun removeScreenshot(index: Int) {
+        if (state.value.isSubmitting) return
         screenshots.removeAt(index)
     }
 
     internal fun setTitle(title: String) = setState {
-        setButtonEnabled(title = title)
-        state.value.copy(title = title)
+        with(state.value) {
+            copy(
+                title = title,
+                buttonEnabled = title.isNotBlank() && content.isNotBlank() && !isSubmitting,
+            )
+        }
     }
 
     internal fun setContent(content: String) = setState {
-        setButtonEnabled(content = content)
-        state.value.copy(content = content)
+        with(state.value) {
+            copy(
+                content = content,
+                buttonEnabled = title.isNotBlank() && content.isNotBlank() && !isSubmitting,
+            )
+        }
     }
 
     internal fun setDevelopmentArea(developmentArea: DevelopmentArea) = setState {
         state.value.copy(developmentArea = developmentArea)
     }
 
-    private fun setButtonEnabled(
-        title: String = state.value.title,
-        content: String = state.value.content,
-    ) = setState {
-        state.value.copy(buttonEnabled = title.isNotBlank() && content.isNotBlank())
-    }
-
-    internal fun onNextClick(context: Context) {
-        createPresignedUrl(context)
-    }
-
-    private fun createPresignedUrl(context: Context) {
-        files.addAll(
-            screenshots.map {
-                FileUtil.toFile(
-                    context = context,
-                    uri = it,
-                )
-            },
-        )
-        viewModelScope.launch(Dispatchers.IO) {
-            createPresignedUrlUseCase(
-                files = files.map { it.name },
-            ).onSuccess {
-                it.urls.forEachIndexed { index, urlEntity ->
-                    attachmentUrls.add(urlEntity.filePath)
-                    uploadFile(
-                        presignedUrl = urlEntity.preSignedUrl,
-                        file = files[index],
-                    )
-                }
-                reportBug()
-            }
-        }
-    }
-
-    private fun uploadFile(
-        presignedUrl: String,
-        file: File,
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            uploadFileUseCase(
-                presignedUrl = presignedUrl,
-                file = file,
+    private fun setSubmitting(isSubmitting: Boolean) = setState {
+        with(state.value) {
+            copy(
+                buttonEnabled = title.isNotBlank() && content.isNotBlank() && !isSubmitting,
+                isSubmitting = isSubmitting,
             )
         }
     }
 
-    private fun reportBug() {
-        with(state.value) {
-            viewModelScope.launch(Dispatchers.IO) {
-                reportBugUseCase(
-                    title = title,
-                    content = content,
-                    developmentArea = developmentArea,
-                    attachmentUrls = attachmentUrls,
-                ).onSuccess {
-                    postSideEffect(ReportBugSideEffect.Success)
+    internal fun onNextClick(context: Context) {
+        if (state.value.isSubmitting) return
+        val submissionState = state.value
+        val submissionScreenshots = screenshots.toList()
+        val applicationContext = context.applicationContext
+        setSubmitting(isSubmitting = true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val submissionFiles = runCatching {
+                submissionScreenshots.map {
+                    FileUtil.toFile(
+                        context = applicationContext,
+                        uri = it,
+                    )
                 }
+            }.getOrElse {
+                onUploadFailure()
+                return@launch
+            }
+            if (submissionFiles.isEmpty()) {
+                reportBug(
+                    submissionState = submissionState,
+                    attachmentUrls = emptyList(),
+                )
+            } else {
+                createPresignedUrlUseCase(files = submissionFiles.map { it.name })
+                    .onSuccess {
+                        if (uploadFiles(urls = it.urls, files = submissionFiles)) {
+                            reportBug(
+                                submissionState = submissionState,
+                                attachmentUrls = it.urls.map { url -> url.filePath },
+                            )
+                        } else {
+                            onUploadFailure()
+                        }
+                    }.onFailure {
+                        onUploadFailure()
+                    }
             }
         }
+    }
+
+    private suspend fun uploadFiles(
+        urls: List<PresignedUrlEntity.UrlEntity>,
+        files: List<File>,
+    ): Boolean =
+        urls.size == files.size &&
+            urls.zip(files).all { (url, file) ->
+                uploadFileUseCase(
+                    presignedUrl = url.preSignedUrl,
+                    file = file,
+                ).isSuccess
+            }
+
+    private suspend fun reportBug(
+        submissionState: ReportBugState,
+        attachmentUrls: List<String>,
+    ) {
+        reportBugUseCase(
+            title = submissionState.title,
+            content = submissionState.content,
+            developmentArea = submissionState.developmentArea,
+            attachmentUrls = attachmentUrls,
+        ).onSuccess {
+            postSideEffect(ReportBugSideEffect.Success)
+        }.onFailure {
+            setSubmitting(isSubmitting = false)
+            postSideEffect(ReportBugSideEffect.SubmitFailure)
+        }
+    }
+
+    private fun onUploadFailure() {
+        setSubmitting(isSubmitting = false)
+        postSideEffect(ReportBugSideEffect.UploadFailure)
     }
 }
 
@@ -127,6 +157,7 @@ internal data class ReportBugState(
     val content: String,
     val developmentArea: DevelopmentArea,
     val buttonEnabled: Boolean,
+    val isSubmitting: Boolean,
 ) {
     companion object {
         fun getInitialState() = ReportBugState(
@@ -134,6 +165,7 @@ internal data class ReportBugState(
             content = "",
             developmentArea = DevelopmentArea.ANDROID,
             buttonEnabled = false,
+            isSubmitting = false,
         )
     }
 }
@@ -141,4 +173,6 @@ internal data class ReportBugState(
 internal sealed interface ReportBugSideEffect {
     data object MaxScreenshotCount : ReportBugSideEffect
     data object Success : ReportBugSideEffect
+    data object UploadFailure : ReportBugSideEffect
+    data object SubmitFailure : ReportBugSideEffect
 }
