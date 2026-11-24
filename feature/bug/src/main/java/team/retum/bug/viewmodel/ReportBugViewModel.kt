@@ -46,28 +46,34 @@ internal class ReportBugViewModel @Inject constructor(
     }
 
     internal fun setTitle(title: String) = setState {
-        setButtonEnabled(title = title)
-        state.value.copy(title = title)
+        with(state.value) {
+            copy(
+                title = title,
+                buttonEnabled = title.isNotBlank() && content.isNotBlank() && !isSubmitting,
+            )
+        }
     }
 
     internal fun setContent(content: String) = setState {
-        setButtonEnabled(content = content)
-        state.value.copy(content = content)
+        with(state.value) {
+            copy(
+                content = content,
+                buttonEnabled = title.isNotBlank() && content.isNotBlank() && !isSubmitting,
+            )
+        }
     }
 
     internal fun setDevelopmentArea(developmentArea: DevelopmentArea) = setState {
         state.value.copy(developmentArea = developmentArea)
     }
 
-    private fun setButtonEnabled(
-        title: String = state.value.title,
-        content: String = state.value.content,
-        isSubmitting: Boolean = state.value.isSubmitting,
-    ) = setState {
-        state.value.copy(
-            buttonEnabled = title.isNotBlank() && content.isNotBlank() && !isSubmitting,
-            isSubmitting = isSubmitting,
-        )
+    private fun setSubmitting(isSubmitting: Boolean) = setState {
+        with(state.value) {
+            copy(
+                buttonEnabled = title.isNotBlank() && content.isNotBlank() && !isSubmitting,
+                isSubmitting = isSubmitting,
+            )
+        }
     }
 
     internal fun onNextClick(context: Context) {
@@ -75,7 +81,7 @@ internal class ReportBugViewModel @Inject constructor(
         val submissionState = state.value
         val submissionScreenshots = screenshots.toList()
         val applicationContext = context.applicationContext
-        setButtonEnabled(isSubmitting = true)
+        setSubmitting(isSubmitting = true)
         viewModelScope.launch(Dispatchers.IO) {
             val submissionFiles = runCatching {
                 submissionScreenshots.map {
@@ -135,13 +141,13 @@ internal class ReportBugViewModel @Inject constructor(
         ).onSuccess {
             postSideEffect(ReportBugSideEffect.Success)
         }.onFailure {
-            setButtonEnabled(isSubmitting = false)
+            setSubmitting(isSubmitting = false)
             postSideEffect(ReportBugSideEffect.SubmitFailure)
         }
     }
 
     private fun onUploadFailure() {
-        setButtonEnabled(isSubmitting = false)
+        setSubmitting(isSubmitting = false)
         postSideEffect(ReportBugSideEffect.UploadFailure)
     }
 }
