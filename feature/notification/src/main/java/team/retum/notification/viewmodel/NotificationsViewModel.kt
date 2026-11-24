@@ -57,13 +57,15 @@ internal class NotificationsViewModel @Inject constructor(
                     postSideEffect(NotificationsSideEffect.MoveToNoticeDetail(noticeId = notificationDetailData.detailId))
                 }
 
-                AlarmType.INTERVIEW -> {
-                    postSideEffect(NotificationsSideEffect.MoveToInterviewSchedule)
+                AlarmType.WINTER_INTERN -> {
+                    postSideEffect(NotificationsSideEffect.MoveToWinterIntern)
                 }
 
-                else -> {
-                    // TODO: 현재 처리할 작업 없음
+                AlarmType.INTERVIEW -> {
+                    postSideEffect(NotificationsSideEffect.MoveToHome(applicationId = notificationDetailData.detailId))
                 }
+
+                null -> Unit
             }
         }
     }
@@ -93,6 +95,6 @@ internal sealed interface NotificationsSideEffect {
     data class MoveToRecruitmentDetail(val recruitmentId: Long) : NotificationsSideEffect
     data class MoveToHome(val applicationId: Long) : NotificationsSideEffect
     data class MoveToNoticeDetail(val noticeId: Long) : NotificationsSideEffect
-    data object MoveToInterviewSchedule : NotificationsSideEffect
+    data object MoveToWinterIntern : NotificationsSideEffect
     data object CanNotCurrentNotifications : NotificationsSideEffect
 }

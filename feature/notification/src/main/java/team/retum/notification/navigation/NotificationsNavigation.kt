@@ -12,7 +12,7 @@ fun NavGraphBuilder.notifications(
     navigateToRecruitment: (Long) -> Unit,
     navigateToHome: (Long) -> Unit,
     navigateToNotice: (Long) -> Unit,
-    navigateToInterviewSchedule: () -> Unit,
+    navigateToWinterIntern: () -> Unit,
 ) {
     composable(NAVIGATION_NOTIFICATIONS) {
         Notifications(
@@ -20,7 +20,7 @@ fun NavGraphBuilder.notifications(
             navigateToRecruitment = navigateToRecruitment,
             navigateToHome = navigateToHome,
             navigateToNotice = navigateToNotice,
-            navigateToInterviewSchedule = navigateToInterviewSchedule,
+            navigateToWinterIntern = navigateToWinterIntern,
         )
     }
 }
