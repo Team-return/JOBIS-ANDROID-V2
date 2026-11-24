@@ -1,10 +1,8 @@
 package team.retum.usecase.entity.notification
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Immutable
 import team.retum.common.enums.AlarmType
 import team.retum.network.model.response.notification.FetchNotificationsResponse
-import java.text.SimpleDateFormat
 
 data class NotificationsEntity(
     val notifications: List<NotificationEntity>,
@@ -14,7 +12,7 @@ data class NotificationsEntity(
         val notificationId: Long,
         val title: String,
         val content: String,
-        val topic: AlarmType,
+        val topic: AlarmType?,
         val detailId: Long,
         val createAt: String,
         val new: Boolean,
@@ -25,19 +23,15 @@ internal fun FetchNotificationsResponse.toNotificationsEntity() = NotificationsE
     notifications = this.notifications.map { it.toEntity() },
 )
 
-@SuppressLint("SimpleDateFormat")
-private val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
-
-@SuppressLint("SimpleDateFormat")
-private val outputFormat = SimpleDateFormat("yyyy-MM-dd")
+private val notificationDateRegex = Regex("^\\d{4}-\\d{2}-\\d{2}")
 
 private fun FetchNotificationsResponse.NotificationResponse.toEntity() =
     NotificationsEntity.NotificationEntity(
         notificationId = this.notificationId,
         title = this.title,
         content = this.content,
-        topic = this.topic,
+        topic = AlarmType.entries.firstOrNull { it.name.equals(this.topic, ignoreCase = true) },
         detailId = this.detailId,
-        createAt = outputFormat.format(inputFormat.parse(this.createdAt)!!),
+        createAt = notificationDateRegex.find(this.createdAt)?.value ?: this.createdAt,
         new = this.new,
     )
