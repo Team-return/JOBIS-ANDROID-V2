@@ -53,7 +53,9 @@ internal fun ApplyCompanyItem(
         ApplyStatus.SEND, ApplyStatus.PROCESSING -> JobisTheme.colors.secondary
         ApplyStatus.FIELD_TRAIN, ApplyStatus.ACCEPTANCE, ApplyStatus.PASS -> JobisTheme.colors.outlineVariant
     }
-    var effectExecuted by remember { mutableStateOf(isFocus) }
+    var effectExecuted by remember(appliedCompany.applicationId, applicationStatus) {
+        mutableStateOf(isFocus)
+    }
     val animationAlpha by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -74,7 +76,7 @@ internal fun ApplyCompanyItem(
     )
 
     if (isFocus) {
-        LaunchedEffect(Unit) {
+        LaunchedEffect(appliedCompany.applicationId, applicationStatus) {
             delay(1000)
             effectExecuted = false
         }
