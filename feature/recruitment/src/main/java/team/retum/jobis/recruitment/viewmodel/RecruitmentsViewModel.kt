@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import team.retum.common.base.BaseViewModel
 import team.retum.common.enums.RecruitSortType
+import team.retum.common.enums.RecruitmentRegion
 import team.retum.common.enums.RecruitmentStatus
 import team.retum.jobis.local.entity.BookmarkLocalEntity
-import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel.Companion.region
 import team.retum.usecase.entity.RecruitmentsEntity
 import team.retum.usecase.usecase.bookmark.ObserveBookmarkStatusUseCase
 import team.retum.usecase.usecase.bookmark.SyncBookmarksFromServerUseCase
@@ -25,7 +25,6 @@ import team.retum.usecase.usecase.recruitment.FetchRecruitmentsUseCase
 import javax.inject.Inject
 
 private const val NUMBER_OF_ITEM_ON_PAGE = 12
-private const val LAST_INDEX_OF_PAGE = 11
 
 /**
  * 모집의뢰서 목록 조회 및 검색 비즈니스 로직을 담당하는 뷰모델
@@ -45,9 +44,10 @@ internal class RecruitmentViewModel @Inject constructor(
     private val _recruitments: SnapshotStateList<RecruitmentsEntity.RecruitmentEntity> =
         mutableStateListOf()
     val recruitments: List<RecruitmentsEntity.RecruitmentEntity> = _recruitments
+    private var requestVersion = 0L
+    private var isLoading = false
 
     init {
-        clear()
         debounceName()
         syncBookmarks()
         observeAllBookmarks()
@@ -68,15 +68,9 @@ internal class RecruitmentViewModel @Inject constructor(
         }
     }
 
-    internal fun clearRecruitment() {
-        if (state.value.jobCode != null || state.value.techCode != null) {
-            _recruitments.clear()
-            setState { state.value.copy(page = 0L) }
-        }
-    }
-
-    internal fun resetRecruitments() {
+    private fun resetRecruitments() {
         _recruitments.clear()
+        isLoading = false
         setState {
             state.value.copy(
                 page = 0L,
@@ -86,79 +80,98 @@ internal class RecruitmentViewModel @Inject constructor(
         }
     }
 
-    private fun clear() {
-        RecruitmentFilterViewModel.jobCode = null
-        RecruitmentFilterViewModel.techCode = null
-        RecruitmentFilterViewModel.year = null
-        RecruitmentFilterViewModel.status = null
-        RecruitmentFilterViewModel.region = null
-        _recruitments.clear()
+    internal fun setFilters(
+        jobCode: Long?,
+        techCode: String?,
+        years: ImmutableList<Int>?,
+        status: RecruitmentStatus?,
+        region: RecruitmentRegion?,
+        isWinterIntern: Boolean,
+    ): Boolean {
+        val normalizedTechCode = techCode?.takeIf { it.isNotBlank() }
+        val filtersChanged = with(state.value) {
+            this.jobCode != jobCode ||
+                this.techCode != normalizedTechCode ||
+                this.years != years ||
+                this.status != status ||
+                this.region != region ||
+                this.isWinterIntern != isWinterIntern
+        }
+        if (!filtersChanged) return false
+
+        requestVersion++
         setState {
             state.value.copy(
-                page = 0L,
+                jobCode = jobCode,
+                techCode = normalizedTechCode,
+                years = years,
+                status = status,
+                region = region,
+                isWinterIntern = isWinterIntern,
             )
         }
-    }
-
-    internal fun setJobCode(jobCode: Long?) = setState {
-        state.value.copy(jobCode = jobCode)
-    }
-
-    internal fun setTechCode(techCode: String?) = setState {
-        state.value.copy(techCode = techCode)
-    }
-
-    internal fun setWinterIntern(isWinterIntern: Boolean) = setState {
-        state.value.copy(isWinterIntern = isWinterIntern)
-    }
-
-    internal fun setYears(years: ImmutableList<Int>?) = setState {
-        state.value.copy(years = years)
-    }
-
-    internal fun setStatus(status: RecruitmentStatus?) = setState {
-        state.value.copy(status = status)
+        resetRecruitments()
+        return true
     }
 
     internal fun setSortType(sortType: RecruitSortType?) {
-        _recruitments.clear()
+        if (state.value.sortType == sortType) return
+
+        requestVersion++
         setState {
             state.value.copy(
-                page = 0L,
                 sortType = sortType,
             )
         }
+        resetRecruitments()
         fetchTotalRecruitmentCount()
     }
 
     internal fun fetchRecruitments() {
-        addRecruitmentEntities()
-        addPage()
-        viewModelScope.launch(Dispatchers.IO) {
-            with(state.value) {
-                fetchRecruitmentsUseCase(
-                    name = name,
-                    page = page.toInt(),
-                    jobCode = jobCode,
-                    techCode = techCode,
-                    winterIntern = isWinterIntern,
-                    militarySupport = null,
-                    years = years,
-                    recruitStatus = status,
-                    sortType = sortType,
-                    region = region,
-                ).onSuccess {
-                    setState { state.value.copy(showRecruitmentsEmptyContent = it.recruitments.isEmpty()) }
-                    replaceRecruitments(it.recruitments)
-                }.onFailure {
-                    postFetchRecruitmentsErrorIfEmpty()
-                }
-            }
-        }
+        fetchRecruitments(requestVersion)
     }
 
-    private fun addPage() = setState {
-        state.value.copy(page = state.value.page + 1)
+    private fun fetchRecruitments(version: Long) {
+        if (isLoading) return
+
+        val requestState = state.value
+        val nextPage = requestState.page + 1
+        if (nextPage > requestState.totalPage) return
+
+        isLoading = true
+        addRecruitmentEntities()
+        viewModelScope.launch {
+            fetchRecruitmentsUseCase(
+                name = requestState.name,
+                page = nextPage.toInt(),
+                jobCode = requestState.jobCode,
+                techCode = requestState.techCode,
+                winterIntern = requestState.isWinterIntern,
+                militarySupport = null,
+                years = requestState.years,
+                recruitStatus = requestState.status,
+                sortType = requestState.sortType,
+                region = requestState.region,
+            ).onSuccess {
+                if (version != requestVersion) return@onSuccess
+
+                removeLoadingRecruitments()
+                _recruitments.addAll(it.recruitments)
+                isLoading = false
+                setState {
+                    state.value.copy(
+                        page = nextPage,
+                        showRecruitmentsEmptyContent = nextPage == 1L && it.recruitments.isEmpty(),
+                    )
+                }
+            }.onFailure {
+                if (version != requestVersion) return@onFailure
+
+                removeLoadingRecruitments()
+                isLoading = false
+                postFetchRecruitmentsErrorIfEmpty()
+            }
+        }
     }
 
     /**
@@ -170,56 +183,53 @@ internal class RecruitmentViewModel @Inject constructor(
         }
     }
 
-    /**
-     * 모집의뢰서 더미 데이터를 서버로부터 받아온 모집의뢰서 데이터로 교체하는 작업을 진행하는 함수
-     *
-     * @param recruitments 서버로부터 받아온 모집의뢰서 데이터
-     */
-    private fun replaceRecruitments(recruitments: List<RecruitmentsEntity.RecruitmentEntity>) {
-        val startIndex = _recruitments.lastIndex - LAST_INDEX_OF_PAGE
-        runCatching {
-            recruitments.forEachIndexed { index, recruitmentEntity ->
-                _recruitments[startIndex + index] = recruitmentEntity
-            }
-            _recruitments.removeAll(_recruitments.filter { item -> item.id == 0L })
-        }.onFailure {
-            postFetchRecruitmentsErrorIfEmpty()
-        }
+    private fun removeLoadingRecruitments() {
+        _recruitments.removeAll { it.id == 0L }
     }
 
     internal fun fetchTotalRecruitmentCount() {
-        with(state.value) {
-            viewModelScope.launch(Dispatchers.IO) {
-                fetchRecruitmentCountUseCase.invoke(
-                    name = name,
-                    jobCode = jobCode,
-                    techCode = techCode,
-                    winterIntern = isWinterIntern,
-                    militarySupport = null,
-                    years = years,
-                    recruitStatus = status,
-                    sortType = null,
-                    region = region,
-                ).onSuccess {
-                    setState { copy(totalPage = it.totalPageCount) }
-                    fetchRecruitments()
-                }.onFailure {
-                    postFetchRecruitmentsErrorIfEmpty()
+        val version = ++requestVersion
+        val requestState = state.value
+        resetRecruitments()
+        viewModelScope.launch {
+            fetchRecruitmentCountUseCase.invoke(
+                name = requestState.name,
+                jobCode = requestState.jobCode,
+                techCode = requestState.techCode,
+                winterIntern = requestState.isWinterIntern,
+                militarySupport = null,
+                years = requestState.years,
+                recruitStatus = requestState.status,
+                sortType = null,
+                region = requestState.region,
+            ).onSuccess {
+                if (version != requestVersion) return@onSuccess
+
+                setState {
+                    state.value.copy(
+                        totalPage = it.totalPageCount,
+                        showRecruitmentsEmptyContent = it.totalPageCount == 0L,
+                    )
                 }
+                if (it.totalPageCount > 0L) {
+                    fetchRecruitments(version)
+                }
+            }.onFailure {
+                if (version != requestVersion) return@onFailure
+
+                postFetchRecruitmentsErrorIfEmpty()
             }
         }
     }
 
     internal fun setName(name: String) {
-        val initialState = RecruitmentsState.getDefaultState()
-        _recruitments.clear()
+        requestVersion++
         setState {
             state.value.copy(
                 name = name,
-                page = initialState.page,
-                totalPage = initialState.totalPage,
             )
         }
+        resetRecruitments()
     }
 
     /**
@@ -229,7 +239,7 @@ internal class RecruitmentViewModel @Inject constructor(
      * @return 마지막 아이템인지 여부를 반환
      */
     internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {
-        return lastVisibleItemIndex == _recruitments.lastIndex && page < totalPage
+        return !isLoading && lastVisibleItemIndex == _recruitments.lastIndex && page < totalPage
     }
 
     internal fun bookmarkRecruitment(recruitmentId: BookmarkLocalEntity) {
@@ -281,6 +291,7 @@ internal data class RecruitmentsState(
     val showRecruitmentsEmptyContent: Boolean,
     val years: ImmutableList<Int>?,
     val status: RecruitmentStatus?,
+    val region: RecruitmentRegion?,
     val sortType: RecruitSortType?,
 ) {
     companion object {
@@ -294,6 +305,7 @@ internal data class RecruitmentsState(
             showRecruitmentsEmptyContent = false,
             years = null,
             status = null,
+            region = null,
             sortType = null,
         )
     }
