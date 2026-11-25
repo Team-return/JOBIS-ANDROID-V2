@@ -154,21 +154,21 @@ internal class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             cancelApplicationUseCase(applicationId = applicationId).onSuccess {
                 val requestVersion = appliedCompaniesRequestVersion.incrementAndGet()
-                val appliedCompanies = fetchAppliedCompaniesUseCase().getOrNull()?.applications
                 setState {
                     state.value.copy(
-                        appliedCompanies = if (requestVersion == appliedCompaniesRequestVersion.get()) {
-                            appliedCompanies ?: state.value.appliedCompanies.filterNot {
-                                it.applicationId == applicationId
-                            }
-                        } else {
-                            state.value.appliedCompanies.filterNot {
-                                it.applicationId == applicationId
-                            }
+                        appliedCompanies = state.value.appliedCompanies.filterNot {
+                            it.applicationId == applicationId
                         },
                         cancelApplicationId = null,
                         isCanceling = false,
                     )
+                }
+                fetchAppliedCompaniesUseCase().onSuccess { appliedCompaniesEntity ->
+                    if (requestVersion == appliedCompaniesRequestVersion.get()) {
+                        setState {
+                            state.value.copy(appliedCompanies = appliedCompaniesEntity.applications)
+                        }
+                    }
                 }
             }.onFailure {
                 setState {
