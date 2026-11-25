@@ -40,23 +40,31 @@ internal fun WinterIntern(
     val state by recruitmentViewModel.state.collectAsStateWithLifecycle()
     val selectedJobCode = RecruitmentFilterViewModel.jobCode
     val selectedTechCode = RecruitmentFilterViewModel.techCode?.takeIf { it.isNotBlank() }
+    val selectedYears = RecruitmentFilterViewModel.year
+    val selectedStatus = RecruitmentFilterViewModel.status
+    val selectedRegion = RecruitmentFilterViewModel.region
     val hasRecruitments = recruitmentViewModel.recruitments.any { it.id != 0L }
 
-    LaunchedEffect(isWinterInternAvailable, selectedJobCode, selectedTechCode) {
-        val filtersChanged =
-            state.jobCode != selectedJobCode || state.techCode != selectedTechCode
-
-        if (filtersChanged) {
-            recruitmentViewModel.resetRecruitments()
-        } else if (!isWinterInternAvailable || hasRecruitments) {
-            return@LaunchedEffect
-        }
-
+    LaunchedEffect(
+        isWinterInternAvailable,
+        selectedJobCode,
+        selectedTechCode,
+        selectedYears,
+        selectedStatus,
+        selectedRegion,
+    ) {
         with(recruitmentViewModel) {
-            setJobCode(selectedJobCode)
-            setTechCode(selectedTechCode)
-            setWinterIntern(isWinterIntern = true)
-            fetchTotalRecruitmentCount()
+            val filtersChanged = setFilters(
+                jobCode = selectedJobCode,
+                techCode = selectedTechCode,
+                years = selectedYears,
+                status = selectedStatus,
+                region = selectedRegion,
+                isWinterIntern = true,
+            )
+            if (isWinterInternAvailable && (filtersChanged || !hasRecruitments)) {
+                fetchTotalRecruitmentCount()
+            }
         }
     }
 
