@@ -65,16 +65,21 @@ internal fun Recruitments(
     val context = LocalContext.current
     val state by recruitmentViewModel.state.collectAsState()
     val currentSortType = state.sortType
+    val hasRecruitments = recruitmentViewModel.recruitments.any { it.id != 0L }
 
     LaunchedEffect(Unit) {
         with(recruitmentViewModel) {
-            setJobCode(RecruitmentFilterViewModel.jobCode)
-            setTechCode(RecruitmentFilterViewModel.techCode)
-            setWinterIntern(isWinterIntern = false)
-            setYears(RecruitmentFilterViewModel.year)
-            setStatus(RecruitmentFilterViewModel.status)
-            clearRecruitment()
-            fetchTotalRecruitmentCount()
+            val filtersChanged = setFilters(
+                jobCode = RecruitmentFilterViewModel.jobCode,
+                techCode = RecruitmentFilterViewModel.techCode,
+                years = RecruitmentFilterViewModel.year,
+                status = RecruitmentFilterViewModel.status,
+                region = RecruitmentFilterViewModel.region,
+                isWinterIntern = false,
+            )
+            if (filtersChanged || !hasRecruitments) {
+                fetchTotalRecruitmentCount()
+            }
         }
 
         recruitmentViewModel.sideEffect.collect {
