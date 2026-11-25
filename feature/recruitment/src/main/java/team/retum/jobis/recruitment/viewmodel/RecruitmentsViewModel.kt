@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -25,6 +26,8 @@ import team.retum.usecase.usecase.recruitment.FetchRecruitmentsUseCase
 import javax.inject.Inject
 
 private const val NUMBER_OF_ITEM_ON_PAGE = 12
+private const val MAX_PAGE_RETRY_COUNT = 1
+private const val PAGE_RETRY_DELAY_MILLIS = 1_000L
 
 /**
  * 모집의뢰서 목록 조회 및 검색 비즈니스 로직을 담당하는 뷰모델
@@ -46,6 +49,8 @@ internal class RecruitmentViewModel @Inject constructor(
     val recruitments: List<RecruitmentsEntity.RecruitmentEntity> = _recruitments
     private var requestVersion = 0L
     private var isLoading = false
+    private var failedPage: Long? = null
+    private var pageRetryCount = 0
 
     init {
         debounceName()
@@ -71,6 +76,8 @@ internal class RecruitmentViewModel @Inject constructor(
     private fun resetRecruitments() {
         _recruitments.clear()
         isLoading = false
+        failedPage = null
+        pageRetryCount = 0
         setState {
             state.value.copy(
                 page = 0L,
@@ -158,6 +165,8 @@ internal class RecruitmentViewModel @Inject constructor(
                 removeLoadingRecruitments()
                 _recruitments.addAll(it.recruitments)
                 isLoading = false
+                failedPage = null
+                pageRetryCount = 0
                 setState {
                     state.value.copy(
                         page = nextPage,
@@ -169,7 +178,25 @@ internal class RecruitmentViewModel @Inject constructor(
 
                 removeLoadingRecruitments()
                 isLoading = false
-                postFetchRecruitmentsErrorIfEmpty()
+                if (failedPage != nextPage) {
+                    failedPage = nextPage
+                    pageRetryCount = 0
+                }
+                if (pageRetryCount < MAX_PAGE_RETRY_COUNT) {
+                    pageRetryCount++
+                    retryFetchRecruitments(version)
+                } else {
+                    postFetchRecruitmentsErrorIfEmpty()
+                }
+            }
+        }
+    }
+
+    private fun retryFetchRecruitments(version: Long) {
+        viewModelScope.launch {
+            delay(PAGE_RETRY_DELAY_MILLIS)
+            if (version == requestVersion) {
+                fetchRecruitments(version)
             }
         }
     }
@@ -239,7 +266,12 @@ internal class RecruitmentViewModel @Inject constructor(
      * @return 마지막 아이템인지 여부를 반환
      */
     internal fun whetherFetchNextPage(lastVisibleItemIndex: Int): Boolean = with(state.value) {
-        return !isLoading && lastVisibleItemIndex == _recruitments.lastIndex && page < totalPage
+        val nextPage = page + 1
+        val retryExhausted = failedPage == nextPage && pageRetryCount >= MAX_PAGE_RETRY_COUNT
+        return !isLoading &&
+            !retryExhausted &&
+            lastVisibleItemIndex == _recruitments.lastIndex &&
+            page < totalPage
     }
 
     internal fun bookmarkRecruitment(recruitmentId: BookmarkLocalEntity) {
