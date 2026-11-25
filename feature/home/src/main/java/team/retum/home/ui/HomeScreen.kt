@@ -33,6 +33,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +50,10 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -96,6 +100,7 @@ internal fun Home(
     val context = LocalContext.current
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     if (state.cancelApplicationId != null) {
         JobisDialog(
@@ -135,7 +140,6 @@ internal fun Home(
         with(homeViewModel) {
             calculateTerm()
             fetchStudentInformation()
-            fetchAppliedCompanies()
             fetchEmploymentCount(state.employmentYear)
             fetchBanners()
             fetchWinterIntern()
@@ -168,6 +172,12 @@ internal fun Home(
                     scrollState.animateScrollTo(it.sectionOneCoordinates)
                 }
             }
+        }
+    }
+
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            homeViewModel.fetchAppliedCompanies()
         }
     }
 
@@ -645,22 +655,24 @@ private fun ApplyStatus(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (appliedCompanies.isNotEmpty()) {
                 appliedCompanies.forEach {
-                    val applicationData = ApplicationData(
-                        applicationId = it.applicationId,
-                        recruitmentId = it.recruitmentId,
-                        rejectionReason = "",
-                        companyLogoUrl = URLEncoder.encode(it.companyLogoUrl, "UTF8"),
-                        companyName = it.company,
-                        isReApply = true,
-                    )
-                    ApplyCompanyItem(
-                        onShowRejectionReasonClick = { onShowRejectionReasonClick(applicationData) },
-                        onCancelApplicationClick = { onCancelApplicationClick(it.applicationId) },
-                        appliedCompany = it,
-                        isFocus = applicationId == it.applicationId,
-                        navigateToRecruitmentDetails = navigateToRecruitmentDetails,
-                        navigateToApplication = { navigateToApplication(applicationData) },
-                    )
+                    key(it.applicationId, it.applicationStatus) {
+                        val applicationData = ApplicationData(
+                            applicationId = it.applicationId,
+                            recruitmentId = it.recruitmentId,
+                            rejectionReason = "",
+                            companyLogoUrl = URLEncoder.encode(it.companyLogoUrl, "UTF8"),
+                            companyName = it.company,
+                            isReApply = true,
+                        )
+                        ApplyCompanyItem(
+                            onShowRejectionReasonClick = { onShowRejectionReasonClick(applicationData) },
+                            onCancelApplicationClick = { onCancelApplicationClick(it.applicationId) },
+                            appliedCompany = it,
+                            isFocus = applicationId == it.applicationId,
+                            navigateToRecruitmentDetails = navigateToRecruitmentDetails,
+                            navigateToApplication = { navigateToApplication(applicationData) },
+                        )
+                    }
                 }
             } else {
                 Box(
