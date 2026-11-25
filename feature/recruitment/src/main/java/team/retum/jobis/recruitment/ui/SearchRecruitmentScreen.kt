@@ -15,6 +15,7 @@ import kotlinx.collections.immutable.toPersistentList
 import team.retum.jobis.local.entity.BookmarkLocalEntity
 import team.retum.jobis.recruitment.R
 import team.retum.jobis.recruitment.ui.component.RecruitmentItems
+import team.retum.jobis.recruitment.viewmodel.RecruitmentFilterViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentViewModel
 import team.retum.jobis.recruitment.viewmodel.RecruitmentsState
 import team.retum.jobisdesignsystemv2.appbar.JobisSmallTopAppBar
@@ -33,8 +34,15 @@ internal fun SearchRecruitment(
 ) {
     val state by recruitmentsViewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        recruitmentsViewModel.setWinterIntern(isWinterIntern = isWinterIntern)
+    LaunchedEffect(isWinterIntern) {
+        recruitmentsViewModel.setFilters(
+            jobCode = RecruitmentFilterViewModel.jobCode,
+            techCode = RecruitmentFilterViewModel.techCode,
+            years = RecruitmentFilterViewModel.year,
+            status = RecruitmentFilterViewModel.status,
+            region = RecruitmentFilterViewModel.region,
+            isWinterIntern = isWinterIntern,
+        )
     }
 
     SearchRecruitmentScreen(
