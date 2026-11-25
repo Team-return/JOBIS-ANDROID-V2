@@ -164,9 +164,11 @@ internal class HomeViewModel @Inject constructor(
                     )
                 }
                 fetchAppliedCompaniesUseCase().onSuccess { appliedCompaniesEntity ->
-                    if (requestVersion == appliedCompaniesRequestVersion.get()) {
-                        setState {
+                    setState {
+                        if (requestVersion == appliedCompaniesRequestVersion.get()) {
                             state.value.copy(appliedCompanies = appliedCompaniesEntity.applications)
+                        } else {
+                            state.value
                         }
                     }
                 }
