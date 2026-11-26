@@ -21,43 +21,54 @@ internal class CompanyDetailsViewModel @Inject constructor(
 ) : BaseViewModel<CompanyDetailsState, CompanyDetailsSideEffect>(CompanyDetailsState.getInitialState()) {
 
     internal fun setCompanyId(companyId: Long) = setState {
-        state.value.copy(companyId = companyId)
+        CompanyDetailsState.getInitialState().copy(companyId = companyId)
     }
 
     internal fun fetchCompanyDetails() {
+        val companyId = state.value.companyId
         viewModelScope.launch(Dispatchers.IO) {
-            fetchCompanyDetailsUseCase(companyId = state.value.companyId).onSuccess {
+            fetchCompanyDetailsUseCase(companyId = companyId).onSuccess {
                 setState {
-                    state.value.copy(
-                        companyDetailsEntity = it,
-                        buttonEnabled = it.recruitmentId != null,
-                    )
+                    if (state.value.companyId == companyId) {
+                        state.value.copy(
+                            companyDetailsEntity = it,
+                            buttonEnabled = it.recruitmentId != null,
+                            showMoveToRecruitmentButton = true,
+                        )
+                    } else {
+                        state.value
+                    }
                 }
             }.onFailure {
-                // TODO 스켈레톤 처리
-                postSideEffect(CompanyDetailsSideEffect.FetchCompanyDetailsError)
+                if (state.value.companyId == companyId) {
+                    postSideEffect(CompanyDetailsSideEffect.FetchCompanyDetailsError)
+                }
             }
         }
     }
 
     internal fun fetchReviews() {
+        val companyId = state.value.companyId
         viewModelScope.launch(Dispatchers.IO) {
             fetchReviewsUseCase(
                 page = null,
                 location = null,
                 interviewType = null,
-                companyId = state.value.companyId,
+                companyId = companyId,
                 keyword = null,
                 year = null,
                 code = null,
             ).onSuccess {
                 val reviews = it.reviews
                 setState {
-                    state.value.copy(
-                        reviews = reviews.take(MAX_REVIEW_COUNT),
-                        showMoreReviews = reviews.size > MAX_REVIEW_COUNT,
-                        showMoveToRecruitmentButton = true,
-                    )
+                    if (state.value.companyId == companyId) {
+                        state.value.copy(
+                            reviews = reviews.take(MAX_REVIEW_COUNT),
+                            showMoreReviews = reviews.size > MAX_REVIEW_COUNT,
+                        )
+                    } else {
+                        state.value
+                    }
                 }
             }
         }
@@ -66,15 +77,21 @@ internal class CompanyDetailsViewModel @Inject constructor(
     internal fun onMoveToRecruitmentButtonClick() {
         val recruitmentId = state.value.companyDetailsEntity.recruitmentId
 
+        if (state.value.isMovingToRecruitmentDetails) return
+
         if (recruitmentId == null) {
             postSideEffect(CompanyDetailsSideEffect.RecruitmentNotFound)
             return
         }
 
         setState {
-            postSideEffect(CompanyDetailsSideEffect.MoveToRecruitmentDetails(recruitmentId = recruitmentId))
             state.value.copy(isMovingToRecruitmentDetails = true)
         }
+        postSideEffect(CompanyDetailsSideEffect.MoveToRecruitmentDetails(recruitmentId = recruitmentId))
+    }
+
+    internal fun resetRecruitmentNavigationState() = setState {
+        state.value.copy(isMovingToRecruitmentDetails = false)
     }
 }
 
@@ -113,7 +130,7 @@ internal data class CompanyDetailsState(
             reviews = emptyList(),
             showMoreReviews = false,
             showMoveToRecruitmentButton = false,
-            buttonEnabled = true,
+            buttonEnabled = false,
             isMovingToRecruitmentDetails = false,
         )
     }
