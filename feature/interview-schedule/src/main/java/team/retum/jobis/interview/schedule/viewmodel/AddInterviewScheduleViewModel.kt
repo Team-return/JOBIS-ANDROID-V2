@@ -27,6 +27,8 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
 ) {
 
     private var searchJob: Job? = null
+    private var companyDetailsJob: Job? = null
+    private var selectedCompanyId: Long? = null
 
     companion object {
         private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -65,18 +67,23 @@ internal class AddInterviewScheduleViewModel @Inject constructor(
 
     internal fun onCompanySelected(id: Long, name: String) {
         searchJob?.cancel()
+        companyDetailsJob?.cancel()
+        selectedCompanyId = id
         setState {
             state.value.copy(
                 company = name,
+                location = "",
                 companySuggestions = emptyList(),
                 showCompanySuggestions = false,
             ).updateButtonEnabled()
         }
-        viewModelScope.launch(Dispatchers.IO) {
+        companyDetailsJob = viewModelScope.launch(Dispatchers.IO) {
             fetchCompanyDetailsUseCase(companyId = id).onSuccess { details ->
-                details.mainAddress?.let { address ->
-                    setState {
-                        state.value.copy(location = address).updateButtonEnabled()
+                setState {
+                    if (selectedCompanyId == id) {
+                        state.value.copy(location = details.mainAddress.orEmpty()).updateButtonEnabled()
+                    } else {
+                        state.value
                     }
                 }
             }
