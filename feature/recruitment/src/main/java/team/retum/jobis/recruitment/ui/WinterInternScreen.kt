@@ -27,6 +27,12 @@ import team.retum.jobisdesignsystemv2.foundation.JobisTheme
 import team.retum.jobisdesignsystemv2.toast.JobisToast
 import team.retum.usecase.entity.RecruitmentsEntity
 
+private enum class WinterInternEmptyType {
+    SEASON_ENDED,
+    NO_RECRUITMENTS,
+    FILTERED,
+}
+
 @Composable
 internal fun WinterIntern(
     isWinterInternAvailable: Boolean,
@@ -44,6 +50,17 @@ internal fun WinterIntern(
     val selectedStatus = RecruitmentFilterViewModel.status
     val selectedRegion = RecruitmentFilterViewModel.region
     val hasRecruitments = recruitmentViewModel.recruitments.any { it.id != 0L }
+    val hasActiveFilters = selectedJobCode != null ||
+        selectedTechCode != null ||
+        !selectedYears.isNullOrEmpty() ||
+        selectedStatus != null ||
+        selectedRegion != null
+    val emptyType = when {
+        !isWinterInternAvailable -> WinterInternEmptyType.SEASON_ENDED
+        state.showRecruitmentsEmptyContent && hasActiveFilters -> WinterInternEmptyType.FILTERED
+        state.showRecruitmentsEmptyContent -> WinterInternEmptyType.NO_RECRUITMENTS
+        else -> null
+    }
 
     LaunchedEffect(
         isWinterInternAvailable,
@@ -84,8 +101,7 @@ internal fun WinterIntern(
 
     WinterInternScreen(
         onBackPressed = onBackPressed,
-        showEmptyContent = state.showRecruitmentsEmptyContent ||
-            (!isWinterInternAvailable && !hasRecruitments),
+        emptyType = emptyType,
         recruitments = recruitmentViewModel.recruitments.toPersistentList(),
         onRecruitmentClick = onRecruitmentDetailsClick,
         onRecruitmentFilterClick = onRecruitmentFilterClick,
@@ -99,7 +115,7 @@ internal fun WinterIntern(
 @Composable
 private fun WinterInternScreen(
     onBackPressed: () -> Unit,
-    showEmptyContent: Boolean,
+    emptyType: WinterInternEmptyType?,
     recruitments: ImmutableList<RecruitmentsEntity.RecruitmentEntity>,
     onRecruitmentClick: (Long) -> Unit,
     onRecruitmentFilterClick: () -> Unit,
@@ -129,10 +145,20 @@ private fun WinterInternScreen(
                 onClick = { onSearchRecruitmentClick(true) },
             )
         }
-        if (showEmptyContent) {
+        if (emptyType != null) {
+            val title = when (emptyType) {
+                WinterInternEmptyType.SEASON_ENDED -> R.string.winter_intern_empty_title
+                WinterInternEmptyType.NO_RECRUITMENTS -> R.string.winter_intern_no_recruitments_title
+                WinterInternEmptyType.FILTERED -> R.string.winter_intern_filtered_empty_title
+            }
+            val description = when (emptyType) {
+                WinterInternEmptyType.SEASON_ENDED -> R.string.winter_intern_empty_description
+                WinterInternEmptyType.NO_RECRUITMENTS -> R.string.winter_intern_no_recruitments_description
+                WinterInternEmptyType.FILTERED -> R.string.winter_intern_filtered_empty_description
+            }
             EmptyContent(
-                title = stringResource(id = R.string.winter_intern_empty_title),
-                description = stringResource(id = R.string.winter_intern_empty_description),
+                title = stringResource(id = title),
+                description = stringResource(id = description),
             )
         } else {
             RecruitmentItems(
