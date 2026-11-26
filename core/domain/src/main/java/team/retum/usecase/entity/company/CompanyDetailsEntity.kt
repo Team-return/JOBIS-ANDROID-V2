@@ -51,7 +51,10 @@ fun FetchCompanyDetailsResponse.toEntity() = CompanyDetailsEntity(
     companyName = this.companyName,
     companyProfileUrl = ResourceKeys.IMAGE_URL + this.companyProfileUrl,
     companyIntroduce = this.companyIntroduce,
-    mainAddress = "${this.mainAddress} ${this.mainAddressDetail}",
+    mainAddress = listOfNotNull(
+        this.mainAddress?.takeIf { it.isNotBlank() },
+        this.mainAddressDetail?.takeIf { it.isNotBlank() },
+    ).joinToString(separator = " ").ifBlank { null },
     managerName = this.managerName,
     representativePhoneNo = this.representativePhoneNo?.toPhoneNumber(),
     email = this.email,
