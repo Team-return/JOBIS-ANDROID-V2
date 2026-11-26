@@ -26,7 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -61,14 +64,23 @@ internal fun CompanyDetails(
 ) {
     val state by companyDetailsViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(companyId, isMovedRecruitmentDetails) {
         with(companyDetailsViewModel) {
             setCompanyId(companyId = companyId)
             fetchCompanyDetails()
             fetchReviews()
         }
+    }
 
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            companyDetailsViewModel.resetRecruitmentNavigationState()
+        }
+    }
+
+    LaunchedEffect(Unit) {
         companyDetailsViewModel.sideEffect.collect {
             when (it) {
                 is CompanyDetailsSideEffect.FetchCompanyDetailsError -> {
@@ -115,7 +127,6 @@ internal fun CompanyDetails(
         navigateToReviewDetails = navigateToReviewDetails,
         navigateToReviews = navigateToReviews,
         onMoveToRecruitmentButtonClick = companyDetailsViewModel::onMoveToRecruitmentButtonClick,
-        isMovedRecruitmentDetails = isMovedRecruitmentDetails,
         state = state,
         companyInfo = companyInfo.toPersistentList(),
     )
@@ -127,7 +138,6 @@ private fun CompanyDetailsScreen(
     navigateToReviewDetails: (Long) -> Unit,
     navigateToReviews: () -> Unit,
     onMoveToRecruitmentButtonClick: () -> Unit,
-    isMovedRecruitmentDetails: Boolean,
     state: CompanyDetailsState,
     companyInfo: ImmutableList<CompanyInfoData>,
 ) {
@@ -169,11 +179,12 @@ private fun CompanyDetailsScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             if (state.showMoveToRecruitmentButton) {
+                val moveEnabled = state.buttonEnabled && !state.isMovingToRecruitmentDetails
                 JobisButton(
                     text = stringResource(id = R.string.show_recruitment),
                     onClick = onMoveToRecruitmentButtonClick,
-                    color = if (state.buttonEnabled) ButtonColor.Primary else ButtonColor.Disabled,
-                    enabled = !isMovedRecruitmentDetails && !state.isMovingToRecruitmentDetails,
+                    color = if (moveEnabled) ButtonColor.Primary else ButtonColor.Disabled,
+                    enabled = moveEnabled,
                 )
             }
         }
